@@ -8,8 +8,7 @@ namespace Parsec.Shaiya.SVMAP
     /// </summary>
     public class MonsterArea
     {
-        public Point3D LowerLimit { get; set; }
-        public Point3D UpperLimit { get; set; }
+        public CubicArea Area { get; set; }
         public int Count { get; set; }
         public List<Monster> Monsters { get; set; }
     }

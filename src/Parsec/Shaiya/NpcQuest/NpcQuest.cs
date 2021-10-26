@@ -92,7 +92,7 @@ namespace Parsec.Shaiya
             GateTarget ReadGateTarget() => new GateTarget
             {
                 MapId = _binaryReader.Read<short>(),
-                Position = new Point3D(_binaryReader),
+                Position = new Vector3(_binaryReader),
                 TargetName = _binaryReader.ReadString(),
                 Cost = _binaryReader.Read<int>()
             };

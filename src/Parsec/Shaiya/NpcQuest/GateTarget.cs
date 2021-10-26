@@ -5,7 +5,7 @@ namespace Parsec.Shaiya
     public class GateTarget
     {
         public short MapId { get; set; }
-        public Point3D Position { get; set; }
+        public Vector3 Position { get; set; }
         public string TargetName { get; set; }
 
         /// <summary>

@@ -84,29 +84,16 @@ namespace Parsec.Shaiya.SVMAP
             }
         }
 
-        private Point3D ReadPoint3D()
-        {
-            var point = new Point3D
-            {
-                X = _binaryReader.Read<float>(),
-                Y = _binaryReader.Read<float>(),
-                Z = _binaryReader.Read<float>()
-            };
-
-            return point;
-        }
-
         private Ladder ReadLadder() => new Ladder
         {
-            Position = ReadPoint3D()
+            Position = new Vector3(_binaryReader)
         };
 
         private MonsterArea ReadMonsterArea()
         {
             var monsterArea = new MonsterArea
             {
-                LowerLimit = ReadPoint3D(),
-                UpperLimit = ReadPoint3D(),
+                Area = new CubicArea(_binaryReader),
                 Count = _binaryReader.Read<int>(),
                 Monsters = new List<Monster>()
             };
@@ -140,7 +127,7 @@ namespace Parsec.Shaiya.SVMAP
             {
                 var npcLocation = new NpcLocation
                 {
-                    Position = ReadPoint3D(),
+                    Position = new Vector3(_binaryReader),
                     Orientation = _binaryReader.Read<float>()
                 };
 
@@ -152,12 +139,12 @@ namespace Parsec.Shaiya.SVMAP
 
         private Portal ReadPortal() => new Portal
         {
-            Position = ReadPoint3D(),
+            Position = new Vector3(_binaryReader),
             Faction = (Faction)_binaryReader.Read<int>(),
             MinLevel = _binaryReader.Read<short>(),
             MaxLevel = _binaryReader.Read<short>(),
             DestinationMapId = _binaryReader.Read<int>(),
-            DestinationPosition = ReadPoint3D()
+            DestinationPosition = new Vector3(_binaryReader)
         };
 
         private Spawn ReadSpawn() => new Spawn
@@ -165,14 +152,12 @@ namespace Parsec.Shaiya.SVMAP
             Unknown_1 = _binaryReader.Read<int>(),
             Faction = (Faction)_binaryReader.Read<int>(),
             Unknown_2 = _binaryReader.Read<int>(),
-            LowerLimit = ReadPoint3D(),
-            UpperLimit = ReadPoint3D()
+            Area = new CubicArea(_binaryReader)
         };
 
         private NamedArea ReadNamedArea() => new NamedArea
         {
-            LowerLimit = ReadPoint3D(),
-            UpperLimit = ReadPoint3D(),
+            Area = new CubicArea(_binaryReader),
             NameIdentifier_1 = _binaryReader.Read<int>(),
             NameIdentifier_2 = _binaryReader.Read<int>()
         };

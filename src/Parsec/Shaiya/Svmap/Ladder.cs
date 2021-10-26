@@ -4,6 +4,6 @@ namespace Parsec.Shaiya.SVMAP
 {
     public class Ladder
     {
-        public Point3D Position { get; set; }
+        public Vector3 Position { get; set; }
     }
 }
