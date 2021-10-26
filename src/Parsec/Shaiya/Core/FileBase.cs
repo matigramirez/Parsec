@@ -1,4 +1,5 @@
-﻿using Parsec.Helpers;
+﻿using System;
+using Parsec.Helpers;
 using Parsec.Readers;
 
 namespace Parsec.Shaiya.Core
@@ -20,6 +21,6 @@ namespace Parsec.Shaiya.Core
         public abstract void Read();
 
         protected void ResetCursor() =>
-            _binaryReader.SetPosition(0);
+            _binaryReader.SetOffset(0);
     }
 }
