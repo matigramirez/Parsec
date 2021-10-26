@@ -14,10 +14,10 @@ namespace Parsec.Sample.SData
 
             npcQuest.Read();
 
-            // foreach (var merchant in npcQuest.Merchants)
-            // {
-            //     Console.WriteLine(merchant.Name);
-            // }
+            foreach (var merchant in npcQuest.Merchants)
+            {
+                Console.WriteLine(merchant.Name);
+            }
 
             foreach (var gatekeeper in npcQuest.GateKeepers)
             {
