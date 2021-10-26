@@ -24,13 +24,13 @@ namespace Parsec.Shaiya
             _binaryReader = new ShaiyaBinaryReader(Path);
 
             // Skip signature (3) and unknown bytes (4)
-            _binaryReader.SetPosition(7);
+            _binaryReader.Skip(7);
 
             // Read total file count
             TotalFileCount = _binaryReader.Read<int>();
 
             // Index where data starts (after header - skip padding bytes)
-            _binaryReader.SetPosition(51);
+            _binaryReader.SetOffset(51);
 
             // Read root folder and all of its subfolders
             RootFolder = ReadFolder(null);
