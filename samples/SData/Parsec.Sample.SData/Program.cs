@@ -1,5 +1,6 @@
 ﻿using System;
 using Parsec.Shaiya;
+using Parsec.Shaiya.NPCQUEST;
 
 namespace Parsec.Sample.SData
 {

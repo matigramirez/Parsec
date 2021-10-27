@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.External;
 using Parsec.Helpers;
@@ -11,27 +12,27 @@ namespace Parsec.Shaiya
     {
         protected SData(string path) : base(path)
         {
-            SetEncryptedBuffer();
-            SetDecryptedBuffer();
         }
 
         /// <summary>
         /// Checks if the file has the ".SData" extension
         /// </summary>
+        [JsonIgnore]
         public bool IsValidSData => Path.Substring(Path.Length - 6, 6) == ".SData";
 
         /// <summary>
         /// Checks if the file is encrypted with the SEED algorithm
         /// </summary>
+        [JsonIgnore]
         public bool IsEncrypted
         {
             get
             {
-                var encryptedFileHeader = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
+                const string encryptedFileHeader = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
 
-                var sdataHeader = Encoding.ASCII.GetString(Buffer.SubArray(0, encryptedFileHeader.Length));
+                string sDataHeader = Encoding.ASCII.GetString(Buffer.SubArray(0, encryptedFileHeader.Length));
 
-                return sdataHeader == encryptedFileHeader;
+                return sDataHeader == encryptedFileHeader;
             }
         }
 
@@ -57,7 +58,15 @@ namespace Parsec.Shaiya
             Array.Copy(tempBuffer, _encryptedBuffer, _encryptedBuffer.Length <= tempBuffer.Length ? _encryptedBuffer.Length : tempBuffer.Length);
         }
 
-        public byte[] EncryptedBuffer => _encryptedBuffer;
+        [JsonIgnore]
+        public byte[] EncryptedBuffer
+        {
+            get
+            {
+                SetEncryptedBuffer();
+                return _encryptedBuffer;
+            }
+        }
 
         private byte[] _decryptedBuffer;
 
@@ -83,7 +92,15 @@ namespace Parsec.Shaiya
             Array.Copy(_decryptedBuffer, Buffer, _decryptedBuffer.Length);
         }
 
-        public byte[] DecryptedBuffer => _decryptedBuffer;
+        [JsonIgnore]
+        public byte[] DecryptedBuffer
+        {
+            get
+            {
+                SetDecryptedBuffer();
+                return _decryptedBuffer;
+            }
+        }
 
         public void SaveEncrypted(string path) =>
             FileHelper.WriteFile(path, EncryptedBuffer);

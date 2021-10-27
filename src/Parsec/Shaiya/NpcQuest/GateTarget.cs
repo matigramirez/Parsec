@@ -1,6 +1,7 @@
-﻿using Parsec.Shaiya.Common;
+﻿using Parsec.Readers;
+using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.NPCQUEST
 {
     public class GateTarget
     {
@@ -12,5 +13,13 @@ namespace Parsec.Shaiya
         /// Teleporting gold cost
         /// </summary>
         public int Cost { get; set; }
+
+        public GateTarget(ShaiyaBinaryReader binaryReader)
+        {
+            MapId = binaryReader.Read<short>();
+            Position = new Vector3(binaryReader);
+            TargetName = binaryReader.ReadString();
+            Cost = binaryReader.Read<int>();
+        }
     }
 }

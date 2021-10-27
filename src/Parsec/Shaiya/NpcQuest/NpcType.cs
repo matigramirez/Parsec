@@ -1,4 +1,4 @@
-﻿namespace Parsec.Shaiya
+﻿namespace Parsec.Shaiya.NPCQUEST
 {
     public enum NpcType
     {
