@@ -6,11 +6,11 @@ using Newtonsoft.Json.Serialization;
 
 namespace Parsec.Extensions
 {
-    public class IgnorePropertiesResolver : CamelCasePropertyNamesContractResolver
+    public class PropertyFilterCamelCaseResolver : CamelCasePropertyNamesContractResolver
     {
         private IEnumerable<string> IgnoredProps { get; }
 
-        public IgnorePropertiesResolver(IEnumerable<string> ignoredProps = null)
+        public PropertyFilterCamelCaseResolver(IEnumerable<string> ignoredProps = null)
         {
             if (ignoredProps == null)
             {

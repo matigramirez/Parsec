@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
@@ -9,7 +11,7 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.Core
 {
-    public abstract class FileBase : IFileBase, IExportable, IJsonable<FileBase>
+    public abstract class FileBase : IFileBase, IExportable<FileBase>
     {
         protected readonly ShaiyaBinaryReader _binaryReader;
 
@@ -46,24 +48,22 @@ namespace Parsec.Shaiya.Core
         public abstract void Read();
 
         /// <inheritdoc/>
-        public virtual void Export(string path) =>
-            FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this)));
+        public void Export(string path, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false) =>
+            FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames, enumFriendly, ignoreDefaults)));
 
         /// <inheritdoc/>
-        public void Export(string path, IEnumerable<string> ignoredPropertyNames) =>
-            FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames)));
-
-        /// <inheritdoc/>
-        public virtual string JsonSerialize(FileBase obj) => JsonConvert.SerializeObject(obj);
-
-        /// <inheritdoc/>
-        public virtual string JsonSerialize(FileBase obj, IEnumerable<string> ignoredPropertyNames)
+        public virtual string JsonSerialize(FileBase obj, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false)
         {
             // Create settings with contract resolver to ignore certain properties
             var settings = new JsonSerializerSettings
             {
-                ContractResolver = new IgnorePropertiesResolver(ignoredPropertyNames)
+                ContractResolver = new PropertyFilterCamelCaseResolver(ignoredPropertyNames),
+                DefaultValueHandling = ignoreDefaults ? DefaultValueHandling.Ignore : DefaultValueHandling.Include
             };
+
+            // Add enum to string converter
+            if(enumFriendly)
+                settings.Converters.Add(new StringEnumConverter());
 
             return JsonConvert.SerializeObject(obj, settings);
         }
