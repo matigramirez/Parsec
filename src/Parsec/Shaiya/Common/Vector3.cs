@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Parsec.Readers;
 
 namespace Parsec.Shaiya.Common
@@ -15,6 +16,7 @@ namespace Parsec.Shaiya.Common
         /// <summary>
         /// The length of the vector
         /// </summary>
+        [JsonIgnore]
         public double Length => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
 
         public Vector3(float x, float y, float z)

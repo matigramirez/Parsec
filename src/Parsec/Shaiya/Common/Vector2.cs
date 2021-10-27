@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Parsec.Shaiya.Common
 {
@@ -10,6 +11,7 @@ namespace Parsec.Shaiya.Common
         public float X { get; set; }
         public float Y { get; set; }
 
+        [JsonIgnore]
         public double Length => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
     }
 }
