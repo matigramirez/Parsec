@@ -9,7 +9,6 @@ namespace Parsec.Shaiya.SVMAP
     public class MonsterArea
     {
         public CubicArea Area { get; set; }
-        public int Count { get; set; }
         public List<Monster> Monsters { get; set; }
     }
 }

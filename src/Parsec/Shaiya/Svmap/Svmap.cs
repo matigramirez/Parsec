@@ -8,76 +8,71 @@ namespace Parsec.Shaiya.SVMAP
     public class Svmap : FileBase
     {
         public int MapSize { get; set; }
-        private int _mapHeightsCount => MapSize * MapSize / 8;
         public List<byte> MapHeights { get; private set; } = new();
         public int Unknown { get; set; }
-        public int LadderCount { get; set; }
         public List<Ladder> Ladders { get; } = new();
-        public int MonsterAreaCount { get; set; }
         public List<MonsterArea> MonsterAreas { get; } = new();
-        public int NpcCount { get; set; }
         public List<Npc> Npcs { get; } = new();
-        public int PortalCount { get; set; }
         public List<Portal> Portals { get; } = new();
-        public int SpawnCount { get; set; }
         public List<Spawn> Spawns { get; } = new();
-        public int NamedAreaCount { get; set; }
         public List<NamedArea> NamedAreas { get; } = new();
 
         public Svmap(string path) : base(path)
         {
         }
 
-
         public override void Read()
         {
             MapSize = _binaryReader.Read<int>();
-            MapHeights = _binaryReader.ReadBytes(_mapHeightsCount).ToList();
+
+            var mapHeightsCount = MapSize * MapSize / 8;
+            MapHeights = _binaryReader.ReadBytes(mapHeightsCount).ToList();
+
             Unknown = _binaryReader.Read<int>();
 
-            LadderCount = _binaryReader.Read<int>();
+            var ladderCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < LadderCount; i++)
+            for (int i = 0; i < ladderCount; i++)
             {
                 var ladder = ReadLadder();
                 Ladders.Add(ladder);
             }
 
-            MonsterAreaCount = _binaryReader.Read<int>();
+            var monsterAreaCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < MonsterAreaCount; i++)
+            for (int i = 0; i < monsterAreaCount; i++)
             {
                 var monsterArea = ReadMonsterArea();
                 MonsterAreas.Add(monsterArea);
             }
 
-            NpcCount = _binaryReader.Read<int>();
+            var npcCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < NpcCount; i++)
+            for (int i = 0; i < npcCount; i++)
             {
                 var npc = ReadNpc();
                 Npcs.Add(npc);
             }
 
-            PortalCount = _binaryReader.Read<int>();
+            var portalCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < PortalCount; i++)
+            for (int i = 0; i < portalCount; i++)
             {
                 var portal = ReadPortal();
                 Portals.Add(portal);
             }
 
-            SpawnCount = _binaryReader.Read<int>();
+            var spawnCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < SpawnCount; i++)
+            for (int i = 0; i < spawnCount; i++)
             {
                 var spawn = ReadSpawn();
                 Spawns.Add(spawn);
             }
 
-            NamedAreaCount = _binaryReader.Read<int>();
+            var namedAreaCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < NamedAreaCount; i++)
+            for (int i = 0; i < namedAreaCount; i++)
             {
                 var namedArea = ReadNamedArea();
                 NamedAreas.Add(namedArea);
@@ -94,12 +89,13 @@ namespace Parsec.Shaiya.SVMAP
             var monsterArea = new MonsterArea
             {
                 Area = new CubicArea(_binaryReader),
-                Count = _binaryReader.Read<int>(),
                 Monsters = new List<Monster>()
             };
 
+            var monsterCount = _binaryReader.Read<int>();
+
             // Read monsters
-            for (int i = 0; i < monsterArea.Count; i++)
+            for (int i = 0; i < monsterCount; i++)
             {
                 var monster = new Monster
                 {
@@ -119,11 +115,12 @@ namespace Parsec.Shaiya.SVMAP
             {
                 Type = _binaryReader.Read<int>(),
                 NpcId = _binaryReader.Read<int>(),
-                LocationCount = _binaryReader.Read<int>(),
                 Locations = new List<NpcLocation>()
             };
 
-            for (int i = 0; i < npc.LocationCount; i++)
+            var locationCount = _binaryReader.Read<int>();
+
+            for (int i = 0; i < locationCount; i++)
             {
                 var npcLocation = new NpcLocation
                 {
@@ -149,17 +146,17 @@ namespace Parsec.Shaiya.SVMAP
 
         private Spawn ReadSpawn() => new Spawn
         {
-            Unknown_1 = _binaryReader.Read<int>(),
+            Unknown1 = _binaryReader.Read<int>(),
             Faction = (Faction)_binaryReader.Read<int>(),
-            Unknown_2 = _binaryReader.Read<int>(),
+            Unknown2 = _binaryReader.Read<int>(),
             Area = new CubicArea(_binaryReader)
         };
 
         private NamedArea ReadNamedArea() => new NamedArea
         {
             Area = new CubicArea(_binaryReader),
-            NameIdentifier_1 = _binaryReader.Read<int>(),
-            NameIdentifier_2 = _binaryReader.Read<int>()
+            NameIdentifier1 = _binaryReader.Read<int>(),
+            NameIdentifier2 = _binaryReader.Read<int>()
         };
     }
 }
