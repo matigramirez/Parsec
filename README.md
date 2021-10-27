@@ -13,19 +13,28 @@ TBA
 ## Samples
 ### `svmap`
 ```cs
-// Load the svmap file
-var svmap = new Svmap("0.svmap");
+// Open svmap file
+var svmap = new Svmap("2.svmap");
 
-// Parse the file's data
+// Parse its content
 svmap.Read();
 
+// Print content
+Console.WriteLine($"File: {svmap.FileName}");
 Console.WriteLine($"MapSize: {svmap.MapSize}");
-Console.WriteLine($"Ladder Count: {svmap.LadderCount}");
-Console.WriteLine($"Monster Area Count: {svmap.MonsterAreaCount}");
-Console.WriteLine($"Npc Count: {svmap.NpcCount}");
-Console.WriteLine($"Portal Count: {svmap.PortalCount}");
-Console.WriteLine($"Spawn Count: {svmap.SpawnCount}");
-Console.WriteLine($"Named Area Count: {svmap.NamedAreaCount}");
+Console.WriteLine($"Ladder Count: {svmap.Ladders.Count}");
+Console.WriteLine($"Monster Area Count: {svmap.MonsterAreas.Count}");
+Console.WriteLine($"Npc Count: {svmap.Npcs.Count}");
+Console.WriteLine($"Portal Count: {svmap.Portals.Count}");
+Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
+Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
+
+// Export json file
+svmap.Export($"{svmap.FileNameWithoutExtension}.json", new List<string>
+{
+  nameof(svmap2.MapHeights),
+  nameof(svmap2.MapSize)
+});
 ```
 
 More samples in the [samples section](https://github.com/matigramirez/Parsec/tree/main/samples).
