@@ -1,9 +1,10 @@
 ﻿using Parsec.Readers;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.KILLSTATUS
 {
     public class KillStatusBonus
     {
+
         public KillStatusBonusType Type { get; set; }
         public short Value { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using Parsec.Shaiya;
+﻿using Parsec.Shaiya.KILLSTATUS;
 
 namespace Parsec.Samples
 {
@@ -8,7 +8,7 @@ namespace Parsec.Samples
         {
             var killStatus = new KillStatus("KillStatus.SData");
             killStatus.Read();
-            killStatus.CreateFriendlyDump("KillStatus.dump.txt");
+            killStatus.Export("KillStatus.json", enumFriendly: true);
         }
     }
 }

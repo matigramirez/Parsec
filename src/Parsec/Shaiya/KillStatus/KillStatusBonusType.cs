@@ -1,4 +1,4 @@
-﻿namespace Parsec.Shaiya
+﻿namespace Parsec.Shaiya.KILLSTATUS
 {
     public enum KillStatusBonusType : byte
     {
@@ -11,12 +11,12 @@
         Wisdom,
         Dexterity,
         Luck,
-        HpBreakRestore,
-        SpBreakRestore,
-        MpBreakRestore,
-        HpCombatRestore,
-        SpCombatRestore,
-        MpCombatRestore,
+        HpSitRecovery,
+        SpSitRecovery,
+        MpSitRecovery,
+        HpCombatRecovery,
+        SpCombatRecovery,
+        MpCombatRecovery,
         CriticalHitRate,
         AttackSuccessRate,
         PhysicalDefense,
@@ -28,6 +28,6 @@
         LinkingRate,
         ExperienceLoss,
         RepairCost,
-        DisposableItemCastTime
+        ItemCastTime
     }
 }

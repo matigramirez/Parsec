@@ -2,7 +2,7 @@
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.KILLSTATUS
 {
     public class KillStatusRecord
     {
