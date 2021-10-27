@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -31,5 +32,7 @@ namespace Parsec.Extensions
 
             return false;
         }
+
+        public static string ToCamelCase(this string text) => char.ToLowerInvariant(text[0]) + text[1..];
     }
 }
