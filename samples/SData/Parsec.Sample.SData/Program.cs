@@ -1,5 +1,6 @@
 ﻿using System;
 using Parsec.Shaiya;
+using Parsec.Shaiya.GUILDHOUSE;
 using Parsec.Shaiya.NPCQUEST;
 
 namespace Parsec.Sample.SData
@@ -15,15 +16,13 @@ namespace Parsec.Sample.SData
 
             npcQuest.Read();
 
-            foreach (var merchant in npcQuest.Merchants)
-            {
-                Console.WriteLine(merchant.Name);
-            }
+            Console.WriteLine($"Merchant Count: {npcQuest.Merchants.Count}");
+            Console.WriteLine($"GateKeeper Count: {npcQuest.GateKeepers.Count}");
+            npcQuest.Export("NpcQuest.json");
 
-            foreach (var gatekeeper in npcQuest.GateKeepers)
-            {
-                Console.WriteLine(gatekeeper.Name);
-            }
+            var guildHouse = new GuildHouse("GuildHouse.SData");
+            guildHouse.Read();
+            guildHouse.Export("GuildHouse.json");
         }
     }
 }
