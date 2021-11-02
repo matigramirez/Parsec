@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Parsec.Shaiya.SAH;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.SAF
 {
     public class DataPatcher : IDisposable
     {

@@ -1,8 +1,9 @@
 ﻿using System.IO;
 using Parsec.Extensions;
 using Parsec.Helpers;
+using Parsec.Shaiya.SAH;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.SAF
 {
     public partial class Saf
     {

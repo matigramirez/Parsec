@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using Parsec.Helpers;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.SAH
 {
     public partial class Sah
     {

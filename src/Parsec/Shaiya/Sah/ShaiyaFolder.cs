@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.SAH
 {
     public class ShaiyaFolder
     {

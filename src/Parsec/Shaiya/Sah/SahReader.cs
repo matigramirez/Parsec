@@ -1,6 +1,6 @@
 ﻿using Parsec.Readers;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.SAH
 {
     public partial class Sah
     {

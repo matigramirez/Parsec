@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Parsec.Extensions;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.SAH
 {
     public partial class Sah
     {

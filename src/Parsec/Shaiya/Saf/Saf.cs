@@ -1,4 +1,6 @@
-﻿namespace Parsec.Shaiya
+﻿using Parsec.Shaiya.SAH;
+
+namespace Parsec.Shaiya.SAF
 {
     public partial class Saf
     {

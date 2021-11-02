@@ -1,14 +1,15 @@
 ﻿using System.Linq;
-using Parsec.Shaiya;
+using Parsec.Shaiya.SAF;
+using Parsec.Shaiya.SAH;
 
-namespace Parsec.Samples.Sah
+namespace Parsec.Samples.SAH
 {
     class Program
     {
         static void Main(string[] args)
         {
             // Load sah
-            var sah = new Shaiya.Sah("data.sah");
+            var sah = new Sah("data.sah");
             sah.Load();
 
             // Find the file you want to extract

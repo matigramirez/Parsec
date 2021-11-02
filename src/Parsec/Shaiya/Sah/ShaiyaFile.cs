@@ -1,4 +1,4 @@
-﻿namespace Parsec.Shaiya
+﻿namespace Parsec.Shaiya.SAH
 {
     public class ShaiyaFile
     {
