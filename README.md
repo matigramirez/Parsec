@@ -4,11 +4,16 @@
 
 `Parsec` is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.1. Its goal is to make reading and manipulating the game's file formats easy.
 
-## Currently Supported files/formats
+## Currently supported files/formats
 - `data.sah/saf`
 - `svmap`
 - `NpcQuest.SData` (partial support - Quests are missing)
 - `KillStatus.SData`
+
+## Features
+- `data` exctraction, patching and creation
+- `SData` encryption/decryption
+- Exporting most supported formats as `json`
 
 ## Getting Started
 TBA
