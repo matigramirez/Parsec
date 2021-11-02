@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.NPCQUEST
         public List<StandardNpc> GuildMasters { get; } = new();
         public List<StandardNpc> DeadNpcs { get; } = new();
         public List<StandardNpc> CombatCommanders { get; } = new();
-        //public List<Quest> Quests { get; } = new();
+        public List<Quest> Quests { get; } = new();
 
         // TODO: add quest fields
 
