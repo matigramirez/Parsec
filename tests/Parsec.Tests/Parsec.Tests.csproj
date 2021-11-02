@@ -20,6 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Parsec\Parsec.csproj" />
+      <ProjectReference Include="..\..\src\Parsec\Parsec.csproj" />
     </ItemGroup>
 </Project>
