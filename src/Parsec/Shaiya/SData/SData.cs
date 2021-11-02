@@ -6,7 +6,7 @@ using Parsec.External;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya
+namespace Parsec.Shaiya.SDATA
 {
     public abstract class SData : FileBase
     {
@@ -136,10 +136,10 @@ namespace Parsec.Shaiya
             }
         }
 
-        public void SaveEncrypted(string path) =>
+        public void ExportEncrypted(string path) =>
             FileHelper.WriteFile(path, EncryptedBuffer);
 
-        public void SaveDecrypted(string path) =>
+        public void ExportDecrypted(string path) =>
             FileHelper.WriteFile(path, DecryptedBuffer);
     }
 }

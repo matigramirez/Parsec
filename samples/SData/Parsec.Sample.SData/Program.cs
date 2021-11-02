@@ -11,8 +11,8 @@ namespace Parsec.Sample.SData
         {
             var npcQuest = new NpcQuest("NpcQuest.SData");
 
-            npcQuest.SaveDecrypted("NpcQuest.decrypted.SData");
-            npcQuest.SaveEncrypted("NpcQuest.encrypted.SData");
+            npcQuest.ExportDecrypted("NpcQuest.decrypted.SData");
+            npcQuest.ExportEncrypted("NpcQuest.encrypted.SData");
 
             npcQuest.Read();
 

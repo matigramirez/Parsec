@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Parsec.Shaiya.SDATA;
 
 namespace Parsec.Shaiya.NPCQUEST
 {
