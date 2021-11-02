@@ -55,11 +55,11 @@ Console.WriteLine($"Portal Count: {svmap.Portals.Count}");
 Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
 Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
 
-// Export json file
+// Export json file ignoring some fields
 svmap.Export($"{svmap.FileNameWithoutExtension}.json", new List<string>
 {
-  nameof(svmap2.MapHeights),
-  nameof(svmap2.MapSize)
+  nameof(svmap.MapHeights),
+  nameof(svmap.MapSize)
 });
 ```
 
