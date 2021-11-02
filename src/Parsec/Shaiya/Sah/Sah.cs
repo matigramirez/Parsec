@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Parsec.Extensions;
 
 namespace Parsec.Shaiya.SAH
@@ -92,7 +93,7 @@ namespace Parsec.Shaiya.SAH
                 return matchingFolder;
 
             // Split path with the '/' separator
-            var pathFolders = path.Separate();
+            var pathFolders = path.Separate().ToList();
 
             // Set current folder to root folder
             var currentFolder = RootFolder;
