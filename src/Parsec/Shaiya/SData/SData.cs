@@ -36,8 +36,39 @@ namespace Parsec.Shaiya
             }
         }
 
+        /// <summary>
+        /// Encrypts the current SData object. Note that this will make it unreadable.
+        /// </summary>
+        public void Encrypt()
+        {
+            if (IsEncrypted)
+                return;
+
+            SetEncryptedBuffer();
+
+            // Replace the binary reader's buffer so that the file becomes unreadable
+            Array.Copy(_encryptedBuffer, _binaryReader.Buffer, _encryptedBuffer.Length);
+        }
+
+        /// <summary>
+        /// Decrypts the current SData object. Note that this will make it readable through the Read method
+        /// </summary>
+        public void Decrypt()
+        {
+            if (!IsEncrypted)
+                return;
+
+            SetDecryptedBuffer();
+
+            // Replace the binary reader's buffer so that the file becomes readable
+            Array.Copy(_decryptedBuffer, _binaryReader.Buffer, _decryptedBuffer.Length);
+        }
+
         private byte[] _encryptedBuffer;
 
+        /// <summary>
+        /// Saves an encrypted version of the file buffer, no matter the original encryption status.
+        /// </summary>
         private void SetEncryptedBuffer()
         {
             if (IsEncrypted)
@@ -70,6 +101,9 @@ namespace Parsec.Shaiya
 
         private byte[] _decryptedBuffer;
 
+        /// <summary>
+        /// Saves a decrypted version of the file buffer, no matter the original encryption status.
+        /// </summary>
         private void SetDecryptedBuffer()
         {
             if (!IsEncrypted)

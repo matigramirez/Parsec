@@ -17,6 +17,7 @@ namespace Parsec.Shaiya.NPCQUEST
         public List<StandardNpc> GuildMasters { get; } = new();
         public List<StandardNpc> DeadNpcs { get; } = new();
         public List<StandardNpc> CombatCommanders { get; } = new();
+        public List<Quest> Quests { get; } = new();
 
         // TODO: add quest fields
 
@@ -26,6 +27,9 @@ namespace Parsec.Shaiya.NPCQUEST
 
         public override void Read()
         {
+            // Make sure file is decrypted before reading through it
+            Decrypt();
+
             ReadMerchants();
             ReadGatekeepers();
             ReadStandardNpcs(Blacksmiths);
@@ -39,6 +43,12 @@ namespace Parsec.Shaiya.NPCQUEST
             ReadStandardNpcs(GuildMasters);
             ReadStandardNpcs(DeadNpcs);
             ReadStandardNpcs(CombatCommanders);
+
+            // TODO: Find out how many bytes need to be skipped exactly here
+            // Quest Offset for Ep6 Quests
+            //_binaryReader.SetOffset(0xC3D73);
+
+            //ReadQuests();
         }
 
         private void ReadMerchants()
@@ -71,6 +81,17 @@ namespace Parsec.Shaiya.NPCQUEST
             {
                 var npc = new StandardNpc(_binaryReader);
                 npcList.Add(npc);
+            }
+        }
+
+        private void ReadQuests()
+        {
+            var questCount = _binaryReader.Read<int>();
+
+            for (int i = 0; i < questCount; i++)
+            {
+                var quest = new Quest(_binaryReader);
+                Quests.Add(quest);
             }
         }
     }
