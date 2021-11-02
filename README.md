@@ -37,6 +37,19 @@ var saf = new Saf(sah);
 saf.Extract(file, "extracted");
 ```
 
+### `SData`
+Encryption / Decryption
+```cs
+// Load NpcQuest.SData
+var npcQuest = new NpcQuest("NpcQuest.SData");
+
+// Save decrypted file (original encryption status doesn't matter
+npcQuest.SaveDecrypted("NpcQuest.decrypted.SData");
+
+// Save encrypted file (original encryption status doesn't matter)
+npcQuest.SaveEncrypted("NpcQuest.encrypted.SData");
+```
+
 ### `svmap`
 ```cs
 // Open svmap file
