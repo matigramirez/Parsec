@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parsec.Samples.Sah", "Parsec.Samples.Sah\Parsec.Samples.Sah.csproj", "{6372B89E-5F6D-4005-9032-A91DD25DE7BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{47CC392B-24B1-46D6-9CE2-BA55013F5CA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parsec", "..\..\src\Parsec\Parsec.csproj", "{DE0F1146-E7CC-4BAA-8066-50D0C38C1844}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6372B89E-5F6D-4005-9032-A91DD25DE7BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6372B89E-5F6D-4005-9032-A91DD25DE7BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6372B89E-5F6D-4005-9032-A91DD25DE7BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6372B89E-5F6D-4005-9032-A91DD25DE7BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE0F1146-E7CC-4BAA-8066-50D0C38C1844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE0F1146-E7CC-4BAA-8066-50D0C38C1844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE0F1146-E7CC-4BAA-8066-50D0C38C1844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE0F1146-E7CC-4BAA-8066-50D0C38C1844}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE0F1146-E7CC-4BAA-8066-50D0C38C1844} = {47CC392B-24B1-46D6-9CE2-BA55013F5CA0}
+	EndGlobalSection
+EndGlobal

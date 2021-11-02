@@ -25,6 +25,16 @@ namespace Parsec.Helpers
                 RenameFile(path, $"{path}.bak");
             }
 
+            var separatedPath = path.Split('\\', '/');
+
+            // Ensure directory exists
+            if (separatedPath.Length > 1)
+            {
+                // Create directory path string
+                var directoryPath = string.Join('\\', separatedPath[..^1]);
+                CreateDirectory(directoryPath);
+            }
+
             // Create file and save data
             using var binaryWriter = new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
             binaryWriter.Write(data);
