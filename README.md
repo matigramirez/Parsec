@@ -12,9 +12,9 @@
 - `KillStatus.SData`
 
 ## Features
-- `data` exctraction, patching and creation
+- `data` extraction, patching and creation
 - `SData` encryption/decryption
-- Exporting most supported formats as `json`
+- Export most supported formats as `json`
 
 ## Getting Started
 TBA
@@ -49,7 +49,7 @@ Encryption / Decryption
 // Load NpcQuest.SData
 var npcQuest = new NpcQuest("NpcQuest.SData");
 
-// Save decrypted file (original encryption status doesn't matter
+// Save decrypted file (original encryption status doesn't matter)
 npcQuest.SaveDecrypted("NpcQuest.decrypted.SData");
 
 // Save encrypted file (original encryption status doesn't matter)
