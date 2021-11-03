@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Serialization;
+using Parsec.Readers;
 
 namespace Parsec.Shaiya.Common
 {
+    [DataContract]
     public class Matrix4
     {
         private readonly float[,] _matrix = new float[4,4];
 
+        [DataMember]
         public float[,] Data => _matrix;
 
         public Matrix4()
@@ -24,6 +28,21 @@ namespace Parsec.Shaiya.Common
             SetRow(1, row1);
             SetRow(2, row2);
             SetRow(3, row3);
+        }
+
+        public Matrix4(ShaiyaBinaryReader binaryReader)
+        {
+            for (int rowIndex = 0; rowIndex < 4; rowIndex++)
+            {
+                var row = new float[4];
+
+                for (int column = 0; column < 4; column++)
+                {
+                    row[column] = binaryReader.Read<float>();
+                }
+
+                SetRow(rowIndex, row);
+            }
         }
 
         public void SetRow(int rowNumber, float[] data)
