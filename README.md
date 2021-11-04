@@ -10,6 +10,8 @@
 - `svmap`
 - `NpcQuest.SData` (partial support - Quests are missing)
 - `KillStatus.SData`
+- `ani`
+- `3DC`
 
 ## Features
 - `data` extraction, patching and creation
