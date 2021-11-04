@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
@@ -45,6 +46,10 @@ namespace Parsec.Shaiya.Core
 
         /// <inheritdoc/>
         public abstract void Read();
+
+        /// <inheritdoc />
+        public virtual void Write(string path) =>
+            throw new NotImplementedException("Writing hasn't been implemented yet for this format.");
 
         /// <inheritdoc/>
         public void Export(string path, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false) =>
