@@ -175,5 +175,20 @@ namespace Parsec.Shaiya.Common
             buffer.AddRange(BitConverter.GetBytes(M44));
             return buffer.ToArray();
         }
+
+        public void Transpose()
+        {
+            var row1 = new float[] { M11, M12, M13, M14 };
+            var row2 = new float[] { M21, M22, M23, M24 };
+            var row3 = new float[] { M31, M32, M33, M34 };
+            var row4 = new float[] { M41, M42, M43, M44 };
+
+            SetColumn(1, row1);
+            SetColumn(2, row2);
+            SetColumn(3, row3);
+            SetColumn(4, row4);
+        }
+
+        public Matrix4 Clone() => new Matrix4(_numericMatrix);
     }
 }

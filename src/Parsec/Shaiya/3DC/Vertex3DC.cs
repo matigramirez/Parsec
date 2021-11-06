@@ -1,4 +1,6 @@
-﻿using Parsec.Common;
+﻿using System;
+using System.Collections.Generic;
+using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
@@ -80,6 +82,30 @@ namespace Parsec.Shaiya.OBJ3DC
             Normal = new Vector3(binaryReader);
             U = binaryReader.Read<float>();
             V = binaryReader.Read<float>();
+        }
+
+        public byte[] GetBytes(Format format)
+        {
+            var buffer = new List<byte>();
+            buffer.AddRange(BitConverter.GetBytes(X));
+            buffer.AddRange(BitConverter.GetBytes(Y));
+            buffer.AddRange(BitConverter.GetBytes(Z));
+            buffer.AddRange(BitConverter.GetBytes(W));
+
+            if (format >= Format.EP6)
+            {
+                buffer.AddRange(BitConverter.GetBytes(E));
+                buffer.AddRange(BitConverter.GetBytes(F));
+            }
+
+            buffer.Add(Bone1);
+            buffer.Add(Bone2);
+            buffer.AddRange(BitConverter.GetBytes(Alignment));
+            buffer.AddRange(Normal.GetBytes());
+            buffer.AddRange(BitConverter.GetBytes(U));
+            buffer.AddRange(BitConverter.GetBytes(V));
+
+            return buffer.ToArray();
         }
     }
 }

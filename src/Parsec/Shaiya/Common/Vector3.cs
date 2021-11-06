@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
 
@@ -42,6 +43,15 @@ namespace Parsec.Shaiya.Common
             X = binaryReader.Read<float>();
             Y = binaryReader.Read<float>();
             Z = binaryReader.Read<float>();
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+            buffer.AddRange(BitConverter.GetBytes(X));
+            buffer.AddRange(BitConverter.GetBytes(Y));
+            buffer.AddRange(BitConverter.GetBytes(Z));
+            return buffer.ToArray();
         }
     }
 }
