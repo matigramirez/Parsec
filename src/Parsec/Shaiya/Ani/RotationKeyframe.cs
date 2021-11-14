@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using Parsec.Readers;
-using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
+using Quaternion = Parsec.Shaiya.Common.Quaternion;
 
 namespace Parsec.Shaiya.ANI
 {
-    public class KeyframeRotation
+    public class RotationKeyframe : IBinary
     {
         public int Keyframe { get; set; }
         public Quaternion Quaternion { get; set; }
 
-        public KeyframeRotation(ShaiyaBinaryReader binaryReader)
+        public RotationKeyframe(ShaiyaBinaryReader binaryReader)
         {
             Keyframe = binaryReader.Read<int>();
             Quaternion = new Quaternion(binaryReader);
         }
 
+        /// <inheritdoc />
         public byte[] GetBytes()
         {
             var buffer = new List<byte>();

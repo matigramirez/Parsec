@@ -5,58 +5,59 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.ANI
 {
+    /// <summary>
+    /// Class that represents an .ANI file
+    /// </summary>
     public class Ani : FileBase
     {
         /// <summary>
-        /// Almost always 0
+        /// Starting keyframe. 0 for most animations
         /// </summary>
-        public int Unknown1 { get; set; }
+        public int StartKeyframe { get; set; }
 
         /// <summary>
-        /// The maximum keyframe value used by translations and rotations
+        /// The ending animation keyframe
         /// </summary>
-        public short MaxKeyframe { get; set; }
+        public int EndKeyframe { get; set; }
 
         /// <summary>
-        /// No info
+        /// The list of bones with their translations and rotations for each keyframe
         /// </summary>
-        public short Unknown2 { get; set; }
-
-        public List<BoneStep> BoneSteps { get; } = new();
+        public List<AniBone> Bones { get; } = new();
 
         public Ani(string path) : base(path)
         {
         }
 
+        /// <inheritdoc />
         public override void Read()
         {
-            Unknown1 = _binaryReader.Read<int>();
-            MaxKeyframe = _binaryReader.Read<short>();
-            Unknown2 = _binaryReader.Read<short>();
+            StartKeyframe = _binaryReader.Read<int>();
+            EndKeyframe = _binaryReader.Read<int>();
 
-            var aniStepCount = _binaryReader.Read<short>();
+            var boneCount = _binaryReader.Read<short>();
 
-            for (int i = 0; i < aniStepCount; i++)
+            for (int i = 0; i < boneCount; i++)
             {
-                var aniStep = new BoneStep(_binaryReader);
-                BoneSteps.Add(aniStep);
+                var aniStep = new AniBone(i, _binaryReader);
+                Bones.Add(aniStep);
             }
         }
 
+        /// <inheritdoc />
         public override void Write(string path)
         {
             // Create byte list which will contain the ani data
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(Unknown1));
-            buffer.AddRange(BitConverter.GetBytes(MaxKeyframe));
-            buffer.AddRange(BitConverter.GetBytes(Unknown2));
-            buffer.AddRange(BitConverter.GetBytes((short)BoneSteps.Count));
+            buffer.AddRange(BitConverter.GetBytes(StartKeyframe));
+            buffer.AddRange(BitConverter.GetBytes(EndKeyframe));
+            buffer.AddRange(BitConverter.GetBytes((short)Bones.Count));
 
-            foreach (var bone in BoneSteps)
+            foreach (var bone in Bones)
             {
-                buffer.AddRange(BitConverter.GetBytes(bone.BoneIndex));
-                buffer.AddRange(bone.OriginalMatrix.GetBytes());
+                buffer.AddRange(BitConverter.GetBytes(bone.ParentBoneIndex));
+                buffer.AddRange(bone.TransformationMatrix.GetBytes());
                 buffer.AddRange(BitConverter.GetBytes(bone.KeyframeRotations.Count));
 
                 foreach (var keyframeRotation in bone.KeyframeRotations)
