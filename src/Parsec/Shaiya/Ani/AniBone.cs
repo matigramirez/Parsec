@@ -27,12 +27,12 @@ namespace Parsec.Shaiya.ANI
         /// <summary>
         /// List of rotations for each keyframe
         /// </summary>
-        public List<RotationKeyframe> KeyframeRotations { get; set; } = new();
+        public List<RotationKeyframe> Rotations { get; set; } = new();
 
         /// <summary>
         /// List of translations for each keyframe
         /// </summary>
-        public List<TranslationKeyframe> KeyframeTranslations { get; set; } = new();
+        public List<TranslationKeyframe> Translations { get; set; } = new();
 
         public AniBone(int index, ShaiyaBinaryReader binaryReader)
         {
@@ -40,22 +40,24 @@ namespace Parsec.Shaiya.ANI
 
             ParentBoneIndex = binaryReader.Read<int>();
 
-            // Read original matrix
             TransformationMatrix = new Matrix4(binaryReader);
 
             var rotationCount = binaryReader.Read<int>();
+
+            // Read rotations
             for (int i = 0; i < rotationCount; i ++)
             {
                 var keyframeRotation = new RotationKeyframe(binaryReader);
-                KeyframeRotations.Add(keyframeRotation);
+                Rotations.Add(keyframeRotation);
             }
 
             var translationCount = binaryReader.Read<int>();
 
+            // Read translations
             for (int i = 0; i < translationCount; i++)
             {
                 var keyframeTranslation = new TranslationKeyframe(binaryReader);
-                KeyframeTranslations.Add(keyframeTranslation);
+                Translations.Add(keyframeTranslation);
             }
         }
     }

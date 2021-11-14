@@ -58,16 +58,16 @@ namespace Parsec.Shaiya.ANI
             {
                 buffer.AddRange(BitConverter.GetBytes(bone.ParentBoneIndex));
                 buffer.AddRange(bone.TransformationMatrix.GetBytes());
-                buffer.AddRange(BitConverter.GetBytes(bone.KeyframeRotations.Count));
+                buffer.AddRange(BitConverter.GetBytes(bone.Rotations.Count));
 
-                foreach (var keyframeRotation in bone.KeyframeRotations)
+                foreach (var keyframeRotation in bone.Rotations)
                 {
                     buffer.AddRange(keyframeRotation.GetBytes());
                 }
 
-                buffer.AddRange(BitConverter.GetBytes(bone.KeyframeTranslations.Count));
+                buffer.AddRange(BitConverter.GetBytes(bone.Translations.Count));
 
-                foreach (var keyframeTranslation in bone.KeyframeTranslations)
+                foreach (var keyframeTranslation in bone.Translations)
                 {
                     buffer.AddRange(keyframeTranslation.GetBytes());
                 }

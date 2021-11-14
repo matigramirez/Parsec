@@ -6,25 +6,25 @@ namespace Parsec.Extensions
 {
     public static class MatrixExtensions
     {
-        public static void ReadMatrix4x4(ShaiyaBinaryReader binaryReader, out Matrix4x4 matrix)
+        public static void ReadTransformationMatrix(ShaiyaBinaryReader binaryReader, out Matrix4x4 matrix)
         {
             matrix = new Matrix4x4
             {
                 M11 = binaryReader.Read<float>(),
-                M12 = binaryReader.Read<float>(),
-                M13 = binaryReader.Read<float>(),
-                M14 = binaryReader.Read<float>(),
                 M21 = binaryReader.Read<float>(),
-                M22 = binaryReader.Read<float>(),
-                M23 = binaryReader.Read<float>(),
-                M24 = binaryReader.Read<float>(),
                 M31 = binaryReader.Read<float>(),
-                M32 = binaryReader.Read<float>(),
-                M33 = binaryReader.Read<float>(),
-                M34 = binaryReader.Read<float>(),
                 M41 = binaryReader.Read<float>(),
+                M12 = binaryReader.Read<float>(),
+                M22 = binaryReader.Read<float>(),
+                M32 = binaryReader.Read<float>(),
                 M42 = binaryReader.Read<float>(),
+                M13 = binaryReader.Read<float>(),
+                M23 = binaryReader.Read<float>(),
+                M33 = binaryReader.Read<float>(),
                 M43 = binaryReader.Read<float>(),
+                M14 = binaryReader.Read<float>(),
+                M24 = binaryReader.Read<float>(),
+                M34 = binaryReader.Read<float>(),
                 M44 = binaryReader.Read<float>(),
             };
         }

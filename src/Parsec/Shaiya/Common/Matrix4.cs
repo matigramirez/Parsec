@@ -52,7 +52,7 @@ namespace Parsec.Shaiya.Common
 
         public Matrix4(ShaiyaBinaryReader binaryReader)
         {
-            MatrixExtensions.ReadMatrix4x4(binaryReader, out var numericMatrix);
+            MatrixExtensions.ReadTransformationMatrix(binaryReader, out var numericMatrix);
             NumericMatrix = numericMatrix;
         }
 
