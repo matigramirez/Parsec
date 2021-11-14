@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="demf_boots001.3DC">
+      <None Update="Mob_Fox_01.3DC">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

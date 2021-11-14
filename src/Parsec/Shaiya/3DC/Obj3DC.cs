@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Common;
@@ -8,19 +7,36 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.OBJ3DC
 {
-    public class Obj3DC : FileBase {
+    /// <summary>
+    /// Class that represents a .3DC model which is used for characters, mobs, npc's, wings and any model that requires "complex" animations done through its skeleton.
+    /// </summary>
+    public class Obj3DC : FileBase
+    {
+
         /// <summary>
-        ///  Value is 0 for EP5 format and 0x01BC for EP6+ format
+        ///  Indicates the format of the 3DC file. Its value is 0 for EP5 format and 0x01BC for EP6+ format
         /// </summary>
         public int Tag { get; set; }
 
+        /// <summary>
+        /// The format of this file which is taken from the <see cref="Tag"/> value
+        /// </summary>
         public Format Format => Tag > 0 ? Format.EP6 : Format.EP5;
 
+        /// <summary>
+        /// List of bones linked to this 3d model. Although a model might be linked to a few bones (for example boots models), the 3DC file contains the definitions for all the bones in the whole skeleton.
+        /// </summary>
         public List<Bone3DC> Bones { get; } = new();
 
-        public List<Vertex3DC> Vertices { get; } = new();
+        /// <summary>
+        /// List of vertices which are used to make polygons
+        /// </summary>
+        public List<Vertex3DC> Vertices { get; set; } = new();
 
-        public List<Polygon> Polygons { get; } = new();
+        /// <summary>
+        /// List of polygons that give shape to the mesh of the 3d model. Polygons can only be made up of 3 vertices, so they'll all be triangular
+        /// </summary>
+        public List<Polygon> Polygons { get; set; } = new();
 
         public Obj3DC(string path) : base(path)
         {
@@ -34,7 +50,7 @@ namespace Parsec.Shaiya.OBJ3DC
 
             for (int i = 0; i < boneCount; i++)
             {
-                var bone = new Bone3DC(_binaryReader);
+                var bone = new Bone3DC(i, _binaryReader);
                 Bones.Add(bone);
             }
 
@@ -42,7 +58,7 @@ namespace Parsec.Shaiya.OBJ3DC
 
             for (int i = 0; i < vertexCount; i++)
             {
-                var vertex = new Vertex3DC(Format, _binaryReader);
+                var vertex = new Vertex3DC(i, Format, _binaryReader);
                 Vertices.Add(vertex);
             }
 
@@ -86,6 +102,10 @@ namespace Parsec.Shaiya.OBJ3DC
             FileHelper.WriteFile(path, buffer.ToArray());
         }
 
+        /// <summary>
+        /// Method that merges an external 3DC object into the current one in use
+        /// </summary>
+        /// <param name="obj3dc">External 3DC object to merge</param>
         private void Merge(Obj3DC obj3dc)
         {
             // Merge vertices
@@ -109,9 +129,13 @@ namespace Parsec.Shaiya.OBJ3DC
             }
         }
 
+        /// <summary>
+        /// Method that merges two or more 3DC objects together, meaning that all their vertices and polygons will be put together in the same object
+        /// </summary>
+        /// <param name="objects">Array of 3DC objects to merge</param>
         public void Merge(params Obj3DC[] objects)
         {
-            foreach(var obj in objects)
+            foreach (var obj in objects)
                 Merge(obj);
         }
     }

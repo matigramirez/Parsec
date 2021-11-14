@@ -52,7 +52,7 @@ namespace Parsec.Shaiya.Core
             throw new NotImplementedException("Writing hasn't been implemented yet for this format.");
 
         /// <inheritdoc/>
-        public void Export(string path, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false) =>
+        public void ExportJson(string path, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false) =>
             FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames, enumFriendly, ignoreDefaults)));
 
         /// <inheritdoc/>

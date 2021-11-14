@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common
 {
     /// <summary>
     /// Represents a vector in a 3-dimensional space
     /// </summary>
-    public class Vector3
+    public class Vector3 : IBinary
     {
         /// <summary>
         /// 1st (first) element of the vector

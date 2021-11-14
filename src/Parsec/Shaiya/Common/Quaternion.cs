@@ -16,5 +16,13 @@ namespace Parsec.Shaiya.Common
             Z = binaryReader.Read<float>();
             W = binaryReader.Read<float>();
         }
+
+        public Quaternion(float x, float y, float z, float w)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+            W = w;
+        }
     }
 }

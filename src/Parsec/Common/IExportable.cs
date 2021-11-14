@@ -11,6 +11,6 @@ namespace Parsec.Common
         /// <param name="ignoredPropertyNames">Property names to ignore</param>
         /// <param name="enumFriendly">Indicates whether enums should be printed as strings for readability purposes</param>
         /// <param name="ignoreDefaults">Indicates whether default values should be skipped</param>
-        void Export(string path, IEnumerable<string> ignoredPropertyNames, bool enumFriendly, bool ignoreDefaults);
+        void ExportJson(string path, IEnumerable<string> ignoredPropertyNames, bool enumFriendly, bool ignoreDefaults);
     }
 }
