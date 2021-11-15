@@ -7,15 +7,9 @@ namespace Parsec.Samples.Object3D
     {
         static void Main(string[] args)
         {
-            var ignoredFields = new List<string>
-            {
-                "isIdentity",
-                "format"
-            };
-
             var obj = new Obj3DC("Mob_Fox_01.3DC");
             obj.Read();
-            obj.ExportJson($"{obj.FileNameWithoutExtension}.json", ignoredFields);
+            obj.ExportJson($"{obj.FileNameWithoutExtension}.json", enumFriendly: true);
         }
     }
 }
