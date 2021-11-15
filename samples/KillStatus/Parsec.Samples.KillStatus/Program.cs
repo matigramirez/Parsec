@@ -8,7 +8,7 @@ namespace Parsec.Samples
         {
             var killStatus = new KillStatus("KillStatus.SData");
             killStatus.Read();
-            killStatus.Export("KillStatus.json", enumFriendly: true);
+            killStatus.ExportJson("KillStatus.json", enumFriendly: true);
         }
     }
 }
