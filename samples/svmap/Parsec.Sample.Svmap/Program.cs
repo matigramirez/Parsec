@@ -23,7 +23,7 @@ namespace Parsec.Sample.SVMAP
             Console.WriteLine($"Spawn Count: {svmap2.Spawns.Count}");
             Console.WriteLine($"Named Area Count: {svmap2.NamedAreas.Count}");
 
-            svmap2.Export($"{svmap2.FileNameWithoutExtension}.json", new List<string>
+            svmap2.ExportJson($"{svmap2.FileNameWithoutExtension}.json", new List<string>
             {
                 nameof(svmap2.MapHeights),
                 nameof(svmap2.MapSize)

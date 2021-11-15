@@ -18,11 +18,11 @@ namespace Parsec.Sample.SData
 
             Console.WriteLine($"Merchant Count: {npcQuest.Merchants.Count}");
             Console.WriteLine($"GateKeeper Count: {npcQuest.GateKeepers.Count}");
-            npcQuest.Export("NpcQuest.json");
+            npcQuest.ExportJson("NpcQuest.json");
 
             var guildHouse = new GuildHouse("GuildHouse.SData");
             guildHouse.Read();
-            guildHouse.Export("GuildHouse.json");
+            guildHouse.ExportJson("GuildHouse.json");
         }
     }
 }
