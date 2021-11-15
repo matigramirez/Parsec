@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.OBJ3DC
@@ -36,7 +35,7 @@ namespace Parsec.Shaiya.OBJ3DC
         /// <summary>
         /// List of polygons that give shape to the mesh of the 3d model. Polygons can only be made up of 3 vertices, so they'll all be triangular
         /// </summary>
-        public List<Polygon> Polygons { get; set; } = new();
+        public List<Polygon3DC> Polygons { get; set; } = new();
 
         public Obj3DC(string path) : base(path)
         {
@@ -66,7 +65,7 @@ namespace Parsec.Shaiya.OBJ3DC
 
             for (int i = 0; i < polygonCount; i++)
             {
-                var polygon = new Polygon(_binaryReader);
+                var polygon = new Polygon3DC(_binaryReader);
                 polygon.Vertex1 = Vertices[polygon.VertexIndex1];
                 polygon.Vertex2 = Vertices[polygon.VertexIndex2];
                 polygon.Vertex3 = Vertices[polygon.VertexIndex3];

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
-using Parsec.Shaiya.OBJ3DC;
 
-namespace Parsec.Shaiya.Common
+namespace Parsec.Shaiya.OBJ3DC
 {
     /// <summary>
     /// Class that represents a Polygon used in 3DC files to form the mesh. It's composed by 3 vertices only, so polygons can only be triangles.
     /// </summary>
-    public class Polygon : IBinary
+    public class Polygon3DC : IBinary
     {
         /// <summary>
         /// The index of the first vertex
@@ -41,7 +40,7 @@ namespace Parsec.Shaiya.Common
         /// </summary>
         public Vertex3DC Vertex3 { get; set; }
 
-        public Polygon(ShaiyaBinaryReader binaryReader)
+        public Polygon3DC(ShaiyaBinaryReader binaryReader)
         {
             VertexIndex1 = binaryReader.Read<ushort>();
             VertexIndex2 = binaryReader.Read<ushort>();
