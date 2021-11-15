@@ -13,14 +13,14 @@ namespace Parsec.Samples
             var ani = new Ani(filePath);
             ani.Read();
 
-            Console.WriteLine($"shStudio ani fields for file {filePath}:");
+            Console.WriteLine($"Ani file {filePath}:");
             Console.WriteLine("StartKeyframe  EndKeyframe  BoneStepsCount");
             Console.WriteLine($"{ani.StartKeyframe}   {ani.EndKeyframe}  {ani.Bones.Count}");
 
             Console.WriteLine("Steps:  {BoneIndex  RotationsCount  TranslationsCount}");
             foreach (var aniStep in ani.Bones)
             {
-                Console.WriteLine($"{{{aniStep.ParentBoneIndex}  {aniStep.KeyframeRotations.Count}  {aniStep.KeyframeTranslations.Count}}}");
+                Console.WriteLine($"{{{aniStep.ParentBoneIndex}  {aniStep.Rotations.Count}  {aniStep.Translations.Count}}}");
             }
 
             ani.ExportJson($"{ani.FileNameWithoutExtension}.json", new List<string>{ "isIdentity" });
