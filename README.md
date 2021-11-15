@@ -77,7 +77,7 @@ Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
 Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
 
 // Export json file ignoring some fields
-svmap.Export($"{svmap.FileNameWithoutExtension}.json", new List<string>
+svmap.ExportJson($"{svmap.FileNameWithoutExtension}.json", new List<string>
 {
   nameof(svmap.MapHeights),
   nameof(svmap.MapSize)
