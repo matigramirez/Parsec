@@ -8,7 +8,7 @@ namespace Parsec.Shaiya.CASH
     { 
         [JsonIgnore]
         public int Total { get; set; }
-        public List<CashShop> ProductList { get; } = new();
+        public List<Product> Products { get; } = new();
 
         public Cash(string path) : base(path)
         {
@@ -20,8 +20,8 @@ namespace Parsec.Shaiya.CASH
 
             for (int i = 0; i < Total; i++)
             {
-                var product = new CashShop(_binaryReader);
-                ProductList.Add(product);
+                var product = new Product(_binaryReader);
+                Products.Add(product);
             }
         }
     }

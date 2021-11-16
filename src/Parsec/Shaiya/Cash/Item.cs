@@ -2,16 +2,16 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.CASH
 {
-    public class CashItem
+    public class Item
     {
         public int ItemId { get; set; }
         public byte Count { get; set; }
 
-        public CashItem()
+        public Item()
         {
         }
 
-        public CashItem(ShaiyaBinaryReader binaryReader)
+        public Item(ShaiyaBinaryReader binaryReader)
         {
             ItemId = binaryReader.Read<int>();
             Count = binaryReader.Read<byte>();

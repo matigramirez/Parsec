@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Readers;
 
 namespace Parsec.Shaiya.SETITEM
 {
     public class Set
     {
-        [JsonIgnore]
         public short Index { get; set; }
         public string Name { get; set; }
         public List<Item> Items { get; } = new();
