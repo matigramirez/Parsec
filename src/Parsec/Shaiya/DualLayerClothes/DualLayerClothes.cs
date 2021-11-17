@@ -8,7 +8,7 @@ namespace Parsec.Shaiya.DUALLAYERCLOTHES
     {
         [JsonIgnore]
         public int Total { get; set; }
-        public List<Cloth> Clothes { get; } = new();
+        public List<Costume> Costumes { get; } = new();
 
         public DualLayerClothes(string path) : base(path)
         {
@@ -20,8 +20,8 @@ namespace Parsec.Shaiya.DUALLAYERCLOTHES
 
             for (int i = 0; i < Total; i++)
             {
-                var cloth = new Cloth(_binaryReader);
-                Clothes.Add(cloth);
+                var costume = new Costume(_binaryReader);
+                Costumes.Add(costume);
             }
         }
     }

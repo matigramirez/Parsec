@@ -3,17 +3,17 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.DUALLAYERCLOTHES
 {
-    public class Cloth
+    public class Costume
     {
         public short Index { get; set; }
 
         public List<Layer> Layers { get; } = new();
 
-        public Cloth()
+        public Costume()
         {
         }
 
-        public Cloth(ShaiyaBinaryReader binaryReader)
+        public Costume(ShaiyaBinaryReader binaryReader)
         {
             Index = binaryReader.Read<short>();
 
