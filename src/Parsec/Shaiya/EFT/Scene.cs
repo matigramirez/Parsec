@@ -64,7 +64,6 @@ namespace Parsec.Shaiya.EFT
 
         public Scene()
         {
-
         }
 
         public Scene(ShaiyaBinaryReader binaryReader)

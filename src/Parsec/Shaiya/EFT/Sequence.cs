@@ -11,7 +11,6 @@ namespace Parsec.Shaiya.EFT
 
         public Sequence()
         {
-
         }
 
         public Sequence(ShaiyaBinaryReader binaryReader)
