@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Cash.SData">
+      <None Update="SetItem.SData">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

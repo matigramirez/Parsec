@@ -4,24 +4,23 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.CASH
 {
-    public class CashShop
+    public class Product
     {
-        [JsonIgnore]
         public int Index { get; set; }
         public int Bag { get; set; }
         [JsonIgnore]
         public int Unknown { get; set; }
         public int Cost { get; set; }
-        public List<CashItem> Product { get; } = new();
+        public List<Item> Items { get; } = new();
         public string ProductName { get; set; }
         public string ProductCode { get; set; }
         public string Description { get; set; }
 
-        public CashShop()
+        public Product()
         {
         }
 
-        public CashShop(ShaiyaBinaryReader binaryReader)
+        public Product(ShaiyaBinaryReader binaryReader)
         {
             Index = binaryReader.Read<int>();
             Bag = binaryReader.Read<int>();
@@ -30,8 +29,8 @@ namespace Parsec.Shaiya.CASH
 
             for (int i = 0; i < 24; i++)
             {
-                var product = new CashItem(binaryReader);
-                Product.Add(product);
+                var item = new Item(binaryReader);
+                Items.Add(item);
             }
 
             ProductName = binaryReader.ReadString();

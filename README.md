@@ -12,6 +12,9 @@
 - `KillStatus.SData`
 - `ani`
 - `3DC`
+- `Cash.SData`
+- `SetItem.SData`
+- `DualLayerClothes.SData`
 
 ## Features
 - `data` extraction, patching and creation

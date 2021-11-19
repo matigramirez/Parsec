@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.CASH
+namespace Parsec.Shaiya.SETITEM
 {
-    public class Cash : FileBase
+    public class SetItem : FileBase
     { 
         [JsonIgnore]
         public int Total { get; set; }
-        public List<Product> Products { get; } = new();
+        public List<Set> Sets { get; } = new();
 
-        public Cash(string path) : base(path)
+        public SetItem(string path) : base(path)
         {
         }
 
@@ -20,8 +20,8 @@ namespace Parsec.Shaiya.CASH
 
             for (int i = 0; i < Total; i++)
             {
-                var product = new Product(_binaryReader);
-                Products.Add(product);
+                var set = new Set(_binaryReader);
+                Sets.Add(set); 
             }
         }
     }
