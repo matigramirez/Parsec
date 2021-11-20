@@ -15,6 +15,7 @@
 - `Cash.SData`
 - `SetItem.SData`
 - `DualLayerClothes.SData`
+- `EFT`
 
 ## Features
 - `data` extraction, patching and creation
