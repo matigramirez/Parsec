@@ -1,4 +1,5 @@
-﻿using Parsec.Shaiya.EFT;
+﻿using System;
+using Parsec.Shaiya.EFT;
 
 namespace Parsec.Samples
 {
@@ -6,9 +7,12 @@ namespace Parsec.Samples
     {
         static void Main(string[] args)
         {
-            var eft = new EFT("Crun.EFT");
+            Console.WriteLine("Enter a file name:");
+            string fileName = Console.ReadLine();
+
+            var eft = new EFT(fileName);
             eft.Read();
-            eft.ExportJson("Crun.json");
+            eft.ExportJson(fileName + ".json");
         }
     }
 }
