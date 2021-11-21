@@ -52,7 +52,8 @@ namespace Parsec.Shaiya.EFT
         public int Unknown44 { get; set; }
         public int Vec05Count { get; set; }
         public List<Vec05> Vec05Array { get; } = new();
-        public int Unknown45 { get; set; }
+        public int Vec02Count { get; set; }
+        public List<Vec02> Vec02Array { get; } = new();
         public int Vec03Count { get; set; }
         public List<Vec03> Vec03Array { get; } = new();
         public int Unknown46 { get; set; }
@@ -127,7 +128,13 @@ namespace Parsec.Shaiya.EFT
                 Vec05Array.Add(vec);
             }
 
-            Unknown45 = binaryReader.Read<int>();
+            Vec02Count = binaryReader.Read<int>();
+
+            for (int i = 0; i < Vec02Count; i++)
+            {
+                var vec = new Vec02(binaryReader);
+                Vec02Array.Add(vec);
+            }
 
             Vec03Count = binaryReader.Read<int>();
 
