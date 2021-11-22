@@ -30,5 +30,10 @@ namespace Parsec.Shaiya.Common
             X = binaryReader.Read<float>();
             Y = binaryReader.Read<float>();
         }
+
+        [JsonConstructor]
+        public Vector2()
+        {
+        }
     }
 }

@@ -33,6 +33,11 @@ namespace Parsec.Shaiya.Common
             Z = z;
         }
 
+        [JsonConstructor]
+        public Vector3()
+        {
+        }
+
         /// <summary>
         /// The vector's length
         /// </summary>

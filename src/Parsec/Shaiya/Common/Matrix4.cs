@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -72,6 +73,42 @@ namespace Parsec.Shaiya.Common
             SetRow(2, row2);
             SetRow(3, row3);
             SetRow(4, row4);
+        }
+
+        /// <summary>
+        /// Constructor meant to be used only by the Json Deserializer
+        /// </summary>
+        [JsonConstructor]
+        public Matrix4(float[,] data)
+        {
+            // Since the matrices are being transposed before serializing, when deserializing it needs to be transposed once again
+            var transposedData = new float[4, 4];
+
+            // Row 1 to Col 1
+            transposedData[0, 0] = data[0, 0];
+            transposedData[0, 1] = data[1, 0];
+            transposedData[0, 2] = data[2, 0];
+            transposedData[0, 3] = data[3, 0];
+
+            // Row 2 to Col 2
+            transposedData[1, 0] = data[0, 1];
+            transposedData[1, 1] = data[1, 1];
+            transposedData[1, 2] = data[2, 1];
+            transposedData[1, 3] = data[3, 1];
+
+            // Row 3 to Col 3
+            transposedData[2, 0] = data[0, 2];
+            transposedData[2, 1] = data[1, 2];
+            transposedData[2, 2] = data[2, 2];
+            transposedData[2, 3] = data[3, 2];
+
+            // Row 4 to Col 4
+            transposedData[3, 0] = data[0, 3];
+            transposedData[3, 1] = data[1, 3];
+            transposedData[3, 2] = data[2, 3];
+            transposedData[3, 3] = data[3, 3];
+
+            _matrix = transposedData;
         }
 
         public void SetRow(int rowNumber, float[] data)

@@ -1,4 +1,5 @@
-﻿using Parsec.Readers;
+﻿using Newtonsoft.Json;
+using Parsec.Readers;
 
 namespace Parsec.Shaiya.Common
 {
@@ -23,6 +24,11 @@ namespace Parsec.Shaiya.Common
             Y = y;
             Z = z;
             W = w;
+        }
+
+        [JsonConstructor]
+        public Quaternion()
+        {
         }
     }
 }

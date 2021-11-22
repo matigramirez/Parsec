@@ -13,6 +13,7 @@ namespace Parsec.Shaiya.Core
 {
     public abstract class FileBase : IFileBase, IExportable<FileBase>
     {
+        [JsonIgnore]
         protected readonly ShaiyaBinaryReader _binaryReader;
 
         /// <summary>
@@ -24,7 +25,7 @@ namespace Parsec.Shaiya.Core
         /// Full path to the file
         /// </summary>
         [JsonIgnore]
-        public string Path { get; set; }
+        public string Path { get; set; } = "";
 
         /// <summary>
         /// Plain file name
@@ -42,6 +43,11 @@ namespace Parsec.Shaiya.Core
         {
             Path = path;
             _binaryReader = new ShaiyaBinaryReader(path);
+        }
+
+        [JsonConstructor]
+        public FileBase()
+        {
         }
 
         /// <inheritdoc/>

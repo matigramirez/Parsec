@@ -1,4 +1,5 @@
-﻿using Parsec.Readers;
+﻿using Newtonsoft.Json;
+using Parsec.Readers;
 
 namespace Parsec.Shaiya.Common
 {
@@ -28,6 +29,11 @@ namespace Parsec.Shaiya.Common
         {
             LowerLimit = new Vector3(binaryReader);
             UpperLimit = new Vector3(binaryReader);
+        }
+
+        [JsonConstructor]
+        public CubicArea()
+        {
         }
     }
 }
