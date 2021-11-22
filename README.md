@@ -10,12 +10,15 @@
 - `svmap`
 - `NpcQuest.SData` (partial support - Quests are missing)
 - `KillStatus.SData`
-- `ani`
+- `ANI`
 - `3DC`
+- `EFT`
+- `seff`
 - `Cash.SData`
 - `SetItem.SData`
 - `DualLayerClothes.SData`
-- `EFT`
+- `GuldHouse.SData`
+
 
 ## Features
 - `data` extraction, patching and creation
