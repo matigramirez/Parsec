@@ -20,13 +20,47 @@
 ## Features
 - `data` extraction, patching and creation
 - `SData` encryption/decryption
-- Export most supported formats as `json`
+- Export and import most supported formats as `json` (you can modify files as json and convert them back to their original format)
 
 ## Getting Started
-TBA
+### Prerequisites
+- `.NET 5 SDK x64 and x86` (x86 is needed for SData encryption/decryption, this requirement will be removed shortly)
+
+### Run
+1. Create a C# project in Visual Studio/Rider/VSCode/CLI
+2. Add `Parsec` as a dependency, either through the NuGet package or the library's source code itself
+
+or... Use one of the samples from the [samples section](https://github.com/matigramirez/Parsec/tree/main/samples).
 
 ## Documentation
-TBA
+### Reading
+1. Create an instance of the file you want to read:
+```cs
+var svmap = new Svmap("0.svmap");
+```
+2. Call the `Read` method to parse the file's content. All the fields in the file will become available.
+```cs
+svmap.Read();
+```
+
+### Export
+After modifying the file, you can save it in its original format by calling the `Write` method
+```cs
+svmap.Write("0.modified.svmap");
+```
+
+### Export as JSON
+Call the `ExportJson` method
+```cs
+svmap.ExportJson("map0.json");
+```
+
+### Import as JSON
+`Parsec` supports importing a file as JSON, which can be later exported as its original format. The user must make sure that the JSON file is properly formatted to match the JSON standards and contain all the fields present in the chosen format.
+```cs
+var svmap = Deserializer.ReadFromJson<Svmap>("map0.json");
+```
+It is adviced to first read a file from its original format, export it as JSON, edit it, and importing it once again as JSON, so that all the original fields are present in the JSON file.
 
 ## Samples
 ### `sah/saf`
@@ -83,7 +117,7 @@ Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
 // Export json file ignoring some fields
 svmap.ExportJson($"{svmap.FileNameWithoutExtension}.json", new List<string>
 {
-  nameof(svmap.MapHeights),
+  nameof(svmap.MapHeight),
   nameof(svmap.MapSize)
 });
 ```
