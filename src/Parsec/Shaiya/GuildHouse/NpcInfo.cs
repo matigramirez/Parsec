@@ -1,8 +1,12 @@
-﻿using Parsec.Readers;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.GUILDHOUSE
 {
-    public class NpcInfo
+    public class NpcInfo : IBinary
     {
         public byte PriceRate { get; set; }
         public byte NpcLvl { get; set; }
@@ -15,6 +19,11 @@ namespace Parsec.Shaiya.GUILDHOUSE
         public short ServicePrice { get; set; }
         public byte NpcType { get; set; }
         public byte Group { get; set; }
+
+        [JsonConstructor]
+        public NpcInfo()
+        {
+        }
 
         public NpcInfo(ShaiyaBinaryReader binaryReader)
         {
@@ -29,6 +38,25 @@ namespace Parsec.Shaiya.GUILDHOUSE
             ServicePrice = binaryReader.Read<short>();
             NpcType = binaryReader.Read<byte>();
             Group = binaryReader.Read<byte>();
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+
+            buffer.Add(PriceRate);
+            buffer.Add(NpcLvl);
+            buffer.Add(RapiceMixPercentRate);
+            buffer.Add(RapiceMixDecreRate);
+            buffer.Add(MinRank);
+            buffer.AddRange(BitConverter.GetBytes(Icon));
+            buffer.AddRange(BitConverter.GetBytes(SysMsgId));
+            buffer.AddRange(BitConverter.GetBytes(UpPrice));
+            buffer.AddRange(BitConverter.GetBytes(ServicePrice));
+            buffer.Add(NpcType);
+            buffer.Add(Group);
+
+            return buffer.ToArray();
         }
     }
 }

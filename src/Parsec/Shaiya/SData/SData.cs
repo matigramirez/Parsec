@@ -14,6 +14,11 @@ namespace Parsec.Shaiya.SDATA
         {
         }
 
+        [JsonConstructor]
+        public SData()
+        {
+        }
+
         /// <summary>
         /// Checks if the file has the ".SData" extension
         /// </summary>
