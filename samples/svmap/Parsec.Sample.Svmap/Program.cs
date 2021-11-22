@@ -25,8 +25,7 @@ namespace Parsec.Sample.SVMAP
 
             svmap2.ExportJson($"{svmap2.FileNameWithoutExtension}.json", new List<string>
             {
-                nameof(svmap2.MapHeights),
-                nameof(svmap2.MapSize)
+                nameof(svmap2.MapHeight),
             });
         }
     }

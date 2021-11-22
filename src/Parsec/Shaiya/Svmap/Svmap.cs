@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SVMAP
@@ -8,7 +7,7 @@ namespace Parsec.Shaiya.SVMAP
     public class Svmap : FileBase
     {
         public int MapSize { get; set; }
-        public List<byte> MapHeights { get; private set; } = new();
+        public List<byte> MapHeight { get; private set; } = new();
         public int Unknown { get; set; }
         public List<Ladder> Ladders { get; } = new();
         public List<MonsterArea> MonsterAreas { get; } = new();
@@ -25,8 +24,8 @@ namespace Parsec.Shaiya.SVMAP
         {
             MapSize = _binaryReader.Read<int>();
 
-            var mapHeightsCount = MapSize * MapSize / 8;
-            MapHeights = _binaryReader.ReadBytes(mapHeightsCount).ToList();
+            var mapHeightCount = MapSize * MapSize / 8;
+            MapHeight = _binaryReader.ReadBytes(mapHeightCount).ToList();
 
             Unknown = _binaryReader.Read<int>();
 
@@ -34,7 +33,7 @@ namespace Parsec.Shaiya.SVMAP
 
             for (int i = 0; i < ladderCount; i++)
             {
-                var ladder = ReadLadder();
+                var ladder = new Ladder(_binaryReader);
                 Ladders.Add(ladder);
             }
 
@@ -42,7 +41,7 @@ namespace Parsec.Shaiya.SVMAP
 
             for (int i = 0; i < monsterAreaCount; i++)
             {
-                var monsterArea = ReadMonsterArea();
+                var monsterArea = new MonsterArea(_binaryReader);
                 MonsterAreas.Add(monsterArea);
             }
 
@@ -50,7 +49,7 @@ namespace Parsec.Shaiya.SVMAP
 
             for (int i = 0; i < npcCount; i++)
             {
-                var npc = ReadNpc();
+                var npc = new Npc(_binaryReader);
                 Npcs.Add(npc);
             }
 
@@ -58,7 +57,7 @@ namespace Parsec.Shaiya.SVMAP
 
             for (int i = 0; i < portalCount; i++)
             {
-                var portal = ReadPortal();
+                var portal = new Portal(_binaryReader);
                 Portals.Add(portal);
             }
 
@@ -66,7 +65,7 @@ namespace Parsec.Shaiya.SVMAP
 
             for (int i = 0; i < spawnCount; i++)
             {
-                var spawn = ReadSpawn();
+                var spawn = new Spawn(_binaryReader);
                 Spawns.Add(spawn);
             }
 
@@ -74,89 +73,9 @@ namespace Parsec.Shaiya.SVMAP
 
             for (int i = 0; i < namedAreaCount; i++)
             {
-                var namedArea = ReadNamedArea();
+                var namedArea = new NamedArea(_binaryReader);
                 NamedAreas.Add(namedArea);
             }
         }
-
-        private Ladder ReadLadder() => new Ladder
-        {
-            Position = new Vector3(_binaryReader)
-        };
-
-        private MonsterArea ReadMonsterArea()
-        {
-            var monsterArea = new MonsterArea
-            {
-                Area = new CubicArea(_binaryReader),
-                Monsters = new List<Monster>()
-            };
-
-            var monsterCount = _binaryReader.Read<int>();
-
-            // Read monsters
-            for (int i = 0; i < monsterCount; i++)
-            {
-                var monster = new Monster
-                {
-                    MobId = _binaryReader.Read<int>(),
-                    Count = _binaryReader.Read<int>()
-                };
-
-                monsterArea.Monsters.Add(monster);
-            }
-
-            return monsterArea;
-        }
-
-        private Npc ReadNpc()
-        {
-            var npc = new Npc
-            {
-                Type = _binaryReader.Read<int>(),
-                NpcId = _binaryReader.Read<int>(),
-                Locations = new List<NpcLocation>()
-            };
-
-            var locationCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < locationCount; i++)
-            {
-                var npcLocation = new NpcLocation
-                {
-                    Position = new Vector3(_binaryReader),
-                    Orientation = _binaryReader.Read<float>()
-                };
-
-                npc.Locations.Add(npcLocation);
-            }
-
-            return npc;
-        }
-
-        private Portal ReadPortal() => new Portal
-        {
-            Position = new Vector3(_binaryReader),
-            Faction = (Faction)_binaryReader.Read<int>(),
-            MinLevel = _binaryReader.Read<short>(),
-            MaxLevel = _binaryReader.Read<short>(),
-            DestinationMapId = _binaryReader.Read<int>(),
-            DestinationPosition = new Vector3(_binaryReader)
-        };
-
-        private Spawn ReadSpawn() => new Spawn
-        {
-            Unknown1 = _binaryReader.Read<int>(),
-            Faction = (Faction)_binaryReader.Read<int>(),
-            Unknown2 = _binaryReader.Read<int>(),
-            Area = new CubicArea(_binaryReader)
-        };
-
-        private NamedArea ReadNamedArea() => new NamedArea
-        {
-            Area = new CubicArea(_binaryReader),
-            NameIdentifier1 = _binaryReader.Read<int>(),
-            NameIdentifier2 = _binaryReader.Read<int>()
-        };
     }
 }
