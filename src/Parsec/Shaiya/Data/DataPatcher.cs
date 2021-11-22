@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Parsec.Shaiya.SAH;
 
-namespace Parsec.Shaiya.SAF
+namespace Parsec.Shaiya.DATA
 {
     public class DataPatcher : IDisposable
     {
@@ -113,7 +112,7 @@ namespace Parsec.Shaiya.SAF
         /// </summary>
         /// <param name="file"></param>
         /// <param name="offset"></param>
-        private void WriteFile(ShaiyaFile file, long offset)
+        private void WriteFile(SahFile file, long offset)
         {
             // Set safWriter position to end of file
             _dataSafWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
@@ -132,7 +131,7 @@ namespace Parsec.Shaiya.SAF
         /// Appends a file to the end of the saf file and sets its offset field
         /// </summary>
         /// <param name="patchFile">The file to write</param>
-        private void AppendFile(ShaiyaFile patchFile)
+        private void AppendFile(SahFile patchFile)
         {
             // Set safWriter position to end of file
             _dataSafWriter.BaseStream.Seek(0, SeekOrigin.End);
@@ -150,7 +149,7 @@ namespace Parsec.Shaiya.SAF
         /// <summary>
         /// Gets a file bytes from a saf file
         /// </summary>
-        private byte[] GetFileBytes(ShaiyaFile file)
+        private byte[] GetFileBytes(SahFile file)
         {
             // Set offset to file's starting offset
             _patchSafReader.BaseStream.Seek(file.Offset, SeekOrigin.Begin);

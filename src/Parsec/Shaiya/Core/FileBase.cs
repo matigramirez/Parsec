@@ -14,7 +14,7 @@ namespace Parsec.Shaiya.Core
     public abstract class FileBase : IFileBase, IExportable<FileBase>
     {
         [JsonIgnore]
-        protected readonly ShaiyaBinaryReader _binaryReader;
+        protected ShaiyaBinaryReader _binaryReader;
 
         /// <summary>
         /// The file's byte array

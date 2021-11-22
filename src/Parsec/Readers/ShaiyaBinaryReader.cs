@@ -25,8 +25,6 @@ namespace Parsec.Readers
             }
         }
 
-        // TODO: Refactor code to make offset of type 'long'. Although 'int' is enough for most
-        // files (~2gb), it shouldn't be enough for data.saf which is usually 4gb+.
         private int _offset;
 
         /// <summary>

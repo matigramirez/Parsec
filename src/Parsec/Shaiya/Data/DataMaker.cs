@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
-using Parsec.Shaiya.SAH;
 
-namespace Parsec.Shaiya.SAF
+namespace Parsec.Shaiya.DATA
 {
     public static class DataMaker
     {
@@ -32,7 +31,7 @@ namespace Parsec.Shaiya.SAF
 
             _safWriter = new BinaryWriter(File.OpenWrite(fileCreationPath));
 
-            var rootFolder = new ShaiyaFolder(null)
+            var rootFolder = new SahFolder(null)
             {
                 RelativePath = string.Empty
             };
@@ -47,7 +46,7 @@ namespace Parsec.Shaiya.SAF
             return sah;
         }
 
-        public static void ReadDirectoryFolder(ShaiyaFolder folder, string path)
+        public static void ReadDirectoryFolder(SahFolder folder, string path)
         {
             ReadDirectoryFiles(folder, path);
 
@@ -55,7 +54,7 @@ namespace Parsec.Shaiya.SAF
 
             foreach (var subfolder in subfolders)
             {
-                var shaiyaFolder = new ShaiyaFolder(folder)
+                var shaiyaFolder = new SahFolder(folder)
                 {
                     Name = subfolder,
                     RelativePath = Path.Combine(folder.RelativePath, subfolder)
@@ -72,7 +71,7 @@ namespace Parsec.Shaiya.SAF
         /// </summary>
         /// <param name="folder">The shaiya folder instance</param>
         /// <param name="path">Directory path</param>
-        public static void ReadDirectoryFiles(ShaiyaFolder folder, string path)
+        public static void ReadDirectoryFiles(SahFolder folder, string path)
         {
             // Read all files in directory
             var files = Directory.GetFiles(path).Select(Path.GetFileName);
@@ -83,7 +82,7 @@ namespace Parsec.Shaiya.SAF
 
                 var fileStream = File.OpenRead(filePath);
 
-                var shaiyaFile = new ShaiyaFile(folder)
+                var shaiyaFile = new SahFile(folder)
                 {
                     Name = file,
                     Length = (int)fileStream.Length,
@@ -100,7 +99,7 @@ namespace Parsec.Shaiya.SAF
             }
         }
 
-        public static void AppendFile(ShaiyaFile file)
+        public static void AppendFile(SahFile file)
         {
             // Write file offset
             file.Offset = _safWriter.BaseStream.Position;

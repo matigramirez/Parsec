@@ -1,16 +1,20 @@
 ﻿using System.IO;
 using Parsec.Extensions;
 using Parsec.Helpers;
-using Parsec.Shaiya.SAH;
 
-namespace Parsec.Shaiya.SAF
+namespace Parsec.Shaiya.DATA
 {
-    public partial class Saf
+    public class Saf
     {
         /// <summary>
-        /// Binary reader used to read the saf file. Must be disposed after reading is complete.
+        /// The sah file that corresponds to this saf
         /// </summary>
-        private BinaryReader _safReader;
+        private Sah _sah;
+
+        public Saf(Sah sah)
+        {
+            _sah = sah;
+        }
 
         /// <summary>
         /// Extracts all the content of the saf file into a directory
@@ -21,12 +25,9 @@ namespace Parsec.Shaiya.SAF
             Directory.CreateDirectory(extractionPath);
 
             // Create binary reader
-            _safReader = new BinaryReader(File.OpenRead("data.saf"));
+            using var safReader = new BinaryReader(File.OpenRead(_sah.SafPath));
 
             ExtractFolder(_sah.RootFolder, extractionPath);
-
-            // Dispose binary reader
-            _safReader.Dispose();
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace Parsec.Shaiya.SAF
         /// </summary>
         /// <param name="folder">Folder to extract</param>
         /// <param name="extractionDirectory">Directory where folder should be extracted</param>
-        private void ExtractFolder(ShaiyaFolder folder, string extractionDirectory)
+        private void ExtractFolder(SahFolder folder, string extractionDirectory)
         {
             // Extract files
             foreach (var file in folder.Files)
@@ -58,8 +59,11 @@ namespace Parsec.Shaiya.SAF
         /// </summary>
         /// <param name="file">File to extract</param>
         /// <param name="extractionDirectory">Directory where file should be saved</param>
-        private void ExtractFile(ShaiyaFile file, string extractionDirectory)
+        private void ExtractFile(SahFile file, string extractionDirectory)
         {
+            // Create binary reader
+            using var safReader = new BinaryReader(File.OpenRead(_sah.SafPath));
+
             // Skip files with invalid characters
             if (file.Name.HasInvalidCharacters())
                 return;
@@ -69,10 +73,10 @@ namespace Parsec.Shaiya.SAF
             using var fileWriter = new BinaryWriter(File.OpenWrite(path));
 
             // Set offset to file's starting offset
-            _safReader.BaseStream.Seek(file.Offset, SeekOrigin.Begin);
+            safReader.BaseStream.Seek(file.Offset, SeekOrigin.Begin);
 
             // Read file bytes (length bytes)
-            var bytesToWrite = _safReader.ReadBytes(file.Length);
+            var bytesToWrite = safReader.ReadBytes(file.Length);
 
             // Write bytes to file
             fileWriter.Write(bytesToWrite);
@@ -81,9 +85,9 @@ namespace Parsec.Shaiya.SAF
         /// <summary>
         /// Extracts a single file into a directory
         /// </summary>
-        /// <param name="file">The <see cref="ShaiyaFile"/> instance to extract</param>
+        /// <param name="file">The <see cref="SahFile"/> instance to extract</param>
         /// <param name="extractionDirectory">The directory where the file should be saved</param>
-        public void Extract(ShaiyaFile file, string extractionDirectory)
+        public void Extract(SahFile file, string extractionDirectory)
         {
             var fileBytes = ReadSafBytes(file.Offset, file.Length);
             FileHelper.WriteFile(Path.Combine(extractionDirectory, file.Name), fileBytes);
@@ -96,14 +100,13 @@ namespace Parsec.Shaiya.SAF
         /// <param name="length">Amount of bytes to read</param>
         private byte[] ReadSafBytes(long offset, int length)
         {
-            var safReader = new BinaryReader(File.OpenRead(_sah.SafPath));
+            // Create binary reader
+            using var safReader = new BinaryReader(File.OpenRead(_sah.SafPath));
 
             safReader.BaseStream.Seek(offset, SeekOrigin.Begin);
 
             // Read bytes
             byte[] bytes = safReader.ReadBytes(length);
-
-            safReader.Dispose();
 
             return bytes;
         }

@@ -1,16 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Helpers;
+using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SAH
+namespace Parsec.Shaiya.DATA
 {
-    public partial class Sah
+    [DataContract]
+    public partial class Sah : FileBase, IJsonReadable
     {
-        /// <summary>
-        /// Path to the sah file.
-        /// </summary>
-        public string Path { get; }
-
         /// <summary>
         /// Path to the saf file
         /// </summary>
@@ -19,31 +23,33 @@ namespace Parsec.Shaiya.SAH
         /// <summary>
         /// Total amount of files that are present in the data; does not include directories.
         /// </summary>
+        [DataMember]
         public int TotalFileCount { get; private set; }
 
         /// <summary>
         /// The data's root directory.
         /// </summary>
-        public ShaiyaFolder RootFolder { get; private set; }
-
-        /// <summary>
-        /// Indicates whether the sah's content has been loaded or not
-        /// </summary>
-        public bool IsLoaded { get; private set; }
+        [DataMember]
+        public SahFolder RootFolder { get; private set; }
 
         /// <summary>
         /// Dictionary of folders that can be accessed by path
         /// </summary>
-        public Dictionary<string, ShaiyaFolder> FolderIndex = new();
+        public Dictionary<string, SahFolder> FolderIndex = new();
 
         /// <summary>
         /// Dictionary of files that can be accessed by path
         /// </summary>
-        public Dictionary<string, ShaiyaFile> FileIndex = new();
+        public Dictionary<string, SahFile> FileIndex = new();
 
         public Sah(string path)
         {
             Path = path;
+        }
+
+        [JsonConstructor]
+        public Sah()
+        {
         }
 
         /// <summary>
@@ -52,25 +58,41 @@ namespace Parsec.Shaiya.SAH
         /// <param name="path">Path where sah file will be saved</param>
         /// <param name="rootFolder">Shaiya main Folder containing all the sah's data</param>
         /// <param name="fileCount"></param>
-        public Sah(string path, ShaiyaFolder rootFolder, int fileCount) : this(path)
+        public Sah(string path, SahFolder rootFolder, int fileCount) : this(path)
         {
             RootFolder = rootFolder;
-            IsLoaded = true;
             TotalFileCount = fileCount;
+        }
+
+        public override void Read()
+        {
+            _binaryReader = new ShaiyaBinaryReader(Path);
+
+            // Skip signature (3) and unknown bytes (4)
+            _binaryReader.Skip(7);
+
+            // Read total file count
+            TotalFileCount = _binaryReader.Read<int>();
+
+            // Index where data starts (after header - skip padding bytes)
+            _binaryReader.SetOffset(51);
+
+            // Read root folder and all of its subfolders
+            RootFolder = new SahFolder(_binaryReader, null, FolderIndex, FileIndex);
         }
 
         /// <summary>
         /// Adds a folder to the sah file
         /// </summary>
         /// <param name="path">Folder's path</param>
-        public ShaiyaFolder AddFolder(string path) => EnsureFolderExists(path);
+        public SahFolder AddFolder(string path) => EnsureFolderExists(path);
 
         /// <summary>
         /// Adds a file to the sah file
         /// </summary>
         /// <param name="directoryPath">Directory where file must be added. MUST NOT INCLUDE FILE NAME.</param>
         /// <param name="file">File to add</param>
-        public void AddFile(string directoryPath, ShaiyaFile file)
+        public void AddFile(string directoryPath, SahFile file)
         {
             // Ensure directory exists
             var parentFolder = EnsureFolderExists(directoryPath);
@@ -86,7 +108,7 @@ namespace Parsec.Shaiya.SAH
         /// Checks if a folder exists based on its path. If it doesn't exist, it will be created
         /// </summary>
         /// <param name="path">Folder path</param>
-        public ShaiyaFolder EnsureFolderExists(string path)
+        public SahFolder EnsureFolderExists(string path)
         {
             // Check if folder is part of the folder index
             if (FolderIndex.TryGetValue(path, out var matchingFolder))
@@ -104,7 +126,7 @@ namespace Parsec.Shaiya.SAH
                 if (!currentFolder.HasSubfolder(folderName))
                 {
                     // Create new folder if it doesn't exist
-                    var newFolder = new ShaiyaFolder(folderName, currentFolder);
+                    var newFolder = new SahFolder(folderName, currentFolder);
 
                     // Create relative path
                     newFolder.RelativePath = System.IO.Path.Combine(currentFolder.RelativePath, newFolder.Name);
@@ -125,6 +147,43 @@ namespace Parsec.Shaiya.SAH
             }
 
             return currentFolder;
+        }
+
+        /// <summary>
+        /// Checks if the first 3 bytes in the file match the "SAH" magic number or the provided one
+        /// </summary>
+        /// <param name="magicNumber">Magic number to check. <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)">Click here</a> for more information.</param>
+        public bool CheckMagicNumber(string magicNumber = "SAH")
+        {
+            var sahMagicNumber = _binaryReader.ReadString(3);
+            return sahMagicNumber == magicNumber;
+        }
+
+        public override void Write(string path)
+        {
+            // Create byte list which will have the sah's data
+            var buffer = new List<byte>();
+
+            // Write sah signature
+            buffer.AddRange(Encoding.ASCII.GetBytes("SAH"));
+
+            // Write 4 unknown 0x00 bytes
+            buffer.AddRange(new byte[4]);
+
+            // Write total file count
+            buffer.AddRange(BitConverter.GetBytes(TotalFileCount));
+
+            // Write padding
+            buffer.AddRange(new byte[40]);
+
+            // Write root folder and all subfolders with files
+            buffer.AddRange(RootFolder.GetBytes());
+
+            // Write last 8 empty bytes
+            buffer.AddRange(new byte[8]);
+
+            // Create new file and write buffer
+            FileHelper.WriteFile(path, buffer.ToArray());
         }
     }
 }
