@@ -11,8 +11,9 @@
         <PackageProjectUrl>https://github.com/matigramirez/Parsec</PackageProjectUrl>
         <RepositoryUrl>https://github.com/matigramirez/Parsec</RepositoryUrl>
         <PackageTags>csharp, shaiya, file, parser, dotnet</PackageTags>
-        <Description>Parsec is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.0. Its goal is to make reading and manipulating the game's file formats with ease.</Description>
+        <Description>Parsec is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.1. Its goal is to make reading and manipulating the game's file formats with ease.</Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageVersion>1.0.0-alpha.2.0.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
