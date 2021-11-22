@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 using Vector3 = Parsec.Shaiya.Common.Vector3;
@@ -15,6 +16,11 @@ namespace Parsec.Shaiya.ANI
         {
             Keyframe = binaryReader.Read<int>();
             Translation = new Vector3(binaryReader);
+        }
+
+        [JsonConstructor]
+        public TranslationKeyframe()
+        {
         }
 
         /// <inheritdoc />

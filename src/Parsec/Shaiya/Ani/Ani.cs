@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
@@ -8,7 +10,7 @@ namespace Parsec.Shaiya.ANI
     /// <summary>
     /// Class that represents an .ANI file
     /// </summary>
-    public class Ani : FileBase
+    public class Ani : FileBase, IJsonReadable
     {
         /// <summary>
         /// Starting keyframe. 0 for most animations
@@ -26,6 +28,11 @@ namespace Parsec.Shaiya.ANI
         public List<AniBone> Bones { get; } = new();
 
         public Ani(string path) : base(path)
+        {
+        }
+
+        [JsonConstructor]
+        public Ani()
         {
         }
 

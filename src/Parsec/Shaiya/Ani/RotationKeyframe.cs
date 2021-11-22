@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 using Quaternion = Parsec.Shaiya.Common.Quaternion;
@@ -15,6 +16,11 @@ namespace Parsec.Shaiya.ANI
         {
             Keyframe = binaryReader.Read<int>();
             Quaternion = new Quaternion(binaryReader);
+        }
+
+        [JsonConstructor]
+        public RotationKeyframe()
+        {
         }
 
         /// <inheritdoc />

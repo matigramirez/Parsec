@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
@@ -59,6 +60,11 @@ namespace Parsec.Shaiya.ANI
                 var keyframeTranslation = new TranslationKeyframe(binaryReader);
                 Translations.Add(keyframeTranslation);
             }
+        }
+
+        [JsonConstructor]
+        public AniBone()
+        {
         }
     }
 }
