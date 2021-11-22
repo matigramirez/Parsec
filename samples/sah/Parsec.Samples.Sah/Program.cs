@@ -1,6 +1,5 @@
 ﻿using System.Linq;
-using Parsec.Shaiya.SAF;
-using Parsec.Shaiya.SAH;
+using Parsec.Shaiya.DATA;
 
 namespace Parsec.Samples.SAH
 {
@@ -10,7 +9,7 @@ namespace Parsec.Samples.SAH
         {
             // Load sah
             var sah = new Sah("data.sah");
-            sah.Load();
+            sah.Read();
 
             // Find the file you want to extract
             var file = sah.FileIndex.Values.FirstOrDefault(f => f.Name == "sysmsg-uni.txt");

@@ -65,9 +65,9 @@ It is adviced to first read a file from its original format, export it as JSON, 
 ## Samples
 ### `sah/saf`
 ```cs
-// Load sah
+// Read sah
 var sah = new Sah("data.sah");
-sah.Load();
+sah.Read();
 
 // Find the file you want to extract
 var file = sah.FileIndex.Values.FirstOrDefault(f => f.Name == "sysmsg-uni.txt");
