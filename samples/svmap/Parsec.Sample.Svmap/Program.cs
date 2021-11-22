@@ -8,9 +8,6 @@ namespace Parsec.Sample.SVMAP
     {
         static void Main(string[] args)
         {
-            var svmap0 = new Svmap("0.svmap");
-            svmap0.Read();
-
             var svmap2 = new Svmap("2.svmap");
             svmap2.Read();
 
