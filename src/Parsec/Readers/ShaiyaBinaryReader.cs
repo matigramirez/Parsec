@@ -227,6 +227,18 @@ namespace Parsec.Readers
         }
 
         /// <summary>
+        /// Reads a Unicode string, every character is suffixed with an empty character, that's why the length needs to be doubled
+        /// </summary>
+        /// <returns>The read string</returns>
+        public string ReadUnicodeString()
+        {
+            var length = ReadInt32() * 2;
+            var result = Encoding.Unicode.GetString(Buffer, _offset, length);
+            _offset += length;
+            return result;
+        }
+
+        /// <summary>
         /// Resets the reading offset
         /// </summary>
         public void ResetOffset() => SetOffset(0);
