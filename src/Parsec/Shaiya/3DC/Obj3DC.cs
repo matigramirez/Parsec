@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
@@ -9,7 +10,7 @@ namespace Parsec.Shaiya.OBJ3DC
     /// <summary>
     /// Class that represents a .3DC model which is used for characters, mobs, npc's, wings and any model that requires "complex" animations done through its skeleton.
     /// </summary>
-    public class Obj3DC : FileBase
+    public class Obj3DC : FileBase, IJsonReadable
     {
 
         /// <summary>
@@ -38,6 +39,11 @@ namespace Parsec.Shaiya.OBJ3DC
         public List<Polygon3DC> Polygons { get; set; } = new();
 
         public Obj3DC(string path) : base(path)
+        {
+        }
+
+        [JsonConstructor]
+        public Obj3DC()
         {
         }
 

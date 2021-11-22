@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -105,6 +106,11 @@ namespace Parsec.Shaiya.OBJ3DC
 
             U = binaryReader.Read<float>();
             V = binaryReader.Read<float>();
+        }
+
+        [JsonConstructor]
+        public Vertex3DC()
+        {
         }
 
         /// <summary>

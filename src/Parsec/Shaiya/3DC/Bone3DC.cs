@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -48,6 +49,11 @@ namespace Parsec.Shaiya.OBJ3DC
             Scale = new Vector3(scale.X, scale.Y, scale.Z);
             Translation = new Vector3(translation.X, translation.Y, translation.Z);
             Rotation = rotationQuaternion;
+        }
+
+        [JsonConstructor]
+        public Bone3DC()
+        {
         }
 
         /// <inheritdoc />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -45,6 +46,11 @@ namespace Parsec.Shaiya.OBJ3DC
             VertexIndex1 = binaryReader.Read<ushort>();
             VertexIndex2 = binaryReader.Read<ushort>();
             VertexIndex3 = binaryReader.Read<ushort>();
+        }
+
+        [JsonConstructor]
+        public Polygon3DC()
+        {
         }
 
         /// <inheritdoc />
