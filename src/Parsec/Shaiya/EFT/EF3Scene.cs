@@ -4,7 +4,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class Scene
+    public class EF3Scene
     {
         public string Name { get; set; }
         public int Unknown01 { get; set; }
@@ -43,32 +43,31 @@ namespace Parsec.Shaiya.EFT
         public int Unknown34 { get; set; }
         public int Unknown35 { get; set; }
         public int Unknown36 { get; set; }
-        public float Unknown37 { get; set; }
-        public float Unknown38 { get; set; }
-        public float Unknown39 { get; set; }
-        public float Unknown40 { get; set; }
+        public List<Vector4> Vec04Array { get; } = new();
         public int Unknown41 { get; set; }
         public int Unknown42 { get; set; }
         public float Unknown43 { get; set; }
         public int Unknown44 { get; set; }
+        public int Unknown45 { get; set; }
+        public int Unknown46 { get; set; }
         public int Vec05Count { get; set; }
         public List<Vector5> Vec05Array { get; } = new();
         public int Vec02Count { get; set; }
         public List<Vector2> Vec02Array { get; } = new();
         public int Vec03Count { get; set; }
         public List<Vector3> Vec03Array { get; } = new();
-        public int Unknown46 { get; set; }
         public int Unknown47 { get; set; }
-        public float Unknown48 { get; set; }
-        public int Unknown49 { get; set; }
+        public int Unknown48 { get; set; }
+        public float Unknown49 { get; set; }
+        public int Unknown50 { get; set; }
         public int DDSCount { get; set; }
         public List<DDS> DDSSequence { get; } = new();
 
-        public Scene()
+        public EF3Scene()
         {
         }
 
-        public Scene(ShaiyaBinaryReader binaryReader)
+        public EF3Scene(ShaiyaBinaryReader binaryReader)
         {
             Name = binaryReader.ReadString();
             //read 10
@@ -111,15 +110,18 @@ namespace Parsec.Shaiya.EFT
             Unknown35 = binaryReader.Read<int>();
             Unknown36 = binaryReader.Read<int>();
             //
-            Unknown37 = binaryReader.Read<float>();
-            Unknown38 = binaryReader.Read<float>();
-            Unknown39 = binaryReader.Read<float>();
-            Unknown40 = binaryReader.Read<float>();
+            for (int i = 0; i < 1; i++)
+            {
+                var vec = new Vector4(binaryReader);
+                Vec04Array.Add(vec);
+            }
             //
             Unknown41 = binaryReader.Read<int>();
             Unknown42 = binaryReader.Read<int>();
             Unknown43 = binaryReader.Read<float>();
             Unknown44 = binaryReader.Read<int>();
+            Unknown45 = binaryReader.Read<int>();
+            Unknown46 = binaryReader.Read<int>();
 
             Vec05Count = binaryReader.Read<int>();
 
@@ -145,10 +147,10 @@ namespace Parsec.Shaiya.EFT
                 Vec03Array.Add(vec);
             }
 
-            Unknown46 = binaryReader.Read<int>();
             Unknown47 = binaryReader.Read<int>();
-            Unknown48 = binaryReader.Read<float>();
-            Unknown49 = binaryReader.Read<int>();
+            Unknown48 = binaryReader.Read<int>();
+            Unknown49 = binaryReader.Read<float>();
+            Unknown50 = binaryReader.Read<int>();
 
             DDSCount = binaryReader.Read<int>();
 

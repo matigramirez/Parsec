@@ -13,6 +13,9 @@
       <None Update="Crun.EFT">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+	  <None Update="Monster.EFT">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
