@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parsec.Samples.SetItem", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parsec", "..\..\src\Parsec\Parsec.csproj", "{1E6E2039-1510-4338-B066-9A2C5D24BA4A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{4697048F-6C7F-49AD-846C-D27921015833}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,5 +39,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E9950149-16C6-4B61-A653-C2C2F504ADB0}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1E6E2039-1510-4338-B066-9A2C5D24BA4A} = {4697048F-6C7F-49AD-846C-D27921015833}
 	EndGlobalSection
 EndGlobal
