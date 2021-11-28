@@ -4,7 +4,6 @@ using System.Text;
 using Newtonsoft.Json;
 using Parsec.Cryptography;
 using Parsec.Extensions;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SDATA
@@ -162,6 +161,11 @@ namespace Parsec.Shaiya.SDATA
         }
 
         public override void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write(string path)
         {
             throw new NotImplementedException();
         }
