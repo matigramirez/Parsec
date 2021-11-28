@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common
 {
@@ -7,7 +9,7 @@ namespace Parsec.Shaiya.Common
     /// Cube formed by the volume between 2 points which form its diagonal.
     /// The cube is unique; it doesn't form any angle with the x and y axis.
     /// </summary>
-    public class CubicArea
+    public class CubicArea : IBinary
     {
         /// <summary>
         /// Point used as reference for the rectangle
@@ -18,6 +20,11 @@ namespace Parsec.Shaiya.Common
         /// Point used as reference for the rectangle
         /// </summary>
         public Vector3 UpperLimit { get; set; }
+
+        [JsonConstructor]
+        public CubicArea()
+        {
+        }
 
         public CubicArea(Vector3 lowerLimit, Vector3 upperLimit)
         {
@@ -31,9 +38,12 @@ namespace Parsec.Shaiya.Common
             UpperLimit = new Vector3(binaryReader);
         }
 
-        [JsonConstructor]
-        public CubicArea()
+        public byte[] GetBytes()
         {
+            var buffer = new List<byte>();
+            buffer.AddRange(LowerLimit.GetBytes());
+            buffer.AddRange(UpperLimit.GetBytes());
+            return buffer.ToArray();
         }
     }
 }
