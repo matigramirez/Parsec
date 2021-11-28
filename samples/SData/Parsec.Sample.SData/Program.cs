@@ -1,28 +1,39 @@
 ﻿using System;
-using Parsec.Shaiya;
+using Parsec.Helpers;
 using Parsec.Shaiya.GUILDHOUSE;
 using Parsec.Shaiya.NPCQUEST;
+using Parsec.Shaiya.SDATA;
 
-namespace Parsec.Sample.SData
+namespace Parsec.Samples
 {
     class Program
     {
         static void Main(string[] args)
         {
+            #region NpcQuest
+
             var npcQuest = new NpcQuest("NpcQuest.SData");
-
-            npcQuest.ExportDecrypted("NpcQuest.decrypted.SData");
-            npcQuest.ExportEncrypted("NpcQuest.encrypted.SData");
-
             npcQuest.Read();
 
             Console.WriteLine($"Merchant Count: {npcQuest.Merchants.Count}");
             Console.WriteLine($"GateKeeper Count: {npcQuest.GateKeepers.Count}");
             npcQuest.ExportJson("NpcQuest.json");
 
+            var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
+            FileHelper.WriteFile("NpcQuest.SData.Encrypted", encryptedBytes);
+
+            var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
+            FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
+
+            #endregion
+
+            #region GuildHouse
+
             var guildHouse = new GuildHouse("GuildHouse.SData");
             guildHouse.Read();
             guildHouse.ExportJson("GuildHouse.json");
+
+            #endregion
         }
     }
 }
