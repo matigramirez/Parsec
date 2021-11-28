@@ -7,7 +7,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.OBJ3DC
 {
-    public class Vertex3DC
+    public class Vertex
     {
         /// <summary>
         /// The vertex index
@@ -71,18 +71,12 @@ namespace Parsec.Shaiya.OBJ3DC
         public Vector3 Normal { get; set; }
 
         /// <summary>
-        /// U coordinate of the UV mapping for the 2D texture. For more information visit
+        /// UV mapping for the 2D texture. For more information visit
         /// <a href="https://en.wikipedia.org/wiki/UV_mapping">this link</a>.
         /// </summary>
-        public float U { get; set; }
+        public Vector2 UV { get; set; }
 
-        /// <summary>
-        /// V coordinate of the UV mapping for the 2D texture. For more information visit
-        /// <a href="https://en.wikipedia.org/wiki/UV_mapping">this link</a>.
-        /// </summary>
-        public float V { get; set; }
-
-        public Vertex3DC(int index, Format format, ShaiyaBinaryReader binaryReader)
+        public Vertex(int index, Format format, ShaiyaBinaryReader binaryReader)
         {
             Index = index;
             X = binaryReader.Read<float>();
@@ -104,12 +98,11 @@ namespace Parsec.Shaiya.OBJ3DC
 
             Normal = new Vector3(binaryReader);
 
-            U = binaryReader.Read<float>();
-            V = binaryReader.Read<float>();
+            UV = new Vector2(binaryReader);
         }
 
         [JsonConstructor]
-        public Vertex3DC()
+        public Vertex()
         {
         }
 
@@ -136,8 +129,7 @@ namespace Parsec.Shaiya.OBJ3DC
             buffer.Add(BoneVertexGroup3);
             buffer.Add(Unknown);
             buffer.AddRange(Normal.GetBytes());
-            buffer.AddRange(BitConverter.GetBytes(U));
-            buffer.AddRange(BitConverter.GetBytes(V));
+            buffer.AddRange(UV.GetBytes());
 
             return buffer.ToArray();
         }

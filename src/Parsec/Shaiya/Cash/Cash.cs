@@ -1,28 +1,48 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Common;
+using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.CASH
 {
-    public class Cash : FileBase
-    { 
-        [JsonIgnore]
-        public int Total { get; set; }
+    public class Cash : FileBase, IJsonReadable
+    {
         public List<Product> Products { get; } = new();
 
         public Cash(string path) : base(path)
         {
         }
 
+        [JsonConstructor]
+        public Cash()
+        {
+        }
+
         public override void Read()
         {
-            Total = _binaryReader.Read<int>();
+            var productCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < Total; i++)
+            for (int i = 0; i < productCount; i++)
             {
                 var product = new Product(_binaryReader);
                 Products.Add(product);
             }
+        }
+
+        public override void Write(string path)
+        {
+            var buffer = new List<byte>();
+
+            buffer.AddRange(BitConverter.GetBytes(Products.Count));
+
+            foreach (var product in Products)
+            {
+                buffer.AddRange(product.GetBytes());
+            }
+
+            FileHelper.WriteFile(path, buffer.ToArray());
         }
     }
 }

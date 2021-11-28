@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SVMAP
@@ -76,6 +78,60 @@ namespace Parsec.Shaiya.SVMAP
                 var namedArea = new NamedArea(_binaryReader);
                 NamedAreas.Add(namedArea);
             }
+        }
+
+        public override void Write(string path)
+        {
+            // TODO: There's something off about the writing process, it needs to be reviewed
+            var buffer = new List<byte>();
+
+            buffer.AddRange(BitConverter.GetBytes(MapSize));
+            buffer.AddRange(MapHeight);
+            buffer.AddRange(BitConverter.GetBytes(Unknown));
+
+            buffer.AddRange(BitConverter.GetBytes(Ladders.Count));
+
+            foreach (var ladder in Ladders)
+            {
+                buffer.AddRange(ladder.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(MonsterAreas.Count));
+
+            foreach (var monsterArea in MonsterAreas)
+            {
+                buffer.AddRange(monsterArea.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Npcs.Count));
+
+            foreach (var npc in Npcs)
+            {
+                buffer.AddRange(npc.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Portals.Count));
+
+            foreach (var portal in Portals)
+            {
+                buffer.AddRange(portal.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Spawns.Count));
+
+            foreach (var spawn in Spawns)
+            {
+                buffer.AddRange(spawn.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(NamedAreas.Count));
+
+            foreach (var namedArea in NamedAreas)
+            {
+                buffer.AddRange(namedArea.GetBytes());
+            }
+
+            FileHelper.WriteFile(path, buffer.ToArray());
         }
     }
 }

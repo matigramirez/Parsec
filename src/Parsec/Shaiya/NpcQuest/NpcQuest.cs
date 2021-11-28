@@ -49,6 +49,11 @@ namespace Parsec.Shaiya.NPCQUEST
             //ReadQuests();
         }
 
+        public override void Write(string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private void ReadMerchants()
         {
             var merchantCount = _binaryReader.Read<int>();

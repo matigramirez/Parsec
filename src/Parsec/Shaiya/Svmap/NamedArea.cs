@@ -1,9 +1,12 @@
-﻿using Parsec.Readers;
+﻿using System;
+using System.Collections.Generic;
+using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SVMAP
 {
-    public class NamedArea
+    public class NamedArea : IBinary
     {
         public CubicArea Area { get; set; }
         public int NameIdentifier1 { get; set; }
@@ -14,6 +17,15 @@ namespace Parsec.Shaiya.SVMAP
             Area = new CubicArea(binaryReader);
             NameIdentifier1 = binaryReader.Read<int>();
             NameIdentifier2 = binaryReader.Read<int>();
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+            buffer.AddRange(Area.GetBytes());
+            buffer.AddRange(BitConverter.GetBytes(NameIdentifier1));
+            buffer.AddRange(BitConverter.GetBytes(NameIdentifier2));
+            return buffer.ToArray();
         }
     }
 }

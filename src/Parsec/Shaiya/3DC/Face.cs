@@ -7,9 +7,9 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.OBJ3DC
 {
     /// <summary>
-    /// Class that represents a Polygon used in 3DC files to form the mesh. It's composed by 3 vertices only, so polygons can only be triangles.
+    /// Class that represents a Face (Polygon) used in 3DC files to form the mesh. It's composed by 3 vertices only, so polygons can only be triangles.
     /// </summary>
-    public class Polygon3DC : IBinary
+    public class Face : IBinary
     {
         /// <summary>
         /// The index of the first vertex
@@ -17,9 +17,9 @@ namespace Parsec.Shaiya.OBJ3DC
         public ushort VertexIndex1 { get; set; }
 
         /// <summary>
-        /// The <see cref="Vertex3DC"/> instance of the first vertex
+        /// The <see cref="Vertex"/> instance of the first vertex
         /// </summary>
-        public Vertex3DC Vertex1 { get; set; }
+        public Vertex Vertex1 { get; set; }
 
         /// <summary>
         /// The index of the second vertex
@@ -27,9 +27,9 @@ namespace Parsec.Shaiya.OBJ3DC
         public ushort VertexIndex2 { get; set; }
 
         /// <summary>
-        /// The <see cref="Vertex3DC"/> instance of the second vertex
+        /// The <see cref="Vertex"/> instance of the second vertex
         /// </summary>
-        public Vertex3DC Vertex2 { get; set; }
+        public Vertex Vertex2 { get; set; }
 
         /// <summary>
         /// The index of the third vertex
@@ -37,11 +37,11 @@ namespace Parsec.Shaiya.OBJ3DC
         public ushort VertexIndex3 { get; set; }
 
         /// <summary>
-        /// The <see cref="Vertex3DC"/> instance of the third vertex
+        /// The <see cref="Vertex"/> instance of the third vertex
         /// </summary>
-        public Vertex3DC Vertex3 { get; set; }
+        public Vertex Vertex3 { get; set; }
 
-        public Polygon3DC(ShaiyaBinaryReader binaryReader)
+        public Face(ShaiyaBinaryReader binaryReader)
         {
             VertexIndex1 = binaryReader.Read<ushort>();
             VertexIndex2 = binaryReader.Read<ushort>();
@@ -49,7 +49,7 @@ namespace Parsec.Shaiya.OBJ3DC
         }
 
         [JsonConstructor]
-        public Polygon3DC()
+        public Face()
         {
         }
 

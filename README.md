@@ -14,6 +14,7 @@
 - `3DC`
 - `EFT`
 - `seff`
+- `SMOD`
 - `Cash.SData`
 - `SetItem.SData`
 - `DualLayerClothes.SData`

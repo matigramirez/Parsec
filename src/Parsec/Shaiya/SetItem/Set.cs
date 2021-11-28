@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SETITEM
 {
-    public class Set
+    public class Set : IBinary
     {
         public short Index { get; set; }
         public string Name { get; set; }
         public List<Item> Items { get; } = new();
         public List<Synergy> Synergies { get; } = new();
 
+        [JsonConstructor]
         public Set()
         {
         }
@@ -30,6 +35,26 @@ namespace Parsec.Shaiya.SETITEM
                 var synergy = new Synergy(binaryReader);
                 Synergies.Add(synergy);
             }
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+            buffer.AddRange(BitConverter.GetBytes(Index));
+            buffer.AddRange(BitConverter.GetBytes(Name.Length + 1));
+            buffer.AddRange(Encoding.ASCII.GetBytes(Name + '\0'));
+
+            foreach (var item in Items)
+            {
+                buffer.AddRange(item.GetBytes());
+            }
+
+            foreach (var synergy in Synergies)
+            {
+                buffer.AddRange(synergy.GetBytes());
+            }
+
+            return buffer.ToArray();
         }
     }
 }

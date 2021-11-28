@@ -10,7 +10,7 @@ using Vector3 = Parsec.Shaiya.Common.Vector3;
 
 namespace Parsec.Shaiya.OBJ3DC
 {
-    public class Bone3DC : IBinary
+    public class Bone : IBinary
     {
         /// <summary>
         /// The index of this bone in the skeleton
@@ -37,7 +37,7 @@ namespace Parsec.Shaiya.OBJ3DC
         /// </summary>
         public Vector3 Scale { get; set; }
 
-        public Bone3DC(int boneIndex, ShaiyaBinaryReader binaryReader)
+        public Bone(int boneIndex, ShaiyaBinaryReader binaryReader)
         {
             BoneIndex = boneIndex;
 
@@ -52,7 +52,7 @@ namespace Parsec.Shaiya.OBJ3DC
         }
 
         [JsonConstructor]
-        public Bone3DC()
+        public Bone()
         {
         }
 
