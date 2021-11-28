@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.SETITEM
 {
     public class SetItem : FileBase
-    { 
+    {
         [JsonIgnore]
         public int Total { get; set; }
         public List<Set> Sets { get; } = new();
@@ -21,8 +21,13 @@ namespace Parsec.Shaiya.SETITEM
             for (int i = 0; i < Total; i++)
             {
                 var set = new Set(_binaryReader);
-                Sets.Add(set); 
+                Sets.Add(set);
             }
+        }
+
+        public override void Write(string path)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

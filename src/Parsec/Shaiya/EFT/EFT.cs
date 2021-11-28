@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
 {
     public class EFT : FileBase
     {
-        [JsonIgnore]
         public byte[] Header { get; set; }
         public string FileHeader { get; set; }
         public int File3DECount { get; set; }
@@ -72,6 +70,11 @@ namespace Parsec.Shaiya.EFT
                 var sequence = new Sequence(_binaryReader);
                 Sequences.Add(sequence);
             }
+        }
+
+        public override void Write(string path)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

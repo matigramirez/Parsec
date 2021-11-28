@@ -55,8 +55,7 @@ namespace Parsec.Shaiya.Core
             throw new NotImplementedException("Reading hasn't been implemented yet for this format.");
 
         /// <inheritdoc />
-        public virtual void Write(string path) =>
-            throw new NotImplementedException("Writing hasn't been implemented yet for this format.");
+        public abstract void Write(string path);
 
         /// <inheritdoc/>
         public void ExportJson(string path, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false) =>
