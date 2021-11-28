@@ -26,5 +26,10 @@ namespace Parsec.Shaiya.WLD
         public override void Read()
         {
         }
+
+        public override void Write(string path)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
