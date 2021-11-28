@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SMOD

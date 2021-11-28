@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SMOD
+namespace Parsec.Shaiya.Common
 {
     public class Face : IBinary
     {
