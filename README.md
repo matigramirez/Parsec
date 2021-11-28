@@ -8,18 +8,17 @@
 ## Currently supported files/formats
 - `data.sah/saf`
 - `svmap`
-- `NpcQuest.SData` (partial support - Quests are missing)
-- `KillStatus.SData`
 - `ANI`
 - `3DC`
 - `EFT`
 - `seff`
 - `SMOD`
+- `NpcQuest.SData` (partial support - Quests are missing)
+- `KillStatus.SData`
 - `Cash.SData`
 - `SetItem.SData`
 - `DualLayerClothes.SData`
 - `GuldHouse.SData`
-
 
 ## Features
 - `data` extraction, patching and creation
@@ -28,7 +27,7 @@
 
 ## Getting Started
 ### Prerequisites
-- `.NET 5 SDK x64 and x86` (x86 is needed for SData encryption/decryption, this requirement will be removed shortly)
+- `.NET 5 SDK`
 
 ### Run
 1. Create a C# project in Visual Studio/Rider/VSCode/CLI
