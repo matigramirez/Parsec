@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
@@ -19,6 +18,7 @@ namespace Parsec.Shaiya.Core
         /// <summary>
         /// The file's byte array
         /// </summary>
+        [JsonIgnore]
         public byte[] Buffer => _binaryReader.Buffer;
 
         /// <summary>

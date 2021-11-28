@@ -10,9 +10,10 @@
 - `svmap`
 - `ANI`
 - `3DC`
+- `3DO`
 - `EFT`
-- `seff`
 - `SMOD`
+- `seff`
 - `NpcQuest.SData` (partial support - Quests are missing)
 - `KillStatus.SData`
 - `Cash.SData`
