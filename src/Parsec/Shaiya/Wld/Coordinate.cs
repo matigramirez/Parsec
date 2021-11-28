@@ -24,16 +24,16 @@ namespace Parsec.Shaiya.WLD
         public Vector3 Rotation { get; set; }
 
         /// <summary>
-        /// Scaling vector - almost always (0, 1, 0)
+        /// Scale vector - almost always (0, 1, 0)
         /// </summary>
-        public Vector3 Scaling { get; set; }
+        public Vector3 Scale { get; set; }
 
         public Coordinate(ShaiyaBinaryReader binaryReader)
         {
             Id = binaryReader.Read<int>();
             Position = new Vector3(binaryReader);
             Rotation = new Vector3(binaryReader);
-            Scaling = new Vector3(binaryReader);
+            Scale = new Vector3(binaryReader);
         }
     }
 }
