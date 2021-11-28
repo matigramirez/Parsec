@@ -1,12 +1,17 @@
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.CASH
 {
-    public class Item
+    public class Item : IBinary
     {
         public int ItemId { get; set; }
         public byte Count { get; set; }
 
+        [JsonConstructor]
         public Item()
         {
         }
@@ -15,6 +20,14 @@ namespace Parsec.Shaiya.CASH
         {
             ItemId = binaryReader.Read<int>();
             Count = binaryReader.Read<byte>();
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+            buffer.AddRange(BitConverter.GetBytes(ItemId));
+            buffer.Add(Count);
+            return buffer.ToArray();
         }
     }
 }
