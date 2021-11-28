@@ -1,4 +1,5 @@
-﻿using Parsec.Shaiya.OBJ3DC;
+﻿using Parsec.Shaiya.MLT;
+using Parsec.Shaiya.OBJ3DC;
 using Parsec.Shaiya.OBJ3DO;
 
 namespace Parsec.Samples.Object3D
@@ -12,6 +13,14 @@ namespace Parsec.Samples.Object3D
             var obj3dc = new Obj3DC("Mob_Fox_01.3DC");
             obj3dc.Read();
             obj3dc.ExportJson($"{obj3dc.FileNameWithoutExtension}.json", enumFriendly: true);
+
+            #endregion
+
+            #region MLT
+
+            var mlt = new MLT("humf_face.MLT");
+            mlt.Read();
+            mlt.ExportJson($"{mlt.FileNameWithoutExtension}.json");
 
             #endregion
 
