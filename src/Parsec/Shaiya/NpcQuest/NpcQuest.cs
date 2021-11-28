@@ -28,9 +28,6 @@ namespace Parsec.Shaiya.NPCQUEST
 
         public override void Read()
         {
-            // Make sure file is decrypted before reading through it
-            Decrypt(Buffer);
-
             ReadMerchants();
             ReadGatekeepers();
             ReadStandardNpcs(Blacksmiths);

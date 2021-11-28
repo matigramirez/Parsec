@@ -14,7 +14,10 @@ namespace Parsec.Shaiya.SDATA
         public SData(string path) : base(path)
         {
             if (IsEncrypted(Buffer))
-                Decrypt(Buffer);
+            {
+                var decryptedBuffer = Decrypt(Buffer);
+                _binaryReader.Buffer = decryptedBuffer;
+            }
         }
 
         [JsonConstructor]
