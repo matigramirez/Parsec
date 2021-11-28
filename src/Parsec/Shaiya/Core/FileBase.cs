@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.Core
         /// <summary>
         /// The file's byte array
         /// </summary>
-        protected byte[] Buffer => _binaryReader.Buffer;
+        public byte[] Buffer => _binaryReader.Buffer;
 
         /// <summary>
         /// Full path to the file
