@@ -26,17 +26,17 @@ namespace Parsec.Shaiya.OBJ3DC
         /// <summary>
         /// List of bones linked to this 3d model. Although a model might be linked to a few bones (for example boots models), the 3DC file contains the definitions for all the bones in the whole skeleton.
         /// </summary>
-        public List<Bone3DC> Bones { get; } = new();
+        public List<Bone> Bones { get; } = new();
 
         /// <summary>
         /// List of vertices which are used to make polygons
         /// </summary>
-        public List<Vertex3DC> Vertices { get; set; } = new();
+        public List<Vertex> Vertices { get; set; } = new();
 
         /// <summary>
         /// List of polygons that give shape to the mesh of the 3d model. Polygons can only be made up of 3 vertices, so they'll all be triangular
         /// </summary>
-        public List<Polygon3DC> Polygons { get; set; } = new();
+        public List<Face> Polygons { get; set; } = new();
 
         public Obj3DC(string path) : base(path)
         {
@@ -55,7 +55,7 @@ namespace Parsec.Shaiya.OBJ3DC
 
             for (int i = 0; i < boneCount; i++)
             {
-                var bone = new Bone3DC(i, _binaryReader);
+                var bone = new Bone(i, _binaryReader);
                 Bones.Add(bone);
             }
 
@@ -63,7 +63,7 @@ namespace Parsec.Shaiya.OBJ3DC
 
             for (int i = 0; i < vertexCount; i++)
             {
-                var vertex = new Vertex3DC(i, Format, _binaryReader);
+                var vertex = new Vertex(i, Format, _binaryReader);
                 Vertices.Add(vertex);
             }
 
@@ -71,7 +71,7 @@ namespace Parsec.Shaiya.OBJ3DC
 
             for (int i = 0; i < polygonCount; i++)
             {
-                var polygon = new Polygon3DC(_binaryReader);
+                var polygon = new Face(_binaryReader);
                 polygon.Vertex1 = Vertices[polygon.VertexIndex1];
                 polygon.Vertex2 = Vertices[polygon.VertexIndex2];
                 polygon.Vertex3 = Vertices[polygon.VertexIndex3];

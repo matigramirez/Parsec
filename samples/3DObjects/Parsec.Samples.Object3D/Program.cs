@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Shaiya.OBJ3DC;
+﻿using Parsec.Shaiya.OBJ3DC;
 
 namespace Parsec.Samples.Object3D
 {
