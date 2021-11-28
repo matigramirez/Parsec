@@ -8,12 +8,14 @@ namespace Parsec.Shaiya.EFT
     {
         [JsonIgnore]
         public byte[] Header { get; set; }
+        public string FileHeader { get; set; }
         public int File3DECount { get; set; }
         public List<string> File3DEList { get; } = new();
         public int FileDDSCount { get; set; }
         public List<string> FileDDSList { get; } = new();
         public int SceneCount { get; set; }
-        public List<Scene> Scenes { get; } = new();
+        public List<EFTScene> EFTScenes { get; } = new();
+        public List<EF3Scene> EF3Scenes { get; } = new();
         public int SequenceCount { get; set; }
         public List<Sequence> Sequences { get; } = new();
 
@@ -24,6 +26,8 @@ namespace Parsec.Shaiya.EFT
         public override void Read()
         {
             Header = _binaryReader.ReadBytes(3);
+
+            FileHeader = System.Text.Encoding.UTF8.GetString(Header, 0, 3);
 
             File3DECount = _binaryReader.Read<int>();
 
@@ -43,10 +47,22 @@ namespace Parsec.Shaiya.EFT
 
             SceneCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < SceneCount; i++)
+            if (FileHeader == "EFT")
             {
-                var scene = new Scene(_binaryReader);
-                Scenes.Add(scene);
+                for (int i = 0; i < SceneCount; i++)
+                {
+                    var scene = new EFTScene(_binaryReader);
+                    EFTScenes.Add(scene);
+                }
+            }
+
+            if (FileHeader == "EF3")
+            {
+                for (int i = 0; i < SceneCount; i++)
+                {
+                    var scene = new EF3Scene(_binaryReader);
+                    EF3Scenes.Add(scene);
+                }
             }
 
             SequenceCount = _binaryReader.Read<int>();
