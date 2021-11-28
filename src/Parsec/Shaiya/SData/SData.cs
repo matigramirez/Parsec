@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Parsec.Cryptography;
 using Parsec.Extensions;
-using Parsec.External;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SDATA
 {
-    public abstract class SData : FileBase
+    public class SData : FileBase
     {
-        protected SData(string path) : base(path)
+        public SData(string path) : base(path)
         {
+            if (IsEncrypted)
+                Decrypt();
         }
 
         [JsonConstructor]
@@ -26,6 +29,12 @@ namespace Parsec.Shaiya.SDATA
         public bool IsValidSData => Path.Substring(Path.Length - 6, 6) == ".SData";
 
         /// <summary>
+        /// The signature present in the header of encrypted files
+        /// </summary>
+        [JsonIgnore]
+        private const string _encryptionSignature = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
+
+        /// <summary>
         /// Checks if the file is encrypted with the SEED algorithm
         /// </summary>
         [JsonIgnore]
@@ -33,118 +42,123 @@ namespace Parsec.Shaiya.SDATA
         {
             get
             {
-                const string encryptedFileHeader = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
-
-                string sDataHeader = Encoding.ASCII.GetString(Buffer.SubArray(0, encryptedFileHeader.Length));
-
-                return sDataHeader == encryptedFileHeader;
+                string sDataHeader = Encoding.ASCII.GetString(Buffer.SubArray(0, _encryptionSignature.Length));
+                return sDataHeader == _encryptionSignature;
             }
         }
 
         /// <summary>
-        /// Encrypts the current SData object. Note that this will make it unreadable.
+        /// Function that encrypts the SData buffer using the SEED algorithm
         /// </summary>
-        public void Encrypt()
-        {
-            if (IsEncrypted)
-                return;
-
-            SetEncryptedBuffer();
-
-            // Replace the binary reader's buffer so that the file becomes unreadable
-            Array.Copy(_encryptedBuffer, _binaryReader.Buffer, _encryptedBuffer.Length);
-        }
-
-        /// <summary>
-        /// Decrypts the current SData object. Note that this will make it readable through the Read method
-        /// </summary>
-        public void Decrypt()
-        {
-            if (!IsEncrypted)
-                return;
-
-            SetDecryptedBuffer();
-
-            // Replace the binary reader's buffer so that the file becomes readable
-            Array.Copy(_decryptedBuffer, _binaryReader.Buffer, _decryptedBuffer.Length);
-        }
-
-        private byte[] _encryptedBuffer;
-
-        /// <summary>
-        /// Saves an encrypted version of the file buffer, no matter the original encryption status.
-        /// </summary>
-        private void SetEncryptedBuffer()
-        {
-            if (IsEncrypted)
-            {
-                _encryptedBuffer = new byte[Buffer.Length];
-                Array.Copy(Buffer, _encryptedBuffer, Buffer.Length);
-                return;
-            }
-
-            var tempBuffer = new byte[Buffer.Length];
-
-            Array.Copy(Buffer, tempBuffer, Buffer.Length);
-
-            var newBufferLength = ShaiyaCrypt.encrypt(tempBuffer, (uint)tempBuffer.Length);
-
-            _encryptedBuffer = new byte[newBufferLength];
-
-            Array.Copy(tempBuffer, _encryptedBuffer, _encryptedBuffer.Length <= tempBuffer.Length ? _encryptedBuffer.Length : tempBuffer.Length);
-        }
-
-        [JsonIgnore]
         public byte[] EncryptedBuffer
         {
             get
             {
-                SetEncryptedBuffer();
-                return _encryptedBuffer;
+                if (IsEncrypted)
+                    return Buffer;
+
+                var data = new byte[Buffer.Length];
+                Array.Copy(Buffer, data, Buffer.Length);
+
+                var dataLength = data.Length;
+
+                // Create SEED header
+                var header = new SDataHeader(_encryptionSignature, 0, (uint)dataLength, new byte[16]);
+
+                // Calculate and set checksum
+                var checksum = uint.MaxValue;
+
+                for (var i = 0; i < dataLength; i++)
+                {
+                    uint index = (checksum & 0xFF) ^ data[i];
+                    uint key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
+                    key = SEED.EndianessSwap(key);
+                    checksum >>= 8;
+                    checksum ^= key;
+                }
+
+                header.Checksum = checksum;
+
+                var buffer = new List<byte>();
+
+                // Add header bytes
+                buffer.AddRange(Encoding.ASCII.GetBytes(header.Signature));
+                buffer.AddRange(BitConverter.GetBytes(header.Checksum));
+                buffer.AddRange(BitConverter.GetBytes(header.RealSize));
+                buffer.AddRange(header.Padding);
+
+                // Encrypt in chunks of 16 bytes
+                for (var i = 0; i < header.RealSize / 16; ++i)
+                {
+                    byte[] data16 = data[(i * 16)..((i + 1) * 16)];
+                    SEED.EncryptChunk(data16, out byte[] encryptedBytes);
+                    buffer.AddRange(encryptedBytes);
+                }
+
+                // Make sure the file length is a multiple of 16
+                var remainingBytes = (64 + header.RealSize) % 16;
+
+                // Add empty bytes
+                for (var i = 0; i < remainingBytes; i++)
+                {
+                    var emptyData = new byte[16];
+                    SEED.EncryptChunk(emptyData, out byte[] encryptedBytes);
+                    buffer.AddRange(encryptedBytes);
+                }
+
+                return buffer.ToArray();
             }
         }
-
-        private byte[] _decryptedBuffer;
 
         /// <summary>
-        /// Saves a decrypted version of the file buffer, no matter the original encryption status.
+        /// Function that decrypts the SData buffer using the SEED algorithm
         /// </summary>
-        private void SetDecryptedBuffer()
+        protected void Decrypt()
         {
+            // Check if file is encrypted
             if (!IsEncrypted)
-            {
-                _decryptedBuffer = new byte[Buffer.Length];
-                Array.Copy(Buffer, _decryptedBuffer, Buffer.Length);
                 return;
-            }
 
-            var tempBuffer = new byte[Buffer.Length];
+            // Get file buffer
+            var fileData = new byte[Buffer.Length];
+            Array.Copy(Buffer, fileData, Buffer.Length);
 
-            Array.Copy(Buffer, tempBuffer, Buffer.Length);
+            // Check 16-byte alignment
+            if (fileData.Length % 16 != 0)
+                throw new FormatException("SData file is not properly aligned.");
 
-            var newBufferLength = ShaiyaCrypt.decrypt(tempBuffer, (uint)tempBuffer.Length);
+            // Read SEED Header
+            var header = new SDataHeader(fileData);
 
-            _decryptedBuffer = new byte[newBufferLength];
+            // Get data without header
+            byte[] data = fileData[64..];
 
-            Array.Copy(tempBuffer, _decryptedBuffer, _decryptedBuffer.Length <= tempBuffer.Length ? _decryptedBuffer.Length : tempBuffer.Length);
+            var buffer = new List<byte>();
 
-            Array.Copy(_decryptedBuffer, Buffer, _decryptedBuffer.Length);
-        }
-
-        [JsonIgnore]
-        public byte[] DecryptedBuffer
-        {
-            get
+            // Decrypt in chunks of 16 bytes
+            for (var i = 0; i < data.Length / 16; ++i)
             {
-                SetDecryptedBuffer();
-                return _decryptedBuffer;
+                // Get 16 bytes
+                byte[] data16 = data[(i * 16)..((i + 1) * 16)];
+
+                // Decrypt seed
+                SEED.DecryptChunk(data16, out byte[] decryptedData);
+                buffer.AddRange(decryptedData);
             }
+
+            // Fill remaining bytes with 0
+            if (buffer.Count < header.RealSize)
+            {
+                buffer.AddRange(new byte[header.RealSize - buffer.Count + 64]);
+            }
+
+            // TODO: Check CRC
+
+            // Replace file buffer
+            byte[] finalData = buffer.ToArray();
+            Array.Copy(finalData, Buffer, header.RealSize);
+
+            FileHelper.WriteFile("NpcQuest.Decrypted.SData", Buffer);
         }
-
-        public void ExportEncrypted(string path) =>
-            FileHelper.WriteFile(path, EncryptedBuffer);
-
-        public void ExportDecrypted(string path) =>
-            FileHelper.WriteFile(path, DecryptedBuffer);
     }
 }
