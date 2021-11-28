@@ -51,7 +51,8 @@ namespace Parsec.Shaiya.Core
         }
 
         /// <inheritdoc/>
-        public abstract void Read();
+        public virtual void Read() =>
+            throw new NotImplementedException("Reading hasn't been implemented yet for this format.");
 
         /// <inheritdoc />
         public virtual void Write(string path) =>
