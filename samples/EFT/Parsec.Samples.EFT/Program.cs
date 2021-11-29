@@ -1,6 +1,8 @@
 ﻿using System;
 using Parsec.Shaiya.EFT;
 
+using Parsec.Helpers;
+
 namespace Parsec.Samples
 {
     class Program
@@ -14,6 +16,14 @@ namespace Parsec.Samples
 
             eft.Read();
             eft.ExportJson(fileName + ".json");
+
+            // Import the created json file
+            var eftFromJson = Deserializer.ReadFromJson<EFT>(fileName + ".json");
+
+            string name = System.IO.Path.GetFileNameWithoutExtension(fileName);
+
+            // Export the loaded json file
+            eftFromJson.Write(name + ".modified.EFT");
         }
     }
 }

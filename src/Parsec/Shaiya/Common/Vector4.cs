@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
 
@@ -25,7 +26,7 @@ namespace Parsec.Shaiya.Common
         public float Z { get; set; }
 
         /// <summary>
-        /// 4th (forth) element of the vector
+        /// 4th (fourth) element of the vector
         /// </summary>
         public float W { get; set; }
 
@@ -54,6 +55,16 @@ namespace Parsec.Shaiya.Common
         [JsonConstructor]
         public Vector4()
         {
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+            buffer.AddRange(BitConverter.GetBytes(X));
+            buffer.AddRange(BitConverter.GetBytes(Y));
+            buffer.AddRange(BitConverter.GetBytes(Z));
+            buffer.AddRange(BitConverter.GetBytes(W));
+            return buffer.ToArray();
         }
     }
 }

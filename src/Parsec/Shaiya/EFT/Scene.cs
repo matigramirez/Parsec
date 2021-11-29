@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class EF3Scene
+    public class Scene
     {
         public string Name { get; set; }
         public int Unknown01 { get; set; }
@@ -44,30 +47,31 @@ namespace Parsec.Shaiya.EFT
         public int Unknown35 { get; set; }
         public int Unknown36 { get; set; }
         public List<Vector4> Vec04Array { get; } = new();
+        public int Unknown37 { get; set; }
+        public int Unknown38 { get; set; }
+        public float Unknown39 { get; set; }
+        public int Unknown40 { get; set; }
         public int Unknown41 { get; set; }
         public int Unknown42 { get; set; }
-        public float Unknown43 { get; set; }
-        public int Unknown44 { get; set; }
-        public int Unknown45 { get; set; }
-        public int Unknown46 { get; set; }
         public int Vec05Count { get; set; }
         public List<Vector5> Vec05Array { get; } = new();
         public int Vec02Count { get; set; }
         public List<Vector2> Vec02Array { get; } = new();
         public int Vec03Count { get; set; }
         public List<Vector3> Vec03Array { get; } = new();
-        public int Unknown47 { get; set; }
-        public int Unknown48 { get; set; }
-        public float Unknown49 { get; set; }
-        public int Unknown50 { get; set; }
+        public int Unknown43 { get; set; }
+        public int Unknown44 { get; set; }
+        public float Unknown45 { get; set; }
+        public int Unknown46 { get; set; }
         public int DDSCount { get; set; }
         public List<DDS> DDSSequence { get; } = new();
 
-        public EF3Scene()
+        [JsonConstructor]
+        public Scene()
         {
         }
 
-        public EF3Scene(ShaiyaBinaryReader binaryReader)
+        public Scene(EFTFormat format, ShaiyaBinaryReader binaryReader)
         {
             Name = binaryReader.ReadString();
             //read 10
@@ -116,12 +120,16 @@ namespace Parsec.Shaiya.EFT
                 Vec04Array.Add(vec);
             }
             //
-            Unknown41 = binaryReader.Read<int>();
-            Unknown42 = binaryReader.Read<int>();
-            Unknown43 = binaryReader.Read<float>();
-            Unknown44 = binaryReader.Read<int>();
-            Unknown45 = binaryReader.Read<int>();
-            Unknown46 = binaryReader.Read<int>();
+            Unknown37 = binaryReader.Read<int>();
+            Unknown38 = binaryReader.Read<int>();
+            Unknown39 = binaryReader.Read<float>();
+            Unknown40 = binaryReader.Read<int>();
+
+            if (format == EFTFormat.EF3)
+            {
+                Unknown41 = binaryReader.Read<int>();
+                Unknown42 = binaryReader.Read<int>();
+            }
 
             Vec05Count = binaryReader.Read<int>();
 
@@ -147,10 +155,10 @@ namespace Parsec.Shaiya.EFT
                 Vec03Array.Add(vec);
             }
 
-            Unknown47 = binaryReader.Read<int>();
-            Unknown48 = binaryReader.Read<int>();
-            Unknown49 = binaryReader.Read<float>();
-            Unknown50 = binaryReader.Read<int>();
+            Unknown43 = binaryReader.Read<int>();
+            Unknown44 = binaryReader.Read<int>();
+            Unknown45 = binaryReader.Read<float>();
+            Unknown46 = binaryReader.Read<int>();
 
             DDSCount = binaryReader.Read<int>();
 
@@ -159,6 +167,102 @@ namespace Parsec.Shaiya.EFT
                 var dds = new DDS(binaryReader);
                 DDSSequence.Add(dds);
             }
+        }
+
+        public byte[] GetBytes(EFTFormat format)
+        {
+            var buffer = new List<byte>();
+
+            buffer.AddRange(BitConverter.GetBytes(Name.Length + 1));
+            buffer.AddRange(Encoding.ASCII.GetBytes(Name + '\0'));
+
+            buffer.AddRange(BitConverter.GetBytes(Unknown01));
+            buffer.AddRange(BitConverter.GetBytes(Unknown02));
+            buffer.AddRange(BitConverter.GetBytes(Unknown03));
+            buffer.AddRange(BitConverter.GetBytes(Unknown04));
+            buffer.AddRange(BitConverter.GetBytes(Unknown05));
+            buffer.AddRange(BitConverter.GetBytes(Unknown06));
+            buffer.AddRange(BitConverter.GetBytes(Unknown07));
+            buffer.AddRange(BitConverter.GetBytes(Unknown08));
+            buffer.AddRange(BitConverter.GetBytes(Unknown09));
+            buffer.AddRange(BitConverter.GetBytes(Unknown10));
+            buffer.AddRange(BitConverter.GetBytes(Unknown11));
+            buffer.AddRange(BitConverter.GetBytes(Unknown12));
+            buffer.AddRange(BitConverter.GetBytes(Unknown13));
+            buffer.AddRange(BitConverter.GetBytes(Unknown14));
+            buffer.AddRange(BitConverter.GetBytes(Unknown15));
+            buffer.AddRange(BitConverter.GetBytes(Unknown16));
+            buffer.AddRange(BitConverter.GetBytes(Unknown17));
+            buffer.AddRange(BitConverter.GetBytes(Unknown18));
+            buffer.AddRange(BitConverter.GetBytes(Unknown19));
+            buffer.AddRange(BitConverter.GetBytes(Unknown20));
+            buffer.AddRange(BitConverter.GetBytes(Unknown21));
+            buffer.AddRange(BitConverter.GetBytes(Unknown22));
+            buffer.AddRange(BitConverter.GetBytes(Unknown23));
+            buffer.AddRange(BitConverter.GetBytes(Unknown24));
+            buffer.AddRange(BitConverter.GetBytes(Unknown25));
+            buffer.AddRange(BitConverter.GetBytes(Unknown26));
+            buffer.AddRange(BitConverter.GetBytes(Unknown27));
+            buffer.AddRange(BitConverter.GetBytes(Unknown28));
+            buffer.AddRange(BitConverter.GetBytes(Unknown29));
+            buffer.AddRange(BitConverter.GetBytes(Unknown30));
+            buffer.AddRange(BitConverter.GetBytes(Unknown31));
+            buffer.AddRange(BitConverter.GetBytes(Unknown32));
+            buffer.AddRange(BitConverter.GetBytes(Unknown33));
+            buffer.AddRange(BitConverter.GetBytes(Unknown34));
+            buffer.AddRange(BitConverter.GetBytes(Unknown35));
+            buffer.AddRange(BitConverter.GetBytes(Unknown36));
+
+            foreach (var vec in Vec04Array)
+            {
+                buffer.AddRange(vec.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Unknown37));
+            buffer.AddRange(BitConverter.GetBytes(Unknown38));
+            buffer.AddRange(BitConverter.GetBytes(Unknown39));
+            buffer.AddRange(BitConverter.GetBytes(Unknown40));
+
+            if (format == EFTFormat.EF3)
+            {
+                buffer.AddRange(BitConverter.GetBytes(Unknown41));
+                buffer.AddRange(BitConverter.GetBytes(Unknown42));
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Vec05Array.Count));
+
+            foreach (var vec in Vec05Array)
+            {
+                buffer.AddRange(vec.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Vec02Array.Count));
+
+            foreach (var vec in Vec02Array)
+            {
+                buffer.AddRange(vec.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Vec03Array.Count));
+
+            foreach (var vec in Vec03Array)
+            {
+                buffer.AddRange(vec.GetBytes());
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(Unknown43));
+            buffer.AddRange(BitConverter.GetBytes(Unknown44));
+            buffer.AddRange(BitConverter.GetBytes(Unknown45));
+            buffer.AddRange(BitConverter.GetBytes(Unknown46));
+
+            buffer.AddRange(BitConverter.GetBytes(DDSSequence.Count));
+
+            foreach (var dds in DDSSequence)
+            {
+                buffer.AddRange(dds.GetBytes());
+            }
+
+            return buffer.ToArray();
         }
     }
 }

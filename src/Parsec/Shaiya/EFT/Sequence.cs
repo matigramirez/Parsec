@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
 using Parsec.Readers;
 
 namespace Parsec.Shaiya.EFT
@@ -7,8 +10,9 @@ namespace Parsec.Shaiya.EFT
     {
         public string Name { get; set; }
         public int SceneCount { get; set; }
-        public List<SeqScene> SceneList { get; } = new();
+        public List<SeqScene> SeqScenes { get; } = new();
 
+        [JsonConstructor]
         public Sequence()
         {
         }
@@ -21,8 +25,25 @@ namespace Parsec.Shaiya.EFT
             for (int i = 0; i < SceneCount; i++)
             {
                 var scene = new SeqScene(binaryReader);
-                SceneList.Add(scene);
+                SeqScenes.Add(scene);
             }
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+
+            buffer.AddRange(BitConverter.GetBytes(Name.Length + 1));
+            buffer.AddRange(Encoding.ASCII.GetBytes(Name + '\0'));
+
+            buffer.AddRange(BitConverter.GetBytes(SeqScenes.Count));
+
+            foreach (var scene in SeqScenes)
+            {
+                buffer.AddRange(scene.GetBytes());
+            }
+
+            return buffer.ToArray();
         }
     }
 }
