@@ -94,7 +94,7 @@ namespace Parsec.Readers
         /// <param name="count">Number of bytes to read</param>
         public byte[] ReadBytes(int count)
         {
-            var result = Buffer.SubArray(_offset, _offset + count);
+            var result = Buffer.SubArray(_offset, count);
             _offset += count;
             return result;
         }
