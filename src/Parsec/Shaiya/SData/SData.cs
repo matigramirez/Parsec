@@ -8,7 +8,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SDATA
 {
-    public class SData : FileBase
+    public abstract class SData : FileBase
     {
         public SData(string path) : base(path)
         {
@@ -158,16 +158,6 @@ namespace Parsec.Shaiya.SDATA
             var decryptedData = new byte[header.RealSize];
             Array.Copy(buffer.ToArray(), decryptedData, header.RealSize);
             return decryptedData;
-        }
-
-        public override void Read()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Write(string path)
-        {
-            throw new NotImplementedException();
         }
     }
 }

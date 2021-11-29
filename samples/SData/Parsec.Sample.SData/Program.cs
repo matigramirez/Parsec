@@ -1,6 +1,7 @@
 ﻿using System;
 using Parsec.Helpers;
 using Parsec.Shaiya.GUILDHOUSE;
+using Parsec.Shaiya.Item;
 using Parsec.Shaiya.NPCQUEST;
 using Parsec.Shaiya.SDATA;
 
@@ -32,6 +33,15 @@ namespace Parsec.Samples
             var guildHouse = new GuildHouse("GuildHouse.SData");
             guildHouse.Read();
             guildHouse.ExportJson("GuildHouse.json");
+
+            #endregion
+
+            #region Item
+
+            var item = new Item("Item.SData");
+            item.Read();
+            var encryptedBuffer = SData.Encrypt(item.Buffer);
+            FileHelper.WriteFile("Item.SData.Encrypted", encryptedBuffer);
 
             #endregion
         }
