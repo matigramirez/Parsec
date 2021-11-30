@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.SEFF
 {
     public class Seff : FileBase, IJsonReadable
     {
-        public int[] Unknown { get; } = new int[4];
+        public int[] Unknown { get; set; } = new int[4];
         public List<Effect> Effects { get; } = new();
 
         [JsonConstructor]
