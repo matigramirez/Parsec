@@ -4,10 +4,11 @@ using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
+using Parsec.Shaiya.SDATA;
 
 namespace Parsec.Shaiya.CASH
 {
-    public class Cash : FileBase, IJsonReadable
+    public class Cash : SData, IJsonReadable
     {
         public List<Product> Products { get; } = new();
 

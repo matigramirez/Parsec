@@ -27,6 +27,9 @@ namespace Parsec.Shaiya.Core
         [JsonIgnore]
         public string Path { get; set; } = "";
 
+        [JsonIgnore]
+        public abstract string Extension { get; }
+
         /// <summary>
         /// Plain file name
         /// </summary>

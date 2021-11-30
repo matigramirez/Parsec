@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.ITM
 {
-    public class ITM : FileBase
+    public class ITM : FileBase, IJsonReadable
     {
         /// <summary>
         /// File Signature. Read as char[3]. "ITM" or "IT2"
@@ -40,6 +41,9 @@ namespace Parsec.Shaiya.ITM
         public ITM()
         {
         }
+
+        [JsonIgnore]
+        public override string Extension => "ITM";
 
         public override void Read()
         {

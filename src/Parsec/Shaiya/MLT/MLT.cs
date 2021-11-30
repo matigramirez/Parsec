@@ -39,6 +39,8 @@ namespace Parsec.Shaiya.MLT
         {
         }
 
+        public override string Extension => "MLT";
+
         public override void Read()
         {
             Signature = _binaryReader.ReadString(3);

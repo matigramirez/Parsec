@@ -36,6 +36,9 @@ namespace Parsec.Shaiya.ANI
         {
         }
 
+        [JsonIgnore]
+        public override string Extension => "ANI";
+
         /// <inheritdoc />
         public override void Read()
         {

@@ -1,4 +1,5 @@
-﻿using Parsec.Shaiya.Core;
+﻿using Newtonsoft.Json;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.WLD
 {
@@ -22,6 +23,9 @@ namespace Parsec.Shaiya.WLD
         public byte[] MapHeight { get; set; }
 
         #endregion
+
+        [JsonIgnore]
+        public override string Extension => "wld";
 
         public override void Read()
         {

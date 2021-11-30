@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Shaiya.Core;
+using Parsec.Shaiya.SDATA;
 
 namespace Parsec.Shaiya.DUALLAYERCLOTHES
 {
-    public class DualLayerClothes : FileBase, IJsonReadable
+    public class DualLayerClothes : SData, IJsonReadable
     {
         public List<Costume> Costumes { get; } = new();
 

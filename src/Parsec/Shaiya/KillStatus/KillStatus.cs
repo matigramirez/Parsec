@@ -6,10 +6,11 @@ using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
+using Parsec.Shaiya.SDATA;
 
 namespace Parsec.Shaiya.KILLSTATUS
 {
-    public class KillStatus : FileBase, IJsonReadable
+    public class KillStatus : SData, IJsonReadable
     {
         public List<KillStatusRecord> Records { get; } = new();
 

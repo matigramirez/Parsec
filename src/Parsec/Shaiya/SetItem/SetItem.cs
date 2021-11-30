@@ -4,10 +4,11 @@ using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
+using Parsec.Shaiya.SDATA;
 
 namespace Parsec.Shaiya.SETITEM
 {
-    public class SetItem : FileBase, IJsonReadable
+    public class SetItem : SData, IJsonReadable
     {
         public List<Set> Sets { get; } = new();
 

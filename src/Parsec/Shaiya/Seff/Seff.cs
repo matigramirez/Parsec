@@ -21,6 +21,9 @@ namespace Parsec.Shaiya.SEFF
         {
         }
 
+        [JsonIgnore]
+        public override string Extension => "seff";
+
         public override void Read()
         {
             for (int i = 0; i < 4; i++)

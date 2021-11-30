@@ -64,6 +64,9 @@ namespace Parsec.Shaiya.DATA
             TotalFileCount = fileCount;
         }
 
+        [JsonIgnore]
+        public override string Extension => "sah";
+
         public override void Read()
         {
             _binaryReader = new ShaiyaBinaryReader(Path);

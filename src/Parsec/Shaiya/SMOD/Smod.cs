@@ -29,6 +29,9 @@ namespace Parsec.Shaiya.SMOD
         {
         }
 
+        [JsonIgnore]
+        public override string Extension => "SMOD";
+
         public override void Read()
         {
             Center = new Vector3(_binaryReader);

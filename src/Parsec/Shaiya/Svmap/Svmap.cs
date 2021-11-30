@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
@@ -21,6 +22,9 @@ namespace Parsec.Shaiya.SVMAP
         public Svmap(string path) : base(path)
         {
         }
+
+        [JsonIgnore]
+        public override string Extension => "svmap";
 
         public override void Read()
         {

@@ -47,6 +47,9 @@ namespace Parsec.Shaiya.OBJ3DC
         {
         }
 
+        [JsonIgnore]
+        public override string Extension => "3DC";
+
         public override void Read()
         {
             Tag = _binaryReader.Read<int>();

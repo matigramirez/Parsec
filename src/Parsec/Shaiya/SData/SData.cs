@@ -10,6 +10,9 @@ namespace Parsec.Shaiya.SDATA
 {
     public abstract class SData : FileBase
     {
+        [JsonIgnore]
+        public override string Extension => "SData";
+
         public SData(string path) : base(path)
         {
             if (IsEncrypted(Buffer))

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
@@ -31,6 +31,9 @@ namespace Parsec.Shaiya.EFT
         public EFT(string path) : base(path)
         {
         }
+
+        [JsonIgnore]
+        public override string Extension => "EFT";
 
         public override void Read()
         {

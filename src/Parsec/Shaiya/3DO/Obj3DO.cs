@@ -24,6 +24,9 @@ namespace Parsec.Shaiya.OBJ3DO
         {
         }
 
+        [JsonIgnore]
+        public override string Extension => "3DO";
+
         public override void Read()
         {
             TextureName = _binaryReader.ReadString();
