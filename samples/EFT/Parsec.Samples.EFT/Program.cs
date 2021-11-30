@@ -1,7 +1,6 @@
 ﻿using System;
-using Parsec.Shaiya.EFT;
-
 using Parsec.Helpers;
+using Parsec.Shaiya.EFT;
 
 namespace Parsec.Samples
 {
