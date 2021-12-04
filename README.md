@@ -16,7 +16,7 @@
 - `SMOD`
 - `EFT`
 - `seff`
-- `NpcQuest.SData` (EP5 support, EP5+ is pending)
+- `NpcQuest.SData` (EP4-5 supported, EP5+ is pending)
 - `KillStatus.SData`
 - `Cash.SData`
 - `SetItem.SData`
