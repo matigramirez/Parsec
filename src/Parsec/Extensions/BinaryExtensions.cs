@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Extensions
 {
@@ -18,11 +20,27 @@ namespace Parsec.Extensions
         {
             var buffer = new List<byte>();
 
-            var finalLength = includeStringTerminator ? str.Length + 1 : str.Length;
             var finalStr = includeStringTerminator ? str + '\0' : str;
 
-            buffer.AddRange(BitConverter.GetBytes(finalLength));
+            buffer.AddRange(BitConverter.GetBytes(finalStr.Length));
             buffer.AddRange(Encoding.ASCII.GetBytes(finalStr));
+
+            return buffer.ToArray();
+        }
+
+        public static byte[] GetBytes(this IEnumerable<IBinary> list, bool lengthPrefixed = true)
+        {
+            var buffer = new List<byte>();
+
+            var enumerable = list as IBinary[] ?? list.ToArray();
+
+            // Add length bytes
+            if(lengthPrefixed)
+                buffer.AddRange(enumerable.Length.GetBytes());
+
+            // Add item bytes
+            foreach (var item in enumerable)
+                buffer.AddRange(item.GetBytes());
 
             return buffer.ToArray();
         }

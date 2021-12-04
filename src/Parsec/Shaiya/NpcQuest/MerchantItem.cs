@@ -1,8 +1,9 @@
 ﻿using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NPCQUEST
 {
-    public class MerchantItem
+    public class MerchantItem : IBinary
     {
         /// <summary>
         /// Item Type
@@ -19,5 +20,10 @@ namespace Parsec.Shaiya.NPCQUEST
             Type = binaryReader.Read<byte>();
             TypeId = binaryReader.Read<byte>();
         }
+
+        public byte[] GetBytes() => new[]
+        {
+            Type, TypeId
+        };
     }
 }

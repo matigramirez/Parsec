@@ -1,55 +1,288 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NPCQUEST
 {
-    public class Quest
+    public class Quest : IBinary
     {
         public short Id { get; set; }
         public string Name { get; set; }
         public string Summary { get; set; }
-        public short MinLevel { get; set; }
-        public short MaxLevel { get; set; }
-        public byte Unknown1 { get; set; }
+
+        public ushort MinLevel { get; set; }
+        public ushort MaxLevel { get; set; }
+        public FactionByte Faction { get; set; }
         public Mode Mode { get; set; }
-        public byte Unknown2 { get; set; }
-        public byte Unknown3 { get; set; }
-        public byte AttackFighter { get; set; }
-        public byte DefenseFighter { get; set; }
-        public byte PatrolRogue { get; set; }
-        public byte ShooterRogue { get; set; }
-        public byte AttackMage { get; set; }
-        public byte DefenseMage { get; set; }
-        public short PrevQuestId2 { get; set; }
-        public short PrevQuestId3 { get; set; }
-        public short Unknown4 { get; set; }
-        public byte Unknown5 { get; set; }
-        public short PrevQuestId { get; set; }
-        public int Unknown6 { get; set; }
-        public byte Unknown7 { get; set; }
-        public byte Unknown8 { get; set; }
-        public byte Unknown9 { get; set; }
-        public byte Unknown10 { get; set; }
-        public short Unknown11 { get; set; }
-        public byte Unknown12 { get; set; }
-        public short QuestTimer { get; set; }
 
-        public int Unknown13 { get; set; }
-        public int Unknown14 { get; set; }
-        public byte Unknown15 { get; set; }
-        public byte Unknown16 { get; set; }
-        public byte Unknown17 { get; set; }
-        public byte Unknown18 { get; set; }
-        public short Unknown19 { get; set; }
+        // Sex - 2 separate bool
+        public bool MaleSex { get; set; }
+        public bool FemaleSex { get; set; }
 
-        public List<QuestRequiredItem> RequiredItems { get; } = new();
+        // Job x6
+        public byte Fighter { get; set; }
+        public byte Defender { get; set; }
+        public byte Ranger { get; set; }
+        public byte Archer { get; set; }
+        public byte Mage { get; set; }
+        public byte Priest { get; set; }
 
-        public Quest(ShaiyaBinaryReader binaryReader)
+        public ushort wHG { get; set; }
+        public short shVG { get; set; }
+        public byte byCG { get; set; }
+        public byte byOG { get; set; }
+        public byte byIG { get; set; }
+
+        public ushort PreviousQuestId { get; set; }
+        public bool RequireParty { get; set; }
+
+        // Party Job x6
+        public byte PartyFighter { get; set; }
+        public byte PartyDefender { get; set; }
+        public byte PartyRanger { get; set; }
+        public byte PartyArcher { get; set; }
+        public byte PartyMage { get; set; }
+        public byte PartyPriest { get; set; }
+
+        // Time values
+        public uint MinimumTime { get; set; }
+        public uint Time { get; set; }
+        public uint TickStartTerm { get; set; }
+        public uint TickKeepTime { get; set; }
+        public uint TickReceiveCount { get; set; }
+
+        public byte StartType { get; set; }
+        public byte StartNpcType { get; set; }
+        public ushort StartNpcId { get; set; }
+        public byte StartItemType { get; set; }
+        public byte StartItemId { get; set; }
+
+        /// <summary>
+        /// 3 for EP4 and EP5?
+        /// </summary>
+        public List<QuestItem> RequiredItems { get; } = new();
+
+        public byte EndType { get; set; }
+        public byte EndNpcType { get; set; }
+        public short EndNpcId { get; set; }
+
+        /// <summary>
+        /// 3 for EP4 and EP5?
+        /// </summary>
+        public List<QuestItem> RewardItems { get; } = new();
+
+        /// <summary>
+        /// byPCKillCount = pvp kills?
+        /// </summary>
+        public byte PvpKillCount { get; set; }
+
+        public ushort RequiredMobId1 { get; set; }
+
+        /// <summary>
+        /// The required mob count for <see cref="RequiredMobId1"/>
+        /// </summary>
+        public byte RequiredMobCount1 { get; set; }
+
+        public ushort RequiredMobId2 { get; set; }
+
+        /// <summary>
+        /// The required mob count for <see cref="RequiredMobId2"/>
+        /// </summary>
+        public byte RequiredMobCount2 { get; set; }
+
+        public byte ResultType { get; set; }
+
+        /// <summary>
+        /// I guess defines if the user can choose a reward or if a default reward should be given
+        /// </summary>
+        public byte ResultUserSelect { get; set; }
+
+        /// <summary>
+        /// 3 results, it this variable throughout EPs too?
+        /// </summary>
+        public List<QuestResult> Results { get; } = new();
+
+        public string InitialDescription { get; set; }
+        public string QuestWindowSummary { get; set; }
+        public string ReminderInstructions { get; set; }
+        public string AlternateResponse { get; set; }
+        public string CompletionMessage { get; set; }
+        public string AlternateCompletionMessage1 { get; set; }
+        public string AlternateCompletionMessage2 { get; set; }
+
+        public Quest(ShaiyaBinaryReader binaryReader, Format format)
         {
             Id = binaryReader.Read<short>();
             Name = binaryReader.ReadString();
             Summary = binaryReader.ReadString();
+
+            MinLevel = binaryReader.Read<ushort>();
+            MaxLevel = binaryReader.Read<ushort>();
+            Faction = (FactionByte)binaryReader.Read<byte>();
+            Mode = (Mode)binaryReader.Read<byte>();
+
+            // Sex - 2 separate bool
+            MaleSex = binaryReader.Read<bool>();
+            FemaleSex = binaryReader.Read<bool>();
+
+            // Job x6
+            Fighter = binaryReader.Read<byte>();
+            Defender = binaryReader.Read<byte>();
+            Ranger = binaryReader.Read<byte>();
+            Archer = binaryReader.Read<byte>();
+            Mage = binaryReader.Read<byte>();
+            Priest = binaryReader.Read<byte>();
+
+            wHG = binaryReader.Read<ushort>();
+            shVG = binaryReader.Read<short>();
+            byCG = binaryReader.Read<byte>();
+            byOG = binaryReader.Read<byte>();
+            byIG = binaryReader.Read<byte>();
+
+            PreviousQuestId = binaryReader.Read<ushort>();
+            RequireParty = binaryReader.Read<bool>();
+
+            // Party Job x6
+            PartyFighter = binaryReader.Read<byte>();
+            PartyDefender = binaryReader.Read<byte>();
+            PartyRanger = binaryReader.Read<byte>();
+            PartyArcher = binaryReader.Read<byte>();
+            PartyMage = binaryReader.Read<byte>();
+            PartyPriest = binaryReader.Read<byte>();
+
+            // Time values
+            MinimumTime = binaryReader.Read<uint>();
+            Time = binaryReader.Read<uint>();
+            TickStartTerm = binaryReader.Read<uint>();
+            TickKeepTime = binaryReader.Read<uint>();
+            TickReceiveCount = binaryReader.Read<uint>();
+
+            StartType = binaryReader.Read<byte>();
+            StartNpcType = binaryReader.Read<byte>();
+            StartNpcId = binaryReader.Read<ushort>();
+            StartItemType = binaryReader.Read<byte>();
+            StartItemId = binaryReader.Read<byte>();
+
+            // This is variable, in EP6 there's 6 I think
+            for (int i = 0; i < 3; i++)
+            {
+                var requiredItem = new QuestItem(binaryReader);
+                RequiredItems.Add(requiredItem);
+            }
+
+            EndType = binaryReader.Read<byte>();
+            EndNpcType = binaryReader.Read<byte>();
+            EndNpcId = binaryReader.Read<short>();
+
+            // This is variable, in EP6 there's 6 I think
+            for (int i = 0; i < 3; i++)
+            {
+                var rewardItem = new QuestItem(binaryReader);
+                RewardItems.Add(rewardItem);
+            }
+
+            PvpKillCount = binaryReader.Read<byte>();
+            RequiredMobId1 = binaryReader.Read<ushort>();
+            RequiredMobCount1 = binaryReader.Read<byte>();
+            RequiredMobId2 = binaryReader.Read<ushort>();
+            RequiredMobCount2 = binaryReader.Read<byte>();
+
+            ResultType = binaryReader.Read<byte>();
+            ResultUserSelect = binaryReader.Read<byte>();
+
+            // Is this variable too?
+            for (int i = 0; i < 3; i++)
+            {
+                var result = new QuestResult(binaryReader, format);
+                Results.Add(result);
+            }
+
+            InitialDescription = binaryReader.ReadString(false);
+            QuestWindowSummary = binaryReader.ReadString(false);
+            ReminderInstructions = binaryReader.ReadString(false);
+            AlternateResponse = binaryReader.ReadString(false);
+            CompletionMessage = binaryReader.ReadString(false);
+            AlternateCompletionMessage1 = binaryReader.ReadString(false);
+            AlternateCompletionMessage2 = binaryReader.ReadString(false);
+        }
+
+        public byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+
+            buffer.AddRange(Id.GetBytes());
+            buffer.AddRange(Name.GetASCIILengthPrefixedBytes(false));
+            buffer.AddRange(Summary.GetASCIILengthPrefixedBytes(false));
+            buffer.AddRange(MinLevel.GetBytes());
+            buffer.AddRange(MaxLevel.GetBytes());
+            buffer.Add((byte)Faction);
+            buffer.Add((byte)Mode);
+            buffer.Add(Convert.ToByte(MaleSex));
+            buffer.Add(Convert.ToByte(FemaleSex));
+            buffer.Add(Fighter);
+            buffer.Add(Defender);
+            buffer.Add(Ranger);
+            buffer.Add(Archer);
+            buffer.Add(Mage);
+            buffer.Add(Priest);
+            buffer.AddRange(wHG.GetBytes());
+            buffer.AddRange(shVG.GetBytes());
+            buffer.Add(byCG);
+            buffer.Add(byOG);
+            buffer.Add(byIG);
+            buffer.AddRange(PreviousQuestId.GetBytes());
+            buffer.Add(Convert.ToByte(RequireParty));
+            buffer.Add(PartyFighter);
+            buffer.Add(PartyDefender);
+            buffer.Add(PartyRanger);
+            buffer.Add(PartyArcher);
+            buffer.Add(PartyMage);
+            buffer.Add(PartyPriest);
+
+            buffer.AddRange(MinimumTime.GetBytes());
+            buffer.AddRange(Time.GetBytes());
+            buffer.AddRange(TickStartTerm.GetBytes());
+            buffer.AddRange(TickKeepTime.GetBytes());
+            buffer.AddRange(TickReceiveCount.GetBytes());
+
+            buffer.Add(StartType);
+            buffer.Add(StartNpcType);
+            buffer.AddRange(StartNpcId.GetBytes());
+            buffer.Add(StartItemType);
+            buffer.Add(StartItemId);
+
+            buffer.AddRange(RequiredItems.GetBytes());
+
+            buffer.Add(EndType);
+            buffer.Add(EndNpcType);
+            buffer.AddRange(EndNpcId.GetBytes());
+
+            buffer.AddRange(RewardItems.GetBytes());
+
+            buffer.Add(PvpKillCount);
+            buffer.AddRange(RequiredMobId1.GetBytes());
+            buffer.Add(RequiredMobCount1);
+            buffer.AddRange(RequiredMobId2.GetBytes());
+            buffer.Add(RequiredMobCount2);
+
+            buffer.Add(ResultType);
+            buffer.Add(ResultUserSelect);
+
+            buffer.AddRange(Results.GetBytes());
+
+            buffer.AddRange(InitialDescription.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(QuestWindowSummary.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(ReminderInstructions.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(AlternateResponse.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(CompletionMessage.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(AlternateCompletionMessage1.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(AlternateCompletionMessage2.GetASCIILengthPrefixedBytes());
+
+            return buffer.ToArray();
         }
     }
 }

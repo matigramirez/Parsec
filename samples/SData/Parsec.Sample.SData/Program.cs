@@ -1,4 +1,5 @@
 ﻿using System;
+using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.GUILDHOUSE;
 using Parsec.Shaiya.Item;
@@ -13,11 +14,12 @@ namespace Parsec.Samples
         {
             #region NpcQuest
 
-            var npcQuest = new NpcQuest("NpcQuest.SData");
+            var npcQuest = new NpcQuest("NpcQuest.EP5.SData", Format.EP5);
             npcQuest.Read();
 
             Console.WriteLine($"Merchant Count: {npcQuest.Merchants.Count}");
-            Console.WriteLine($"GateKeeper Count: {npcQuest.GateKeepers.Count}");
+            Console.WriteLine($"GateKeeper Count: {npcQuest.Gatekeepers.Count}");
+            Console.WriteLine($"Quest Count: {npcQuest.Quests.Count}");
             npcQuest.ExportJson("NpcQuest.json");
 
             var encryptedBytes = SData.Encrypt(npcQuest.Buffer);

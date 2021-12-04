@@ -5,6 +5,7 @@
         Easy,
         Normal,
         Hard,
-        Ultimate
+        Ultimate,
+        Any
     }
 }

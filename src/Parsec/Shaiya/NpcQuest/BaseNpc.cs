@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NPCQUEST
 {
-    public class BaseNpc
+    public class BaseNpc : IBinary
     {
         public NpcType Type { get; set; }
         public short TypeId { get; set; }
-        public int Shape { get; set; }
-        public int Unknown1 { get; set; }
-        public int Unknown2 { get; set; }
+        public int Model { get; set; }
+        public int MoveDistance { get; set; }
+        public int MoveSpeed { get; set; }
         public Faction Faction { get; set; }
         public string Name { get; set; }
         public string WelcomeMessage { get; set; }
@@ -18,30 +21,46 @@ namespace Parsec.Shaiya.NPCQUEST
         public List<short> InQuestIds { get; } = new();
         public List<short> OutQuestIds { get; } = new();
 
-        public void ReadNpcBaseComplete(ShaiyaBinaryReader binaryReader)
+        protected void ReadNpcBaseComplete(ShaiyaBinaryReader binaryReader)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             ReadBaseNpcSecondSegment(binaryReader);
             ReadBaseNpcThirdSegment(binaryReader);
         }
 
-        public void ReadBaseNpcFirstSegment(ShaiyaBinaryReader binaryReader)
+        protected void ReadBaseNpcFirstSegment(ShaiyaBinaryReader binaryReader)
         {
             Type = (NpcType)binaryReader.Read<byte>();
             TypeId = binaryReader.Read<short>();
         }
 
-        public void ReadBaseNpcSecondSegment(ShaiyaBinaryReader binaryReader)
+        protected void WriteBaseNpcFirstSegmentBytes(List<byte> buffer)
         {
-            Shape = binaryReader.Read<int>();
-            Unknown1 = binaryReader.Read<int>();
-            Unknown2 = binaryReader.Read<int>();
-            Faction = (Faction)binaryReader.Read<int>();
-            Name = binaryReader.ReadString();
-            WelcomeMessage = binaryReader.ReadString();
+            buffer.Add((byte)Type);
+            buffer.AddRange(TypeId.GetBytes());
         }
 
-        public void ReadBaseNpcThirdSegment(ShaiyaBinaryReader binaryReader)
+        protected void ReadBaseNpcSecondSegment(ShaiyaBinaryReader binaryReader)
+        {
+            Model = binaryReader.Read<int>();
+            MoveDistance = binaryReader.Read<int>();
+            MoveSpeed = binaryReader.Read<int>();
+            Faction = (Faction)binaryReader.Read<int>();
+            Name = binaryReader.ReadString(false);
+            WelcomeMessage = binaryReader.ReadString(false);
+        }
+
+        protected void WriteBaseNpcSecondSegmentBytes(List<byte> buffer)
+        {
+            buffer.AddRange(Model.GetBytes());
+            buffer.AddRange(MoveDistance.GetBytes());
+            buffer.AddRange(MoveSpeed.GetBytes());
+            buffer.AddRange(((int)Faction).GetBytes());
+            buffer.AddRange(Name.GetASCIILengthPrefixedBytes(false));
+            buffer.AddRange(WelcomeMessage.GetASCIILengthPrefixedBytes(false));
+        }
+
+        protected void ReadBaseNpcThirdSegment(ShaiyaBinaryReader binaryReader)
         {
             var inQuestQuantity = binaryReader.Read<int>();
 
@@ -58,6 +77,34 @@ namespace Parsec.Shaiya.NPCQUEST
                 var questId = binaryReader.Read<short>();
                 OutQuestIds.Add(questId);
             }
+        }
+
+        protected void WriteBaseNpcThirdSegmentBytes(List<byte> buffer)
+        {
+            buffer.AddRange(BitConverter.GetBytes(InQuestIds.Count));
+
+            foreach (var inQuestId in InQuestIds)
+            {
+                buffer.AddRange(BitConverter.GetBytes(inQuestId));
+            }
+
+            buffer.AddRange(BitConverter.GetBytes(OutQuestIds.Count));
+
+            foreach (var outQuestId in OutQuestIds)
+            {
+                buffer.AddRange(BitConverter.GetBytes(outQuestId));
+            }
+        }
+
+        public virtual byte[] GetBytes()
+        {
+            var buffer = new List<byte>();
+
+            WriteBaseNpcFirstSegmentBytes(buffer);
+            WriteBaseNpcSecondSegmentBytes(buffer);
+            WriteBaseNpcThirdSegmentBytes(buffer);
+
+            return buffer.ToArray();
         }
     }
 }

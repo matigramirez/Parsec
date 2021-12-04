@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="NpcQuest.SData">
+      <None Update="NpcQuest.EP5.SData">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="GuildHouse.SData">
