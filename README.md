@@ -22,6 +22,7 @@
 - `SetItem.SData`
 - `DualLayerClothes.SData`
 - `GuldHouse.SData`
+- `zon`
 
 ## Features
 - `data` extraction, patching and creation
