@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Parsec.Helpers;
 using Parsec.Shaiya.SVMAP;
+using Parsec.Shaiya.Zon;
 
 namespace Parsec.Sample.SVMAP
 {
@@ -8,22 +10,37 @@ namespace Parsec.Sample.SVMAP
     {
         static void Main(string[] args)
         {
-            var svmap2 = new Svmap("2.svmap");
-            svmap2.Read();
+            #region svmap
 
-            Console.WriteLine($"File: {svmap2.FileName}");
-            Console.WriteLine($"MapSize: {svmap2.MapSize}");
-            Console.WriteLine($"Ladder Count: {svmap2.Ladders.Count}");
-            Console.WriteLine($"Monster Area Count: {svmap2.MonsterAreas.Count}");
-            Console.WriteLine($"Npc Count: {svmap2.Npcs.Count}");
-            Console.WriteLine($"Portal Count: {svmap2.Portals.Count}");
-            Console.WriteLine($"Spawn Count: {svmap2.Spawns.Count}");
-            Console.WriteLine($"Named Area Count: {svmap2.NamedAreas.Count}");
+            var svmap = new Svmap("2.svmap");
+            svmap.Read();
 
-            svmap2.ExportJson($"{svmap2.FileNameWithoutExtension}.json", new List<string>
+            Console.WriteLine($"File: {svmap.FileName}");
+            Console.WriteLine($"MapSize: {svmap.MapSize}");
+            Console.WriteLine($"Ladder Count: {svmap.Ladders.Count}");
+            Console.WriteLine($"Monster Area Count: {svmap.MonsterAreas.Count}");
+            Console.WriteLine($"Npc Count: {svmap.Npcs.Count}");
+            Console.WriteLine($"Portal Count: {svmap.Portals.Count}");
+            Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
+            Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
+
+            svmap.ExportJson($"{svmap.FileNameWithoutExtension}.json", new List<string>
             {
-                nameof(svmap2.MapHeight),
+                nameof(svmap.MapHeight),
             });
+
+            #endregion
+
+            #region zon
+
+            var zon = new Zon("TacticsZone.zon");
+            zon.Read();
+            zon.ExportJson($"{zon.FileName}.json");
+
+            var zonfromjson = Deserializer.ReadFromJson<Zon>($"{zon.FileName}.json");
+            zonfromjson.Write($"{zonfromjson.FileNameWithoutExtension}.Created.zon");
+
+            #endregion
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Parsec.Extensions
 
         public static byte[] GetBytes(this uint value) => BitConverter.GetBytes(value);
 
+        public static byte[] GetBytes(this float value) => BitConverter.GetBytes(value);
+
         public static byte[] GetASCIILengthPrefixedBytes(this string str, bool includeStringTerminator = true)
         {
             var buffer = new List<byte>();
