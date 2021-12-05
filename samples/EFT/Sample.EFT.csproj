@@ -6,20 +6,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Parsec\Parsec.csproj" />
+      <ProjectReference Include="..\..\src\Parsec\Parsec.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Mob_Fox_01.3DC">
+      <None Update="Crun.EFT">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="03_F_201.3DO">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="humf_face.MLT">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="02.ITM">
+	  <None Update="Monster.EFT">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

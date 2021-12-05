@@ -6,11 +6,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Parsec\Parsec.csproj" />
+      <ProjectReference Include="..\..\src\Parsec\Parsec.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="SetItem.SData">
+      <None Update="2.svmap">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

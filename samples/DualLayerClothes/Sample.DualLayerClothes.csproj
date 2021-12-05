@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Parsec\Parsec.csproj" />
+      <ProjectReference Include="..\..\src\Parsec\Parsec.csproj" />
     </ItemGroup>
 
     <ItemGroup>
