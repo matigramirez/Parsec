@@ -2,6 +2,7 @@
 using Parsec.Shaiya.MLT;
 using Parsec.Shaiya.OBJ3DC;
 using Parsec.Shaiya.OBJ3DO;
+using Parsec.Shaiya.SMOD;
 
 namespace Parsec.Samples.Object3D
 {
@@ -38,6 +39,14 @@ namespace Parsec.Samples.Object3D
             var itm = new ITM("02.ITM");
             itm.Read();
             itm.ExportJson($"{itm.FileName}.json");
+
+            #endregion
+
+            #region SMOD
+
+            var smod = new Smod("A1_ElfDoor.SMOD");
+            smod.Read();
+            smod.ExportJson($"{smod.FileNameWithoutExtension}.json");
 
             #endregion
         }

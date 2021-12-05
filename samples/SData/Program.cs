@@ -1,10 +1,14 @@
 ﻿using System;
 using Parsec.Common;
 using Parsec.Helpers;
+using Parsec.Shaiya.CASH;
+using Parsec.Shaiya.DUALLAYERCLOTHES;
 using Parsec.Shaiya.GUILDHOUSE;
-using Parsec.Shaiya.Item;
+using Parsec.Shaiya.KILLSTATUS;
 using Parsec.Shaiya.NPCQUEST;
 using Parsec.Shaiya.SDATA;
+using Parsec.Shaiya.SETITEM;
+using Item = Parsec.Shaiya.Item.Item;
 
 namespace Parsec.Samples
 {
@@ -44,6 +48,38 @@ namespace Parsec.Samples
             item.Read();
             var encryptedBuffer = SData.Encrypt(item.Buffer);
             FileHelper.WriteFile("Item.SData.Encrypted", encryptedBuffer);
+
+            #endregion
+
+            #region Cash
+
+            var cash = new Cash("Cash.SData");
+            cash.Read();
+            cash.ExportJson("Cash.json");
+
+            #endregion
+
+            #region KillStatus
+
+            var killStatus = new KillStatus("KillStatus.SData");
+            killStatus.Read();
+            killStatus.ExportJson("KillStatus.json", enumFriendly: true);
+
+            #endregion
+
+            #region DualLayerClothes
+
+            var dualLayerClothes = new DualLayerClothes("DualLayerClothes.SData");
+            dualLayerClothes.Read();
+            dualLayerClothes.ExportJson("DualLayerClothes.json");
+
+            #endregion
+
+            #region SetItem
+
+            var setItem = new SetItem("SetItem.SData");
+            setItem.Read();
+            setItem.ExportJson("SetItem.json");
 
             #endregion
         }
