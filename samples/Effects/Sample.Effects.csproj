@@ -10,10 +10,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Crun.EFT">
+      <None Update="weapon.seff">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-	  <None Update="Monster.EFT">
+      <None Update="Monster.EFT">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
