@@ -9,7 +9,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SData
 {
-    public abstract class SData : FileBase
+    public abstract class SData : FileBase, IEncryptable
     {
         [JsonIgnore]
         public override string Extension => "SData";
@@ -19,62 +19,6 @@ namespace Parsec.Shaiya.SData
         /// </summary>
         [JsonIgnore]
         private const string _encryptionSignature = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
-
-        /// <summary>
-        /// Reads the SData file format from a file
-        /// </summary>
-        /// <param name="path">File path</param>
-        /// <param name="options">Array of reading options</param>
-        /// <typeparam name="T">Shaiya File Format Type</typeparam>
-        /// <returns>T instance</returns>
-        public new static T ReadFromFile<T>(string path, params object[] options) where T : SData, new()
-        {
-            // Create SData instance
-            var binaryReader = new ShaiyaBinaryReader(path);
-            var instance = new T()
-            {
-                Path = path,
-                _binaryReader = binaryReader
-            };
-
-            // Decrypt buffer if it's encrypted
-            if (IsEncrypted(binaryReader.Buffer))
-            {
-                var decryptedBuffer = Decrypt(binaryReader.Buffer);
-                instance._binaryReader = new ShaiyaBinaryReader(decryptedBuffer);
-            }
-
-            // Parse the file
-            instance.Read(options);
-            return instance;
-        }
-
-        /// <summary>
-        /// Reads the SData file format from a buffer (byte array)
-        /// </summary>
-        /// <param name="buffer">File buffer</param>
-        /// <param name="options">Array of reading options</param>
-        /// <typeparam name="T">Shaiya File Format Type</typeparam>
-        /// <returns>T instance</returns>
-        public new static T ReadFromBuffer<T>(byte[] buffer, params object[] options) where T : SData, new()
-        {
-            var binaryReader = new ShaiyaBinaryReader(buffer);
-            var instance = new T
-            {
-                _binaryReader = binaryReader
-            };
-
-            // Decrypt buffer if it's encrypted
-            if (IsEncrypted(binaryReader.Buffer))
-            {
-                var decryptedBuffer = Decrypt(binaryReader.Buffer);
-                instance._binaryReader = new ShaiyaBinaryReader(decryptedBuffer);
-            }
-
-            // Parse the file
-            instance.Read(options);
-            return instance;
-        }
 
         /// <summary>
         /// Checks if the file is encrypted with the SEED algorithm
@@ -199,6 +143,28 @@ namespace Parsec.Shaiya.SData
             var decryptedData = new byte[header.RealSize];
             Array.Copy(buffer.ToArray(), decryptedData, header.RealSize);
             return decryptedData;
+        }
+
+        /// <inheritdoc />
+        public void EncryptBuffer()
+        {
+            // Encrypt buffer if it's decrypted
+            if (!IsEncrypted(Buffer))
+            {
+                var encryptedBuffer = Encrypt(Buffer);
+                _binaryReader = new ShaiyaBinaryReader(encryptedBuffer);
+            }
+        }
+
+        /// <inheritdoc />
+        public void DecryptBuffer()
+        {
+            // Decrypt buffer if it's encrypted
+            if (IsEncrypted(Buffer))
+            {
+                var decryptedBuffer = Decrypt(Buffer);
+                _binaryReader = new ShaiyaBinaryReader(decryptedBuffer);
+            }
         }
     }
 }

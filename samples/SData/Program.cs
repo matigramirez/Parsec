@@ -8,7 +8,7 @@ using Parsec.Shaiya.KillStatus;
 using Parsec.Shaiya.NpcQuest;
 using Parsec.Shaiya.SData;
 using Parsec.Shaiya.SetItem;
-using static Parsec.Shaiya.SData.SData;
+using static Parsec.Shaiya.Core.FileBase;
 using Item = Parsec.Shaiya.Item.Item;
 
 namespace Parsec.Samples
@@ -26,10 +26,10 @@ namespace Parsec.Samples
             Console.WriteLine($"Quest Count: {npcQuest.Quests.Count}");
             npcQuest.ExportJson("NpcQuest.json");
 
-            var encryptedBytes = Encrypt(npcQuest.Buffer);
+            var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
             FileHelper.WriteFile("NpcQuest.SData.Encrypted", encryptedBytes);
 
-            var decryptedBytes = Decrypt(npcQuest.Buffer);
+            var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
             FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
 
             #endregion

@@ -67,5 +67,12 @@ namespace Parsec.Shaiya.Data
             var fileBytes = Saf.ReadBytes(file.Offset, file.Length);
             FileHelper.WriteFile(Path.Combine(extractionDirectory, file.Name), fileBytes);
         }
+
+        /// <summary>
+        /// Reads a file buffer from the saf file
+        /// </summary>
+        /// <param name="file"><see cref="SahFile"/> instance</param>
+        /// <returns>The file buffer</returns>
+        public byte[] GetFileBuffer(SahFile file) => Saf.ReadBytes(file.Offset, file.Length);
     }
 }

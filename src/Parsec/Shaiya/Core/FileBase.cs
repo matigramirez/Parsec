@@ -70,6 +70,9 @@ namespace Parsec.Shaiya.Core
                 _binaryReader = binaryReader
             };
 
+            if (instance is IEncryptable encryptableInstance)
+                encryptableInstance.DecryptBuffer();
+
             // Parse the file
             instance.Read(options);
             return instance;
@@ -78,17 +81,22 @@ namespace Parsec.Shaiya.Core
         /// <summary>
         /// Reads the shaiya file format from a buffer (byte array)
         /// </summary>
+        /// <param name="name">File name</param>
         /// <param name="buffer">File buffer</param>
         /// <param name="options">Array of reading options</param>
         /// <typeparam name="T">Shaiya File Format Type</typeparam>
         /// <returns>T instance</returns>
-        public static T ReadFromBuffer<T>(byte[] buffer, params object[] options) where T : FileBase, new()
+        public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
         {
             var binaryReader = new ShaiyaBinaryReader(buffer);
             var instance = new T
             {
+                Path = name,
                 _binaryReader = binaryReader
             };
+
+            if (instance is IEncryptable encryptableInstance)
+                encryptableInstance.DecryptBuffer();
 
             // Parse the file
             instance.Read(options);
