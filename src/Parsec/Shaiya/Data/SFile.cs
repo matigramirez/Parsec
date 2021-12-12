@@ -55,6 +55,14 @@ namespace Parsec.Shaiya.Data
             ParentFolder = parentFolder;
         }
 
+        public SFile(string name, long offset, int length, SFolder folder) : this(folder)
+        {
+            Name = name;
+            Offset = offset;
+            Length = length;
+            Version = 0;
+        }
+
         public SFile(ShaiyaBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
         {
             Name = binaryReader.ReadString();
@@ -71,14 +79,6 @@ namespace Parsec.Shaiya.Data
             else
                 // Follow castor's _pv file name ending for duplicate files
                 fileIndex.Add(RelativePath + "_pv", this);
-        }
-
-        public SFile(string name, long offset, int length, SFolder folder) : this(folder)
-        {
-            Name = name;
-            Offset = offset;
-            Length = length;
-            Version = 0;
         }
 
         public byte[] GetBytes()

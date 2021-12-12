@@ -9,6 +9,8 @@ namespace Parsec.Samples
     {
         static void Main(string[] args)
         {
+            #region Read Data
+
             // Read data
             var data = new Data("data.sah");
 
@@ -30,6 +32,17 @@ namespace Parsec.Samples
                 Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
                 Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
             }
+
+            #endregion
+
+            #region Create Data/Patch
+
+            // Create patch data
+            var createdData = DataBuilder.CreateFromDirectory("input", "output", "update");
+
+            Console.WriteLine($"Data file count: {createdData.FileCount}");
+
+            #endregion
         }
     }
 }

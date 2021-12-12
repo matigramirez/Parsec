@@ -112,6 +112,8 @@ JSON, so that all the original fields are present in the JSON file.
 
 ### `sah/saf`
 
+Read and extract
+
 ```cs
 using static Parsec.Shaiya.Core.FileBase;
 
@@ -126,11 +128,22 @@ if (data.Sah.FileIndex.TryGetValue("world/2.svmap", out var file))
 }
 ```
 
+Create data or patch from a directory
+
+```cs
+// Create patch data
+var createdData = DataBuilder.CreateFromDirectory("input", "output", "update");
+
+Console.WriteLine($"Data file count: {createdData.FileCount}");
+```
+
 ### `SData`
 
 Encryption / Decryption
 
 ```cs
+using static Parsec.Shaiya.Core.FileBase;
+
 var npcQuest = ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
 
 // Save encrypted file
@@ -144,6 +157,8 @@ FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
 ### `svmap`
 
 ```cs
+using static Parsec.Shaiya.Core.FileBase;
+
 // Open svmap file
 var svmap = ReadFromFile<Svmap>("2.svmap");
 

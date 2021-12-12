@@ -23,7 +23,7 @@ namespace Parsec.Shaiya.Data
         /// Total amount of files that are present in the data; does not include directories.
         /// </summary>
         [DataMember]
-        public int TotalFileCount { get; private set; }
+        public int FileCount { get; private set; }
 
         /// <summary>
         /// The data's root directory.
@@ -55,7 +55,7 @@ namespace Parsec.Shaiya.Data
         {
             Path = path;
             RootFolder = rootFolder;
-            TotalFileCount = fileCount;
+            FileCount = fileCount;
         }
 
         [JsonIgnore]
@@ -67,7 +67,7 @@ namespace Parsec.Shaiya.Data
             _binaryReader.Skip(7);
 
             // Read total file count
-            TotalFileCount = _binaryReader.Read<int>();
+            FileCount = _binaryReader.Read<int>();
 
             // Index where data starts (after header - skip padding bytes)
             _binaryReader.SetOffset(51);
@@ -154,7 +154,7 @@ namespace Parsec.Shaiya.Data
             buffer.AddRange(new byte[4]);
 
             // Write total file count
-            buffer.AddRange(BitConverter.GetBytes(TotalFileCount));
+            buffer.AddRange(BitConverter.GetBytes(FileCount));
 
             // Write padding
             buffer.AddRange(new byte[40]);

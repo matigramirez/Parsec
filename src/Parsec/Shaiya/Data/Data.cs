@@ -11,6 +11,8 @@ namespace Parsec.Shaiya.Data
         public Sah Sah { get; set; }
         public Saf Saf { get; set; }
 
+        public int FileCount => Sah.FileCount;
+
         /// <summary>
         /// Dictionary of folders that can be accessed by path
         /// </summary>
@@ -20,6 +22,12 @@ namespace Parsec.Shaiya.Data
         /// Dictionary of files that can be accessed by path
         /// </summary>
         public Dictionary<string, SFile> FileIndex => Sah.FileIndex;
+
+        public Data(Sah sah, Saf saf)
+        {
+            Sah = sah;
+            Saf = saf;
+        }
 
         public Data(string path)
         {
