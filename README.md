@@ -1,12 +1,21 @@
 # Parsec
+
 [![.NET](https://github.com/matigramirez/Parsec/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/matigramirez/Parsec/actions/workflows/dotnet.yml)
 [![Nuget](https://img.shields.io/nuget/v/Parsec.svg)](https://www.nuget.org/packages/Parsec/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-`Parsec` is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.1. Its goal is to make reading and manipulating the game's file formats easy.
+`Parsec` is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.1. Its goal is to
+make reading and manipulating the game's file formats easy.
 
 ## Currently supported files/formats
+
 - `data.sah/saf`
+- `NpcQuest.SData` (EP4-5 supported, EP5+ is pending)
+- `KillStatus.SData`
+- `Cash.SData`
+- `SetItem.SData`
+- `DualLayerClothes.SData`
+- `GuildHouse.SData`
 - `svmap`
 - `ANI`
 - `3DC`
@@ -16,61 +25,77 @@
 - `SMOD`
 - `EFT`
 - `seff`
-- `NpcQuest.SData` (EP4-5 supported, EP5+ is pending)
-- `KillStatus.SData`
-- `Cash.SData`
-- `SetItem.SData`
-- `DualLayerClothes.SData`
-- `GuldHouse.SData`
 - `zon`
 
 ## Features
+
 - `data` extraction, patching and creation
 - `SData` encryption/decryption
-- Export and import most supported formats as `json` (you can modify files as json and convert them back to their original format)
+- Export and import most supported formats as `json` (you can modify files as json and convert them back to their
+  original format)
 
 ## Getting Started
+
 ### Prerequisites
-- `.NET 5 SDK`
+
+- `.NET 6 SDK (recommended)` or `.NET 5 SDK`
 
 ### Run
+
 1. Create a C# project in Visual Studio/Rider/VSCode/CLI
 2. Add `Parsec` as a dependency, either through the NuGet package or the library's source code itself
 
 or... Use one of the samples from the [samples section](https://github.com/matigramirez/Parsec/tree/main/samples).
 
 ## Documentation
+
 ### Reading
+
 1. Create an instance of the file you want to read:
+
 ```cs
 var svmap = new Svmap("0.svmap");
 ```
+
 2. Call the `Read` method to parse the file's content. All the fields in the file will become available.
+
 ```cs
 svmap.Read();
 ```
 
 ### Export
+
 After modifying the file, you can save it in its original format by calling the `Write` method
+
 ```cs
 svmap.Write("0.modified.svmap");
 ```
 
 ### Export as JSON
+
 Call the `ExportJson` method
+
 ```cs
 svmap.ExportJson("map0.json");
 ```
 
 ### Import as JSON
-`Parsec` supports importing a file as JSON, which can be later exported as its original format. The user must make sure that the JSON file is properly formatted to match the JSON standards and contain all the fields present in the chosen format.
+
+`Parsec` supports importing a file as JSON, which can be later exported as its original format. The user must make sure
+that the JSON file is properly formatted to match the JSON standards and contain all the fields present in the chosen
+format.
+
 ```cs
 var svmap = Deserializer.ReadFromJson<Svmap>("map0.json");
 ```
-It is adviced to first read a file from its original format, export it as JSON, edit it, and importing it once again as JSON, so that all the original fields are present in the JSON file.
+
+It is adviced to first read a file from its original format, export it as JSON, edit it, and importing it once again as
+JSON, so that all the original fields are present in the JSON file.
 
 ## Samples
+
 ### `sah/saf`
+
 ```cs
 // Read sah
 var sah = new Sah("data.sah");
@@ -91,7 +116,9 @@ saf.Extract(file, "extracted");
 ```
 
 ### `SData`
+
 Encryption / Decryption
+
 ```cs
 // Load NpcQuest.SData
 var npcQuest = new NpcQuest("NpcQuest.SData");
@@ -104,6 +131,7 @@ npcQuest.SaveEncrypted("NpcQuest.encrypted.SData");
 ```
 
 ### `svmap`
+
 ```cs
 // Open svmap file
 var svmap = new Svmap("2.svmap");

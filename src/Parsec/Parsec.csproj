@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>9</LangVersion>
         <Platforms>AnyCPU;x86</Platforms>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -14,6 +13,7 @@
         <Description>Parsec is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.1. Its goal is to make reading and manipulating the game's file formats with ease.</Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageVersion>1.0.0-alpha.3.0.0</PackageVersion>
+        <TargetFrameworks>net5.0;net6.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
