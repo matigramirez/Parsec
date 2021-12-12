@@ -5,7 +5,7 @@ using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.OBJ3DC
+namespace Parsec.Shaiya.Obj3DC
 {
     /// <summary>
     /// Class that represents a .3DC model which is used for characters, mobs, npc's, wings and any model that requires "complex" animations done through its skeleton.
@@ -38,19 +38,10 @@ namespace Parsec.Shaiya.OBJ3DC
         /// </summary>
         public List<Face> Polygons { get; set; } = new();
 
-        public Obj3DC(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public Obj3DC()
-        {
-        }
-
         [JsonIgnore]
         public override string Extension => "3DC";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             Tag = _binaryReader.Read<int>();
 
@@ -82,30 +73,24 @@ namespace Parsec.Shaiya.OBJ3DC
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(Tag));
             buffer.AddRange(BitConverter.GetBytes(Bones.Count));
 
             foreach (var bone in Bones)
-            {
                 buffer.AddRange(bone.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Vertices.Count));
 
             foreach (var vertex in Vertices)
-            {
                 buffer.AddRange(vertex.GetBytes(Format));
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Polygons.Count));
 
             foreach (var polygon in Polygons)
-            {
                 buffer.AddRange(polygon.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }
@@ -118,15 +103,11 @@ namespace Parsec.Shaiya.OBJ3DC
         {
             // Merge vertices
             foreach (var vertex in obj3dc.Vertices)
-            {
                 Vertices.Add(vertex);
-            }
 
             // Merge polygons
             foreach (var polygon in obj3dc.Polygons)
-            {
                 Polygons.Add(polygon);
-            }
 
             // Fix vertex index on polygons
             foreach (var polygon in Polygons)

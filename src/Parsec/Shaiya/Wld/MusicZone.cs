@@ -1,7 +1,7 @@
 ﻿using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.WLD
+namespace Parsec.Shaiya.Wld
 {
     /// <summary>
     /// A rectangular area of the world in which music is played

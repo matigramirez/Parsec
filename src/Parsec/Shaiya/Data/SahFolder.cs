@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.DATA
+namespace Parsec.Shaiya.Data
 {
     [DataContract]
     public class SahFolder : IBinary
@@ -123,18 +123,14 @@ namespace Parsec.Shaiya.DATA
 
             // Write files
             foreach (var file in Files)
-            {
                 buffer.AddRange(file.GetBytes());
-            }
 
             // Write subfolder count
             buffer.AddRange(BitConverter.GetBytes(Subfolders.Count));
 
             // Recursively write subfolders
             foreach (var subfolder in Subfolders)
-            {
                 buffer.AddRange(subfolder.GetBytes());
-            }
 
             return buffer.ToArray();
         }

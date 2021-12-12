@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.ANI
+namespace Parsec.Shaiya.Ani
 {
     /// <summary>
     /// Class that represents the information for each bone present in the ani file
@@ -46,7 +46,7 @@ namespace Parsec.Shaiya.ANI
             var rotationCount = binaryReader.Read<int>();
 
             // Read rotations
-            for (int i = 0; i < rotationCount; i ++)
+            for (int i = 0; i < rotationCount; i++)
             {
                 var keyframeRotation = new RotationKeyframe(binaryReader);
                 Rotations.Add(keyframeRotation);

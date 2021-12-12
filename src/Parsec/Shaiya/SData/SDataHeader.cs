@@ -2,7 +2,7 @@
 using System.Text;
 using Parsec.Extensions;
 
-namespace Parsec.Shaiya.SDATA
+namespace Parsec.Shaiya.SData
 {
     public class SDataHeader
     {

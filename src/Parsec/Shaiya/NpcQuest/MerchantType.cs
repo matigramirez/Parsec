@@ -1,4 +1,4 @@
-﻿namespace Parsec.Shaiya.NPCQUEST
+﻿namespace Parsec.Shaiya.NpcQuest
 {
     public enum MerchantType : byte
     {

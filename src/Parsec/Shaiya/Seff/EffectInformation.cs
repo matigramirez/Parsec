@@ -7,7 +7,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SEFF
+namespace Parsec.Shaiya.Seff
 {
     public class EffectInformation : IBinary
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SVMAP
+namespace Parsec.Shaiya.Svmap
 {
     public class Monster : IBinary
     {

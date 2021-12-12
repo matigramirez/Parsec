@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.MLT
+namespace Parsec.Shaiya.Mlt
 {
     public class MLT : FileBase, IJsonReadable
     {
@@ -30,18 +29,9 @@ namespace Parsec.Shaiya.MLT
         /// </summary>
         public List<Record> Records { get; } = new();
 
-        public MLT(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public MLT()
-        {
-        }
-
         public override string Extension => "MLT";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             Signature = _binaryReader.ReadString(3);
 
@@ -70,7 +60,7 @@ namespace Parsec.Shaiya.MLT
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Encoding.ASCII.GetBytes(Signature));
@@ -94,9 +84,7 @@ namespace Parsec.Shaiya.MLT
             buffer.AddRange(BitConverter.GetBytes(Records.Count));
 
             foreach (var record in Records)
-            {
                 buffer.AddRange(record.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

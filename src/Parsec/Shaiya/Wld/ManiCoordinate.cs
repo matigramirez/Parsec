@@ -1,7 +1,7 @@
 ﻿using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.WLD
+namespace Parsec.Shaiya.Wld
 {
     /// <summary>
     /// Coordinates to place a 3D object in the field. Used by 'MANI' entities only.

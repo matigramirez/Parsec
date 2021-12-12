@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Parsec.Readers;
 
-namespace Parsec.Shaiya.NPCQUEST
+namespace Parsec.Shaiya.NpcQuest
 {
     public class GateKeeper : BaseNpc
     {
@@ -29,9 +29,7 @@ namespace Parsec.Shaiya.NPCQUEST
             WriteBaseNpcSecondSegmentBytes(buffer);
 
             foreach (var gateTarget in GateTargets)
-            {
                 buffer.AddRange(gateTarget.GetBytes());
-            }
 
             WriteBaseNpcThirdSegmentBytes(buffer);
 

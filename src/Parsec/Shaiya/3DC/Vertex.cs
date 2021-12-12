@@ -5,7 +5,7 @@ using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.OBJ3DC
+namespace Parsec.Shaiya.Obj3DC
 {
     public class Vertex
     {

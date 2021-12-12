@@ -1,4 +1,4 @@
-﻿namespace Parsec.Shaiya.KILLSTATUS
+﻿namespace Parsec.Shaiya.KillStatus
 {
     public enum KillStatusBonusType : byte
     {

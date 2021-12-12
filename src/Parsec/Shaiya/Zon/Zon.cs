@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
@@ -14,16 +13,7 @@ namespace Parsec.Shaiya.Zon
 
         public override string Extension => "zon";
 
-        public Zon(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public Zon()
-        {
-        }
-
-        public override void Read()
+        public override void Read(params object[] options)
         {
             Format = _binaryReader.Read<int>();
 
@@ -36,7 +26,7 @@ namespace Parsec.Shaiya.Zon
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -45,9 +35,7 @@ namespace Parsec.Shaiya.Zon
             buffer.AddRange(Records.Count.GetBytes());
 
             foreach (var record in Records)
-            {
                 buffer.AddRange(record.GetBytes(Format));
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

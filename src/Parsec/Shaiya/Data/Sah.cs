@@ -10,10 +10,10 @@ using Parsec.Helpers;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.DATA
+namespace Parsec.Shaiya.Data
 {
     [DataContract]
-    public partial class Sah : FileBase, IJsonReadable
+    public class Sah : FileBase, IJsonReadable
     {
         /// <summary>
         /// Path to the saf file
@@ -42,12 +42,6 @@ namespace Parsec.Shaiya.DATA
         /// </summary>
         public Dictionary<string, SahFile> FileIndex = new();
 
-        public Sah(string path)
-        {
-            Path = path;
-        }
-
-        [JsonConstructor]
         public Sah()
         {
         }
@@ -58,8 +52,9 @@ namespace Parsec.Shaiya.DATA
         /// <param name="path">Path where sah file will be saved</param>
         /// <param name="rootFolder">Shaiya main Folder containing all the sah's data</param>
         /// <param name="fileCount"></param>
-        public Sah(string path, SahFolder rootFolder, int fileCount) : this(path)
+        public Sah(string path, SahFolder rootFolder, int fileCount)
         {
+            Path = path;
             RootFolder = rootFolder;
             TotalFileCount = fileCount;
         }
@@ -67,7 +62,7 @@ namespace Parsec.Shaiya.DATA
         [JsonIgnore]
         public override string Extension => "sah";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             _binaryReader = new ShaiyaBinaryReader(Path);
 
@@ -125,7 +120,6 @@ namespace Parsec.Shaiya.DATA
 
             //  Iterate recursively through subfolders creating the missing one/
             foreach (string folderName in pathFolders)
-            {
                 if (!currentFolder.HasSubfolder(folderName))
                 {
                     // Create new folder if it doesn't exist
@@ -147,7 +141,6 @@ namespace Parsec.Shaiya.DATA
                     // Get subfolder with path name
                     currentFolder = currentFolder.GetSubfolder(folderName);
                 }
-            }
 
             return currentFolder;
         }
@@ -162,7 +155,7 @@ namespace Parsec.Shaiya.DATA
             return sahMagicNumber == magicNumber;
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             // Create byte list which will have the sah's data
             var buffer = new List<byte>();

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Parsec.Shaiya.DATA
+namespace Parsec.Shaiya.Data
 {
     public class DataPatcher : IDisposable
     {
@@ -52,7 +52,6 @@ namespace Parsec.Shaiya.DATA
             var patchFiles = _patchSah.FileIndex.Values.ToList();
 
             foreach (var patchFile in patchFiles)
-            {
                 // Check if file already exists. If it does, it needs to be replaced.
                 if (_sah.FileIndex.TryGetValue(patchFile.RelativePath, out var originalFile))
                 {
@@ -61,15 +60,11 @@ namespace Parsec.Shaiya.DATA
 
                     // Check if original file bytes can be replaced
                     if (patchFile.Length <= originalFile.Length)
-                    {
                         // Write new file at original file's offset
                         WriteFile(patchFile, originalFile.Offset);
-                    }
                     else
-                    {
                         // If file's size is bigger than the original file's size, append it at the end of the saf
                         AppendFile(patchFile);
-                    }
 
                     // Replace length and offset of the file (since it's been replaced but its name is the same)
                     originalFile.Length = patchFile.Length;
@@ -88,7 +83,6 @@ namespace Parsec.Shaiya.DATA
 
                     folder?.Files.Add(patchFile);
                 }
-            }
         }
 
         /// <summary>

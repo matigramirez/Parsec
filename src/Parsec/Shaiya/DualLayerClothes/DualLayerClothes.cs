@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Shaiya.SDATA;
 
-namespace Parsec.Shaiya.DUALLAYERCLOTHES
+namespace Parsec.Shaiya.DualLayerClothes
 {
-    public class DualLayerClothes : SData, IJsonReadable
+    public class DualLayerClothes : SData.SData, IJsonReadable
     {
         public List<Costume> Costumes { get; } = new();
 
-        public DualLayerClothes(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public DualLayerClothes()
-        {
-        }
-
-        public override void Read()
+        public override void Read(params object[] options)
         {
             var total = _binaryReader.Read<int>();
 
@@ -31,16 +20,14 @@ namespace Parsec.Shaiya.DUALLAYERCLOTHES
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
 
             buffer.AddRange(BitConverter.GetBytes(Costumes.Count));
 
             foreach (var costume in Costumes)
-            {
                 buffer.AddRange(costume.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

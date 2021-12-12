@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.OBJ3DC
+namespace Parsec.Shaiya.Obj3DC
 {
     /// <summary>
     /// Class that represents a Face (Polygon) used in 3DC files to form the mesh. It's composed by 3 vertices only, so polygons can only be triangles.

@@ -4,7 +4,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.OBJ3DO
+namespace Parsec.Shaiya.Obj3DO
 {
     public class Vertex : IBinary
     {

@@ -4,11 +4,10 @@ using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
-using Parsec.Shaiya.SDATA;
 
-namespace Parsec.Shaiya.NPCQUEST
+namespace Parsec.Shaiya.NpcQuest
 {
-    public class NpcQuest : SData
+    public class NpcQuest : SData.SData
     {
         [JsonIgnore]
         public Format Format { get; set; }
@@ -28,16 +27,22 @@ namespace Parsec.Shaiya.NPCQUEST
         public byte[] UnknownArray { get; set; }
         public List<Quest> Quests { get; } = new();
 
-        public NpcQuest(string path, Format format) : base(path)
+        public override void Read(params object[] options)
         {
-            Format = format;
+            if (options.Length > 0)
+            {
+                object format = options[0];
+                Format = (Format)format;
+            }
+            else
+            {
+                Format = Format.EP5;
+            }
 
+            // TODO: Remove this when support for EP5+ is added
             if (Format > Format.EP5)
                 throw new NotSupportedException("Only NpcQuest EP4 and EP5 format can be read");
-        }
 
-        public override void Read()
-        {
             ReadMerchants();
             ReadGatekeepers();
             ReadStandardNpcs(Blacksmiths);
@@ -125,7 +130,7 @@ namespace Parsec.Shaiya.NPCQUEST
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             throw new NotImplementedException();
 

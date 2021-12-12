@@ -1,4 +1,4 @@
-﻿namespace Parsec.Shaiya.ITM
+﻿namespace Parsec.Shaiya.Itm
 {
     public enum ITMFormat
     {

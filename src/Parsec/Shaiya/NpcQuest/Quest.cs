@@ -6,7 +6,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.NPCQUEST
+namespace Parsec.Shaiya.NpcQuest
 {
     public class Quest : IBinary
     {

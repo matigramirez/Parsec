@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Shaiya.Core;
-using Parsec.Shaiya.SDATA;
 
-namespace Parsec.Shaiya.CASH
+namespace Parsec.Shaiya.Cash
 {
-    public class Cash : SData, IJsonReadable
+    public class Cash : SData.SData, IJsonReadable
     {
         public List<Product> Products { get; } = new();
-
-        public Cash(string path) : base(path)
-        {
-        }
 
         [JsonConstructor]
         public Cash()
         {
         }
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             var productCount = _binaryReader.Read<int>();
 
@@ -32,16 +26,14 @@ namespace Parsec.Shaiya.CASH
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
 
             buffer.AddRange(BitConverter.GetBytes(Products.Count));
 
             foreach (var product in Products)
-            {
                 buffer.AddRange(product.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

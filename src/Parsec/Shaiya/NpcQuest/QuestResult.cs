@@ -4,7 +4,7 @@ using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.NPCQUEST
+namespace Parsec.Shaiya.NpcQuest
 {
     public class QuestResult : IBinary
     {

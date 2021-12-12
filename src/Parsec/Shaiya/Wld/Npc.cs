@@ -2,7 +2,7 @@
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.WLD
+namespace Parsec.Shaiya.Wld
 {
     public class Npc
     {

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SMOD
+namespace Parsec.Shaiya.Smod
 {
     public class Smod : FileBase, IJsonReadable
     {
@@ -20,19 +19,10 @@ namespace Parsec.Shaiya.SMOD
         public Vector3 UnknownPoint2 { get; set; }
         public List<Object> Objects { get; } = new();
 
-        public Smod(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public Smod()
-        {
-        }
-
         [JsonIgnore]
         public override string Extension => "SMOD";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             Center = new Vector3(_binaryReader);
             Unknown = _binaryReader.Read<int>();
@@ -59,7 +49,7 @@ namespace Parsec.Shaiya.SMOD
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -71,9 +61,7 @@ namespace Parsec.Shaiya.SMOD
             buffer.AddRange(BitConverter.GetBytes(TexturedObjects.Count));
 
             foreach (var texturedObject in TexturedObjects)
-            {
                 buffer.AddRange(texturedObject.GetBytes());
-            }
 
             buffer.AddRange(UnknownPoint1.GetBytes());
             buffer.AddRange(UnknownPoint2.GetBytes());
@@ -81,9 +69,7 @@ namespace Parsec.Shaiya.SMOD
             buffer.AddRange(BitConverter.GetBytes(Objects.Count));
 
             foreach (var obj in Objects)
-            {
                 buffer.AddRange(obj.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

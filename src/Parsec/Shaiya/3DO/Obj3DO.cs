@@ -7,7 +7,7 @@ using Parsec.Helpers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.OBJ3DO
+namespace Parsec.Shaiya.Obj3DO
 {
     public class Obj3DO : FileBase, IJsonReadable
     {
@@ -15,19 +15,10 @@ namespace Parsec.Shaiya.OBJ3DO
         public List<Vertex> Vertices { get; } = new();
         public List<Face> Faces { get; } = new();
 
-        public Obj3DO(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public Obj3DO()
-        {
-        }
-
         [JsonIgnore]
         public override string Extension => "3DO";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             TextureName = _binaryReader.ReadString();
 
@@ -48,7 +39,7 @@ namespace Parsec.Shaiya.OBJ3DO
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -58,16 +49,12 @@ namespace Parsec.Shaiya.OBJ3DO
             buffer.AddRange(BitConverter.GetBytes(Vertices.Count));
 
             foreach (var vertex in Vertices)
-            {
                 buffer.AddRange(vertex.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Faces.Count));
 
             foreach (var face in Faces)
-            {
                 buffer.AddRange(face.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

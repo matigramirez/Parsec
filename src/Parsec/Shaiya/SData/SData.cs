@@ -4,34 +4,15 @@ using System.Text;
 using Newtonsoft.Json;
 using Parsec.Cryptography;
 using Parsec.Extensions;
+using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SDATA
+namespace Parsec.Shaiya.SData
 {
     public abstract class SData : FileBase
     {
         [JsonIgnore]
         public override string Extension => "SData";
-
-        public SData(string path) : base(path)
-        {
-            if (IsEncrypted(Buffer))
-            {
-                var decryptedBuffer = Decrypt(Buffer);
-                _binaryReader.Buffer = decryptedBuffer;
-            }
-        }
-
-        [JsonConstructor]
-        public SData()
-        {
-        }
-
-        /// <summary>
-        /// Checks if the file has the ".SData" extension
-        /// </summary>
-        [JsonIgnore]
-        public bool IsValidSData => Path.Substring(Path.Length - 6, 6) == ".SData";
 
         /// <summary>
         /// The signature present in the header of encrypted files
@@ -40,10 +21,69 @@ namespace Parsec.Shaiya.SDATA
         private const string _encryptionSignature = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
 
         /// <summary>
+        /// Reads the SData file format from a file
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <param name="options">Array of reading options</param>
+        /// <typeparam name="T">Shaiya File Format Type</typeparam>
+        /// <returns>T instance</returns>
+        public new static T ReadFromFile<T>(string path, params object[] options) where T : SData, new()
+        {
+            // Create SData instance
+            var binaryReader = new ShaiyaBinaryReader(path);
+            var instance = new T()
+            {
+                Path = path,
+                _binaryReader = binaryReader
+            };
+
+            // Decrypt buffer if it's encrypted
+            if (IsEncrypted(binaryReader.Buffer))
+            {
+                var decryptedBuffer = Decrypt(binaryReader.Buffer);
+                instance._binaryReader = new ShaiyaBinaryReader(decryptedBuffer);
+            }
+
+            // Parse the file
+            instance.Read(options);
+            return instance;
+        }
+
+        /// <summary>
+        /// Reads the SData file format from a buffer (byte array)
+        /// </summary>
+        /// <param name="buffer">File buffer</param>
+        /// <param name="options">Array of reading options</param>
+        /// <typeparam name="T">Shaiya File Format Type</typeparam>
+        /// <returns>T instance</returns>
+        public new static T ReadFromBuffer<T>(byte[] buffer, params object[] options) where T : SData, new()
+        {
+            var binaryReader = new ShaiyaBinaryReader(buffer);
+            var instance = new T
+            {
+                _binaryReader = binaryReader
+            };
+
+            // Decrypt buffer if it's encrypted
+            if (IsEncrypted(binaryReader.Buffer))
+            {
+                var decryptedBuffer = Decrypt(binaryReader.Buffer);
+                instance._binaryReader = new ShaiyaBinaryReader(decryptedBuffer);
+            }
+
+            // Parse the file
+            instance.Read(options);
+            return instance;
+        }
+
+        /// <summary>
         /// Checks if the file is encrypted with the SEED algorithm
         /// </summary>
         public static bool IsEncrypted(byte[] data)
         {
+            if (data.Length < _encryptionSignature.Length)
+                return false;
+
             string sDataHeader = Encoding.ASCII.GetString(data.SubArray(0, _encryptionSignature.Length));
             return sDataHeader == _encryptionSignature;
         }
@@ -65,9 +105,7 @@ namespace Parsec.Shaiya.SDATA
             var alignmentSize = header.RealSize;
 
             if (alignmentSize % 16 != 0)
-            {
                 alignmentSize = header.RealSize + (16 - (header.RealSize % 16));
-            }
 
             // Create data array including the extra alignment bytes
             var data = new byte[alignmentSize];

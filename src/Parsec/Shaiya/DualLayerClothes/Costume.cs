@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.DUALLAYERCLOTHES
+namespace Parsec.Shaiya.DualLayerClothes
 {
     public class Costume : IBinary
     {
@@ -32,9 +32,7 @@ namespace Parsec.Shaiya.DUALLAYERCLOTHES
             buffer.AddRange(BitConverter.GetBytes(Index));
 
             foreach (var layer in Layers)
-            {
                 buffer.AddRange(layer.GetBytes());
-            }
 
             return buffer.ToArray();
         }

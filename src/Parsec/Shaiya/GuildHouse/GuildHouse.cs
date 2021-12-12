@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Shaiya.SDATA;
 
-namespace Parsec.Shaiya.GUILDHOUSE
+namespace Parsec.Shaiya.GuildHouse
 {
-    public class GuildHouse : SData, IJsonReadable
+    public class GuildHouse : SData.SData, IJsonReadable
     {
         public int Unknown { get; set; }
         public int HousePrice { get; set; }
@@ -15,16 +13,7 @@ namespace Parsec.Shaiya.GUILDHOUSE
         public List<NpcInfo> NpcInfoList { get; } = new();
         public List<int> NpcIds { get; } = new();
 
-        public GuildHouse(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public GuildHouse()
-        {
-        }
-
-        public override void Read()
+        public override void Read(params object[] options)
         {
             Unknown = _binaryReader.Read<int>();
             HousePrice = _binaryReader.Read<int>();
@@ -43,7 +32,7 @@ namespace Parsec.Shaiya.GUILDHOUSE
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             // Create byte list which will contain the data
             var buffer = new List<byte>();
@@ -53,14 +42,10 @@ namespace Parsec.Shaiya.GUILDHOUSE
             buffer.AddRange(BitConverter.GetBytes(ServicePrice));
 
             foreach (var npcInfo in NpcInfoList)
-            {
                 buffer.AddRange(npcInfo.GetBytes());
-            }
 
             foreach (int npcId in NpcIds)
-            {
                 buffer.AddRange(BitConverter.GetBytes(npcId));
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

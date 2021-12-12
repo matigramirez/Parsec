@@ -1,27 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Shaiya.Core;
-using Parsec.Shaiya.SDATA;
 
-namespace Parsec.Shaiya.SETITEM
+namespace Parsec.Shaiya.SetItem
 {
-    public class SetItem : SData, IJsonReadable
+    public class SetItem : SData.SData, IJsonReadable
     {
         public List<Set> Sets { get; } = new();
 
-        public SetItem(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public SetItem()
-        {
-        }
-
-        public override void Read()
+        public override void Read(params object[] options)
         {
             var setCount = _binaryReader.Read<int>();
 
@@ -32,16 +20,14 @@ namespace Parsec.Shaiya.SETITEM
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
 
             buffer.AddRange(BitConverter.GetBytes(Sets.Count));
 
             foreach (var set in Sets)
-            {
                 buffer.AddRange(set.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

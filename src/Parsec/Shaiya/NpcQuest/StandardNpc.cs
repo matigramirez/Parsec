@@ -1,6 +1,6 @@
 ﻿using Parsec.Readers;
 
-namespace Parsec.Shaiya.NPCQUEST
+namespace Parsec.Shaiya.NpcQuest
 {
     public class StandardNpc : BaseNpc
     {

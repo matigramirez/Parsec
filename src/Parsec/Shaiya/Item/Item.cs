@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Helpers;
-using Parsec.Shaiya.SDATA;
 
 namespace Parsec.Shaiya.Item
 {
-    public class Item : SData
+    public class Item : SData.SData
     {
         public int MaxType { get; set; }
         public List<Type> Types { get; } = new();
 
-        public Item(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public Item()
-        {
-        }
-
-        public override void Read()
+        public override void Read(params object[] options)
         {
             MaxType = _binaryReader.Read<int>();
 
@@ -31,16 +20,14 @@ namespace Parsec.Shaiya.Item
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
 
             buffer.AddRange(BitConverter.GetBytes(MaxType));
 
             foreach (var type in Types)
-            {
                 buffer.AddRange(type.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

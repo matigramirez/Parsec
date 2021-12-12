@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.KILLSTATUS
+namespace Parsec.Shaiya.KillStatus
 {
     public class KillStatusBonus : IBinary
     {

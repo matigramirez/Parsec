@@ -23,19 +23,10 @@ namespace Parsec.Shaiya.EFT
         public int SequenceCount { get; set; }
         public List<Sequence> Sequences { get; } = new();
 
-        [JsonConstructor]
-        public EFT()
-        {
-        }
-
-        public EFT(string path) : base(path)
-        {
-        }
-
         [JsonIgnore]
         public override string Extension => "EFT";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             Signature = _binaryReader.ReadString(3);
 
@@ -79,7 +70,7 @@ namespace Parsec.Shaiya.EFT
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Encoding.ASCII.GetBytes(Signature));
@@ -110,16 +101,12 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(BitConverter.GetBytes(Scenes.Count));
 
             foreach (var scene in Scenes)
-            {
                 buffer.AddRange(scene.GetBytes(Format));
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Sequences.Count));
 
             foreach (var sequence in Sequences)
-            {
                 buffer.AddRange(sequence.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

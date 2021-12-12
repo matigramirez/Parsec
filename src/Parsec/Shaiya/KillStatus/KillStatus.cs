@@ -5,12 +5,10 @@ using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Common;
-using Parsec.Shaiya.Core;
-using Parsec.Shaiya.SDATA;
 
-namespace Parsec.Shaiya.KILLSTATUS
+namespace Parsec.Shaiya.KillStatus
 {
-    public class KillStatus : SData, IJsonReadable
+    public class KillStatus : SData.SData, IJsonReadable
     {
         public List<KillStatusRecord> Records { get; } = new();
 
@@ -20,16 +18,7 @@ namespace Parsec.Shaiya.KILLSTATUS
         [JsonIgnore]
         public List<KillStatusRecord> FuryRecords => Records.Where(r => r.Faction == Faction.Fury).ToList();
 
-        public KillStatus(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public KillStatus()
-        {
-        }
-
-        public override void Read()
+        public override void Read(params object[] options)
         {
             var totalStatus = _binaryReader.Read<int>();
 
@@ -40,7 +29,7 @@ namespace Parsec.Shaiya.KILLSTATUS
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             // Create byte list which will contain the data
             var buffer = new List<byte>();
@@ -48,9 +37,7 @@ namespace Parsec.Shaiya.KILLSTATUS
             buffer.AddRange(BitConverter.GetBytes(Records.Count));
 
             foreach (var record in Records)
-            {
                 buffer.AddRange(record.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

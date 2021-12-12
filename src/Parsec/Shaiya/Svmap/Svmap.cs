@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SVMAP
+namespace Parsec.Shaiya.Svmap
 {
     public class Svmap : FileBase
     {
@@ -19,14 +19,10 @@ namespace Parsec.Shaiya.SVMAP
         public List<Spawn> Spawns { get; } = new();
         public List<NamedArea> NamedAreas { get; } = new();
 
-        public Svmap(string path) : base(path)
-        {
-        }
-
         [JsonIgnore]
         public override string Extension => "svmap";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
             MapSize = _binaryReader.Read<int>();
 
@@ -84,7 +80,7 @@ namespace Parsec.Shaiya.SVMAP
             }
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             // TODO: There's something off about the writing process, it needs to be reviewed
             var buffer = new List<byte>();
@@ -96,44 +92,32 @@ namespace Parsec.Shaiya.SVMAP
             buffer.AddRange(BitConverter.GetBytes(Ladders.Count));
 
             foreach (var ladder in Ladders)
-            {
                 buffer.AddRange(ladder.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(MonsterAreas.Count));
 
             foreach (var monsterArea in MonsterAreas)
-            {
                 buffer.AddRange(monsterArea.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Npcs.Count));
 
             foreach (var npc in Npcs)
-            {
                 buffer.AddRange(npc.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Portals.Count));
 
             foreach (var portal in Portals)
-            {
                 buffer.AddRange(portal.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Spawns.Count));
 
             foreach (var spawn in Spawns)
-            {
                 buffer.AddRange(spawn.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(NamedAreas.Count));
 
             foreach (var namedArea in NamedAreas)
-            {
                 buffer.AddRange(namedArea.GetBytes());
-            }
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

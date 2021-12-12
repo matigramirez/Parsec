@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.DATA
+namespace Parsec.Shaiya.Data
 {
     [DataContract]
     public class SahFile : IBinary
@@ -67,14 +67,10 @@ namespace Parsec.Shaiya.DATA
 
             // Add file to the sah's file dictionary
             if (!fileIndex.ContainsKey(RelativePath))
-            {
                 fileIndex.Add(RelativePath, this);
-            }
             else
-            {
                 // Follow castor's _pv file name ending for duplicate files
                 fileIndex.Add(RelativePath + "_pv", this);
-            }
         }
 
         public SahFile(string name, long offset, int length, SahFolder folder) : this(folder)

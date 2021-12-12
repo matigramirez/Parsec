@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.GUILDHOUSE
+namespace Parsec.Shaiya.GuildHouse
 {
     public class NpcInfo : IBinary
     {

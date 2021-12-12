@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SETITEM
+namespace Parsec.Shaiya.SetItem
 {
     public class Item : IBinary
     {

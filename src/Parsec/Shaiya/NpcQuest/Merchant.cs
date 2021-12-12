@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.NPCQUEST
+namespace Parsec.Shaiya.NpcQuest
 {
     public class Merchant : BaseNpc, IBinary
     {
@@ -39,9 +39,7 @@ namespace Parsec.Shaiya.NPCQUEST
             buffer.AddRange(BitConverter.GetBytes(SaleItems.Count));
 
             foreach (var saleItem in SaleItems)
-            {
                 buffer.AddRange(saleItem.GetBytes());
-            }
 
             WriteBaseNpcThirdSegmentBytes(buffer);
 

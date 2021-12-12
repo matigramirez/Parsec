@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SEFF
+namespace Parsec.Shaiya.Seff
 {
     public class Effect : IBinary
     {

@@ -5,7 +5,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.NPCQUEST
+namespace Parsec.Shaiya.NpcQuest
 {
     public class BaseNpc : IBinary
     {
@@ -84,16 +84,12 @@ namespace Parsec.Shaiya.NPCQUEST
             buffer.AddRange(BitConverter.GetBytes(InQuestIds.Count));
 
             foreach (var inQuestId in InQuestIds)
-            {
                 buffer.AddRange(BitConverter.GetBytes(inQuestId));
-            }
 
             buffer.AddRange(BitConverter.GetBytes(OutQuestIds.Count));
 
             foreach (var outQuestId in OutQuestIds)
-            {
                 buffer.AddRange(BitConverter.GetBytes(outQuestId));
-            }
         }
 
         public virtual byte[] GetBytes()

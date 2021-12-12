@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD
+namespace Parsec.Shaiya.Wld
 {
     public class Wld : FileBase
     {
@@ -27,13 +28,14 @@ namespace Parsec.Shaiya.WLD
         [JsonIgnore]
         public override string Extension => "wld";
 
-        public override void Read()
+        public override void Read(params object[] options)
         {
+            throw new NotImplementedException();
         }
 
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

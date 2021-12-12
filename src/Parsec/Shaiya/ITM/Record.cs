@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
 
-namespace Parsec.Shaiya.ITM
+namespace Parsec.Shaiya.Itm
 {
     public class Record
     {
@@ -76,9 +76,7 @@ namespace Parsec.Shaiya.ITM
             }
 
             if (format == ITMFormat.IT2)
-            {
                 Unknown4 = binaryReader.ReadBytes(1024);
-            }
         }
 
         public byte[] GetBytes(ITMFormat format)
@@ -101,9 +99,7 @@ namespace Parsec.Shaiya.ITM
             }
 
             if (format == ITMFormat.IT2)
-            {
                 buffer.AddRange(Unknown4);
-            }
 
             return buffer.ToArray();
         }

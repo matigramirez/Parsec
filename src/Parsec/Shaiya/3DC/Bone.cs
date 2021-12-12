@@ -8,7 +8,7 @@ using Parsec.Shaiya.Core;
 using Quaternion = System.Numerics.Quaternion;
 using Vector3 = Parsec.Shaiya.Common.Vector3;
 
-namespace Parsec.Shaiya.OBJ3DC
+namespace Parsec.Shaiya.Obj3DC
 {
     public class Bone : IBinary
     {
@@ -23,12 +23,12 @@ namespace Parsec.Shaiya.OBJ3DC
         public Matrix4 TransformationMatrix { get; set; }
 
         /// <summary>
-        /// The initial translation <see cref="Vector3"/> obtained from the <see cref="TransformationMatrix"/>
+        /// The initial translation <see cref="Common.Vector3"/> obtained from the <see cref="TransformationMatrix"/>
         /// </summary>
         public Vector3 Translation { get; set; }
 
         /// <summary>
-        /// The initial rotation <see cref="Quaternion"/> of the bone obtained from the <see cref="TransformationMatrix"/>
+        /// The initial rotation <see cref="System.Numerics.Quaternion"/> of the bone obtained from the <see cref="TransformationMatrix"/>
         /// </summary>
         public Quaternion Rotation { get; set; }
 
@@ -64,9 +64,7 @@ namespace Parsec.Shaiya.OBJ3DC
             for (int row = 0; row < 4; row++)
             {
                 for (int col = 0; col < 4; col++)
-                {
                     buffer.AddRange(BitConverter.GetBytes(TransformationMatrix.Data[row, col]));
-                }
             }
 
             return buffer.ToArray();

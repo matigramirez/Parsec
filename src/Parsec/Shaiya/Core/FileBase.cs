@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -19,7 +18,11 @@ namespace Parsec.Shaiya.Core
         /// The file's byte array
         /// </summary>
         [JsonIgnore]
-        public byte[] Buffer => _binaryReader.Buffer;
+        public byte[] Buffer
+        {
+            get => _binaryReader.Buffer;
+            set => _binaryReader = new ShaiyaBinaryReader(value);
+        }
 
         /// <summary>
         /// Full path to the file
@@ -34,18 +37,16 @@ namespace Parsec.Shaiya.Core
         /// Plain file name
         /// </summary>
         [JsonIgnore]
-        public string FileName => Path.Split('/', '\\').LastOrDefault();
+        public string FileName => System.IO.Path.GetFileName(Path);
 
         /// <summary>
         /// File name without the extension (.xx)
         /// </summary>
         [JsonIgnore]
-        public string FileNameWithoutExtension => FileName.Split('.').FirstOrDefault();
+        public string FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(Path);
 
-        public FileBase(string path)
+        public FileBase(ShaiyaBinaryReader binaryReader)
         {
-            Path = path;
-            _binaryReader = new ShaiyaBinaryReader(path);
         }
 
         [JsonConstructor]
@@ -53,11 +54,52 @@ namespace Parsec.Shaiya.Core
         {
         }
 
+        /// <summary>
+        /// Reads the shaiya file format from a file
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <param name="options">Array of reading options</param>
+        /// <typeparam name="T">Shaiya File Format Type</typeparam>
+        /// <returns>T instance</returns>
+        public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
+        {
+            var binaryReader = new ShaiyaBinaryReader(path);
+            var instance = new T()
+            {
+                Path = path,
+                _binaryReader = binaryReader
+            };
+
+            // Parse the file
+            instance.Read(options);
+            return instance;
+        }
+
+        /// <summary>
+        /// Reads the shaiya file format from a buffer (byte array)
+        /// </summary>
+        /// <param name="buffer">File buffer</param>
+        /// <param name="options">Array of reading options</param>
+        /// <typeparam name="T">Shaiya File Format Type</typeparam>
+        /// <returns>T instance</returns>
+        public static T ReadFromBuffer<T>(byte[] buffer, params object[] options) where T : FileBase, new()
+        {
+            var binaryReader = new ShaiyaBinaryReader(buffer);
+            var instance = new T
+            {
+                _binaryReader = binaryReader
+            };
+
+            // Parse the file
+            instance.Read(options);
+            return instance;
+        }
+
         /// <inheritdoc/>
-        public abstract void Read();
+        public abstract void Read(params object[] options);
 
         /// <inheritdoc />
-        public abstract void Write(string path);
+        public abstract void Write(string path, params object[] options);
 
         /// <inheritdoc/>
         public void ExportJson(string path, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false) =>
@@ -74,7 +116,7 @@ namespace Parsec.Shaiya.Core
             };
 
             // Add enum to string converter
-            if(enumFriendly)
+            if (enumFriendly)
                 settings.Converters.Add(new StringEnumConverter());
 
             return JsonConvert.SerializeObject(obj, settings);

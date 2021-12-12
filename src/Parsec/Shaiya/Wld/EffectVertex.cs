@@ -1,6 +1,6 @@
 ﻿using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.WLD
+namespace Parsec.Shaiya.Wld
 {
     /// <summary>
     /// Class that represents a Vertex used by effects. It is used to know where to render the effect.

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.DUALLAYERCLOTHES
+namespace Parsec.Shaiya.DualLayerClothes
 {
     public class Layer : IBinary
     {

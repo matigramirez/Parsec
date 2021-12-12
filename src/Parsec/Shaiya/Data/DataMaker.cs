@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace Parsec.Shaiya.DATA
+namespace Parsec.Shaiya.Data
 {
     public static class DataMaker
     {

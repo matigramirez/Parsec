@@ -5,7 +5,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.KILLSTATUS
+namespace Parsec.Shaiya.KillStatus
 {
     public class KillStatusRecord : IBinary
     {
@@ -41,9 +41,7 @@ namespace Parsec.Shaiya.KILLSTATUS
             buffer.AddRange(BitConverter.GetBytes(Index));
 
             foreach (var bonus in Bonuses)
-            {
                 buffer.AddRange(bonus.GetBytes());
-            }
 
             return buffer.ToArray();
         }

@@ -5,7 +5,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SMOD
+namespace Parsec.Shaiya.Smod
 {
     public class Vertex : IBinary
     {

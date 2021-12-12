@@ -5,7 +5,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SMOD
+namespace Parsec.Shaiya.Smod
 {
     public class Object : IBinary
     {
@@ -42,16 +42,12 @@ namespace Parsec.Shaiya.SMOD
             buffer.AddRange(BitConverter.GetBytes(Vertices.Count));
 
             foreach (var vertex in Vertices)
-            {
                 buffer.AddRange(vertex.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Faces.Count));
 
             foreach (var face in Faces)
-            {
                 buffer.AddRange(face.GetBytes());
-            }
 
             return buffer.ToArray();
         }

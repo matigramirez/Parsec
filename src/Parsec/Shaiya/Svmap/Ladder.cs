@@ -3,7 +3,7 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SVMAP
+namespace Parsec.Shaiya.Svmap
 {
     public class Ladder : IBinary
     {

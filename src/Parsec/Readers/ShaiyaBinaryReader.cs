@@ -10,20 +10,10 @@ namespace Parsec.Readers
     /// </summary>
     public sealed class ShaiyaBinaryReader
     {
-        private byte[] _buffer;
-
         /// <summary>
         /// The binary reader's data buffer
         /// </summary>
-        public byte[] Buffer
-        {
-            get => _buffer;
-            set
-            {
-                _buffer = new byte[value.Length];
-                Array.Copy(value, Buffer, value.Length);
-            }
-        }
+        public byte[] Buffer { get; }
 
         private int _offset;
 
@@ -36,6 +26,11 @@ namespace Parsec.Readers
         {
             using var binaryReader = new BinaryReader(File.OpenRead(filePath));
             Buffer = binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
+        }
+
+        public ShaiyaBinaryReader(byte[] buffer)
+        {
+            Buffer = buffer;
         }
 
         /// <summary>

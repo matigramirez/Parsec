@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.CASH
+namespace Parsec.Shaiya.Cash
 {
     public class Product : IBinary
     {
@@ -50,9 +50,7 @@ namespace Parsec.Shaiya.CASH
             buffer.AddRange(BitConverter.GetBytes(Cost));
 
             foreach (var item in Items)
-            {
                 buffer.AddRange(item.GetBytes());
-            }
 
             // For some reason these strings have 2 string terminators
             buffer.AddRange(BitConverter.GetBytes(ProductName.Length + 2));

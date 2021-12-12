@@ -5,7 +5,7 @@ using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.ANI
+namespace Parsec.Shaiya.Ani
 {
     /// <summary>
     /// Class that represents an .ANI file
@@ -27,20 +27,11 @@ namespace Parsec.Shaiya.ANI
         /// </summary>
         public List<AniBone> Bones { get; } = new();
 
-        public Ani(string path) : base(path)
-        {
-        }
-
-        [JsonConstructor]
-        public Ani()
-        {
-        }
-
         [JsonIgnore]
         public override string Extension => "ANI";
 
         /// <inheritdoc />
-        public override void Read()
+        public override void Read(params object[] options)
         {
             StartKeyframe = _binaryReader.Read<int>();
             EndKeyframe = _binaryReader.Read<int>();
@@ -55,7 +46,7 @@ namespace Parsec.Shaiya.ANI
         }
 
         /// <inheritdoc />
-        public override void Write(string path)
+        public override void Write(string path, params object[] options)
         {
             // Create byte list which will contain the ani data
             var buffer = new List<byte>();
@@ -71,16 +62,12 @@ namespace Parsec.Shaiya.ANI
                 buffer.AddRange(BitConverter.GetBytes(bone.Rotations.Count));
 
                 foreach (var keyframeRotation in bone.Rotations)
-                {
                     buffer.AddRange(keyframeRotation.GetBytes());
-                }
 
                 buffer.AddRange(BitConverter.GetBytes(bone.Translations.Count));
 
                 foreach (var keyframeTranslation in bone.Translations)
-                {
                     buffer.AddRange(keyframeTranslation.GetBytes());
-                }
             }
 
             FileHelper.WriteFile(path, buffer.ToArray());
