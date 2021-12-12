@@ -31,7 +31,7 @@ namespace Parsec.Shaiya.Data
 
             _safWriter = new BinaryWriter(File.OpenWrite(fileCreationPath));
 
-            var rootFolder = new SahFolder(null)
+            var rootFolder = new SFolder(null)
             {
                 RelativePath = string.Empty
             };
@@ -46,7 +46,7 @@ namespace Parsec.Shaiya.Data
             return sah;
         }
 
-        public static void ReadDirectoryFolder(SahFolder folder, string path)
+        public static void ReadDirectoryFolder(SFolder folder, string path)
         {
             ReadDirectoryFiles(folder, path);
 
@@ -54,7 +54,7 @@ namespace Parsec.Shaiya.Data
 
             foreach (var subfolder in subfolders)
             {
-                var shaiyaFolder = new SahFolder(folder)
+                var shaiyaFolder = new SFolder(folder)
                 {
                     Name = subfolder,
                     RelativePath = Path.Combine(folder.RelativePath, subfolder)
@@ -71,7 +71,7 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         /// <param name="folder">The shaiya folder instance</param>
         /// <param name="path">Directory path</param>
-        public static void ReadDirectoryFiles(SahFolder folder, string path)
+        public static void ReadDirectoryFiles(SFolder folder, string path)
         {
             // Read all files in directory
             var files = Directory.GetFiles(path).Select(Path.GetFileName);
@@ -82,7 +82,7 @@ namespace Parsec.Shaiya.Data
 
                 var fileStream = File.OpenRead(filePath);
 
-                var shaiyaFile = new SahFile(folder)
+                var shaiyaFile = new SFile(folder)
                 {
                     Name = file,
                     Length = (int)fileStream.Length,
@@ -99,7 +99,7 @@ namespace Parsec.Shaiya.Data
             }
         }
 
-        public static void AppendFile(SahFile file)
+        public static void AppendFile(SFile file)
         {
             // Write file offset
             file.Offset = _safWriter.BaseStream.Position;

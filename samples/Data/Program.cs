@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
 using Parsec.Shaiya.Data;
+using Parsec.Shaiya.Svmap;
+using static Parsec.Shaiya.Core.FileBase;
 
 namespace Parsec.Samples
 {
@@ -11,14 +13,23 @@ namespace Parsec.Samples
             var data = new Data("data.sah");
 
             // Find the file you want to extract
-            var file = data.Sah.FileIndex.Values.FirstOrDefault(f => f.Name == "AutoStat_Mode.cfg");
+            if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
+            {
+                // Extract the selected file
+                data.Extract(file, "extracted");
 
-            // Check that file isn't null
-            if (file == null)
-                return;
+                // Read and parse the file's content directly from the saf file
+                var svmap = ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 
-            // Extract the selected file
-            data.Extract(file, "extracted");
+                Console.WriteLine($"File: {svmap.FileName}");
+                Console.WriteLine($"MapSize: {svmap.MapSize}");
+                Console.WriteLine($"Ladder Count: {svmap.Ladders.Count}");
+                Console.WriteLine($"Monster Area Count: {svmap.MonsterAreas.Count}");
+                Console.WriteLine($"Npc Count: {svmap.Npcs.Count}");
+                Console.WriteLine($"Portal Count: {svmap.Portals.Count}");
+                Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
+                Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
+            }
         }
     }
 }

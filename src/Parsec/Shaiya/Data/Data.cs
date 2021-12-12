@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Parsec.Helpers;
 using static Parsec.Shaiya.Core.FileBase;
@@ -9,6 +10,16 @@ namespace Parsec.Shaiya.Data
     {
         public Sah Sah { get; set; }
         public Saf Saf { get; set; }
+
+        /// <summary>
+        /// Dictionary of folders that can be accessed by path
+        /// </summary>
+        public Dictionary<string, SFolder> FolderIndex => Sah.FolderIndex;
+
+        /// <summary>
+        /// Dictionary of files that can be accessed by path
+        /// </summary>
+        public Dictionary<string, SFile> FileIndex => Sah.FileIndex;
 
         public Data(string path)
         {
@@ -43,7 +54,7 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         /// <param name="folder">Folder to extract</param>
         /// <param name="extractionDirectory">Directory where folder should be extracted</param>
-        public void Extract(SahFolder folder, string extractionDirectory)
+        public void Extract(SFolder folder, string extractionDirectory)
         {
             var extractionPath = Path.Combine(extractionDirectory, folder.Name);
             FileHelper.CreateDirectory(extractionPath);
@@ -60,9 +71,9 @@ namespace Parsec.Shaiya.Data
         /// <summary>
         /// Extracts a single file into a directory
         /// </summary>
-        /// <param name="file">The <see cref="SahFile" /> instance to extract</param>
+        /// <param name="file">The <see cref="SFile" /> instance to extract</param>
         /// <param name="extractionDirectory">The directory where the file should be saved</param>
-        public void Extract(SahFile file, string extractionDirectory)
+        public void Extract(SFile file, string extractionDirectory)
         {
             var fileBytes = Saf.ReadBytes(file.Offset, file.Length);
             FileHelper.WriteFile(Path.Combine(extractionDirectory, file.Name), fileBytes);
@@ -71,8 +82,8 @@ namespace Parsec.Shaiya.Data
         /// <summary>
         /// Reads a file buffer from the saf file
         /// </summary>
-        /// <param name="file"><see cref="SahFile"/> instance</param>
+        /// <param name="file"><see cref="SFile"/> instance</param>
         /// <returns>The file buffer</returns>
-        public byte[] GetFileBuffer(SahFile file) => Saf.ReadBytes(file.Offset, file.Length);
+        public byte[] GetFileBuffer(SFile file) => Saf.ReadBytes(file.Offset, file.Length);
     }
 }

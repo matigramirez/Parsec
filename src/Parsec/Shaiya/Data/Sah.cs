@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
-using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Data
@@ -30,17 +29,17 @@ namespace Parsec.Shaiya.Data
         /// The data's root directory.
         /// </summary>
         [DataMember]
-        public SahFolder RootFolder { get; private set; }
+        public SFolder RootFolder { get; private set; }
 
         /// <summary>
         /// Dictionary of folders that can be accessed by path
         /// </summary>
-        public Dictionary<string, SahFolder> FolderIndex = new();
+        public Dictionary<string, SFolder> FolderIndex = new();
 
         /// <summary>
         /// Dictionary of files that can be accessed by path
         /// </summary>
-        public Dictionary<string, SahFile> FileIndex = new();
+        public Dictionary<string, SFile> FileIndex = new();
 
         public Sah()
         {
@@ -52,7 +51,7 @@ namespace Parsec.Shaiya.Data
         /// <param name="path">Path where sah file will be saved</param>
         /// <param name="rootFolder">Shaiya main Folder containing all the sah's data</param>
         /// <param name="fileCount"></param>
-        public Sah(string path, SahFolder rootFolder, int fileCount)
+        public Sah(string path, SFolder rootFolder, int fileCount)
         {
             Path = path;
             RootFolder = rootFolder;
@@ -64,8 +63,6 @@ namespace Parsec.Shaiya.Data
 
         public override void Read(params object[] options)
         {
-            _binaryReader = new ShaiyaBinaryReader(Path);
-
             // Skip signature (3) and unknown bytes (4)
             _binaryReader.Skip(7);
 
@@ -76,21 +73,21 @@ namespace Parsec.Shaiya.Data
             _binaryReader.SetOffset(51);
 
             // Read root folder and all of its subfolders
-            RootFolder = new SahFolder(_binaryReader, null, FolderIndex, FileIndex);
+            RootFolder = new SFolder(_binaryReader, null, FolderIndex, FileIndex);
         }
 
         /// <summary>
         /// Adds a folder to the sah file
         /// </summary>
         /// <param name="path">Folder's path</param>
-        public SahFolder AddFolder(string path) => EnsureFolderExists(path);
+        public SFolder AddFolder(string path) => EnsureFolderExists(path);
 
         /// <summary>
         /// Adds a file to the sah file
         /// </summary>
         /// <param name="directoryPath">Directory where file must be added. MUST NOT INCLUDE FILE NAME.</param>
         /// <param name="file">File to add</param>
-        public void AddFile(string directoryPath, SahFile file)
+        public void AddFile(string directoryPath, SFile file)
         {
             // Ensure directory exists
             var parentFolder = EnsureFolderExists(directoryPath);
@@ -106,7 +103,7 @@ namespace Parsec.Shaiya.Data
         /// Checks if a folder exists based on its path. If it doesn't exist, it will be created
         /// </summary>
         /// <param name="path">Folder path</param>
-        public SahFolder EnsureFolderExists(string path)
+        public SFolder EnsureFolderExists(string path)
         {
             // Check if folder is part of the folder index
             if (FolderIndex.TryGetValue(path, out var matchingFolder))
@@ -123,7 +120,7 @@ namespace Parsec.Shaiya.Data
                 if (!currentFolder.HasSubfolder(folderName))
                 {
                     // Create new folder if it doesn't exist
-                    var newFolder = new SahFolder(folderName, currentFolder);
+                    var newFolder = new SFolder(folderName, currentFolder);
 
                     // Create relative path
                     newFolder.RelativePath = System.IO.Path.Combine(currentFolder.RelativePath, newFolder.Name);
@@ -143,16 +140,6 @@ namespace Parsec.Shaiya.Data
                 }
 
             return currentFolder;
-        }
-
-        /// <summary>
-        /// Checks if the first 3 bytes in the file match the "SAH" magic number or the provided one
-        /// </summary>
-        /// <param name="magicNumber">Magic number to check. <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)">Click here</a> for more information.</param>
-        public bool CheckMagicNumber(string magicNumber = "SAH")
-        {
-            var sahMagicNumber = _binaryReader.ReadString(3);
-            return sahMagicNumber == magicNumber;
         }
 
         public override void Write(string path, params object[] options)

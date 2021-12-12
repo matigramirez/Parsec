@@ -106,7 +106,7 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         /// <param name="file"></param>
         /// <param name="offset"></param>
-        private void WriteFile(SahFile file, long offset)
+        private void WriteFile(SFile file, long offset)
         {
             // Set safWriter position to end of file
             _dataSafWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
@@ -125,7 +125,7 @@ namespace Parsec.Shaiya.Data
         /// Appends a file to the end of the saf file and sets its offset field
         /// </summary>
         /// <param name="patchFile">The file to write</param>
-        private void AppendFile(SahFile patchFile)
+        private void AppendFile(SFile patchFile)
         {
             // Set safWriter position to end of file
             _dataSafWriter.BaseStream.Seek(0, SeekOrigin.End);
@@ -143,7 +143,7 @@ namespace Parsec.Shaiya.Data
         /// <summary>
         /// Gets a file bytes from a saf file
         /// </summary>
-        private byte[] GetFileBytes(SahFile file)
+        private byte[] GetFileBytes(SFile file)
         {
             // Set offset to file's starting offset
             _patchSafReader.BaseStream.Seek(file.Offset, SeekOrigin.Begin);

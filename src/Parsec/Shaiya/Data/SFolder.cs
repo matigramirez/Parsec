@@ -10,7 +10,7 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Data
 {
     [DataContract]
-    public class SahFolder : IBinary
+    public class SFolder : IBinary
     {
         /// <summary>
         /// The folder's name
@@ -27,35 +27,35 @@ namespace Parsec.Shaiya.Data
         /// List of files the folder has
         /// </summary>
         [DataMember]
-        public List<SahFile> Files = new();
+        public List<SFile> Files = new();
 
         /// <summary>
         /// List of subfolders the file has
         /// </summary>
         [DataMember]
-        public List<SahFolder> Subfolders = new();
+        public List<SFolder> Subfolders = new();
 
         /// <summary>
         /// The folder's parent directory
         /// </summary>
-        public SahFolder ParentFolder;
+        public SFolder ParentFolder;
 
         [JsonConstructor]
-        public SahFolder()
+        public SFolder()
         {
         }
 
-        public SahFolder(SahFolder parentFolder)
+        public SFolder(SFolder parentFolder)
         {
             ParentFolder = parentFolder;
         }
 
-        public SahFolder(ShaiyaBinaryReader binaryReader, SahFolder parentFolder, Dictionary<string, SahFolder> folderIndex, Dictionary<string, SahFile> fileIndex)
+        public SFolder(ShaiyaBinaryReader binaryReader, SFolder parentFolder, Dictionary<string, SFolder> folderIndex, Dictionary<string, SFile> fileIndex)
         {
             Name = binaryReader.ReadString();
 
             // Write folder's relative path based on parent folder
-            RelativePath = parentFolder == null ? Name : System.IO.Path.Combine(parentFolder.RelativePath, Name);
+            RelativePath = parentFolder == null || parentFolder.Name == "" ? Name : string.Join('/', parentFolder.RelativePath, Name);
 
             folderIndex.Add(RelativePath, this);
 
@@ -64,7 +64,7 @@ namespace Parsec.Shaiya.Data
             // Read all files in this folder
             for (int i = 0; i < fileCount; i++)
             {
-                var file = new SahFile(binaryReader, this, fileIndex);
+                var file = new SFile(binaryReader, this, fileIndex);
                 Files.Add(file);
             }
 
@@ -73,12 +73,12 @@ namespace Parsec.Shaiya.Data
             // Recursively read subfolders data
             for (int i = 0; i < subfolderCount; i++)
             {
-                var subfolder = new SahFolder(binaryReader, this, folderIndex, fileIndex);
+                var subfolder = new SFolder(binaryReader, this, folderIndex, fileIndex);
                 Subfolders.Add(subfolder);
             }
         }
 
-        public SahFolder(string name, SahFolder parentFolder) : this(parentFolder)
+        public SFolder(string name, SFolder parentFolder) : this(parentFolder)
         {
             Name = name;
         }
@@ -99,13 +99,13 @@ namespace Parsec.Shaiya.Data
         /// Gets a folder's file
         /// </summary>
         /// <param name="name">File name</param>
-        public SahFile GetFile(string name) => Files.FirstOrDefault(f => f.Name == name);
+        public SFile GetFile(string name) => Files.FirstOrDefault(f => f.Name == name);
 
         /// <summary>
         /// Gets a folder's subfolder
         /// </summary>
         /// <param name="name">Subfolder name</param>
-        public SahFolder GetSubfolder(string name) => Subfolders.FirstOrDefault(sf => sf.Name == name);
+        public SFolder GetSubfolder(string name) => Subfolders.FirstOrDefault(sf => sf.Name == name);
 
         public byte[] GetBytes()
         {

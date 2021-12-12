@@ -9,7 +9,7 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Data
 {
     [DataContract]
-    public class SahFile : IBinary
+    public class SFile : IBinary
     {
         /// <summary>
         /// The name of the file
@@ -43,19 +43,19 @@ namespace Parsec.Shaiya.Data
         /// <summary>
         /// The directory in which the file is
         /// </summary>
-        public SahFolder ParentFolder;
+        public SFolder ParentFolder;
 
         [JsonConstructor]
-        public SahFile()
+        public SFile()
         {
         }
 
-        public SahFile(SahFolder parentFolder)
+        public SFile(SFolder parentFolder)
         {
             ParentFolder = parentFolder;
         }
 
-        public SahFile(ShaiyaBinaryReader binaryReader, SahFolder folder, Dictionary<string, SahFile> fileIndex) : this(folder)
+        public SFile(ShaiyaBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
         {
             Name = binaryReader.ReadString();
             Offset = binaryReader.Read<long>();
@@ -63,7 +63,7 @@ namespace Parsec.Shaiya.Data
             Version = binaryReader.Read<int>();
 
             // Write folder's relative path based on parent folder
-            RelativePath = ParentFolder == null ? Name : System.IO.Path.Combine(folder.RelativePath, Name);
+            RelativePath = ParentFolder == null || ParentFolder.Name == "" ? Name : string.Join('/', folder.RelativePath, Name);
 
             // Add file to the sah's file dictionary
             if (!fileIndex.ContainsKey(RelativePath))
@@ -73,7 +73,7 @@ namespace Parsec.Shaiya.Data
                 fileIndex.Add(RelativePath + "_pv", this);
         }
 
-        public SahFile(string name, long offset, int length, SahFolder folder) : this(folder)
+        public SFile(string name, long offset, int length, SFolder folder) : this(folder)
         {
             Name = name;
             Offset = offset;
