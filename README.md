@@ -51,16 +51,32 @@ or... Use one of the samples from the [samples section](https://github.com/matig
 
 ### Reading
 
-1. Create an instance of the file you want to read:
+From a standalone file
 
 ```cs
-var svmap = new Svmap("0.svmap");
+using static Parsec.Shaiya.Core.FileBase;
+
+// Read file
+var svmap = ReadFromFile<Svmap>("0.svmap");
 ```
 
-2. Call the `Read` method to parse the file's content. All the fields in the file will become available.
+From data.saf
 
 ```cs
-svmap.Read();
+using static Parsec.Shaiya.Core.FileBase;
+
+// Load data (sah and saf)
+var data = new Data("data.sah");
+
+// Find the file you want to extract
+if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
+{
+  // Extract the selected file
+  data.Extract(file, "extracted");
+
+  // Read and parse the file's content directly from the saf file
+  var svmap = ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
+}
 ```
 
 ### Export
@@ -89,7 +105,7 @@ format.
 var svmap = Deserializer.ReadFromJson<Svmap>("map0.json");
 ```
 
-It is adviced to first read a file from its original format, export it as JSON, edit it, and importing it once again as
+It is advised to first read a file from its original format, export it as JSON, edit it, and importing it once again as
 JSON, so that all the original fields are present in the JSON file.
 
 ## Samples
@@ -97,22 +113,17 @@ JSON, so that all the original fields are present in the JSON file.
 ### `sah/saf`
 
 ```cs
-// Read sah
-var sah = new Sah("data.sah");
-sah.Read();
+using static Parsec.Shaiya.Core.FileBase;
+
+// Load data (sah and saf)
+var data = new Data("data.sah");
 
 // Find the file you want to extract
-var file = sah.FileIndex.Values.FirstOrDefault(f => f.Name == "sysmsg-uni.txt");
-
-// Check that file isn't null
-if (file == null)
-    return;
-
-// Create file instance
-var saf = new Saf(sah);
-
-// Read saf and extract the selected file
-saf.Extract(file, "extracted");
+if (data.Sah.FileIndex.TryGetValue("world/2.svmap", out var file))
+{
+  // Extract the selected file
+  data.Extract(file, "extracted");
+}
 ```
 
 ### `SData`
@@ -120,26 +131,23 @@ saf.Extract(file, "extracted");
 Encryption / Decryption
 
 ```cs
-// Load NpcQuest.SData
-var npcQuest = new NpcQuest("NpcQuest.SData");
+var npcQuest = ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
 
-// Save decrypted file (original encryption status doesn't matter)
-npcQuest.SaveDecrypted("NpcQuest.decrypted.SData");
+// Save encrypted file
+var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
+FileHelper.WriteFile("NpcQuest.SData.Encrypted", encryptedBytes);
 
-// Save encrypted file (original encryption status doesn't matter)
-npcQuest.SaveEncrypted("NpcQuest.encrypted.SData");
+var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
+FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
 ```
 
 ### `svmap`
 
 ```cs
 // Open svmap file
-var svmap = new Svmap("2.svmap");
+var svmap = ReadFromFile<Svmap>("2.svmap");
 
-// Parse its content
-svmap.Read();
-
-// Print content
+// Print its content
 Console.WriteLine($"File: {svmap.FileName}");
 Console.WriteLine($"MapSize: {svmap.MapSize}");
 Console.WriteLine($"Ladder Count: {svmap.Ladders.Count}");
@@ -149,11 +157,10 @@ Console.WriteLine($"Portal Count: {svmap.Portals.Count}");
 Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
 Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
 
-// Export json file ignoring some fields
-svmap.ExportJson($"{svmap.FileNameWithoutExtension}.json", new List<string>
+// Export file as json file ignoring some fields
+svmap.ExportJson($"{svmap.FileName}.json", new List<string>
 {
   nameof(svmap.MapHeight),
-  nameof(svmap.MapSize)
 });
 ```
 
