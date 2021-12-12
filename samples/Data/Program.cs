@@ -1,28 +1,24 @@
 ﻿using System.Linq;
-using Parsec.Shaiya.DATA;
+using Parsec.Shaiya.Data;
 
-namespace Parsec.Samples.SAH
+namespace Parsec.Samples
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Load sah
-            var sah = new Sah("data.sah");
-            sah.Read();
+            // Read data
+            var data = new Data("data.sah");
 
             // Find the file you want to extract
-            var file = sah.FileIndex.Values.FirstOrDefault(f => f.Name == "sysmsg-uni.txt");
+            var file = data.Sah.FileIndex.Values.FirstOrDefault(f => f.Name == "AutoStat_Mode.cfg");
 
             // Check that file isn't null
             if (file == null)
                 return;
 
-            // Create file instance
-            var saf = new Saf(sah);
-
-            // Read saf and extract the selected file
-            saf.Extract(file, "extracted");
+            // Extract the selected file
+            data.Extract(file, "extracted");
         }
     }
 }

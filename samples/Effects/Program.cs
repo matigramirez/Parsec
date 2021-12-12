@@ -1,5 +1,6 @@
 ﻿using Parsec.Shaiya.EFT;
-using Parsec.Shaiya.SEFF;
+using Parsec.Shaiya.Seff;
+using static Parsec.Shaiya.Core.FileBase;
 
 namespace Parsec.Samples
 {
@@ -9,16 +10,14 @@ namespace Parsec.Samples
         {
             #region EFT
 
-            var eft = new EFT("Monster.EFT");
-            eft.Read();
+            var eft = ReadFromFile<EFT>("Monster.EFT");
             eft.ExportJson($"{eft.FileName}.json");
 
             #endregion
 
             #region seff
 
-            var seff = new Seff("weapon.seff");
-            seff.Read();
+            var seff = ReadFromFile<Seff>("weapon.seff");
             seff.ExportJson($"{seff.FileName}.json");
 
             #endregion

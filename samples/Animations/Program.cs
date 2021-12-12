@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Parsec.Shaiya.ANI;
+using Parsec.Shaiya.Ani;
+using static Parsec.Shaiya.Core.FileBase;
 
 namespace Parsec.Samples
 {
@@ -10,8 +11,7 @@ namespace Parsec.Samples
         {
             var filePath = "Mob_Fox_01_Run.ANI";
 
-            var ani = new Ani(filePath);
-            ani.Read();
+            var ani = ReadFromFile<Ani>(filePath);
 
             Console.WriteLine($"Ani file {filePath}:");
             Console.WriteLine("StartKeyframe  EndKeyframe  BoneStepsCount");
@@ -19,11 +19,12 @@ namespace Parsec.Samples
 
             Console.WriteLine("Steps:  {BoneIndex  RotationsCount  TranslationsCount}");
             foreach (var aniStep in ani.Bones)
-            {
                 Console.WriteLine($"{{{aniStep.ParentBoneIndex}  {aniStep.Rotations.Count}  {aniStep.Translations.Count}}}");
-            }
 
-            ani.ExportJson($"{ani.FileNameWithoutExtension}.json", new List<string>{ "isIdentity" });
+            ani.ExportJson($"{ani.FileNameWithoutExtension}.json", new List<string>
+            {
+                "isIdentity"
+            });
         }
     }
 }

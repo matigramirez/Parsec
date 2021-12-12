@@ -1,13 +1,14 @@
 ﻿using System;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Shaiya.CASH;
-using Parsec.Shaiya.DUALLAYERCLOTHES;
-using Parsec.Shaiya.GUILDHOUSE;
-using Parsec.Shaiya.KILLSTATUS;
-using Parsec.Shaiya.NPCQUEST;
-using Parsec.Shaiya.SDATA;
-using Parsec.Shaiya.SETITEM;
+using Parsec.Shaiya.Cash;
+using Parsec.Shaiya.DualLayerClothes;
+using Parsec.Shaiya.GuildHouse;
+using Parsec.Shaiya.KillStatus;
+using Parsec.Shaiya.NpcQuest;
+using Parsec.Shaiya.SData;
+using Parsec.Shaiya.SetItem;
+using static Parsec.Shaiya.SData.SData;
 using Item = Parsec.Shaiya.Item.Item;
 
 namespace Parsec.Samples
@@ -18,34 +19,31 @@ namespace Parsec.Samples
         {
             #region NpcQuest
 
-            var npcQuest = new NpcQuest("NpcQuest.EP5.SData", Format.EP5);
-            npcQuest.Read();
+            var npcQuest = ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
 
             Console.WriteLine($"Merchant Count: {npcQuest.Merchants.Count}");
             Console.WriteLine($"GateKeeper Count: {npcQuest.Gatekeepers.Count}");
             Console.WriteLine($"Quest Count: {npcQuest.Quests.Count}");
             npcQuest.ExportJson("NpcQuest.json");
 
-            var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
+            var encryptedBytes = Encrypt(npcQuest.Buffer);
             FileHelper.WriteFile("NpcQuest.SData.Encrypted", encryptedBytes);
 
-            var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
+            var decryptedBytes = Decrypt(npcQuest.Buffer);
             FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
 
             #endregion
 
             #region GuildHouse
 
-            var guildHouse = new GuildHouse("GuildHouse.SData");
-            guildHouse.Read();
+            var guildHouse = ReadFromFile<GuildHouse>("GuildHouse.SData");
             guildHouse.ExportJson("GuildHouse.json");
 
             #endregion
 
             #region Item
 
-            var item = new Item("Item.SData");
-            item.Read();
+            var item = ReadFromFile<Item>("Item.SData");
             var encryptedBuffer = SData.Encrypt(item.Buffer);
             FileHelper.WriteFile("Item.SData.Encrypted", encryptedBuffer);
 
@@ -53,32 +51,28 @@ namespace Parsec.Samples
 
             #region Cash
 
-            var cash = new Cash("Cash.SData");
-            cash.Read();
+            var cash = ReadFromFile<Cash>("Cash.SData");
             cash.ExportJson("Cash.json");
 
             #endregion
 
             #region KillStatus
 
-            var killStatus = new KillStatus("KillStatus.SData");
-            killStatus.Read();
+            var killStatus = ReadFromFile<KillStatus>("KillStatus.SData");
             killStatus.ExportJson("KillStatus.json", enumFriendly: true);
 
             #endregion
 
             #region DualLayerClothes
 
-            var dualLayerClothes = new DualLayerClothes("DualLayerClothes.SData");
-            dualLayerClothes.Read();
+            var dualLayerClothes = ReadFromFile<DualLayerClothes>("DualLayerClothes.SData");
             dualLayerClothes.ExportJson("DualLayerClothes.json");
 
             #endregion
 
             #region SetItem
 
-            var setItem = new SetItem("SetItem.SData");
-            setItem.Read();
+            var setItem = ReadFromFile<SetItem>("SetItem.SData");
             setItem.ExportJson("SetItem.json");
 
             #endregion
