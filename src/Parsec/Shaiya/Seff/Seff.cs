@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.Seff
 {
     public class Seff : FileBase, IJsonReadable
     {
-        public int Unknown1 { get; set; }
+        public int Format { get; set; }
         public short Unknown2 { get; set; }
         public short Unknown3 { get; set; }
         public short Unknown4 { get; set; }
@@ -18,13 +18,12 @@ namespace Parsec.Shaiya.Seff
         public short Unknown7 { get; set; }
         public List<Effect> Effects { get; } = new();
 
-
         [JsonIgnore]
         public override string Extension => "seff";
 
         public override void Read(params object[] options)
         {
-            Unknown1 = _binaryReader.Read<int>();
+            Format = _binaryReader.Read<int>();
             Unknown2 = _binaryReader.Read<short>();
             Unknown3 = _binaryReader.Read<short>();
             Unknown4 = _binaryReader.Read<short>();
@@ -36,7 +35,7 @@ namespace Parsec.Shaiya.Seff
 
             for (int i = 0; i < effectCount; i++)
             {
-                var effect = new Effect(_binaryReader);
+                var effect = new Effect(_binaryReader, Format);
                 Effects.Add(effect);
             }
         }
@@ -45,7 +44,7 @@ namespace Parsec.Shaiya.Seff
         {
             var buffer = new List<byte>();
 
-            buffer.AddRange(Unknown1.GetBytes());
+            buffer.AddRange(Format.GetBytes());
             buffer.AddRange(Unknown2.GetBytes());
             buffer.AddRange(Unknown3.GetBytes());
             buffer.AddRange(Unknown4.GetBytes());
@@ -56,7 +55,7 @@ namespace Parsec.Shaiya.Seff
             buffer.AddRange(Effects.Count.GetBytes());
 
             foreach (var effect in Effects)
-                buffer.AddRange(effect.GetBytes());
+                buffer.AddRange(effect.GetBytes(Format));
 
             FileHelper.WriteFile(path, buffer.ToArray());
         }

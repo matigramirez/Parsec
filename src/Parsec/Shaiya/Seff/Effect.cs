@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
-using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Seff
 {
-    public class Effect : IBinary
+    public class Effect
     {
         public int Identifier { get; set; }
         public List<EffectInformation> EffectInformationList { get; } = new();
@@ -16,7 +15,7 @@ namespace Parsec.Shaiya.Seff
         {
         }
 
-        public Effect(ShaiyaBinaryReader binaryReader)
+        public Effect(ShaiyaBinaryReader binaryReader, int format)
         {
             Identifier = binaryReader.Read<int>();
 
@@ -24,12 +23,12 @@ namespace Parsec.Shaiya.Seff
 
             for (int i = 0; i < effectInfoCount; i++)
             {
-                var effectInfo = new EffectInformation(binaryReader);
+                var effectInfo = new EffectInformation(binaryReader, format);
                 EffectInformationList.Add(effectInfo);
             }
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(int format)
         {
             var buffer = new List<byte>();
 
@@ -37,9 +36,7 @@ namespace Parsec.Shaiya.Seff
             buffer.AddRange(BitConverter.GetBytes(EffectInformationList.Count));
 
             foreach (var effectInfo in EffectInformationList)
-            {
-                buffer.AddRange(effectInfo.GetBytes());
-            }
+                buffer.AddRange(effectInfo.GetBytes(format));
 
             return buffer.ToArray();
         }
