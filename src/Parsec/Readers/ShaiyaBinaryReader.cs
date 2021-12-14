@@ -195,43 +195,49 @@ namespace Parsec.Readers
         }
 
         /// <summary>
-        /// Reads a variable string based on a provided length
+        /// Reads a length-fixed string with the specified encoding
         /// </summary>
+        /// <param name="encoding">The <see cref="Encoding"/> to be used</param>
         /// <param name="length">The length of the string</param>
-        public string ReadString(int length)
+        /// <param name="removeStringTerminator"></param>
+        public string ReadString(Encoding encoding, int length, bool removeStringTerminator = true)
         {
-            var result = Encoding.ASCII.GetString(Buffer, _offset, length);
+            // If encoding is UTF16, length needs to be doubled, since UTF16 uses 2 bytes per character
+            if (encoding.Equals(Encoding.Unicode))
+                length *= 2;
+
+            var str = encoding.GetString(Buffer, _offset, length);
+
             _offset += length;
-            return result;
+
+            if (removeStringTerminator && str.Length > 1 && str[^1] == '\0')
+                str = str[..^1];
+
+            return str;
         }
 
         /// <summary>
         /// Reads a variable string which has its length prefixed with little endian encoding.
         /// </summary>
+        /// <param name="encoding">The <see cref="Encoding"/> to be used</param>
         /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
-        public string ReadString(bool removeStringTerminator = true)
+        public string ReadString(Encoding encoding, bool removeStringTerminator = true)
         {
             var length = ReadInt32();
-            var result = Encoding.ASCII.GetString(Buffer, _offset, length);
-
-            if (removeStringTerminator)
-                result = result.Trim('\0');
-
-            _offset += length;
-            return result;
+            return ReadString(encoding, length, removeStringTerminator);
         }
 
         /// <summary>
-        /// Reads a Unicode string, every character is suffixed with an empty character, that's why the length needs to be doubled
+        /// Reads a length-prefixed ASCII string
         /// </summary>
-        /// <returns>The read string</returns>
-        public string ReadUnicodeString()
-        {
-            var length = ReadInt32() * 2;
-            var result = Encoding.Unicode.GetString(Buffer, _offset, length);
-            _offset += length;
-            return result;
-        }
+        /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
+        public string ReadString(bool removeStringTerminator = true) => ReadString(Encoding.ASCII, removeStringTerminator);
+
+        /// <summary>
+        /// Reads length-fixed ASCII string
+        /// </summary>
+        /// <param name="length">The string's length</param>
+        public string ReadString(int length) => ReadString(Encoding.ASCII, length);
 
         /// <summary>
         /// Resets the reading offset

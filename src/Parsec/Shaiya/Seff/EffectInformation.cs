@@ -49,7 +49,7 @@ namespace Parsec.Shaiya.Seff
             Unknown5 = binaryReader.Read<int>();
             Unknown6 = binaryReader.Read<float>();
 
-            Name = binaryReader.ReadUnicodeString();
+            Name = binaryReader.ReadString(Encoding.Unicode);
 
             UnkByte1 = binaryReader.Read<byte>();
             UnkByte2 = binaryReader.Read<byte>();
