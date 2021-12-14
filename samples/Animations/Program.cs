@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Parsec.Readers;
 using Parsec.Shaiya.Ani;
-using static Parsec.Shaiya.Core.FileBase;
 
 namespace Parsec.Samples
 {
@@ -11,7 +11,7 @@ namespace Parsec.Samples
         {
             var filePath = "Mob_Fox_01_Run.ANI";
 
-            var ani = ReadFromFile<Ani>(filePath);
+            var ani = Reader.ReadFromFile<Ani>(filePath);
 
             Console.WriteLine($"Ani file {filePath}:");
             Console.WriteLine("StartKeyframe  EndKeyframe  BoneStepsCount");

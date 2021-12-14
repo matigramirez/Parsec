@@ -1,7 +1,7 @@
 ﻿using System;
+using Parsec.Readers;
 using Parsec.Shaiya.Data;
 using Parsec.Shaiya.Svmap;
-using static Parsec.Shaiya.Core.FileBase;
 
 namespace Parsec.Samples
 {
@@ -21,7 +21,7 @@ namespace Parsec.Samples
                 data.Extract(file, "extracted");
 
                 // Read and parse the file's content directly from the saf file
-                var svmap = ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
+                var svmap = Reader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 
                 Console.WriteLine($"File: {svmap.FileName}");
                 Console.WriteLine($"MapSize: {svmap.MapSize}");

@@ -1,6 +1,7 @@
 ﻿using System;
 using Parsec.Common;
 using Parsec.Helpers;
+using Parsec.Readers;
 using Parsec.Shaiya.Cash;
 using Parsec.Shaiya.DualLayerClothes;
 using Parsec.Shaiya.GuildHouse;
@@ -8,7 +9,6 @@ using Parsec.Shaiya.KillStatus;
 using Parsec.Shaiya.NpcQuest;
 using Parsec.Shaiya.SData;
 using Parsec.Shaiya.SetItem;
-using static Parsec.Shaiya.Core.FileBase;
 using Item = Parsec.Shaiya.Item.Item;
 
 namespace Parsec.Samples
@@ -19,7 +19,7 @@ namespace Parsec.Samples
         {
             #region NpcQuest
 
-            var npcQuest = ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
+            var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
 
             Console.WriteLine($"Merchant Count: {npcQuest.Merchants.Count}");
             Console.WriteLine($"GateKeeper Count: {npcQuest.Gatekeepers.Count}");
@@ -36,14 +36,14 @@ namespace Parsec.Samples
 
             #region GuildHouse
 
-            var guildHouse = ReadFromFile<GuildHouse>("GuildHouse.SData");
+            var guildHouse = Reader.ReadFromFile<GuildHouse>("GuildHouse.SData");
             guildHouse.ExportJson("GuildHouse.json");
 
             #endregion
 
             #region Item
 
-            var item = ReadFromFile<Item>("Item.SData");
+            var item = Reader.ReadFromFile<Item>("Item.SData");
             var encryptedBuffer = SData.Encrypt(item.Buffer);
             FileHelper.WriteFile("Item.SData.Encrypted", encryptedBuffer);
 
@@ -51,28 +51,28 @@ namespace Parsec.Samples
 
             #region Cash
 
-            var cash = ReadFromFile<Cash>("Cash.SData");
+            var cash = Reader.ReadFromFile<Cash>("Cash.SData");
             cash.ExportJson("Cash.json");
 
             #endregion
 
             #region KillStatus
 
-            var killStatus = ReadFromFile<KillStatus>("KillStatus.SData");
+            var killStatus = Reader.ReadFromFile<KillStatus>("KillStatus.SData");
             killStatus.ExportJson("KillStatus.json", enumFriendly: true);
 
             #endregion
 
             #region DualLayerClothes
 
-            var dualLayerClothes = ReadFromFile<DualLayerClothes>("DualLayerClothes.SData");
+            var dualLayerClothes = Reader.ReadFromFile<DualLayerClothes>("DualLayerClothes.SData");
             dualLayerClothes.ExportJson("DualLayerClothes.json");
 
             #endregion
 
             #region SetItem
 
-            var setItem = ReadFromFile<SetItem>("SetItem.SData");
+            var setItem = Reader.ReadFromFile<SetItem>("SetItem.SData");
             setItem.ExportJson("SetItem.json");
 
             #endregion

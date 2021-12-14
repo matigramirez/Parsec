@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Parsec.Helpers;
+using Parsec.Readers;
 using Parsec.Shaiya.Svmap;
 using Parsec.Shaiya.Zon;
-using static Parsec.Shaiya.Core.FileBase;
 
 namespace Parsec.Sample.SVMAP
 {
@@ -13,7 +13,7 @@ namespace Parsec.Sample.SVMAP
         {
             #region svmap
 
-            var svmap = ReadFromFile<Svmap>("2.svmap");
+            var svmap = Reader.ReadFromFile<Svmap>("2.svmap");
 
             Console.WriteLine($"File: {svmap.FileName}");
             Console.WriteLine($"MapSize: {svmap.MapSize}");
@@ -33,7 +33,7 @@ namespace Parsec.Sample.SVMAP
 
             #region zon
 
-            var zon = ReadFromFile<Zon>("TacticsZone.zon");
+            var zon = Reader.ReadFromFile<Zon>("TacticsZone.zon");
             zon.ExportJson($"{zon.FileName}.json");
 
             var zonfromjson = Deserializer.ReadFromJson<Zon>($"{zon.FileName}.json");

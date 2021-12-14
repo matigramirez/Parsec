@@ -54,17 +54,13 @@ or... Use one of the samples from the [samples section](https://github.com/matig
 From a standalone file
 
 ```cs
-using static Parsec.Shaiya.Core.FileBase;
-
 // Read file
-var svmap = ReadFromFile<Svmap>("0.svmap");
+var svmap = Reader.ReadFromFile<Svmap>("0.svmap");
 ```
 
 From data.saf
 
 ```cs
-using static Parsec.Shaiya.Core.FileBase;
-
 // Load data (sah and saf)
 var data = new Data("data.sah");
 
@@ -75,7 +71,7 @@ if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
   data.Extract(file, "extracted");
 
   // Read and parse the file's content directly from the saf file
-  var svmap = ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
+  var svmap = Reader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 }
 ```
 
@@ -115,8 +111,6 @@ JSON, so that all the original fields are present in the JSON file.
 Read and extract
 
 ```cs
-using static Parsec.Shaiya.Core.FileBase;
-
 // Load data (sah and saf)
 var data = new Data("data.sah");
 
@@ -142,9 +136,7 @@ Console.WriteLine($"Data file count: {createdData.FileCount}");
 Encryption / Decryption
 
 ```cs
-using static Parsec.Shaiya.Core.FileBase;
-
-var npcQuest = ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
+var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
 
 // Save encrypted file
 var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
@@ -157,10 +149,8 @@ FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
 ### `svmap`
 
 ```cs
-using static Parsec.Shaiya.Core.FileBase;
-
 // Open svmap file
-var svmap = ReadFromFile<Svmap>("2.svmap");
+var svmap = Reader.ReadFromFile<Svmap>("2.svmap");
 
 // Print its content
 Console.WriteLine($"File: {svmap.FileName}");
