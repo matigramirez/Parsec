@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Parsec.Common;
@@ -110,22 +109,21 @@ namespace Parsec.Shaiya.Core
         public abstract void Write(string path, params object[] options);
 
         /// <inheritdoc/>
-        public void ExportJson(string path, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false) =>
-            FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames, enumFriendly, ignoreDefaults)));
+        public void ExportJson(string path, params string[] ignoredPropertyNames) =>
+            FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames)));
 
         /// <inheritdoc/>
-        public virtual string JsonSerialize(FileBase obj, IEnumerable<string> ignoredPropertyNames = null, bool enumFriendly = false, bool ignoreDefaults = false)
+        public virtual string JsonSerialize(FileBase obj, params string[] ignoredPropertyNames)
         {
             // Create settings with contract resolver to ignore certain properties
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new PropertyFilterCamelCaseResolver(ignoredPropertyNames),
-                DefaultValueHandling = ignoreDefaults ? DefaultValueHandling.Ignore : DefaultValueHandling.Include
+                DefaultValueHandling = DefaultValueHandling.Include
             };
 
             // Add enum to string converter
-            if (enumFriendly)
-                settings.Converters.Add(new StringEnumConverter());
+            settings.Converters.Add(new StringEnumConverter());
 
             return JsonConvert.SerializeObject(obj, settings);
         }

@@ -14,7 +14,7 @@ namespace Parsec.Samples.Object3D
             #region 3DC
 
             var obj3dc = Reader.ReadFromFile<Obj3DC>("Mob_Fox_01.3DC");
-            obj3dc.ExportJson($"{obj3dc.FileName}.json", enumFriendly: true);
+            obj3dc.ExportJson($"{obj3dc.FileName}.json");
 
             #endregion
 

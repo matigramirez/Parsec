@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Parsec.Readers;
 using Parsec.Shaiya.Ani;
 
@@ -21,10 +20,7 @@ namespace Parsec.Samples
             foreach (var aniStep in ani.Bones)
                 Console.WriteLine($"{{{aniStep.ParentBoneIndex}  {aniStep.Rotations.Count}  {aniStep.Translations.Count}}}");
 
-            ani.ExportJson($"{ani.FileNameWithoutExtension}.json", new List<string>
-            {
-                "isIdentity"
-            });
+            ani.ExportJson($"{ani.FileNameWithoutExtension}.json", "isIdentity");
         }
     }
 }

@@ -98,7 +98,7 @@ that the JSON file is properly formatted to match the JSON standards and contain
 format.
 
 ```cs
-var svmap = Deserializer.ReadFromJson<Svmap>("map0.json");
+var svmap = Reader.ReadFromJson<Svmap>("map0.json");
 ```
 
 It is advised to first read a file from its original format, export it as JSON, edit it, and importing it once again as

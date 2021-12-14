@@ -38,7 +38,7 @@ namespace Parsec.Samples
             #region Create Data/Patch
 
             // Create patch data
-            var createdData = DataBuilder.CreateFromDirectory("input", "output", "update");
+            var createdData = DataBuilder.CreateFromDirectory("input", "output");
 
             Console.WriteLine($"Data file count: {createdData.FileCount}");
 

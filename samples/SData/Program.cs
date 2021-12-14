@@ -59,7 +59,7 @@ namespace Parsec.Samples
             #region KillStatus
 
             var killStatus = Reader.ReadFromFile<KillStatus>("KillStatus.SData");
-            killStatus.ExportJson("KillStatus.json", enumFriendly: true);
+            killStatus.ExportJson("KillStatus.json");
 
             #endregion
 
