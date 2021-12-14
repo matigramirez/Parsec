@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.Seff
         public short Unknown5 { get; set; }
         public short Unknown6 { get; set; }
         public short Unknown7 { get; set; }
-        public List<Effect> Effects { get; } = new();
+        public List<Record> Records { get; } = new();
 
         [JsonIgnore]
         public override string Extension => "seff";
@@ -31,12 +31,12 @@ namespace Parsec.Shaiya.Seff
             Unknown6 = _binaryReader.Read<short>();
             Unknown7 = _binaryReader.Read<short>();
 
-            var effectCount = _binaryReader.Read<int>();
+            var recordCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < effectCount; i++)
+            for (int i = 0; i < recordCount; i++)
             {
-                var effect = new Effect(_binaryReader, Format);
-                Effects.Add(effect);
+                var record = new Record(_binaryReader, Format);
+                Records.Add(record);
             }
         }
 
@@ -52,9 +52,9 @@ namespace Parsec.Shaiya.Seff
             buffer.AddRange(Unknown6.GetBytes());
             buffer.AddRange(Unknown7.GetBytes());
 
-            buffer.AddRange(Effects.Count.GetBytes());
+            buffer.AddRange(Records.Count.GetBytes());
 
-            foreach (var effect in Effects)
+            foreach (var effect in Records)
                 buffer.AddRange(effect.GetBytes(Format));
 
             FileHelper.WriteFile(path, buffer.ToArray());
