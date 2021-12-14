@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Parsec.Helpers;
-using static Parsec.Shaiya.Core.FileBase;
+using Parsec.Readers;
 
 namespace Parsec.Shaiya.Data
 {
@@ -38,7 +38,7 @@ namespace Parsec.Shaiya.Data
                 if (!FileHelper.FileExists(safPath))
                     throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
 
-                Sah = ReadFromFile<Sah>(path);
+                Sah = Reader.ReadFromFile<Sah>(path);
                 Saf = new Saf(safPath);
             }
             else if (Path.GetExtension(path) == ".saf")
@@ -48,7 +48,7 @@ namespace Parsec.Shaiya.Data
                 if (!FileHelper.FileExists(sahPath))
                     throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
 
-                Sah = ReadFromFile<Sah>(sahPath);
+                Sah = Reader.ReadFromFile<Sah>(sahPath);
                 Saf = new Saf(path);
             }
             else
@@ -58,10 +58,16 @@ namespace Parsec.Shaiya.Data
         }
 
         /// <summary>
+        /// Extracts the whole data file
+        /// </summary>
+        /// <param name="extractionDirectory">Extraction directory path</param>
+        public void ExtractAll(string extractionDirectory) => Extract(Sah.RootFolder, extractionDirectory);
+
+        /// <summary>
         /// Extracts a shaiya folder from the saf file
         /// </summary>
-        /// <param name="folder">Folder to extract</param>
-        /// <param name="extractionDirectory">Directory where folder should be extracted</param>
+        /// <param name="folder">The <see cref="SFolder"/> instance to extract</param>
+        /// <param name="extractionDirectory">Extraction directory path</param>
         public void Extract(SFolder folder, string extractionDirectory)
         {
             var extractionPath = Path.Combine(extractionDirectory, folder.Name);
@@ -80,7 +86,7 @@ namespace Parsec.Shaiya.Data
         /// Extracts a single file into a directory
         /// </summary>
         /// <param name="file">The <see cref="SFile" /> instance to extract</param>
-        /// <param name="extractionDirectory">The directory where the file should be saved</param>
+        /// <param name="extractionDirectory">Extraction directory path</param>
         public void Extract(SFile file, string extractionDirectory)
         {
             var fileBytes = Saf.ReadBytes(file.Offset, file.Length);

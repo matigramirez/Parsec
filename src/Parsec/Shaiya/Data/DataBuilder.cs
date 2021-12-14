@@ -26,49 +26,54 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         /// <param name="inputFolderPath">Path to the base directory that holds the data to be read</param>
         /// <param name="outputFolderPath">Path of the file to be created</param>
-        /// <param name="name">Created data name</param>
-        public static Data CreateFromDirectory(string inputFolderPath, string outputFolderPath, string name)
+        public static Data CreateFromDirectory(string inputFolderPath, string outputFolderPath)
         {
-            _path = inputFolderPath;
-
-            if (!FileHelper.DirectoryExists(inputFolderPath))
-                throw new DirectoryNotFoundException();
-
-            // Create output folder
-            FileHelper.CreateDirectory(outputFolderPath);
-
-            var safPath = Path.Combine(outputFolderPath, $"{name}.saf");
-            var sahPath = Path.Combine(outputFolderPath, $"{name}.sah");
-
-            // Create binary writer instance to write saf file
-            _safWriter = new BinaryWriter(File.OpenWrite(safPath));
-
-            // Create root folder
-            var rootFolder = new SFolder(null)
+            try
             {
-                RelativePath = string.Empty
-            };
+                _path = inputFolderPath;
 
-            // Read data folder
-            ReadFolderFromDirectory(rootFolder, inputFolderPath);
+                if (!FileHelper.DirectoryExists(inputFolderPath))
+                    throw new DirectoryNotFoundException();
 
-            // Create sah instance
-            var sah = new Sah(inputFolderPath, rootFolder, _fileCount);
+                // Create output folder
+                FileHelper.CreateDirectory(outputFolderPath);
 
-            // Write sah
-            sah.Write(sahPath);
+                var outputDirectoryInfo = new DirectoryInfo(outputFolderPath);
 
-            _safWriter.Dispose();
+                var safPath = Path.Combine(outputFolderPath, $"{outputDirectoryInfo.Name}.saf");
+                var sahPath = Path.Combine(outputFolderPath, $"{outputDirectoryInfo.Name}.sah");
 
-            var saf = new Saf(safPath);
-            var data = new Data(sah, saf);
+                // Create binary writer instance to write saf file
+                _safWriter = new BinaryWriter(File.OpenWrite(safPath));
 
-            // Cleanup
-            _safWriter = null;
-            _path = "";
-            _fileCount = 0;
+                // Create root folder
+                var rootFolder = new SFolder(null)
+                {
+                    RelativePath = string.Empty
+                };
 
-            return data;
+                // Read data folder
+                ReadFolderFromDirectory(rootFolder, inputFolderPath);
+
+                // Create sah instance
+                var sah = new Sah(inputFolderPath, rootFolder, _fileCount);
+
+                // Write sah
+                sah.Write(sahPath);
+
+                var saf = new Saf(safPath);
+                var data = new Data(sah, saf);
+
+                return data;
+            }
+            finally
+            {
+                // Cleanup
+                _safWriter?.Dispose();
+                _safWriter = null;
+                _path = "";
+                _fileCount = 0;
+            }
         }
 
         /// <summary>
