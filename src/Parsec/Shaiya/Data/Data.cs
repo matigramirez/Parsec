@@ -33,7 +33,7 @@ namespace Parsec.Shaiya.Data
         {
             if (Path.GetExtension(path) == ".sah")
             {
-                var safPath = Path.GetFileNameWithoutExtension(path) + ".saf";
+                var safPath = path[..^3] + "saf";
 
                 if (!FileHelper.FileExists(safPath))
                     throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
@@ -43,7 +43,7 @@ namespace Parsec.Shaiya.Data
             }
             else if (Path.GetExtension(path) == ".saf")
             {
-                var sahPath = Path.GetFileNameWithoutExtension(path) + ".sah";
+                var sahPath = path[..^3] + "sah";
 
                 if (!FileHelper.FileExists(sahPath))
                     throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
