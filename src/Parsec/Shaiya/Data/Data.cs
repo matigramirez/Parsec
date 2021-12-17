@@ -67,13 +67,20 @@ namespace Parsec.Shaiya.Data
         public void ExtractAll(string extractionDirectory) => Extract(Sah.RootFolder, extractionDirectory);
 
         /// <summary>
-        /// Extracts a shaiya folder from the saf file
+        /// Extracts a shaiya folder from the saf file. If the folder to be extracted is the root folder,
+        /// then the folder's content gets extracted in the provided extraction directory and if it's not,
+        /// a child directory will be created inside the provided extraction directory
         /// </summary>
         /// <param name="folder">The <see cref="SFolder"/> instance to extract</param>
         /// <param name="extractionDirectory">Extraction directory path</param>
         public void Extract(SFolder folder, string extractionDirectory)
         {
-            var extractionPath = Path.Combine(extractionDirectory, folder.Name);
+            // Create extraction path
+            string extractionPath = extractionDirectory;
+
+            if (folder != Sah.RootFolder)
+                extractionPath = Path.Combine(extractionDirectory, folder.Name);
+
             FileHelper.CreateDirectory(extractionPath);
 
             // Extract files
