@@ -31,6 +31,9 @@ namespace Parsec.Shaiya.Data
 
         public Data(string path)
         {
+            if (!FileHelper.FileExists(path))
+                throw new FileNotFoundException($"Data file not found at {path}");
+
             if (Path.GetExtension(path) == ".sah")
             {
                 var safPath = path[..^3] + "saf";

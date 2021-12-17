@@ -213,6 +213,9 @@ namespace Parsec.Readers
             if (removeStringTerminator && str.Length > 1 && str[^1] == '\0')
                 str = str[..^1];
 
+            if (str == "\0")
+                str = "";
+
             return str;
         }
 
