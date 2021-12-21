@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Itm
 {
-    public class Record
+    public class Record : IBinary
     {
         /// <summary>
         /// Index of the .3DO filename
@@ -79,9 +80,17 @@ namespace Parsec.Shaiya.Itm
                 Unknown4 = binaryReader.ReadBytes(1024);
         }
 
-        public byte[] GetBytes(ITMFormat format)
+        /// <summary>
+        /// Expects <see cref="ITMFormat"/> as an option
+        /// </summary>
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
+
+            var format = ITMFormat.ITM;
+
+            if (options.Length > 0)
+                format = (ITMFormat)options[0];
 
             buffer.AddRange(BitConverter.GetBytes(Obj3DOIndex));
             buffer.AddRange(BitConverter.GetBytes(TextureIndex));

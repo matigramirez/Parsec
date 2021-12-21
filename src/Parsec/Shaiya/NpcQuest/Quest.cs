@@ -210,7 +210,7 @@ namespace Parsec.Shaiya.NpcQuest
             AlternateCompletionMessage2 = binaryReader.ReadString(false);
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

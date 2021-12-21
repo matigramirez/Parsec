@@ -166,7 +166,7 @@ namespace Parsec.Shaiya.Item
             UnknownInt10 = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

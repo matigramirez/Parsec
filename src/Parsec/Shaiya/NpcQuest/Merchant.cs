@@ -28,7 +28,7 @@ namespace Parsec.Shaiya.NpcQuest
             ReadBaseNpcThirdSegment(binaryReader);
         }
 
-        public override byte[] GetBytes()
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

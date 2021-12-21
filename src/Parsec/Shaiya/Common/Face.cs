@@ -24,7 +24,7 @@ namespace Parsec.Shaiya.Common
             VertexIndex3 = binaryReader.Read<ushort>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(VertexIndex1));

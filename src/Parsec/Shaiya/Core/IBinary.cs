@@ -2,9 +2,11 @@
 {
     public interface IBinary
     {
+
         /// <summary>
-        /// Serializes the object into a byte array
+        /// Serializes the file into a byte array
         /// </summary>
-        byte[] GetBytes();
+        /// <param name="options">Extra options</param>
+        byte[] GetBytes(params object[] options);
     }
 }

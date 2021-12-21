@@ -38,7 +38,7 @@ namespace Parsec.Shaiya.Common
             UpperLimit = new Vector3(binaryReader);
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(LowerLimit.GetBytes());

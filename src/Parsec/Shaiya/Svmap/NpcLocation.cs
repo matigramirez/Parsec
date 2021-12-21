@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.Svmap
             Orientation = binaryReader.Read<float>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Position.GetBytes());

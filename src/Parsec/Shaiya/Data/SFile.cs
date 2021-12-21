@@ -81,7 +81,7 @@ namespace Parsec.Shaiya.Data
                 fileIndex.Add(RelativePath + "_pv", this);
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

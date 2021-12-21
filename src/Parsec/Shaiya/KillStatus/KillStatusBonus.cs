@@ -22,7 +22,7 @@ namespace Parsec.Shaiya.KillStatus
             Value = binaryReader.Read<short>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

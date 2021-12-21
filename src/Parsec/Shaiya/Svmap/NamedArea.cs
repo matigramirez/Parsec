@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.Svmap
             NameIdentifier2 = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Area.GetBytes());

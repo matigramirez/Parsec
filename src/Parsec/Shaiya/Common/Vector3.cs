@@ -26,23 +26,23 @@ namespace Parsec.Shaiya.Common
         /// </summary>
         public float Z { get; set; }
 
-        public Vector3(float x, float y, float z)
-        {
-            X = x;
-            Y = y;
-            Z = z;
-        }
+        /// <summary>
+        /// The vector's length
+        /// </summary>
+        [JsonIgnore]
+        public double Length => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
 
         [JsonConstructor]
         public Vector3()
         {
         }
 
-        /// <summary>
-        /// The vector's length
-        /// </summary>
-        [JsonIgnore]
-        public double Length => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
+        public Vector3(float x, float y, float z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
 
         public Vector3(ShaiyaBinaryReader binaryReader)
         {
@@ -51,7 +51,7 @@ namespace Parsec.Shaiya.Common
             Z = binaryReader.Read<float>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(X));

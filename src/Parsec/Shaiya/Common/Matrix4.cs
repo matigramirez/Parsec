@@ -190,7 +190,7 @@ namespace Parsec.Shaiya.Common
         public float M43 => _matrix[3, 2];
         public float M44 => _matrix[3, 3];
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             // 4 bytes per matrix cell
             var buffer = new List<byte>();

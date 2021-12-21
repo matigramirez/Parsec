@@ -4,10 +4,11 @@ using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Obj3DC
 {
-    public class Vertex
+    public class Vertex : IBinary
     {
         /// <summary>
         /// The vertex index
@@ -108,11 +109,17 @@ namespace Parsec.Shaiya.Obj3DC
 
         /// <summary>
         /// Serializes the vertex data into a byte array that's ready to be written into a file
+        /// Expects <see cref="Format"/> as an option parameter
         /// </summary>
-        /// <param name="format">The desired format for the vertex binary data</param>
-        public byte[] GetBytes(Format format)
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
+
+            var format = Format.EP5;
+
+            if (options.Length > 0)
+                format = (Format)options[0];
+
             buffer.AddRange(BitConverter.GetBytes(X));
             buffer.AddRange(BitConverter.GetBytes(Y));
             buffer.AddRange(BitConverter.GetBytes(Z));

@@ -30,7 +30,7 @@ namespace Parsec.Shaiya.DualLayerClothes
             Head = binaryReader.Read<short>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

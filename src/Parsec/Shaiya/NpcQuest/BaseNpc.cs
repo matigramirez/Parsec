@@ -92,7 +92,7 @@ namespace Parsec.Shaiya.NpcQuest
                 buffer.AddRange(BitConverter.GetBytes(outQuestId));
         }
 
-        public virtual byte[] GetBytes()
+        public virtual byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

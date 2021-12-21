@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class Sequence
+    public class Sequence : IBinary
     {
         public string Name { get; set; }
         public int SceneCount { get; set; }
@@ -29,7 +30,7 @@ namespace Parsec.Shaiya.EFT
             }
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -39,9 +40,7 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(BitConverter.GetBytes(SeqScenes.Count));
 
             foreach (var scene in SeqScenes)
-            {
                 buffer.AddRange(scene.GetBytes());
-            }
 
             return buffer.ToArray();
         }

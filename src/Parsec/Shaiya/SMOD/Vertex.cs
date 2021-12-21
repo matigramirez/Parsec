@@ -27,7 +27,7 @@ namespace Parsec.Shaiya.Smod
             UV = new Vector2(binaryReader);
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Coordinates.GetBytes());

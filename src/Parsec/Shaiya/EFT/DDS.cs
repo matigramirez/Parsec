@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class DDS
+    public class DDS : IBinary
     {
         public int Index { get; set; }
 
@@ -19,13 +19,6 @@ namespace Parsec.Shaiya.EFT
             Index = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes()
-        {
-            var buffer = new List<byte>();
-
-            buffer.AddRange(BitConverter.GetBytes(Index));
-
-            return buffer.ToArray();
-        }
+        public byte[] GetBytes(params object[] options) => Index.GetBytes();
     }
 }

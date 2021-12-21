@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Ani
 {
     /// <summary>
     /// Class that represents the information for each bone present in the ani file
     /// </summary>
-    public class AniBone
+    public class AniBone : IBinary
     {
         /// <summary>
         /// The index of the bone which matches the .3DC bone
@@ -34,6 +36,11 @@ namespace Parsec.Shaiya.Ani
         /// List of translations for each keyframe
         /// </summary>
         public List<TranslationKeyframe> Translations { get; set; } = new();
+
+        [JsonConstructor]
+        public AniBone()
+        {
+        }
 
         public AniBone(int index, ShaiyaBinaryReader binaryReader)
         {
@@ -62,9 +69,23 @@ namespace Parsec.Shaiya.Ani
             }
         }
 
-        [JsonConstructor]
-        public AniBone()
+        public byte[] GetBytes(params object[] options)
         {
+            var buffer = new List<byte>();
+
+            buffer.AddRange(BitConverter.GetBytes(ParentBoneIndex));
+            buffer.AddRange(TransformationMatrix.GetBytes());
+            buffer.AddRange(BitConverter.GetBytes(Rotations.Count));
+
+            foreach (var keyframeRotation in Rotations)
+                buffer.AddRange(keyframeRotation.GetBytes());
+
+            buffer.AddRange(BitConverter.GetBytes(Translations.Count));
+
+            foreach (var keyframeTranslation in Translations)
+                buffer.AddRange(keyframeTranslation.GetBytes());
+
+            return buffer.ToArray();
         }
     }
 }

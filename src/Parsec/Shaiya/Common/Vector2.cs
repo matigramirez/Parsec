@@ -38,7 +38,7 @@ namespace Parsec.Shaiya.Common
             Y = binaryReader.Read<float>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(X));

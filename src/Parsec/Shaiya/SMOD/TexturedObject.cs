@@ -40,7 +40,7 @@ namespace Parsec.Shaiya.Smod
             }
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

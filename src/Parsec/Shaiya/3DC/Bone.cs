@@ -57,7 +57,7 @@ namespace Parsec.Shaiya.Obj3DC
         }
 
         /// <inheritdoc />
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

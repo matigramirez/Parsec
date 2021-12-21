@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class SeqScene
+    public class SeqScene : IBinary
     {
         public int Scene { get; set; }
         public float Delay { get; set; }
@@ -21,7 +22,7 @@ namespace Parsec.Shaiya.EFT
             Delay = binaryReader.Read<float>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

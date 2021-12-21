@@ -107,7 +107,7 @@ namespace Parsec.Shaiya.Data
         /// <param name="name">Subfolder name</param>
         public SFolder GetSubfolder(string name) => Subfolders.FirstOrDefault(sf => sf.Name == name);
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

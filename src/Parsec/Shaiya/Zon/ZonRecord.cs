@@ -3,10 +3,11 @@ using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Zon
 {
-    public class ZonRecord
+    public class ZonRecord : IBinary
     {
         public byte Index { get; set; }
         public byte P1 { get; set; }
@@ -42,15 +43,13 @@ namespace Parsec.Shaiya.Zon
         public short MapId { get; set; }
         public string Description { get; set; }
 
-        public ZonRecord(int format ,ShaiyaBinaryReader binaryReader)
+        public ZonRecord(int format, ShaiyaBinaryReader binaryReader)
         {
             Index = binaryReader.Read<byte>();
             P1 = binaryReader.Read<byte>();
 
             if (format > 2)
-            {
                 P2 = binaryReader.Read<byte>();
-            }
 
             Coordinates1 = new Vector3(binaryReader);
             Coordinates2 = new Vector3(binaryReader);
@@ -72,17 +71,23 @@ namespace Parsec.Shaiya.Zon
         {
         }
 
-        public byte[] GetBytes(int format)
+        /// <summary>
+        /// Expects format (int) as an option
+        /// </summary>
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
+
+            var format = 0;
+
+            if (options.Length > 0)
+                format = (int)options[0];
 
             buffer.Add(Index);
             buffer.Add(P1);
 
             if (format > 2)
-            {
                 buffer.Add(P2);
-            }
 
             buffer.AddRange(Coordinates1.GetBytes());
             buffer.AddRange(Coordinates2.GetBytes());

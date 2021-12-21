@@ -22,7 +22,7 @@ namespace Parsec.Shaiya.Cash
             Count = binaryReader.Read<byte>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(ItemId));

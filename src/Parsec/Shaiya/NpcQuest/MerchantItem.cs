@@ -21,7 +21,7 @@ namespace Parsec.Shaiya.NpcQuest
             TypeId = binaryReader.Read<byte>();
         }
 
-        public byte[] GetBytes() => new[]
+        public byte[] GetBytes(params object[] options) => new[]
         {
             Type, TypeId
         };

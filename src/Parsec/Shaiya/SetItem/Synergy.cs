@@ -21,7 +21,7 @@ namespace Parsec.Shaiya.SetItem
             Description = binaryReader.ReadString();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(Description.Length + 1));

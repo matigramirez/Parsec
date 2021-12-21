@@ -32,7 +32,7 @@ namespace Parsec.Shaiya.KillStatus
             }
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 

@@ -4,10 +4,11 @@ using System.Text;
 using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class Scene
+    public class Scene : IBinary
     {
         public string Name { get; set; }
         public int Unknown01 { get; set; }
@@ -169,9 +170,17 @@ namespace Parsec.Shaiya.EFT
             }
         }
 
-        public byte[] GetBytes(EFTFormat format)
+        /// <summary>
+        /// Expects <see cref="EFTFormat"/> as a parameter
+        /// </summary>
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
+
+            var format = EFTFormat.EFT;
+
+            if (options.Length > 0)
+                format = (EFTFormat)options[0];
 
             buffer.AddRange(BitConverter.GetBytes(Name.Length + 1));
             buffer.AddRange(Encoding.ASCII.GetBytes(Name + '\0'));
@@ -214,9 +223,7 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(BitConverter.GetBytes(Unknown36));
 
             foreach (var vec in Vec04Array)
-            {
                 buffer.AddRange(vec.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Unknown37));
             buffer.AddRange(BitConverter.GetBytes(Unknown38));
@@ -232,23 +239,17 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(BitConverter.GetBytes(Vec05Array.Count));
 
             foreach (var vec in Vec05Array)
-            {
                 buffer.AddRange(vec.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Vec02Array.Count));
 
             foreach (var vec in Vec02Array)
-            {
                 buffer.AddRange(vec.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Vec03Array.Count));
 
             foreach (var vec in Vec03Array)
-            {
                 buffer.AddRange(vec.GetBytes());
-            }
 
             buffer.AddRange(BitConverter.GetBytes(Unknown43));
             buffer.AddRange(BitConverter.GetBytes(Unknown44));
@@ -258,9 +259,7 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(BitConverter.GetBytes(DDSSequence.Count));
 
             foreach (var dds in DDSSequence)
-            {
                 buffer.AddRange(dds.GetBytes());
-            }
 
             return buffer.ToArray();
         }

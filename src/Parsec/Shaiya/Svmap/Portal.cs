@@ -25,7 +25,7 @@ namespace Parsec.Shaiya.Svmap
             DestinationPosition = new Vector3(binaryReader);
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Position.GetBytes());

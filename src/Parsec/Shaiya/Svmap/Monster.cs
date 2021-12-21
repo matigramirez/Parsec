@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.Svmap
             Count = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(MobId));

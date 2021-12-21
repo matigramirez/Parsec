@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common
 {
     /// <summary>
     /// Represents a vector in a 4-dimensional space
     /// </summary>
-    public class Vector4
+    public class Vector4 : IBinary
     {
         /// <summary>
         /// 1st (first) element of the vector
@@ -44,6 +45,11 @@ namespace Parsec.Shaiya.Common
         [JsonIgnore]
         public double Length => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2) + Math.Pow(W, 2));
 
+        [JsonConstructor]
+        public Vector4()
+        {
+        }
+
         public Vector4(ShaiyaBinaryReader binaryReader)
         {
             X = binaryReader.Read<float>();
@@ -52,12 +58,7 @@ namespace Parsec.Shaiya.Common
             W = binaryReader.Read<float>();
         }
 
-        [JsonConstructor]
-        public Vector4()
-        {
-        }
-
-        public byte[] GetBytes()
+        public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(X));
