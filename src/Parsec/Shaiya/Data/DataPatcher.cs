@@ -1,163 +1,145 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Data
 {
-    public class DataPatcher : IDisposable
+    public static class DataPatcher
     {
-        /// <summary>
-        /// The sah instance to be written
-        /// </summary>
-        private readonly Sah _sah;
+        private static BinaryReader _patchBinaryReader;
+        private static BinaryWriter _targetBinaryWriter;
 
         /// <summary>
-        /// The update sah file to be merged
+        /// Applies the patches in the patch list into a target data
         /// </summary>
-        private readonly Sah _patchSah;
-
-        /// <summary>
-        /// The binary reader instance that reads the patch saf file
-        /// </summary>
-        private BinaryReader _patchSafReader;
-
-        /// <summary>
-        /// The binary writer instance that writes to the saf file
-        /// </summary>
-        private BinaryWriter _dataSafWriter;
-
-        public DataPatcher(Sah sah, Sah patch)
+        /// <param name="targetData">Data where to apply the patches</param>
+        /// <param name="patchDataList">Patches to apply</param>
+        public static void Patch(Data targetData, params Data[] patchDataList)
         {
-            _sah = sah;
-            _patchSah = patch;
+            // TODO: Fix a bug that corrupts the last file that gets patched
+
+            try
+            {
+                // Create binary writer instance for the target saf file
+                _targetBinaryWriter = new BinaryWriter(File.OpenWrite(targetData.Saf.Path));
+
+                // Patch files
+                foreach (var patchData in patchDataList)
+                {
+                    // Create binary reader instance to read the patch data
+                    _patchBinaryReader = new BinaryReader(File.OpenRead(patchData.Saf.Path));
+
+                    // Patch files
+                    PatchFiles(targetData, patchData);
+
+                    // Cleanup
+                    _patchBinaryReader.Dispose();
+                    _patchBinaryReader = null;
+                }
+
+                // Remove previous sah and save the new one
+                FileHelper.DeleteFile(targetData.Sah.Path);
+                targetData.Sah.Write(targetData.Sah.Path);
+            }
+            finally
+            {
+                // Cleanup
+                _targetBinaryWriter?.Dispose();
+                _targetBinaryWriter = null;
+                _patchBinaryReader?.Dispose();
+                _patchBinaryReader = null;
+            }
         }
 
         /// <summary>
-        /// Applies the patch sah to the data sah file.
+        /// Adds all the files from a patch data file into another data file
         /// </summary>
-        public void ApplyPatch()
+        /// <param name="targetData">Data where to save the files</param>
+        /// <param name="patchData">Data where to take the files from</param>
+        private static void PatchFiles(Data targetData, Data patchData)
         {
-            _patchSafReader = new BinaryReader(File.OpenRead(_patchSah.SafPath));
-            _dataSafWriter = new BinaryWriter(File.OpenWrite(_sah.SafPath));
-
-            // Run the patching function
-            PatchFiles();
-
-            _patchSafReader?.Dispose();
-            _dataSafWriter?.Dispose();
-        }
-
-        private void PatchFiles()
-        {
-            var patchFiles = _patchSah.FileIndex.Values.ToList();
+            var patchFiles = patchData.FileIndex.Values.ToList();
 
             foreach (var patchFile in patchFiles)
-                // Check if file already exists. If it does, it needs to be replaced.
-                if (_sah.FileIndex.TryGetValue(patchFile.RelativePath, out var originalFile))
+                // File was already present in the data - it needs to be replaced
+                if (targetData.FileIndex.TryGetValue(patchFile.RelativePath, out var targetFile))
                 {
-                    // Clear original file bytes
-                    ClearBytes(originalFile.Offset, originalFile.Length);
+                    // Clear previous file's bytes
+                    ClearBytes(targetFile.Offset, targetFile.Length);
 
-                    // Check if original file bytes can be replaced
-                    if (patchFile.Length <= originalFile.Length)
-                        // Write new file at original file's offset
-                        WriteFile(patchFile, originalFile.Offset);
+                    // Check if patch file fits in the previous file's location
+                    // If it doesn't, it needs to be added at the end of the file
+                    if (patchFile.Length > targetFile.Length)
+                    {
+                        var newOffset = AppendFile(patchFile);
+
+                        // Replace the previous file's metadata
+                        targetFile.Offset = newOffset;
+                        targetFile.Length = patchFile.Length;
+                    }
+                    // If it fits, the previous file location is used
                     else
-                        // If file's size is bigger than the original file's size, append it at the end of the saf
-                        AppendFile(patchFile);
+                    {
+                        WriteFile(targetFile.Offset, patchFile);
 
-                    // Replace length and offset of the file (since it's been replaced but its name is the same)
-                    originalFile.Length = patchFile.Length;
-                    originalFile.Offset = patchFile.Offset;
+                        // Replace the previous file's length - offset stays the same
+                        targetFile.Length = patchFile.Length;
+                    }
                 }
+                // File wasn't part of the data - it will be added at the end of the file
                 else
                 {
-                    // Append file at the end of the saf
-                    AppendFile(patchFile);
+                    var offset = AppendFile(patchFile);
 
-                    // Get folder path from file path
-                    var folderPath = patchFile.RelativePath.Substring(0, patchFile.RelativePath.Length - patchFile.Name.Length - 1);
+                    // Set offset from targetData
+                    patchFile.Offset = offset;
 
-                    // If folder didn't exist before, it needs to be created
-                    var folder = _sah.EnsureFolderExists(folderPath);
-
-                    folder?.Files.Add(patchFile);
+                    // Add patchFile to the targetData's Sah
+                    var folder = targetData.Sah.EnsureFolderExists(patchFile.ParentFolder.RelativePath);
+                    folder.Files.Add(patchFile);
                 }
         }
 
         /// <summary>
-        /// Makes "0" a specific amount of bytes starting from offset through offset+length
+        /// Sets the target saf's bytes to '\0'
         /// </summary>
-        /// <param name="offset">Starting offset</param>
-        /// <param name="length">Length</param>
-        private void ClearBytes(long offset, int length)
+        /// <param name="offset">Saf offset where to begin</param>
+        /// <param name="length">Amount of bytes to set to 0</param>
+        private static void ClearBytes(long offset, int length)
         {
-            // Set safWriter position to offset
-            _dataSafWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
+            // Set writing offset
+            _targetBinaryWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
 
-            // Create empty array of "length" bytes
-            var bytes = new byte[length];
-
-            _dataSafWriter.Write(bytes);
+            // Write empty data
+            var emptyData = new byte[length];
+            _targetBinaryWriter.Write(emptyData);
         }
 
         /// <summary>
-        /// Writes a file at a specified offset
+        /// Writes a file into the target Saf file from a patch Saf file
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="offset"></param>
-        private void WriteFile(SFile file, long offset)
+        /// <param name="targetOffset">The target saf's offset where to write the patch file</param>
+        /// <param name="patchFile">Patch file instance</param>
+        private static long WriteFile(long targetOffset, SFile patchFile)
         {
-            // Set safWriter position to end of file
-            _dataSafWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
+            // Set reading offset
+            _patchBinaryReader.BaseStream.Seek(patchFile.Offset, SeekOrigin.Begin);
 
-            // Read file bytes
-            var fileBytes = GetFileBytes(file);
+            // Read patch buffer
+            var patchBuffer = _patchBinaryReader.ReadBytes(patchFile.Length);
 
-            // Set file offset - shouldn't really be necessary but I'll leave it here for consistency
-            file.Offset = _dataSafWriter.BaseStream.Position;
+            // Write patch into target Saf
+            _targetBinaryWriter.BaseStream.Seek(targetOffset, SeekOrigin.Begin);
+            _targetBinaryWriter.Write(patchBuffer);
 
-            // Store file at the offset
-            _dataSafWriter.Write(fileBytes);
+            return _targetBinaryWriter.BaseStream.Position;
         }
 
         /// <summary>
-        /// Appends a file to the end of the saf file and sets its offset field
+        /// Appends a file at the end of the target Saf file from a patch Saf file
         /// </summary>
-        /// <param name="patchFile">The file to write</param>
-        private void AppendFile(SFile patchFile)
-        {
-            // Set safWriter position to end of file
-            _dataSafWriter.BaseStream.Seek(0, SeekOrigin.End);
-
-            // Read file bytes
-            var fileBytes = GetFileBytes(patchFile);
-
-            // Set file offset to end of saf
-            patchFile.Offset = _dataSafWriter.BaseStream.Position;
-
-            // Store file at the end of the saf file
-            _dataSafWriter.Write(fileBytes);
-        }
-
-        /// <summary>
-        /// Gets a file bytes from a saf file
-        /// </summary>
-        private byte[] GetFileBytes(SFile file)
-        {
-            // Set offset to file's starting offset
-            _patchSafReader.BaseStream.Seek(file.Offset, SeekOrigin.Begin);
-
-            // Read file bytes (length bytes)
-            var bytes = _patchSafReader.ReadBytes(file.Length);
-
-            return bytes;
-        }
-
-        public void Dispose()
-        {
-            _patchSafReader?.Dispose();
-            _dataSafWriter?.Dispose();
-        }
+        /// <param name="patchFile">Patch file instance</param>
+        private static long AppendFile(SFile patchFile) =>
+            WriteFile(_targetBinaryWriter.BaseStream.Length, patchFile);
     }
 }
