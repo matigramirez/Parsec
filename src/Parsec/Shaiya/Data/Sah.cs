@@ -6,7 +6,6 @@ using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Data
@@ -142,7 +141,7 @@ namespace Parsec.Shaiya.Data
             return currentFolder;
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             // Create byte list which will have the sah's data
             var buffer = new List<byte>();
@@ -165,8 +164,7 @@ namespace Parsec.Shaiya.Data
             // Write last 8 empty bytes
             buffer.AddRange(new byte[8]);
 
-            // Create new file and write buffer
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

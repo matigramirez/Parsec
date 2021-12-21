@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
 
 namespace Parsec.Shaiya.NpcQuest
 {
@@ -130,7 +129,7 @@ namespace Parsec.Shaiya.NpcQuest
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             throw new NotImplementedException();
 
@@ -152,7 +151,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(UnknownArray);
             buffer.AddRange(Quests.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

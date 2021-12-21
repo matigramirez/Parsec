@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
-using Parsec.Helpers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
@@ -39,7 +38,7 @@ namespace Parsec.Shaiya.Obj3DO
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -56,7 +55,7 @@ namespace Parsec.Shaiya.Obj3DO
             foreach (var face in Faces)
                 buffer.AddRange(face.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

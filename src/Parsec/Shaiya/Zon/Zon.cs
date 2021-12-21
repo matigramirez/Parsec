@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Zon
@@ -26,7 +25,7 @@ namespace Parsec.Shaiya.Zon
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -37,7 +36,7 @@ namespace Parsec.Shaiya.Zon
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes(Format));
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

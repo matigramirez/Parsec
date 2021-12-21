@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Seff
@@ -40,7 +39,7 @@ namespace Parsec.Shaiya.Seff
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -57,7 +56,7 @@ namespace Parsec.Shaiya.Seff
             foreach (var effect in Records)
                 buffer.AddRange(effect.GetBytes(Format));
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
-using Parsec.Helpers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
@@ -49,7 +48,7 @@ namespace Parsec.Shaiya.Smod
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -71,7 +70,7 @@ namespace Parsec.Shaiya.Smod
             foreach (var obj in Objects)
                 buffer.AddRange(obj.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

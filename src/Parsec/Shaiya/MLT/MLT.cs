@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Parsec.Common;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Mlt
@@ -60,7 +59,7 @@ namespace Parsec.Shaiya.Mlt
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Encoding.ASCII.GetBytes(Signature));
@@ -86,7 +85,7 @@ namespace Parsec.Shaiya.Mlt
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

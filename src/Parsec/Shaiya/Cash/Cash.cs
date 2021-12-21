@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
-using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Cash
 {
@@ -26,7 +25,7 @@ namespace Parsec.Shaiya.Cash
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -35,7 +34,7 @@ namespace Parsec.Shaiya.Cash
             foreach (var product in Products)
                 buffer.AddRange(product.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

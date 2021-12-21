@@ -1,10 +1,12 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
 using Parsec.Readers;
+using Parsec.Shaiya.Data;
 
 namespace Parsec.Shaiya.Core
 {
@@ -102,11 +104,23 @@ namespace Parsec.Shaiya.Core
             return instance;
         }
 
+        public static T ReadFromData<T>(Data.Data data, SFile file, params object[] options) where T : FileBase, new()
+        {
+            if (!data.FileIndex.ContainsValue(file))
+                throw new FileNotFoundException("The provided SFile instance is not part of the Data");
+
+            return ReadFromBuffer<T>(file.Name, data.GetFileBuffer(file), options);
+        }
+
         /// <inheritdoc/>
         public abstract void Read(params object[] options);
 
         /// <inheritdoc />
-        public abstract void Write(string path, params object[] options);
+        public virtual void Write(string path, params object[] options) =>
+            FileHelper.WriteFile(path, GetBytes(options));
+
+        /// <inheritdoc />
+        public abstract byte[] GetBytes(params object[] options);
 
         /// <inheritdoc/>
         public void ExportJson(string path, params string[] ignoredPropertyNames) =>

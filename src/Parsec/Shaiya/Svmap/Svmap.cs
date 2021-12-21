@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap
@@ -80,7 +79,7 @@ namespace Parsec.Shaiya.Svmap
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             // TODO: There's something off about the writing process, it needs to be reviewed
             var buffer = new List<byte>();
@@ -119,7 +118,7 @@ namespace Parsec.Shaiya.Svmap
             foreach (var namedArea in NamedAreas)
                 buffer.AddRange(namedArea.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

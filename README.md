@@ -163,10 +163,7 @@ Console.WriteLine($"Spawn Count: {svmap.Spawns.Count}");
 Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
 
 // Export file as json file ignoring some fields
-svmap.ExportJson($"{svmap.FileName}.json", new List<string>
-{
-  nameof(svmap.MapHeight),
-});
+svmap.ExportJson($"{svmap.FileName}.json", nameof(svmap.MapHeight));
 ```
 
 More samples in the [samples section](https://github.com/matigramirez/Parsec/tree/main/samples).

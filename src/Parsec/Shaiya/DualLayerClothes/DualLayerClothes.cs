@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Parsec.Common;
-using Parsec.Helpers;
 
 namespace Parsec.Shaiya.DualLayerClothes
 {
@@ -20,7 +19,7 @@ namespace Parsec.Shaiya.DualLayerClothes
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -29,7 +28,7 @@ namespace Parsec.Shaiya.DualLayerClothes
             foreach (var costume in Costumes)
                 buffer.AddRange(costume.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

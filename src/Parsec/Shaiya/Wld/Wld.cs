@@ -33,7 +33,7 @@ namespace Parsec.Shaiya.Wld
             throw new NotImplementedException();
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             throw new NotImplementedException();
         }

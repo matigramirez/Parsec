@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Parsec.Common;
-using Parsec.Helpers;
 
 namespace Parsec.Shaiya.SetItem
 {
@@ -20,7 +19,7 @@ namespace Parsec.Shaiya.SetItem
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -29,7 +28,7 @@ namespace Parsec.Shaiya.SetItem
             foreach (var set in Sets)
                 buffer.AddRange(set.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

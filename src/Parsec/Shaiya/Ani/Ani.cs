@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Ani
@@ -45,8 +44,7 @@ namespace Parsec.Shaiya.Ani
             }
         }
 
-        /// <inheritdoc />
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             // Create byte list which will contain the ani data
             var buffer = new List<byte>();
@@ -70,7 +68,7 @@ namespace Parsec.Shaiya.Ani
                     buffer.AddRange(keyframeTranslation.GetBytes());
             }
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
     }
 }

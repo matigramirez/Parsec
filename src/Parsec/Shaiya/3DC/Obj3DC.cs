@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Obj3DC
@@ -12,7 +11,6 @@ namespace Parsec.Shaiya.Obj3DC
     /// </summary>
     public class Obj3DC : FileBase, IJsonReadable
     {
-
         /// <summary>
         ///  Indicates the format of the 3DC file. Its value is 0 for EP5 format and 0x01BC for EP6+ format
         /// </summary>
@@ -73,7 +71,7 @@ namespace Parsec.Shaiya.Obj3DC
             }
         }
 
-        public override void Write(string path, params object[] options)
+        public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(Tag));
@@ -92,7 +90,7 @@ namespace Parsec.Shaiya.Obj3DC
             foreach (var polygon in Polygons)
                 buffer.AddRange(polygon.GetBytes());
 
-            FileHelper.WriteFile(path, buffer.ToArray());
+            return buffer.ToArray();
         }
 
         /// <summary>
