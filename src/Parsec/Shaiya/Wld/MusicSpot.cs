@@ -23,7 +23,7 @@ namespace Parsec.Shaiya.Wld
         /// </summary>
         public float Radius { get; set; }
 
-        public MusicSpot(ShaiyaBinaryReader binaryReader)
+        public MusicSpot(SBinaryReader binaryReader)
         {
             Id = binaryReader.Read<int>();
             Center = new Vector3(binaryReader);

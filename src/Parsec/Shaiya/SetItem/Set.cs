@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.SetItem
         {
         }
 
-        public Set(ShaiyaBinaryReader binaryReader)
+        public Set(SBinaryReader binaryReader)
         {
             Index = binaryReader.Read<short>();
             Name = binaryReader.ReadString();

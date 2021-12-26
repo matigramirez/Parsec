@@ -22,7 +22,7 @@ namespace Parsec.Shaiya.NpcQuest
         public byte ItemTypeId { get; set; }
         public ushort NextQuest { get; set; }
 
-        public QuestResult(ShaiyaBinaryReader binaryReader, Format format)
+        public QuestResult(SBinaryReader binaryReader, Format format)
         {
             NeedMobId = binaryReader.Read<ushort>();
             NeedMobCount = binaryReader.Read<byte>();

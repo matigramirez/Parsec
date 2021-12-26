@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.Smod
         {
         }
 
-        public TexturedObject(ShaiyaBinaryReader binaryReader)
+        public TexturedObject(SBinaryReader binaryReader)
         {
             TextureName = binaryReader.ReadString();
 

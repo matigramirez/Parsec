@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.Cash
         {
         }
 
-        public Item(ShaiyaBinaryReader binaryReader)
+        public Item(SBinaryReader binaryReader)
         {
             ItemId = binaryReader.Read<int>();
             Count = binaryReader.Read<byte>();

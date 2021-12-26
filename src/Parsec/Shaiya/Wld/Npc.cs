@@ -12,7 +12,7 @@ namespace Parsec.Shaiya.Wld
         public float Orientation { get; set; }
         public List<Vector3> PatrolPositions { get; } = new();
 
-        public Npc(ShaiyaBinaryReader binaryReader)
+        public Npc(SBinaryReader binaryReader)
         {
             Type = binaryReader.Read<int>();
             TypeId = binaryReader.Read<int>();

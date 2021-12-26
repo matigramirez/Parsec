@@ -28,7 +28,7 @@ namespace Parsec.Shaiya.Wld
         /// </summary>
         public int Id { get; set; }
 
-        public Effect(ShaiyaBinaryReader binaryReader)
+        public Effect(SBinaryReader binaryReader)
         {
             Position = new Vector3(binaryReader);
             Rotation = new Vector3(binaryReader);

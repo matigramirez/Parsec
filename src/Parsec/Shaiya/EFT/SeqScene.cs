@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.EFT
         {
         }
 
-        public SeqScene(ShaiyaBinaryReader binaryReader)
+        public SeqScene(SBinaryReader binaryReader)
         {
             Scene = binaryReader.Read<int>();
             Delay = binaryReader.Read<float>();

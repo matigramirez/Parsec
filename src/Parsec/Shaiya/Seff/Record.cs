@@ -15,7 +15,7 @@ namespace Parsec.Shaiya.Seff
         {
         }
 
-        public Record(ShaiyaBinaryReader binaryReader, int format)
+        public Record(SBinaryReader binaryReader, int format)
         {
             Id = binaryReader.Read<int>();
 

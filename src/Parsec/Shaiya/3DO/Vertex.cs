@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.Obj3DO
         {
         }
 
-        public Vertex(ShaiyaBinaryReader binaryReader)
+        public Vertex(SBinaryReader binaryReader)
         {
             Coordinates = new Vector3(binaryReader);
             Delta = new Vector3(binaryReader);

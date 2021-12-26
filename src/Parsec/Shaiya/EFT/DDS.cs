@@ -14,7 +14,7 @@ namespace Parsec.Shaiya.EFT
         {
         }
 
-        public DDS(ShaiyaBinaryReader binaryReader)
+        public DDS(SBinaryReader binaryReader)
         {
             Index = binaryReader.Read<int>();
         }

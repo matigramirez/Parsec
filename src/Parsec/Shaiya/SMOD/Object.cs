@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.Smod
         {
         }
 
-        public Object(ShaiyaBinaryReader binaryReader)
+        public Object(SBinaryReader binaryReader)
         {
             var vertexCount = binaryReader.Read<int>();
 

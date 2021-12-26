@@ -11,7 +11,7 @@ namespace Parsec.Shaiya.Svmap
         public int NpcId { get; set; }
         public List<NpcLocation> Locations { get; set; } = new();
 
-        public Npc(ShaiyaBinaryReader binaryReader)
+        public Npc(SBinaryReader binaryReader)
         {
             Type = binaryReader.Read<int>();
             NpcId = binaryReader.Read<int>();

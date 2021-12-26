@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.NpcQuest
     {
         public List<GateTarget> GateTargets { get; } = new();
 
-        public GateKeeper(ShaiyaBinaryReader binaryReader)
+        public GateKeeper(SBinaryReader binaryReader)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             ReadBaseNpcSecondSegment(binaryReader);

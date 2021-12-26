@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.Item
         public int MaxTypeId { get; set; }
         public List<ItemDefinition> ItemDefinitions { get; } = new();
 
-        public Type(ShaiyaBinaryReader binaryReader)
+        public Type(SBinaryReader binaryReader)
         {
             MaxTypeId = binaryReader.Read<int>();
 

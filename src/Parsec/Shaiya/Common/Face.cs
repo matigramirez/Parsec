@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.Common
         {
         }
 
-        public Face(ShaiyaBinaryReader binaryReader)
+        public Face(SBinaryReader binaryReader)
         {
             VertexIndex1 = binaryReader.Read<ushort>();
             VertexIndex2 = binaryReader.Read<ushort>();

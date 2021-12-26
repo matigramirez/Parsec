@@ -4,7 +4,7 @@ namespace Parsec.Shaiya.NpcQuest
 {
     public class StandardNpc : BaseNpc
     {
-        public StandardNpc(ShaiyaBinaryReader binaryReader)
+        public StandardNpc(SBinaryReader binaryReader)
         {
             ReadNpcBaseComplete(binaryReader);
         }

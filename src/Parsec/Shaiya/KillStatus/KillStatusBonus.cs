@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.KillStatus
         {
         }
 
-        public KillStatusBonus(ShaiyaBinaryReader binaryReader)
+        public KillStatusBonus(SBinaryReader binaryReader)
         {
             Type = (KillStatusBonusType)binaryReader.Read<byte>();
             Value = binaryReader.Read<short>();

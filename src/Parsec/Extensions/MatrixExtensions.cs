@@ -6,7 +6,7 @@ namespace Parsec.Extensions
 {
     public static class MatrixExtensions
     {
-        public static void ReadTransformationMatrix(ShaiyaBinaryReader binaryReader, out Matrix4x4 matrix)
+        public static void ReadTransformationMatrix(SBinaryReader binaryReader, out Matrix4x4 matrix)
         {
             matrix = new Matrix4x4
             {

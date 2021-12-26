@@ -63,7 +63,7 @@ namespace Parsec.Shaiya.Data
             Version = 0;
         }
 
-        public SFile(ShaiyaBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
+        public SFile(SBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
         {
             Name = binaryReader.ReadString();
             Offset = binaryReader.Read<long>();

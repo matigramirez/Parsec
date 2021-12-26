@@ -18,7 +18,7 @@ namespace Parsec.Shaiya.EFT
         {
         }
 
-        public Sequence(ShaiyaBinaryReader binaryReader)
+        public Sequence(SBinaryReader binaryReader)
         {
             Name = binaryReader.ReadString();
             SceneCount = binaryReader.Read<int>();

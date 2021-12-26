@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.NpcQuest
         /// </summary>
         public int Cost { get; set; }
 
-        public GateTarget(ShaiyaBinaryReader binaryReader)
+        public GateTarget(SBinaryReader binaryReader)
         {
             MapId = binaryReader.Read<short>();
             Position = new Vector3(binaryReader);

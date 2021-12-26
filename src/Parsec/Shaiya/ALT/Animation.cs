@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.ALT
         {
         }
 
-        public Animation(ShaiyaBinaryReader binaryReader)
+        public Animation(SBinaryReader binaryReader)
         {
             Name = binaryReader.ReadString();
 

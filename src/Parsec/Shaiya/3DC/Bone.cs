@@ -37,7 +37,7 @@ namespace Parsec.Shaiya.Obj3DC
         /// </summary>
         public Vector3 Scale { get; set; }
 
-        public Bone(int boneIndex, ShaiyaBinaryReader binaryReader)
+        public Bone(int boneIndex, SBinaryReader binaryReader)
         {
             BoneIndex = boneIndex;
 

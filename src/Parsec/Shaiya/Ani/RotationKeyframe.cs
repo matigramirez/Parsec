@@ -12,7 +12,7 @@ namespace Parsec.Shaiya.Ani
         public int Keyframe { get; set; }
         public Quaternion Quaternion { get; set; }
 
-        public RotationKeyframe(ShaiyaBinaryReader binaryReader)
+        public RotationKeyframe(SBinaryReader binaryReader)
         {
             Keyframe = binaryReader.Read<int>();
             Quaternion = new Quaternion(binaryReader);

@@ -33,7 +33,7 @@ namespace Parsec.Shaiya.Wld
         /// </summary>
         public Vector3 Scaling { get; set; }
 
-        public ManiCoordinate(ShaiyaBinaryReader binaryReader)
+        public ManiCoordinate(SBinaryReader binaryReader)
         {
             Unknown = binaryReader.Read<int>();
             Id = binaryReader.Read<int>();

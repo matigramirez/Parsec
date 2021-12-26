@@ -28,7 +28,7 @@ namespace Parsec.Shaiya.Wld
         /// </summary>
         public int Unknown_2 { get; set; }
 
-        public MusicZone(ShaiyaBinaryReader binaryReader)
+        public MusicZone(SBinaryReader binaryReader)
         {
             Area = new CubicArea(binaryReader);
             Unknown_1 = binaryReader.Read<float>();

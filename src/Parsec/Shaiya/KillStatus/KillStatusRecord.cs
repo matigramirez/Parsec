@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.KillStatus
         {
         }
 
-        public KillStatusRecord(ShaiyaBinaryReader binaryReader)
+        public KillStatusRecord(SBinaryReader binaryReader)
         {
             Faction = (Faction)binaryReader.Read<byte>();
             BlessValue = binaryReader.Read<int>();

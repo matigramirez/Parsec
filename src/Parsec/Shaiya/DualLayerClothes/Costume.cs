@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.DualLayerClothes
         {
         }
 
-        public Costume(ShaiyaBinaryReader binaryReader)
+        public Costume(SBinaryReader binaryReader)
         {
             Index = binaryReader.Read<short>();
 

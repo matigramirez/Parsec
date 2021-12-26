@@ -42,7 +42,7 @@ namespace Parsec.Shaiya.Ani
         {
         }
 
-        public AniBone(int index, ShaiyaBinaryReader binaryReader)
+        public AniBone(int index, SBinaryReader binaryReader)
         {
             BoneIndex = index;
 

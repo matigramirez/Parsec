@@ -25,7 +25,7 @@ namespace Parsec.Shaiya.GuildHouse
         {
         }
 
-        public NpcInfo(ShaiyaBinaryReader binaryReader)
+        public NpcInfo(SBinaryReader binaryReader)
         {
             PriceRate = binaryReader.Read<byte>();
             NpcLvl = binaryReader.Read<byte>();

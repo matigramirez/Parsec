@@ -40,7 +40,7 @@ namespace Parsec.Shaiya.Seff
         {
         }
 
-        public Effect(ShaiyaBinaryReader binaryReader, int format)
+        public Effect(SBinaryReader binaryReader, int format)
         {
             Unknown1 = binaryReader.Read<int>();
             Unknown2 = binaryReader.Read<float>();

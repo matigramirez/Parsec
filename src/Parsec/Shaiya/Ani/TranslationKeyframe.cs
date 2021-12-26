@@ -12,7 +12,7 @@ namespace Parsec.Shaiya.Ani
         public int Keyframe { get; set; }
         public Vector3 Translation { get; set; }
 
-        public TranslationKeyframe(ShaiyaBinaryReader binaryReader)
+        public TranslationKeyframe(SBinaryReader binaryReader)
         {
             Keyframe = binaryReader.Read<int>();
             Translation = new Vector3(binaryReader);

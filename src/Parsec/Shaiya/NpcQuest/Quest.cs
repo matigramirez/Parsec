@@ -114,7 +114,7 @@ namespace Parsec.Shaiya.NpcQuest
         public string AlternateCompletionMessage1 { get; set; }
         public string AlternateCompletionMessage2 { get; set; }
 
-        public Quest(ShaiyaBinaryReader binaryReader, Format format)
+        public Quest(SBinaryReader binaryReader, Format format)
         {
             Id = binaryReader.Read<short>();
             Name = binaryReader.ReadString();

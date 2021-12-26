@@ -32,7 +32,7 @@ namespace Parsec.Shaiya.Common
             UpperLimit = upperLimit;
         }
 
-        public CubicArea(ShaiyaBinaryReader binaryReader)
+        public CubicArea(SBinaryReader binaryReader)
         {
             LowerLimit = new Vector3(binaryReader);
             UpperLimit = new Vector3(binaryReader);

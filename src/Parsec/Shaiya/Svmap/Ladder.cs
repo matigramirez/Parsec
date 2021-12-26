@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.Svmap
     {
         public Vector3 Position { get; set; }
 
-        public Ladder(ShaiyaBinaryReader binaryReader)
+        public Ladder(SBinaryReader binaryReader)
         {
             Position = new Vector3(binaryReader);
         }

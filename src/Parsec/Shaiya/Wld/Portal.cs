@@ -47,7 +47,7 @@ namespace Parsec.Shaiya.Wld
         /// </summary>
         public Vector3 Position { get; set; }
 
-        public Portal(ShaiyaBinaryReader binaryReader)
+        public Portal(SBinaryReader binaryReader)
         {
             Area = new CubicArea(binaryReader);
             Unknown_1 = binaryReader.Read<int>();

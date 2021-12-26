@@ -13,7 +13,7 @@ namespace Parsec.Shaiya.Svmap
         public int Unknown2 { get; set; }
         public CubicArea Area { get; set; }
 
-        public Spawn(ShaiyaBinaryReader binaryReader)
+        public Spawn(SBinaryReader binaryReader)
         {
             Unknown1 = binaryReader.Read<int>();
             Faction = (Faction)binaryReader.Read<int>();

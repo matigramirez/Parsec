@@ -11,7 +11,7 @@ namespace Parsec.Shaiya.NpcQuest
 
         public List<MerchantItem> SaleItems { get; } = new();
 
-        public Merchant(ShaiyaBinaryReader binaryReader)
+        public Merchant(SBinaryReader binaryReader)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             MerchantType = (MerchantType)binaryReader.Read<byte>();

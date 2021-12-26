@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.Svmap
         public int MobId { get; set; }
         public int Count { get; set; }
 
-        public Monster(ShaiyaBinaryReader binaryReader)
+        public Monster(SBinaryReader binaryReader)
         {
             MobId = binaryReader.Read<int>();
             Count = binaryReader.Read<int>();

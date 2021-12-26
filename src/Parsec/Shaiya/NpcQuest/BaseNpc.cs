@@ -21,14 +21,14 @@ namespace Parsec.Shaiya.NpcQuest
         public List<short> InQuestIds { get; } = new();
         public List<short> OutQuestIds { get; } = new();
 
-        protected void ReadNpcBaseComplete(ShaiyaBinaryReader binaryReader)
+        protected void ReadNpcBaseComplete(SBinaryReader binaryReader)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             ReadBaseNpcSecondSegment(binaryReader);
             ReadBaseNpcThirdSegment(binaryReader);
         }
 
-        protected void ReadBaseNpcFirstSegment(ShaiyaBinaryReader binaryReader)
+        protected void ReadBaseNpcFirstSegment(SBinaryReader binaryReader)
         {
             Type = (NpcType)binaryReader.Read<byte>();
             TypeId = binaryReader.Read<short>();
@@ -40,7 +40,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(TypeId.GetBytes());
         }
 
-        protected void ReadBaseNpcSecondSegment(ShaiyaBinaryReader binaryReader)
+        protected void ReadBaseNpcSecondSegment(SBinaryReader binaryReader)
         {
             Model = binaryReader.Read<int>();
             MoveDistance = binaryReader.Read<int>();
@@ -60,7 +60,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(WelcomeMessage.GetASCIILengthPrefixedBytes(false));
         }
 
-        protected void ReadBaseNpcThirdSegment(ShaiyaBinaryReader binaryReader)
+        protected void ReadBaseNpcThirdSegment(SBinaryReader binaryReader)
         {
             var inQuestQuantity = binaryReader.Read<int>();
 

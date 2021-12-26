@@ -20,7 +20,7 @@ namespace Parsec.Shaiya.DualLayerClothes
         {
         }
 
-        public Layer(ShaiyaBinaryReader binaryReader)
+        public Layer(SBinaryReader binaryReader)
         {
             Upper = binaryReader.Read<short>();
             Hands = binaryReader.Read<short>();

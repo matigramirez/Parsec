@@ -8,7 +8,7 @@ namespace Parsec.Readers
     /// <summary>
     /// A binary reader made specifically to read Shaiya file formats
     /// </summary>
-    public sealed class ShaiyaBinaryReader
+    public sealed class SBinaryReader
     {
         /// <summary>
         /// The binary reader's data buffer
@@ -22,13 +22,13 @@ namespace Parsec.Readers
         /// </summary>
         public int Offset => _offset;
 
-        public ShaiyaBinaryReader(string filePath)
+        public SBinaryReader(string filePath)
         {
             using var binaryReader = new BinaryReader(File.OpenRead(filePath));
             Buffer = binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
         }
 
-        public ShaiyaBinaryReader(byte[] buffer)
+        public SBinaryReader(byte[] buffer)
         {
             Buffer = buffer;
         }
@@ -45,19 +45,19 @@ namespace Parsec.Readers
 
             object value = type switch
             {
-                TypeCode.Byte => ReadByte(),
-                TypeCode.SByte => ReadSByte(),
-                TypeCode.Char => ReadChar(),
+                TypeCode.Byte    => ReadByte(),
+                TypeCode.SByte   => ReadSByte(),
+                TypeCode.Char    => ReadChar(),
                 TypeCode.Boolean => ReadBoolean(),
-                TypeCode.Int16 => ReadInt16(),
-                TypeCode.UInt16 => ReadUInt16(),
-                TypeCode.Int32 => ReadInt32(),
-                TypeCode.UInt32 => ReadUInt32(),
-                TypeCode.Int64 => ReadInt64(),
-                TypeCode.UInt64 => ReadUInt64(),
-                TypeCode.Single => ReadFloat(),
-                TypeCode.Double => ReadDouble(),
-                _ => throw new NotSupportedException()
+                TypeCode.Int16   => ReadInt16(),
+                TypeCode.UInt16  => ReadUInt16(),
+                TypeCode.Int32   => ReadInt32(),
+                TypeCode.UInt32  => ReadUInt32(),
+                TypeCode.Int64   => ReadInt64(),
+                TypeCode.UInt64  => ReadUInt64(),
+                TypeCode.Single  => ReadFloat(),
+                TypeCode.Double  => ReadDouble(),
+                _                => throw new NotSupportedException()
             };
 
             return (T)value;
@@ -202,6 +202,9 @@ namespace Parsec.Readers
         /// <param name="removeStringTerminator"></param>
         public string ReadString(Encoding encoding, int length, bool removeStringTerminator = true)
         {
+            if (length <= 0)
+                return "";
+
             // If encoding is UTF16, length needs to be doubled, since UTF16 uses 2 bytes per character
             if (encoding.Equals(Encoding.Unicode))
                 length *= 2;
@@ -234,7 +237,8 @@ namespace Parsec.Readers
         /// Reads a length-prefixed ASCII string
         /// </summary>
         /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
-        public string ReadString(bool removeStringTerminator = true) => ReadString(Encoding.ASCII, removeStringTerminator);
+        public string ReadString(bool removeStringTerminator = true) =>
+            ReadString(Encoding.ASCII, removeStringTerminator);
 
         /// <summary>
         /// Reads length-fixed ASCII string

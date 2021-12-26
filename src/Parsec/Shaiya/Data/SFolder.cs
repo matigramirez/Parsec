@@ -50,7 +50,7 @@ namespace Parsec.Shaiya.Data
             ParentFolder = parentFolder;
         }
 
-        public SFolder(ShaiyaBinaryReader binaryReader, SFolder parentFolder, Dictionary<string, SFolder> folderIndex, Dictionary<string, SFile> fileIndex)
+        public SFolder(SBinaryReader binaryReader, SFolder parentFolder, Dictionary<string, SFolder> folderIndex, Dictionary<string, SFile> fileIndex)
         {
             Name = binaryReader.ReadString();
 

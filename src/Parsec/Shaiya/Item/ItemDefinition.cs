@@ -85,7 +85,7 @@ namespace Parsec.Shaiya.Item
         public int UnknownInt9 { get; set; }
         public int UnknownInt10 { get; set; }
 
-        public ItemDefinition(ShaiyaBinaryReader binaryReader)
+        public ItemDefinition(SBinaryReader binaryReader)
         {
             Name = binaryReader.ReadString();
             Description = binaryReader.ReadString();

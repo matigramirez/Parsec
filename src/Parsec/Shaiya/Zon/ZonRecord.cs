@@ -43,7 +43,7 @@ namespace Parsec.Shaiya.Zon
         public short MapId { get; set; }
         public string Description { get; set; }
 
-        public ZonRecord(int format, ShaiyaBinaryReader binaryReader)
+        public ZonRecord(int format, SBinaryReader binaryReader)
         {
             Index = binaryReader.Read<byte>();
             P1 = binaryReader.Read<byte>();

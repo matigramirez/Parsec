@@ -28,7 +28,7 @@ namespace Parsec.Shaiya.Mlt
         {
         }
 
-        public Record(ShaiyaBinaryReader binaryReader)
+        public Record(SBinaryReader binaryReader)
         {
             Obj3DCIndex = binaryReader.Read<int>();
             TextureIndex = binaryReader.Read<int>();

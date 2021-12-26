@@ -13,7 +13,7 @@ namespace Parsec.Shaiya.Core
     public abstract class FileBase : IFileBase, IExportable<FileBase>
     {
         [JsonIgnore]
-        protected ShaiyaBinaryReader _binaryReader;
+        protected SBinaryReader _binaryReader;
 
         /// <summary>
         /// The file's byte array
@@ -22,7 +22,7 @@ namespace Parsec.Shaiya.Core
         public byte[] Buffer
         {
             get => _binaryReader.Buffer;
-            set => _binaryReader = new ShaiyaBinaryReader(value);
+            set => _binaryReader = new SBinaryReader(value);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Parsec.Shaiya.Core
         [JsonIgnore]
         public string FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(Path);
 
-        public FileBase(ShaiyaBinaryReader binaryReader)
+        public FileBase(SBinaryReader binaryReader)
         {
         }
 
@@ -64,7 +64,7 @@ namespace Parsec.Shaiya.Core
         /// <returns>T instance</returns>
         public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
         {
-            var binaryReader = new ShaiyaBinaryReader(path);
+            var binaryReader = new SBinaryReader(path);
             var instance = new T()
             {
                 Path = path,
@@ -89,7 +89,7 @@ namespace Parsec.Shaiya.Core
         /// <returns>T instance</returns>
         public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
         {
-            var binaryReader = new ShaiyaBinaryReader(buffer);
+            var binaryReader = new SBinaryReader(buffer);
             var instance = new T
             {
                 Path = name,

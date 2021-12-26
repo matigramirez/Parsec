@@ -14,7 +14,7 @@ namespace Parsec.Shaiya.Svmap
         public CubicArea Area { get; set; }
         public List<Monster> Monsters { get; set; } = new();
 
-        public MonsterArea(ShaiyaBinaryReader binaryReader)
+        public MonsterArea(SBinaryReader binaryReader)
         {
             Area = new CubicArea(binaryReader);
 

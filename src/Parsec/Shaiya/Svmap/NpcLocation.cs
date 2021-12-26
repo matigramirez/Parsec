@@ -11,7 +11,7 @@ namespace Parsec.Shaiya.Svmap
         public Vector3 Position { get; set; }
         public float Orientation { get; set; }
 
-        public NpcLocation(ShaiyaBinaryReader binaryReader)
+        public NpcLocation(SBinaryReader binaryReader)
         {
             Position = new Vector3(binaryReader);
             Orientation = binaryReader.Read<float>();

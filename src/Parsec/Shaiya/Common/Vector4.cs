@@ -50,7 +50,7 @@ namespace Parsec.Shaiya.Common
         {
         }
 
-        public Vector4(ShaiyaBinaryReader binaryReader)
+        public Vector4(SBinaryReader binaryReader)
         {
             X = binaryReader.Read<float>();
             Y = binaryReader.Read<float>();

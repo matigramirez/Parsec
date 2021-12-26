@@ -15,7 +15,7 @@ namespace Parsec.Shaiya.NpcQuest
         /// </summary>
         public byte TypeId { get; set; }
 
-        public MerchantItem(ShaiyaBinaryReader binaryReader)
+        public MerchantItem(SBinaryReader binaryReader)
         {
             Type = binaryReader.Read<byte>();
             TypeId = binaryReader.Read<byte>();

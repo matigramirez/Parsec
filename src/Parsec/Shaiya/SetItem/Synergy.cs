@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.SetItem
         {
         }
 
-        public Synergy(ShaiyaBinaryReader binaryReader)
+        public Synergy(SBinaryReader binaryReader)
         {
             Description = binaryReader.ReadString();
         }

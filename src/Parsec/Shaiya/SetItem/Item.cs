@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.SetItem
         {
         }
 
-        public Item(ShaiyaBinaryReader binaryReader)
+        public Item(SBinaryReader binaryReader)
         {
             Type = binaryReader.Read<short>();
             TypeId = binaryReader.Read<short>();

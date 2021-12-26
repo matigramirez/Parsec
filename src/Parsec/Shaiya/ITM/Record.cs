@@ -59,7 +59,7 @@ namespace Parsec.Shaiya.Itm
         {
         }
 
-        public Record(ITMFormat format, ShaiyaBinaryReader binaryReader)
+        public Record(ITMFormat format, SBinaryReader binaryReader)
         {
             Obj3DOIndex = binaryReader.Read<int>();
             TextureIndex = binaryReader.Read<int>();

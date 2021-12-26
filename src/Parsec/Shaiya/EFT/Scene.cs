@@ -72,7 +72,7 @@ namespace Parsec.Shaiya.EFT
         {
         }
 
-        public Scene(EFTFormat format, ShaiyaBinaryReader binaryReader)
+        public Scene(EFTFormat format, SBinaryReader binaryReader)
         {
             Name = binaryReader.ReadString();
             //read 10

@@ -23,7 +23,7 @@ namespace Parsec.Shaiya.Cash
         {
         }
 
-        public Product(ShaiyaBinaryReader binaryReader)
+        public Product(SBinaryReader binaryReader)
         {
             Index = binaryReader.Read<int>();
             Bag = binaryReader.Read<int>();

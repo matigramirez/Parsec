@@ -28,7 +28,7 @@ namespace Parsec.Shaiya.Wld
         /// </summary>
         public Vector3 Scale { get; set; }
 
-        public Coordinate(ShaiyaBinaryReader binaryReader)
+        public Coordinate(SBinaryReader binaryReader)
         {
             Id = binaryReader.Read<int>();
             Position = new Vector3(binaryReader);

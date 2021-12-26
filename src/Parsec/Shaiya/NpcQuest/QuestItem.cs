@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.NpcQuest
         public byte TypeId { get; set; }
         public byte Count { get; set; }
 
-        public QuestItem(ShaiyaBinaryReader binaryReader)
+        public QuestItem(SBinaryReader binaryReader)
         {
             Type = binaryReader.Read<byte>();
             TypeId = binaryReader.Read<byte>();

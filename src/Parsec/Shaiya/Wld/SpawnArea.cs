@@ -33,7 +33,7 @@ namespace Parsec.Shaiya.Wld
         /// </summary>
         public int Unknown_3 { get; set; }
 
-        public SpawnArea(ShaiyaBinaryReader binaryReader)
+        public SpawnArea(SBinaryReader binaryReader)
         {
             Unknown_1 = binaryReader.Read<int>();
             Area = new CubicArea(binaryReader);

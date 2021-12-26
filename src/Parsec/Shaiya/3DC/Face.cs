@@ -41,7 +41,7 @@ namespace Parsec.Shaiya.Obj3DC
         /// </summary>
         public Vertex Vertex3 { get; set; }
 
-        public Face(ShaiyaBinaryReader binaryReader)
+        public Face(SBinaryReader binaryReader)
         {
             VertexIndex1 = binaryReader.Read<ushort>();
             VertexIndex2 = binaryReader.Read<ushort>();

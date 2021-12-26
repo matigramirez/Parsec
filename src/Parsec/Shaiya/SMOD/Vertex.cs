@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.Smod
         {
         }
 
-        public Vertex(ShaiyaBinaryReader binaryReader)
+        public Vertex(SBinaryReader binaryReader)
         {
             Coordinates = new Vector3(binaryReader);
             Delta = new Vector3(binaryReader);

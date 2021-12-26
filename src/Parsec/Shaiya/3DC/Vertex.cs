@@ -77,7 +77,7 @@ namespace Parsec.Shaiya.Obj3DC
         /// </summary>
         public Vector2 UV { get; set; }
 
-        public Vertex(int index, Format format, ShaiyaBinaryReader binaryReader)
+        public Vertex(int index, Format format, SBinaryReader binaryReader)
         {
             Index = index;
             X = binaryReader.Read<float>();

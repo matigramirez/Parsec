@@ -152,7 +152,7 @@ namespace Parsec.Shaiya.SData
             if (!IsEncrypted(Buffer))
             {
                 var encryptedBuffer = Encrypt(Buffer);
-                _binaryReader = new ShaiyaBinaryReader(encryptedBuffer);
+                _binaryReader = new SBinaryReader(encryptedBuffer);
             }
         }
 
@@ -163,7 +163,7 @@ namespace Parsec.Shaiya.SData
             if (IsEncrypted(Buffer))
             {
                 var decryptedBuffer = Decrypt(Buffer);
-                _binaryReader = new ShaiyaBinaryReader(decryptedBuffer);
+                _binaryReader = new SBinaryReader(decryptedBuffer);
             }
         }
     }
