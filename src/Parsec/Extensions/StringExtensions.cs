@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
 
 namespace Parsec.Extensions
@@ -37,7 +35,8 @@ namespace Parsec.Extensions
         /// <summary>
         /// The list of invalid characters
         /// </summary>
-        private static readonly string _invalidCharacters = new string(Path.GetInvalidPathChars()) + new string(Path.GetInvalidFileNameChars());
+        private static readonly string _invalidCharacters =
+            new string(Path.GetInvalidPathChars()) + new string(Path.GetInvalidFileNameChars());
 
         /// <summary>
         /// Checks if a string has invalid characters

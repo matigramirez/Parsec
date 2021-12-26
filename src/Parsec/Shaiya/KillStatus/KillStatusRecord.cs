@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.KillStatus
 {
     public class KillStatusRecord : IBinary
     {
-        public Faction Faction { get; set; }
+        public FactionInt Faction { get; set; }
         public int BlessValue { get; set; }
         public short Index { get; set; }
         public List<KillStatusBonus> Bonuses { get; } = new();
@@ -21,7 +21,7 @@ namespace Parsec.Shaiya.KillStatus
 
         public KillStatusRecord(SBinaryReader binaryReader)
         {
-            Faction = (Faction)binaryReader.Read<byte>();
+            Faction = (FactionInt)binaryReader.Read<byte>();
             BlessValue = binaryReader.Read<int>();
             Index = binaryReader.Read<short>();
 

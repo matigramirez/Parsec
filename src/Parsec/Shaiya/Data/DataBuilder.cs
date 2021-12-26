@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.Data
         /// <summary>
         /// The total file count
         /// </summary>
-        private static int _fileCount = 0;
+        private static int _fileCount;
 
         /// <summary>
         /// Creates both sah and saf files based on the data inside a directory

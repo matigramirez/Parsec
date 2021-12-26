@@ -40,7 +40,7 @@ namespace Parsec.Shaiya.Wld
         public int Unknown_2 { get; set; }
     }
 
-    public enum NamedAreaMode : int
+    public enum NamedAreaMode
     {
         WorldIndexTxt = 0,
         BmpFile = 2

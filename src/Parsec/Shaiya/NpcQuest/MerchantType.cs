@@ -20,5 +20,5 @@
         EtinSeller = 101,
         AuctionBoard = 117,
         PvpQuests = 200
-    };
+    }
 }

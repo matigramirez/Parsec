@@ -45,7 +45,9 @@ namespace Parsec.Shaiya.Obj3DC
             TransformationMatrix = new Matrix4(binaryReader);
 
             // Decompose the transformation matrix to obtain the scale, rotation and translation separately
-            Matrix4x4.Decompose(TransformationMatrix.NumericMatrix, out var scale, out var rotationQuaternion, out var translation);
+            Matrix4x4.Decompose(TransformationMatrix.NumericMatrix, out var scale, out var rotationQuaternion,
+                                out var translation);
+
             Scale = new Vector3(scale.X, scale.Y, scale.Z);
             Translation = new Vector3(translation.X, translation.Y, translation.Z);
             Rotation = rotationQuaternion;

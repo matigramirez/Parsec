@@ -65,7 +65,8 @@ namespace Parsec.Shaiya.Core
         public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
         {
             var binaryReader = new SBinaryReader(path);
-            var instance = new T()
+
+            var instance = new T
             {
                 Path = path,
                 _binaryReader = binaryReader
@@ -90,6 +91,7 @@ namespace Parsec.Shaiya.Core
         public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
         {
             var binaryReader = new SBinaryReader(buffer);
+
             var instance = new T
             {
                 Path = name,

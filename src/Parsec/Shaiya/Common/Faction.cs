@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Common
 {
-    public enum Faction : int
+    public enum FactionInt
     {
         Light,
         Fury,

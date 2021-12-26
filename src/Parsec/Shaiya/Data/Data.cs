@@ -40,7 +40,8 @@ namespace Parsec.Shaiya.Data
                 var safPath = path[..^3] + "saf";
 
                 if (!FileHelper.FileExists(safPath))
-                    throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
+                    throw new FileNotFoundException(
+                        "A valid saf file must be placed in the same directory as the sah file.");
 
                 Sah = Reader.ReadFromFile<Sah>(path);
                 Saf = new Saf(safPath);
@@ -50,7 +51,8 @@ namespace Parsec.Shaiya.Data
                 var sahPath = path[..^3] + "sah";
 
                 if (!FileHelper.FileExists(sahPath))
-                    throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
+                    throw new FileNotFoundException(
+                        "A valid sah file must be placed in the same directory as the saf file.");
 
                 Sah = Reader.ReadFromFile<Sah>(sahPath);
                 Saf = new Saf(path);

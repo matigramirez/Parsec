@@ -50,12 +50,19 @@ namespace Parsec.Shaiya.Data
             ParentFolder = parentFolder;
         }
 
-        public SFolder(SBinaryReader binaryReader, SFolder parentFolder, Dictionary<string, SFolder> folderIndex, Dictionary<string, SFile> fileIndex)
+        public SFolder(
+            SBinaryReader binaryReader,
+            SFolder parentFolder,
+            Dictionary<string, SFolder> folderIndex,
+            Dictionary<string, SFile> fileIndex
+        )
         {
             Name = binaryReader.ReadString();
 
             // Write folder's relative path based on parent folder
-            RelativePath = parentFolder == null || parentFolder.Name == "" ? Name : string.Join('/', parentFolder.RelativePath, Name);
+            RelativePath = parentFolder == null || parentFolder.Name == ""
+                ? Name
+                : string.Join('/', parentFolder.RelativePath, Name);
 
             folderIndex.Add(RelativePath, this);
 

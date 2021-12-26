@@ -26,7 +26,7 @@ namespace Parsec.Shaiya.Wld
         /// <summary>
         /// Faction which uses this spawn area
         /// </summary>
-        public Faction Faction { get; set; }
+        public FactionInt Faction { get; set; }
 
         /// <summary>
         /// Almost always 0
@@ -38,7 +38,7 @@ namespace Parsec.Shaiya.Wld
             Unknown_1 = binaryReader.Read<int>();
             Area = new CubicArea(binaryReader);
             Unknown_2 = binaryReader.Read<int>();
-            Faction = (Faction)binaryReader.Read<int>();
+            Faction = (FactionInt)binaryReader.Read<int>();
             Unknown_3 = binaryReader.Read<int>();
         }
     }

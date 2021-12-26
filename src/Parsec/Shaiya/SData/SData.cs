@@ -49,7 +49,7 @@ namespace Parsec.Shaiya.SData
             var alignmentSize = header.RealSize;
 
             if (alignmentSize % 16 != 0)
-                alignmentSize = header.RealSize + (16 - (header.RealSize % 16));
+                alignmentSize = header.RealSize + (16 - header.RealSize % 16);
 
             // Create data array including the extra alignment bytes
             var data = new byte[alignmentSize];

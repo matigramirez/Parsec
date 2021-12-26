@@ -31,19 +31,22 @@ namespace Parsec.Extensions
 
         public static void ConvertToMatrix4(this Matrix4x4 numericMatrix, out Matrix4 matrix)
         {
-            var row1 = new float[]
+            var row1 = new[]
             {
                 numericMatrix.M11, numericMatrix.M12, numericMatrix.M13, numericMatrix.M14
             };
-            var row2 = new float[]
+
+            var row2 = new[]
             {
                 numericMatrix.M21, numericMatrix.M22, numericMatrix.M23, numericMatrix.M24
             };
-            var row3 = new float[]
+
+            var row3 = new[]
             {
                 numericMatrix.M31, numericMatrix.M32, numericMatrix.M33, numericMatrix.M34
             };
-            var row4 = new float[]
+
+            var row4 = new[]
             {
                 numericMatrix.M41, numericMatrix.M42, numericMatrix.M43, numericMatrix.M44
             };

@@ -33,7 +33,7 @@ namespace Parsec.Shaiya.EFT
             {
                 "EFT" => EFTFormat.EFT,
                 "EF3" => EFTFormat.EF3,
-                _ => EFTFormat.Unknown
+                _     => EFTFormat.Unknown
             };
 
             File3DECount = _binaryReader.Read<int>();

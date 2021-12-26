@@ -12,10 +12,10 @@ namespace Parsec.Shaiya.KillStatus
         public List<KillStatusRecord> Records { get; } = new();
 
         [JsonIgnore]
-        public List<KillStatusRecord> LightRecords => Records.Where(r => r.Faction == Faction.Light).ToList();
+        public List<KillStatusRecord> LightRecords => Records.Where(r => r.Faction == FactionInt.Light).ToList();
 
         [JsonIgnore]
-        public List<KillStatusRecord> FuryRecords => Records.Where(r => r.Faction == Faction.Fury).ToList();
+        public List<KillStatusRecord> FuryRecords => Records.Where(r => r.Faction == FactionInt.Fury).ToList();
 
         public override void Read(params object[] options)
         {

@@ -71,7 +71,9 @@ namespace Parsec.Shaiya.Data
             Version = binaryReader.Read<int>();
 
             // Write folder's relative path based on parent folder
-            RelativePath = ParentFolder == null || ParentFolder.Name == "" ? Name : string.Join('/', folder.RelativePath, Name);
+            RelativePath = ParentFolder == null || ParentFolder.Name == ""
+                ? Name
+                : string.Join('/', folder.RelativePath, Name);
 
             // Add file to the sah's file dictionary
             if (!fileIndex.ContainsKey(RelativePath))

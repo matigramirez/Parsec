@@ -14,7 +14,7 @@ namespace Parsec.Shaiya.NpcQuest
         public int Model { get; set; }
         public int MoveDistance { get; set; }
         public int MoveSpeed { get; set; }
-        public Faction Faction { get; set; }
+        public FactionInt Faction { get; set; }
         public string Name { get; set; }
         public string WelcomeMessage { get; set; }
 
@@ -45,7 +45,7 @@ namespace Parsec.Shaiya.NpcQuest
             Model = binaryReader.Read<int>();
             MoveDistance = binaryReader.Read<int>();
             MoveSpeed = binaryReader.Read<int>();
-            Faction = (Faction)binaryReader.Read<int>();
+            Faction = (FactionInt)binaryReader.Read<int>();
             Name = binaryReader.ReadString(false);
             WelcomeMessage = binaryReader.ReadString(false);
         }

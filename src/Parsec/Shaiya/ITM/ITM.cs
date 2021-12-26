@@ -43,7 +43,7 @@ namespace Parsec.Shaiya.Itm
             {
                 "ITM" => ITMFormat.ITM,
                 "IT2" => ITMFormat.IT2,
-                _ => ITMFormat.Unknown
+                _     => ITMFormat.Unknown
             };
 
             var obj3doCount = _binaryReader.Read<int>();

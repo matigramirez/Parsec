@@ -8,8 +8,7 @@ namespace Parsec.Helpers
         /// Check if a file exists.
         /// </summary>
         /// <param name="path">Path to the file to check</param>
-        public static bool FileExists(string path) =>
-            File.Exists(path);
+        public static bool FileExists(string path) => File.Exists(path);
 
         /// <summary>
         /// Writes a file to the file system.
@@ -35,7 +34,9 @@ namespace Parsec.Helpers
             }
 
             // Create file and save data
-            using var binaryWriter = new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
+            using var binaryWriter =
+                new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
+
             binaryWriter.Write(data);
             binaryWriter.Dispose();
         }
@@ -69,8 +70,7 @@ namespace Parsec.Helpers
         /// Checks if a directory exists.
         /// </summary>
         /// <param name="directoryPath">Path to directory</param>
-        public static bool DirectoryExists(string directoryPath) =>
-            Directory.Exists(directoryPath);
+        public static bool DirectoryExists(string directoryPath) => Directory.Exists(directoryPath);
 
         /// <summary>
         /// Creates a directory at the specified path.

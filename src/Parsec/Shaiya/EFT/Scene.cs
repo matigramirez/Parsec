@@ -110,17 +110,17 @@ namespace Parsec.Shaiya.EFT
             Unknown31 = binaryReader.Read<float>();
             Unknown32 = binaryReader.Read<float>();
             Unknown33 = binaryReader.Read<float>();
-            //
+
             Unknown34 = binaryReader.Read<int>();
             Unknown35 = binaryReader.Read<int>();
             Unknown36 = binaryReader.Read<int>();
-            //
+
             for (int i = 0; i < 1; i++)
             {
                 var vec = new Vector4(binaryReader);
                 Vec04Array.Add(vec);
             }
-            //
+
             Unknown37 = binaryReader.Read<int>();
             Unknown38 = binaryReader.Read<int>();
             Unknown39 = binaryReader.Read<float>();

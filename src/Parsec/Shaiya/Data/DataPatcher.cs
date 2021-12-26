@@ -139,7 +139,6 @@ namespace Parsec.Shaiya.Data
         /// Appends a file at the end of the target Saf file from a patch Saf file
         /// </summary>
         /// <param name="patchFile">Patch file instance</param>
-        private static long AppendFile(SFile patchFile) =>
-            WriteFile(_targetBinaryWriter.BaseStream.Length, patchFile);
+        private static long AppendFile(SFile patchFile) => WriteFile(_targetBinaryWriter.BaseStream.Length, patchFile);
     }
 }

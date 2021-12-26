@@ -15,7 +15,8 @@ namespace Parsec.Readers
         /// <param name="options">Array of reading options</param>
         /// <typeparam name="T">Shaiya File Format Type</typeparam>
         /// <returns>T instance</returns>
-        public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new() => FileBase.ReadFromFile<T>(path, options);
+        public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new() =>
+            FileBase.ReadFromFile<T>(path, options);
 
         /// <summary>
         /// Reads a shaiya file format from a buffer (byte array)
@@ -25,7 +26,8 @@ namespace Parsec.Readers
         /// <param name="options">Array of reading options</param>
         /// <typeparam name="T">Shaiya File Format Type</typeparam>
         /// <returns>T instance</returns>
-        public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new() => FileBase.ReadFromBuffer<T>(name, buffer, options);
+        public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options)
+            where T : FileBase, new() => FileBase.ReadFromBuffer<T>(name, buffer, options);
 
         /// <summary>
         /// Reads a shaiya file format from a json file

@@ -27,19 +27,22 @@ namespace Parsec.Shaiya.Common
             {
                 _numericMatrix = value;
 
-                var row1 = new float[]
+                var row1 = new[]
                 {
                     _numericMatrix.M11, _numericMatrix.M12, _numericMatrix.M13, _numericMatrix.M14
                 };
-                var row2 = new float[]
+
+                var row2 = new[]
                 {
                     _numericMatrix.M21, _numericMatrix.M22, _numericMatrix.M23, _numericMatrix.M24
                 };
-                var row3 = new float[]
+
+                var row3 = new[]
                 {
                     _numericMatrix.M31, _numericMatrix.M32, _numericMatrix.M33, _numericMatrix.M34
                 };
-                var row4 = new float[]
+
+                var row4 = new[]
                 {
                     _numericMatrix.M41, _numericMatrix.M42, _numericMatrix.M43, _numericMatrix.M44
                 };
@@ -148,9 +151,7 @@ namespace Parsec.Shaiya.Common
             if (rowNumber > 3)
                 throw new ArgumentException("The matrix's valid rows are 0-3");
 
-            return Enumerable.Range(0, _matrix.GetLength(0))
-                             .Select(x => _matrix[rowNumber, x])
-                             .ToArray();
+            return Enumerable.Range(0, _matrix.GetLength(0)).Select(x => _matrix[rowNumber, x]).ToArray();
         }
 
         private float[] GetColumn(int columnNumber)
@@ -158,9 +159,7 @@ namespace Parsec.Shaiya.Common
             if (columnNumber > 3)
                 throw new ArgumentException("The matrix's valid columns are 0-3");
 
-            return Enumerable.Range(0, _matrix.GetLength(0))
-                             .Select(x => _matrix[x, columnNumber])
-                             .ToArray();
+            return Enumerable.Range(0, _matrix.GetLength(0)).Select(x => _matrix[x, columnNumber]).ToArray();
         }
 
         public float[] Row1 => GetRow(0);
@@ -215,10 +214,10 @@ namespace Parsec.Shaiya.Common
 
         public void Transpose()
         {
-            var row1 = new float[] { M11, M12, M13, M14 };
-            var row2 = new float[] { M21, M22, M23, M24 };
-            var row3 = new float[] { M31, M32, M33, M34 };
-            var row4 = new float[] { M41, M42, M43, M44 };
+            var row1 = new[] { M11, M12, M13, M14 };
+            var row2 = new[] { M21, M22, M23, M24 };
+            var row3 = new[] { M31, M32, M33, M34 };
+            var row4 = new[] { M41, M42, M43, M44 };
 
             SetColumn(1, row1);
             SetColumn(2, row2);

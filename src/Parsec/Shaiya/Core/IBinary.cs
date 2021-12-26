@@ -2,7 +2,6 @@
 {
     public interface IBinary
     {
-
         /// <summary>
         /// Serializes the file into a byte array
         /// </summary>
