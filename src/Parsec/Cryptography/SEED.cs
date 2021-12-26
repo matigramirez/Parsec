@@ -1,5 +1,8 @@
 ﻿namespace Parsec.Cryptography
 {
+    /// <summary>
+    /// Class that implements the methods needed to encrypt and decrypt files which use the KISA SEED encryption algorithm
+    /// </summary>
     public static class SEED
     {
         private static uint GetSeed(uint val)
@@ -12,7 +15,10 @@
 
         public static uint ByteArrayToUInt32(byte[] array, uint offset)
         {
-            uint value =  (uint)array[offset] << 24 | (uint)array[offset + 1] << 16 | (uint)array[offset + 2] << 8 | (uint)array[offset + 3];
+            uint value = ((uint)array[offset] << 24) |
+                         ((uint)array[offset + 1] << 16) |
+                         ((uint)array[offset + 2] << 8) |
+                         array[offset + 3];
 
             return value;
         }
@@ -22,7 +28,7 @@
             output[offset] = (byte)(input >> 24);
             output[offset + 1] = (byte)(input >> 16);
             output[offset + 2] = (byte)(input >> 8);
-            output[offset + 3] = (byte)(input);
+            output[offset + 3] = (byte)input;
         }
 
         private static uint LeftRotation(uint x, int n)
