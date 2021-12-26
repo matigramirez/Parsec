@@ -30,6 +30,8 @@ namespace Parsec.Extensions
             return buffer.ToArray();
         }
 
+        public static byte[] GetBytes(this string str) => Encoding.ASCII.GetBytes(str);
+
         public static byte[] GetBytes(this IEnumerable<IBinary> list, bool lengthPrefixed = true)
         {
             var buffer = new List<byte>();
@@ -37,7 +39,7 @@ namespace Parsec.Extensions
             var enumerable = list as IBinary[] ?? list.ToArray();
 
             // Add length bytes
-            if(lengthPrefixed)
+            if (lengthPrefixed)
                 buffer.AddRange(enumerable.Length.GetBytes());
 
             // Add item bytes
