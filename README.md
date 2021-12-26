@@ -26,6 +26,7 @@ make reading and manipulating the game's file formats easy.
 - `EFT`
 - `seff`
 - `zon`
+- `ALT`
 
 ## Features
 
