@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -59,17 +57,6 @@ namespace Parsec.Shaiya.Obj3DC
         }
 
         /// <inheritdoc />
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-
-            for (int row = 0; row < 4; row++)
-            {
-                for (int col = 0; col < 4; col++)
-                    buffer.AddRange(BitConverter.GetBytes(TransformationMatrix.Data[row, col]));
-            }
-
-            return buffer.ToArray();
-        }
+        public byte[] GetBytes(params object[] options) => TransformationMatrix.GetBytes();
     }
 }

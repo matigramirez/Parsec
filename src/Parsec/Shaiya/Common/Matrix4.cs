@@ -193,22 +193,22 @@ namespace Parsec.Shaiya.Common
         {
             // 4 bytes per matrix cell
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(M11));
-            buffer.AddRange(BitConverter.GetBytes(M12));
-            buffer.AddRange(BitConverter.GetBytes(M13));
-            buffer.AddRange(BitConverter.GetBytes(M14));
-            buffer.AddRange(BitConverter.GetBytes(M21));
-            buffer.AddRange(BitConverter.GetBytes(M22));
-            buffer.AddRange(BitConverter.GetBytes(M23));
-            buffer.AddRange(BitConverter.GetBytes(M24));
-            buffer.AddRange(BitConverter.GetBytes(M31));
-            buffer.AddRange(BitConverter.GetBytes(M32));
-            buffer.AddRange(BitConverter.GetBytes(M33));
-            buffer.AddRange(BitConverter.GetBytes(M34));
-            buffer.AddRange(BitConverter.GetBytes(M41));
-            buffer.AddRange(BitConverter.GetBytes(M42));
-            buffer.AddRange(BitConverter.GetBytes(M43));
-            buffer.AddRange(BitConverter.GetBytes(M44));
+            buffer.AddRange(M11.GetBytes());
+            buffer.AddRange(M21.GetBytes());
+            buffer.AddRange(M31.GetBytes());
+            buffer.AddRange(M41.GetBytes());
+            buffer.AddRange(M12.GetBytes());
+            buffer.AddRange(M22.GetBytes());
+            buffer.AddRange(M32.GetBytes());
+            buffer.AddRange(M42.GetBytes());
+            buffer.AddRange(M13.GetBytes());
+            buffer.AddRange(M23.GetBytes());
+            buffer.AddRange(M33.GetBytes());
+            buffer.AddRange(M43.GetBytes());
+            buffer.AddRange(M14.GetBytes());
+            buffer.AddRange(M24.GetBytes());
+            buffer.AddRange(M34.GetBytes());
+            buffer.AddRange(M44.GetBytes());
             return buffer.ToArray();
         }
 

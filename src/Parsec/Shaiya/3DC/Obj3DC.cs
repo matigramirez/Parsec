@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Obj3DC
@@ -27,14 +27,14 @@ namespace Parsec.Shaiya.Obj3DC
         public List<Bone> Bones { get; } = new();
 
         /// <summary>
-        /// List of vertices which are used to make polygons
+        /// List of vertices which are used to make faces (polygons)
         /// </summary>
         public List<Vertex> Vertices { get; set; } = new();
 
         /// <summary>
-        /// List of polygons that give shape to the mesh of the 3d model. Polygons can only be made up of 3 vertices, so they'll all be triangular
+        /// List of faces (polygons) that give shape to the mesh of the 3d model. Faces can only be made up of 3 vertices, so they'll all be triangular
         /// </summary>
-        public List<Face> Polygons { get; set; } = new();
+        public List<Face> Faces { get; set; } = new();
 
         [JsonIgnore]
         public override string Extension => "3DC";
@@ -59,36 +59,30 @@ namespace Parsec.Shaiya.Obj3DC
                 Vertices.Add(vertex);
             }
 
-            var polygonCount = _binaryReader.Read<int>();
+            var faceCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < polygonCount; i++)
+            for (int i = 0; i < faceCount; i++)
             {
-                var polygon = new Face(_binaryReader);
-                polygon.Vertex1 = Vertices[polygon.VertexIndex1];
-                polygon.Vertex2 = Vertices[polygon.VertexIndex2];
-                polygon.Vertex3 = Vertices[polygon.VertexIndex3];
-                Polygons.Add(polygon);
+                var face = new Face(_binaryReader);
+                face.Vertex1 = Vertices[face.VertexIndex1];
+                face.Vertex2 = Vertices[face.VertexIndex2];
+                face.Vertex3 = Vertices[face.VertexIndex3];
+                Faces.Add(face);
             }
         }
 
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(Tag));
-            buffer.AddRange(BitConverter.GetBytes(Bones.Count));
+            buffer.AddRange(Tag.GetBytes());
 
-            foreach (var bone in Bones)
-                buffer.AddRange(bone.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(Vertices.Count));
+            buffer.AddRange(Bones.GetBytes());
+            buffer.AddRange(Vertices.Count.GetBytes());
 
             foreach (var vertex in Vertices)
                 buffer.AddRange(vertex.GetBytes(Format));
 
-            buffer.AddRange(BitConverter.GetBytes(Polygons.Count));
-
-            foreach (var polygon in Polygons)
-                buffer.AddRange(polygon.GetBytes());
+            buffer.AddRange(Faces.GetBytes());
 
             return buffer.ToArray();
         }
@@ -103,21 +97,21 @@ namespace Parsec.Shaiya.Obj3DC
             foreach (var vertex in obj3dc.Vertices)
                 Vertices.Add(vertex);
 
-            // Merge polygons
-            foreach (var polygon in obj3dc.Polygons)
-                Polygons.Add(polygon);
+            // Merge faces
+            foreach (var face in obj3dc.Faces)
+                Faces.Add(face);
 
-            // Fix vertex index on polygons
-            foreach (var polygon in Polygons)
+            // Fix vertex index on faces
+            foreach (var face in Faces)
             {
-                polygon.VertexIndex1 = (ushort)Vertices.IndexOf(polygon.Vertex1);
-                polygon.VertexIndex2 = (ushort)Vertices.IndexOf(polygon.Vertex2);
-                polygon.VertexIndex3 = (ushort)Vertices.IndexOf(polygon.Vertex3);
+                face.VertexIndex1 = (ushort)Vertices.IndexOf(face.Vertex1);
+                face.VertexIndex2 = (ushort)Vertices.IndexOf(face.Vertex2);
+                face.VertexIndex3 = (ushort)Vertices.IndexOf(face.Vertex3);
             }
         }
 
         /// <summary>
-        /// Method that merges two or more 3DC objects together, meaning that all their vertices and polygons will be put together in the same object
+        /// Method that merges two or more 3DC objects together, meaning that all their vertices and faces will be put together in the same object
         /// </summary>
         /// <param name="objects">Array of 3DC objects to merge</param>
         public void Merge(params Obj3DC[] objects)
