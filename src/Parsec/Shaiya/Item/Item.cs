@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Parsec.Common;
 
 namespace Parsec.Shaiya.Item
 {
-    public class Item : SData.SData
+    public class Item : SData.SData, IJsonReadable
     {
         public int MaxType { get; set; }
         public List<Type> Types { get; } = new();
