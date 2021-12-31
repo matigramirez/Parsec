@@ -215,8 +215,8 @@ namespace Parsec.Shaiya.NpcQuest
             var buffer = new List<byte>();
 
             buffer.AddRange(Id.GetBytes());
-            buffer.AddRange(Name.GetASCIILengthPrefixedBytes(false));
-            buffer.AddRange(Summary.GetASCIILengthPrefixedBytes(false));
+            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
+            buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
             buffer.AddRange(MinLevel.GetBytes());
             buffer.AddRange(MaxLevel.GetBytes());
             buffer.Add((byte)Faction);
@@ -274,13 +274,13 @@ namespace Parsec.Shaiya.NpcQuest
 
             buffer.AddRange(Results.GetBytes());
 
-            buffer.AddRange(InitialDescription.GetASCIILengthPrefixedBytes());
-            buffer.AddRange(QuestWindowSummary.GetASCIILengthPrefixedBytes());
-            buffer.AddRange(ReminderInstructions.GetASCIILengthPrefixedBytes());
-            buffer.AddRange(AlternateResponse.GetASCIILengthPrefixedBytes());
-            buffer.AddRange(CompletionMessage.GetASCIILengthPrefixedBytes());
-            buffer.AddRange(AlternateCompletionMessage1.GetASCIILengthPrefixedBytes());
-            buffer.AddRange(AlternateCompletionMessage2.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
+            buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
+            buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
+            buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
+            buffer.AddRange(CompletionMessage.GetLengthPrefixedBytes());
+            buffer.AddRange(AlternateCompletionMessage1.GetLengthPrefixedBytes());
+            buffer.AddRange(AlternateCompletionMessage2.GetLengthPrefixedBytes());
 
             return buffer.ToArray();
         }

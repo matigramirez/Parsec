@@ -55,7 +55,7 @@ namespace Parsec.Shaiya.ALT
 
             var buffer = new List<byte>();
 
-            buffer.AddRange(Name.GetASCIILengthPrefixedBytes());
+            buffer.AddRange(Name.GetLengthPrefixedBytes());
             buffer.AddRange(Mode.GetBytes());
             buffer.AddRange(Unknown.GetBytes());
             buffer.AddRange(Float1.GetBytes());

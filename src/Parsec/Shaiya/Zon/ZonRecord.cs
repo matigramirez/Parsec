@@ -101,7 +101,7 @@ namespace Parsec.Shaiya.Zon
             }
 
             buffer.AddRange(MapId.GetBytes());
-            buffer.AddRange(Description.GetASCIILengthPrefixedBytes(false));
+            buffer.AddRange(Description.GetLengthPrefixedBytes(false));
 
             return buffer.ToArray();
         }

@@ -6,7 +6,7 @@ using Parsec.Extensions;
 
 namespace Parsec.Shaiya.NpcQuest
 {
-    public class NpcQuest : SData.SData
+    public class NpcQuest : SData.SData, IJsonReadable
     {
         [JsonIgnore]
         public Format Format { get; set; }

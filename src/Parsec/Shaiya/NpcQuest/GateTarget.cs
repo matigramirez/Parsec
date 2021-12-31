@@ -31,7 +31,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             buffer.AddRange(MapId.GetBytes());
             buffer.AddRange(Position.GetBytes());
-            buffer.AddRange(TargetName.GetASCIILengthPrefixedBytes(false));
+            buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
             buffer.AddRange(Cost.GetBytes());
 
             return buffer.ToArray();

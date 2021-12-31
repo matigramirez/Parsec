@@ -56,8 +56,8 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(MoveDistance.GetBytes());
             buffer.AddRange(MoveSpeed.GetBytes());
             buffer.AddRange(((int)Faction).GetBytes());
-            buffer.AddRange(Name.GetASCIILengthPrefixedBytes(false));
-            buffer.AddRange(WelcomeMessage.GetASCIILengthPrefixedBytes(false));
+            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
+            buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(false));
         }
 
         protected void ReadBaseNpcThirdSegment(SBinaryReader binaryReader)
