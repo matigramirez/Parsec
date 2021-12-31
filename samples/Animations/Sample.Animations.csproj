@@ -11,10 +11,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Mob_Fox_01_Run.ANI">
+      <None Update="demf_action.alt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="demf_action.alt">
+      <None Update="Mob_Fox_01_Att1.ANI">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

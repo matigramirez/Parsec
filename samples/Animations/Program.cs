@@ -11,7 +11,7 @@ namespace Parsec.Samples
         {
             #region ANI
 
-            var filePath = "Mob_Fox_01_Run.ANI";
+            var filePath = "Mob_Fox_01_Att1.ANI";
 
             var ani = Reader.ReadFromFile<Ani>(filePath);
 
@@ -25,7 +25,7 @@ namespace Parsec.Samples
                 Console.WriteLine(
                     $"{{{aniStep.ParentBoneIndex}  {aniStep.Rotations.Count}  {aniStep.Translations.Count}}}");
 
-            ani.ExportJson($"{ani.FileNameWithoutExtension}.json", "isIdentity");
+            ani.ExportJson($"{ani.FileNameWithoutExtension}.json");
 
             #endregion
 
