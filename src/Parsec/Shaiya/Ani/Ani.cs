@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Ani
@@ -46,12 +46,12 @@ namespace Parsec.Shaiya.Ani
 
         public override byte[] GetBytes(params object[] options)
         {
-            // Create byte list which will contain the ani data
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(StartKeyframe));
-            buffer.AddRange(BitConverter.GetBytes(EndKeyframe));
-            buffer.AddRange(BitConverter.GetBytes((short)Bones.Count));
+            buffer.AddRange(StartKeyframe.GetBytes());
+            buffer.AddRange(EndKeyframe.GetBytes());
+
+            buffer.AddRange(((short)Bones.Count).GetBytes());
 
             foreach (var bone in Bones)
                 buffer.AddRange(bone.GetBytes());

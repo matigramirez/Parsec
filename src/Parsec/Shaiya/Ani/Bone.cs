@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -26,7 +25,7 @@ namespace Parsec.Shaiya.Ani
         /// <summary>
         /// The transformation matrix for the initial position of the bone
         /// </summary>
-        public Matrix4 TransformationMatrix { get; set; }
+        public Matrix4x4 Matrix { get; set; }
 
         /// <summary>
         /// List of rotations for each keyframe
@@ -49,7 +48,7 @@ namespace Parsec.Shaiya.Ani
 
             ParentBoneIndex = binaryReader.Read<int>();
 
-            TransformationMatrix = new Matrix4(binaryReader);
+            Matrix = new Matrix4x4(binaryReader);
 
             var rotationCount = binaryReader.Read<int>();
 
@@ -74,8 +73,8 @@ namespace Parsec.Shaiya.Ani
         {
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(ParentBoneIndex));
-            buffer.AddRange(TransformationMatrix.GetBytes());
+            buffer.AddRange(ParentBoneIndex.GetBytes());
+            buffer.AddRange(Matrix.GetBytes());
             buffer.AddRange(Rotations.GetBytes());
             buffer.AddRange(Translations.GetBytes());
 
