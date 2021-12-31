@@ -16,19 +16,9 @@ namespace Parsec.Shaiya.Obj3DC
         public int Index { get; set; }
 
         /// <summary>
-        /// X coordinate
+        /// The vertex position
         /// </summary>
-        public float X { get; set; }
-
-        /// <summary>
-        /// Y coordinate
-        /// </summary>
-        public float Y { get; set; }
-
-        /// <summary>
-        /// Z coordinate
-        /// </summary>
-        public float Z { get; set; }
+        public Vector3 Position { get; set; }
 
         /// <summary>
         /// If the 3DC file's format is EP5 or inferior, this value is shared between <see cref="BoneVertexGroup1"/> and <see cref="BoneVertexGroup2"/>, it indicates the weight of this vertex for those vertex groups.
@@ -80,9 +70,7 @@ namespace Parsec.Shaiya.Obj3DC
         public Vertex(int index, Format format, SBinaryReader binaryReader)
         {
             Index = index;
-            X = binaryReader.Read<float>();
-            Y = binaryReader.Read<float>();
-            Z = binaryReader.Read<float>();
+            Position = new Vector3(binaryReader);
             BoneWeight = binaryReader.Read<float>();
 
             if (format >= Format.EP6)
@@ -120,9 +108,7 @@ namespace Parsec.Shaiya.Obj3DC
             if (options.Length > 0)
                 format = (Format)options[0];
 
-            buffer.AddRange(BitConverter.GetBytes(X));
-            buffer.AddRange(BitConverter.GetBytes(Y));
-            buffer.AddRange(BitConverter.GetBytes(Z));
+            buffer.AddRange(Position.GetBytes());
             buffer.AddRange(BitConverter.GetBytes(BoneWeight));
 
             if (format >= Format.EP6)
