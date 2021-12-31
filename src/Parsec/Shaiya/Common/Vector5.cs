@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -9,7 +8,7 @@ namespace Parsec.Shaiya.Common
     /// <summary>
     /// Represents a vector in a 5-dimensional space
     /// </summary>
-    public class Vector5 : IBinary
+    public struct Vector5 : IBinary
     {
         /// <summary>
         /// 1st (first) element of the vector
@@ -45,18 +44,6 @@ namespace Parsec.Shaiya.Common
             U = u;
         }
 
-        /// <summary>
-        /// The vector's length
-        /// </summary>
-        [JsonIgnore]
-        public double Length =>
-            Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2) + Math.Pow(W, 2) + Math.Pow(U, 2));
-
-        [JsonConstructor]
-        public Vector5()
-        {
-        }
-
         public Vector5(SBinaryReader binaryReader)
         {
             X = binaryReader.Read<float>();
@@ -69,11 +56,11 @@ namespace Parsec.Shaiya.Common
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(X));
-            buffer.AddRange(BitConverter.GetBytes(Y));
-            buffer.AddRange(BitConverter.GetBytes(Z));
-            buffer.AddRange(BitConverter.GetBytes(W));
-            buffer.AddRange(BitConverter.GetBytes(U));
+            buffer.AddRange(X.GetBytes());
+            buffer.AddRange(Y.GetBytes());
+            buffer.AddRange(Z.GetBytes());
+            buffer.AddRange(W.GetBytes());
+            buffer.AddRange(U.GetBytes());
             return buffer.ToArray();
         }
     }
