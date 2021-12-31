@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -9,7 +8,7 @@ namespace Parsec.Shaiya.Common
     /// <summary>
     /// Represents a vector in a 2-dimensional space
     /// </summary>
-    public class Vector2 : IBinary
+    public struct Vector2 : IBinary
     {
         /// <summary>
         /// 1st (first) element of the vector
@@ -21,17 +20,6 @@ namespace Parsec.Shaiya.Common
         /// </summary>
         public float Y { get; set; }
 
-        /// <summary>
-        /// The vector's length
-        /// </summary>
-        [JsonIgnore]
-        public double Length => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
-
-        [JsonConstructor]
-        public Vector2()
-        {
-        }
-
         public Vector2(SBinaryReader binaryReader)
         {
             X = binaryReader.Read<float>();
@@ -41,8 +29,8 @@ namespace Parsec.Shaiya.Common
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(X));
-            buffer.AddRange(BitConverter.GetBytes(Y));
+            buffer.AddRange(X.GetBytes());
+            buffer.AddRange(Y.GetBytes());
             return buffer.ToArray();
         }
     }

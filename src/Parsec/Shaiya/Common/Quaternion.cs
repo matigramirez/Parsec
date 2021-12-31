@@ -1,22 +1,16 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common
 {
-    public class Quaternion : IBinary
+    public struct Quaternion : IBinary
     {
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
         public float W { get; set; }
-
-        [JsonConstructor]
-        public Quaternion()
-        {
-        }
 
         public Quaternion(float x, float y, float z, float w)
         {
