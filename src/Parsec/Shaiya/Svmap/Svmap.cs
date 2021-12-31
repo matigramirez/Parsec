@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap
 {
-    public class Svmap : FileBase
+    public class Svmap : FileBase, IJsonReadable
     {
         public int MapSize { get; set; }
         public List<byte> MapHeight { get; private set; } = new();
@@ -81,42 +82,18 @@ namespace Parsec.Shaiya.Svmap
 
         public override byte[] GetBytes(params object[] options)
         {
-            // TODO: There's something off about the writing process, it needs to be reviewed
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(MapSize));
+            buffer.AddRange(MapSize.GetBytes());
             buffer.AddRange(MapHeight);
-            buffer.AddRange(BitConverter.GetBytes(Unknown));
+            buffer.AddRange(Unknown.GetBytes());
 
-            buffer.AddRange(BitConverter.GetBytes(Ladders.Count));
-
-            foreach (var ladder in Ladders)
-                buffer.AddRange(ladder.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(MonsterAreas.Count));
-
-            foreach (var monsterArea in MonsterAreas)
-                buffer.AddRange(monsterArea.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(Npcs.Count));
-
-            foreach (var npc in Npcs)
-                buffer.AddRange(npc.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(Portals.Count));
-
-            foreach (var portal in Portals)
-                buffer.AddRange(portal.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(Spawns.Count));
-
-            foreach (var spawn in Spawns)
-                buffer.AddRange(spawn.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(NamedAreas.Count));
-
-            foreach (var namedArea in NamedAreas)
-                buffer.AddRange(namedArea.GetBytes());
+            buffer.AddRange(Ladders.GetBytes());
+            buffer.AddRange(MonsterAreas.GetBytes());
+            buffer.AddRange(Npcs.GetBytes());
+            buffer.AddRange(Portals.GetBytes());
+            buffer.AddRange(Spawns.GetBytes());
+            buffer.AddRange(NamedAreas.GetBytes());
 
             return buffer.ToArray();
         }

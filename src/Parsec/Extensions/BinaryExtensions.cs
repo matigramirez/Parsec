@@ -32,6 +32,11 @@ namespace Parsec.Extensions
 
         public static byte[] GetBytes(this string str) => Encoding.ASCII.GetBytes(str);
 
+        /// <summary>
+        /// Serializes a list of items into a byte array
+        /// </summary>
+        /// <param name="list"><see cref="IEnumerable{T}"/> of type <see cref="IBinary"/></param>
+        /// <param name="lengthPrefixed">Indicates if the data should be prefixed with the array's length (int32) </param>
         public static byte[] GetBytes(this IEnumerable<IBinary> list, bool lengthPrefixed = true)
         {
             var buffer = new List<byte>();
