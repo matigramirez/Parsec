@@ -18,9 +18,9 @@ namespace Parsec.Shaiya.Seff
 
         public string Name { get; set; }
 
-        public byte UnkByte1 { get; set; }
-        public byte UnkByte2 { get; set; }
-        public byte UnkByte3 { get; set; }
+        public byte Red { get; set; }
+        public byte Green { get; set; }
+        public byte Blue { get; set; }
 
         public float Unknown7 { get; set; }
         public float Unknown8 { get; set; }
@@ -51,9 +51,9 @@ namespace Parsec.Shaiya.Seff
 
             Name = binaryReader.ReadString(Encoding.Unicode);
 
-            UnkByte1 = binaryReader.Read<byte>();
-            UnkByte2 = binaryReader.Read<byte>();
-            UnkByte3 = binaryReader.Read<byte>();
+            Red = binaryReader.Read<byte>();
+            Green = binaryReader.Read<byte>();
+            Blue = binaryReader.Read<byte>();
 
             Unknown7 = binaryReader.Read<float>();
             Unknown8 = binaryReader.Read<float>();
@@ -90,9 +90,9 @@ namespace Parsec.Shaiya.Seff
             buffer.AddRange(BitConverter.GetBytes(Name.Length));
             buffer.AddRange(Encoding.Unicode.GetBytes(Name));
 
-            buffer.Add(UnkByte1);
-            buffer.Add(UnkByte2);
-            buffer.Add(UnkByte3);
+            buffer.Add(Red);
+            buffer.Add(Green);
+            buffer.Add(Blue);
 
             buffer.AddRange(Unknown7.GetBytes());
             buffer.AddRange(Unknown8.GetBytes());
