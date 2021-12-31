@@ -24,7 +24,7 @@ namespace Parsec.Shaiya.Ani
         /// <summary>
         /// The list of bones with their translations and rotations for each keyframe
         /// </summary>
-        public List<AniBone> Bones { get; } = new();
+        public List<Bone> Bones { get; } = new();
 
         [JsonIgnore]
         public override string Extension => "ANI";
@@ -39,7 +39,7 @@ namespace Parsec.Shaiya.Ani
 
             for (int i = 0; i < boneCount; i++)
             {
-                var aniStep = new AniBone(i, _binaryReader);
+                var aniStep = new Bone(i, _binaryReader);
                 Bones.Add(aniStep);
             }
         }

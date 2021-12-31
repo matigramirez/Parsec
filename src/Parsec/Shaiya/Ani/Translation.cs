@@ -7,20 +7,20 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Ani
 {
-    public class TranslationKeyframe : IBinary
+    public class Translation : IBinary
     {
         public int Keyframe { get; set; }
-        public Vector3 Translation { get; set; }
-
-        public TranslationKeyframe(SBinaryReader binaryReader)
-        {
-            Keyframe = binaryReader.Read<int>();
-            Translation = new Vector3(binaryReader);
-        }
+        public Vector3 Vector { get; set; }
 
         [JsonConstructor]
-        public TranslationKeyframe()
+        public Translation()
         {
+        }
+
+        public Translation(SBinaryReader binaryReader)
+        {
+            Keyframe = binaryReader.Read<int>();
+            Vector = new Vector3(binaryReader);
         }
 
         /// <inheritdoc />
@@ -28,9 +28,7 @@ namespace Parsec.Shaiya.Ani
         {
             var buffer = new List<byte>();
             buffer.AddRange(BitConverter.GetBytes(Keyframe));
-            buffer.AddRange(BitConverter.GetBytes(Translation.X));
-            buffer.AddRange(BitConverter.GetBytes(Translation.Y));
-            buffer.AddRange(BitConverter.GetBytes(Translation.Z));
+            buffer.AddRange(Vector.GetBytes());
             return buffer.ToArray();
         }
     }
