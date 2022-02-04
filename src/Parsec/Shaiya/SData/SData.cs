@@ -58,9 +58,9 @@ namespace Parsec.Shaiya.SData
             // Calculate and set checksum
             var checksum = uint.MaxValue;
 
-            for (var i = 0; i < alignmentSize; i++)
+            for (var i = 0; i < header.RealSize; i++)
             {
-                var dat = data[i];
+                var dat = decryptedData[i];
                 uint index = (checksum & 0xFF) ^ dat;
                 uint key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
                 key = SEED.EndianessSwap(key);
@@ -74,9 +74,9 @@ namespace Parsec.Shaiya.SData
             var buffer = new List<byte>();
 
             // Add header bytes
-            buffer.AddRange(Encoding.ASCII.GetBytes(header.Signature));
-            buffer.AddRange(BitConverter.GetBytes(header.Checksum));
-            buffer.AddRange(BitConverter.GetBytes(header.RealSize));
+            buffer.AddRange(header.Signature.GetBytes());
+            buffer.AddRange(header.Checksum.GetBytes());
+            buffer.AddRange(header.RealSize.GetBytes());
             buffer.AddRange(header.Padding);
 
             // Encrypt in chunks of 16 bytes
