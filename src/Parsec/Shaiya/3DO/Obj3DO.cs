@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
@@ -41,20 +40,9 @@ namespace Parsec.Shaiya.Obj3DO
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
-            buffer.AddRange(BitConverter.GetBytes(TextureName.Length + 1));
-            buffer.AddRange(Encoding.ASCII.GetBytes(TextureName + '\0'));
-
-            buffer.AddRange(BitConverter.GetBytes(Vertices.Count));
-
-            foreach (var vertex in Vertices)
-                buffer.AddRange(vertex.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(Faces.Count));
-
-            foreach (var face in Faces)
-                buffer.AddRange(face.GetBytes());
-
+            buffer.AddRange(TextureName.GetBytes());
+            buffer.AddRange(Vertices.GetBytes());
+            buffer.AddRange(Faces.GetBytes());
             return buffer.ToArray();
         }
     }
