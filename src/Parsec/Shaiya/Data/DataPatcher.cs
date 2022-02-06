@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Data
@@ -16,8 +15,6 @@ namespace Parsec.Shaiya.Data
         /// <param name="patchDataList">Patches to apply</param>
         public static void Patch(Data targetData, params Data[] patchDataList)
         {
-            // TODO: Fix a bug that corrupts the last file that gets patched
-
             try
             {
                 // Create binary writer instance for the target saf file
@@ -58,9 +55,7 @@ namespace Parsec.Shaiya.Data
         /// <param name="patchData">Data where to take the files from</param>
         private static void PatchFiles(Data targetData, Data patchData)
         {
-            var patchFiles = patchData.FileIndex.Values.ToList();
-
-            foreach (var patchFile in patchFiles)
+            foreach (var patchFile in patchData.FileIndex.Values)
                 // File was already present in the data - it needs to be replaced
                 if (targetData.FileIndex.TryGetValue(patchFile.RelativePath, out var targetFile))
                 {
@@ -132,7 +127,7 @@ namespace Parsec.Shaiya.Data
             _targetBinaryWriter.BaseStream.Seek(targetOffset, SeekOrigin.Begin);
             _targetBinaryWriter.Write(patchBuffer);
 
-            return _targetBinaryWriter.BaseStream.Position;
+            return targetOffset;
         }
 
         /// <summary>
