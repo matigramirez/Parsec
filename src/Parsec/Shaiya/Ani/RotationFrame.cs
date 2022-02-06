@@ -7,17 +7,17 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Ani
 {
-    public class Rotation : IBinary
+    public class RotationFrame : IBinary
     {
         public int Keyframe { get; set; }
         public Quaternion Quaternion { get; set; }
 
         [JsonConstructor]
-        public Rotation()
+        public RotationFrame()
         {
         }
 
-        public Rotation(SBinaryReader binaryReader)
+        public RotationFrame(SBinaryReader binaryReader)
         {
             Keyframe = binaryReader.Read<int>();
             Quaternion = new Quaternion(binaryReader);

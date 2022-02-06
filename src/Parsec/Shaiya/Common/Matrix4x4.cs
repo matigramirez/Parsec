@@ -167,6 +167,7 @@ namespace Parsec.Shaiya.Common
         /// <summary>
         /// Gets or sets the translation component of this matrix.
         /// </summary>
+        [JsonIgnore]
         public Vector3 Translation
         {
             get { return new Vector3(M14, M24, M34); }
@@ -178,6 +179,7 @@ namespace Parsec.Shaiya.Common
             }
         }
 
+        [JsonIgnore]
         public Quaternion Rotation
         {
             get => Quaternion.CreateFromRotationMatrix(this);

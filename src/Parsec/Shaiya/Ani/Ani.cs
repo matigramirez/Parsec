@@ -12,6 +12,12 @@ namespace Parsec.Shaiya.Ani
     public class Ani : FileBase, IJsonReadable
     {
         /// <summary>
+        /// Indicates whether this ANI instance is of type ANI_V2 or not
+        /// </summary>
+        [JsonIgnore]
+        public bool IsAniV2 { get; set; }
+
+        /// <summary>
         /// Starting keyframe. 0 for most animations
         /// </summary>
         public int StartKeyframe { get; set; }
@@ -32,6 +38,14 @@ namespace Parsec.Shaiya.Ani
         /// <inheritdoc />
         public override void Read(params object[] options)
         {
+            // Check signature
+            var signature = _binaryReader.ReadString(6);
+
+            if (signature == "ANI_V2")
+                IsAniV2 = true;
+            else
+                _binaryReader.ResetOffset();
+
             StartKeyframe = _binaryReader.Read<int>();
             EndKeyframe = _binaryReader.Read<int>();
 
@@ -39,7 +53,7 @@ namespace Parsec.Shaiya.Ani
 
             for (int i = 0; i < boneCount; i++)
             {
-                var aniStep = new Bone(i, _binaryReader);
+                var aniStep = new Bone(_binaryReader, i);
                 Bones.Add(aniStep);
             }
         }
@@ -47,6 +61,9 @@ namespace Parsec.Shaiya.Ani
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
+
+            if (IsAniV2)
+                buffer.AddRange("ANI_V2".GetBytes());
 
             buffer.AddRange(StartKeyframe.GetBytes());
             buffer.AddRange(EndKeyframe.GetBytes());

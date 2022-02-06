@@ -18,7 +18,7 @@ namespace Parsec.Shaiya.Ani
         public int BoneIndex { get; set; }
 
         /// <summary>
-        /// The bone's parent bone index. For bone 0 its value is -1, meaning it doesn't have a parent.
+        /// The bone's parent bone index
         /// </summary>
         public int ParentBoneIndex { get; set; }
 
@@ -30,19 +30,19 @@ namespace Parsec.Shaiya.Ani
         /// <summary>
         /// List of rotations for each keyframe
         /// </summary>
-        public List<Rotation> Rotations { get; set; } = new();
+        public List<RotationFrame> RotationFrames { get; set; } = new();
 
         /// <summary>
         /// List of translations for each keyframe
         /// </summary>
-        public List<Translation> Translations { get; set; } = new();
+        public List<TranslationFrame> TranslationFrames { get; set; } = new();
 
         [JsonConstructor]
         public Bone()
         {
         }
 
-        public Bone(int index, SBinaryReader binaryReader)
+        public Bone(SBinaryReader binaryReader, int index)
         {
             BoneIndex = index;
 
@@ -55,8 +55,8 @@ namespace Parsec.Shaiya.Ani
             // Read rotations
             for (int i = 0; i < rotationCount; i++)
             {
-                var keyframeRotation = new Rotation(binaryReader);
-                Rotations.Add(keyframeRotation);
+                var rotationFrame = new RotationFrame(binaryReader);
+                RotationFrames.Add(rotationFrame);
             }
 
             var translationCount = binaryReader.Read<int>();
@@ -64,20 +64,18 @@ namespace Parsec.Shaiya.Ani
             // Read translations
             for (int i = 0; i < translationCount; i++)
             {
-                var keyframeTranslation = new Translation(binaryReader);
-                Translations.Add(keyframeTranslation);
+                var translationFrame = new TranslationFrame(binaryReader);
+                TranslationFrames.Add(translationFrame);
             }
         }
 
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
             buffer.AddRange(ParentBoneIndex.GetBytes());
             buffer.AddRange(Matrix.GetBytes());
-            buffer.AddRange(Rotations.GetBytes());
-            buffer.AddRange(Translations.GetBytes());
-
+            buffer.AddRange(RotationFrames.GetBytes());
+            buffer.AddRange(TranslationFrames.GetBytes());
             return buffer.ToArray();
         }
     }

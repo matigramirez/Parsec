@@ -23,7 +23,7 @@ namespace Parsec.Samples
 
             foreach (var aniStep in ani.Bones)
                 Console.WriteLine(
-                    $"{{{aniStep.ParentBoneIndex}  {aniStep.Rotations.Count}  {aniStep.Translations.Count}}}");
+                    $"{{{aniStep.ParentBoneIndex}  {aniStep.RotationFrames.Count}  {aniStep.TranslationFrames.Count}}}");
 
             ani.ExportJson($"{ani.FileNameWithoutExtension}.json");
 
