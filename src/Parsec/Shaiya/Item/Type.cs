@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -25,7 +25,7 @@ namespace Parsec.Shaiya.Item
         {
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(MaxTypeId));
+            buffer.AddRange(MaxTypeId.GetBytes());
 
             foreach (var definition in ItemDefinitions)
             {
