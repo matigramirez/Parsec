@@ -29,6 +29,16 @@ namespace Parsec.Extensions
         public static byte[] GetBytes(this uint value) => BitConverter.GetBytes(value);
 
         /// <summary>
+        /// Serializes an int value (int64) into a byte array
+        /// </summary>
+        public static byte[] GetBytes(this long value) => BitConverter.GetBytes(value);
+
+        /// <summary>
+        /// Serializes an unsigned int value (uint64) into a byte array
+        /// </summary>
+        public static byte[] GetBytes(this ulong value) => BitConverter.GetBytes(value);
+
+        /// <summary>
         /// Serializes a float value (single) into a byte array
         /// </summary>
         public static byte[] GetBytes(this float value) => BitConverter.GetBytes(value);
