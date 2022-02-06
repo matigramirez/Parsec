@@ -47,7 +47,7 @@ namespace Parsec.Shaiya.Obj3DC
 
             for (int i = 0; i < boneCount; i++)
             {
-                var bone = new Bone(i, _binaryReader);
+                var bone = new Bone(_binaryReader, i);
                 Bones.Add(bone);
             }
 

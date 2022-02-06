@@ -19,6 +19,7 @@ namespace Parsec.Shaiya.Obj3DC
         /// <summary>
         /// The <see cref="Vertex"/> instance of the first vertex
         /// </summary>
+        [JsonIgnore]
         public Vertex Vertex1 { get; set; }
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace Parsec.Shaiya.Obj3DC
         /// <summary>
         /// The <see cref="Vertex"/> instance of the second vertex
         /// </summary>
+        [JsonIgnore]
         public Vertex Vertex2 { get; set; }
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Parsec.Shaiya.Obj3DC
         /// <summary>
         /// The <see cref="Vertex"/> instance of the third vertex
         /// </summary>
+        [JsonIgnore]
         public Vertex Vertex3 { get; set; }
 
         public Face(SBinaryReader binaryReader)

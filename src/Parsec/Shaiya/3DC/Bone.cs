@@ -17,25 +17,12 @@ namespace Parsec.Shaiya.Obj3DC
         /// </summary>
         public Matrix4x4 Matrix { get; set; }
 
-        /// <summary>
-        /// The initial translation <see cref="Common.Vector3"/> obtained from the <see cref="Matrix"/>
-        /// </summary>
-        public Vector3 Translation { get; set; }
-
-        /// <summary>
-        /// The initial rotation <see cref="System.Numerics.Quaternion"/> of the bone obtained from the <see cref="Matrix"/>
-        /// </summary>
-        public Quaternion Rotation { get; set; }
-
-        public Bone(int boneIndex, SBinaryReader binaryReader)
+        public Bone(SBinaryReader binaryReader, int boneIndex)
         {
             BoneIndex = boneIndex;
 
             // Read the matrix
             Matrix = new Matrix4x4(binaryReader);
-
-            Translation = Matrix.Translation;
-            Rotation = Matrix.Rotation;
         }
 
         [JsonConstructor]
