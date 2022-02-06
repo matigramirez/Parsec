@@ -12,7 +12,11 @@ namespace Parsec.Shaiya.Data
         public Sah Sah { get; set; }
         public Saf Saf { get; set; }
 
-        public int FileCount => Sah.FileCount;
+        public int FileCount
+        {
+            get => Sah.FileCount;
+            set => Sah.FileCount = value;
+        }
 
         /// <summary>
         /// Dictionary of folders that can be accessed by path

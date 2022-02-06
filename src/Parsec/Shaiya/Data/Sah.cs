@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -22,7 +20,7 @@ namespace Parsec.Shaiya.Data
         /// Total amount of files that are present in the data; does not include directories.
         /// </summary>
         [DataMember]
-        public int FileCount { get; private set; }
+        public int FileCount { get; set; }
 
         /// <summary>
         /// The data's root directory.
@@ -147,13 +145,13 @@ namespace Parsec.Shaiya.Data
             var buffer = new List<byte>();
 
             // Write sah signature
-            buffer.AddRange(Encoding.ASCII.GetBytes("SAH"));
+            buffer.AddRange("SAH".GetBytes());
 
             // Write 4 unknown 0x00 bytes
             buffer.AddRange(new byte[4]);
 
             // Write total file count
-            buffer.AddRange(BitConverter.GetBytes(FileCount));
+            buffer.AddRange(FileCount.GetBytes());
 
             // Write padding
             buffer.AddRange(new byte[40]);

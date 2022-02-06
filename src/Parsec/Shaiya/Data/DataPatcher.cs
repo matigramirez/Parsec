@@ -92,6 +92,9 @@ namespace Parsec.Shaiya.Data
                     // Add patchFile to the targetData's Sah
                     var folder = targetData.Sah.EnsureFolderExists(patchFile.ParentFolder.RelativePath);
                     folder.Files.Add(patchFile);
+
+                    // Increase data file count
+                    targetData.FileCount++;
                 }
         }
 
