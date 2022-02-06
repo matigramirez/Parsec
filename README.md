@@ -19,8 +19,9 @@ make reading and manipulating the game's file formats easy.
 - `svmap`
 - `ANI`
 - `3DC`
-- `MLT`
 - `3DO`
+- `3DE`
+- `MLT`
 - `ITM`
 - `SMOD`
 - `EFT`
@@ -65,12 +66,9 @@ From data.saf
 // Load data (sah and saf)
 var data = new Data("data.sah");
 
-// Find the file you want to extract
+// Find the file you want to read
 if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
 {
-  // Extract the selected file
-  data.Extract(file, "extracted");
-
   // Read and parse the file's content directly from the saf file
   var svmap = Reader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 }
