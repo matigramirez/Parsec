@@ -66,7 +66,7 @@ namespace Parsec.Shaiya.Data
 
             folderIndex.Add(RelativePath, this);
 
-            int fileCount = binaryReader.Read<int>();
+            var fileCount = binaryReader.Read<int>();
 
             // Read all files in this folder
             for (int i = 0; i < fileCount; i++)
@@ -75,7 +75,7 @@ namespace Parsec.Shaiya.Data
                 Files.Add(file);
             }
 
-            int subfolderCount = binaryReader.Read<int>();
+            var subfolderCount = binaryReader.Read<int>();
 
             // Recursively read subfolders data
             for (int i = 0; i < subfolderCount; i++)

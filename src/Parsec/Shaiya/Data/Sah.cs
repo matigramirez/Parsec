@@ -92,8 +92,9 @@ namespace Parsec.Shaiya.Data
             // Assign parent folder to file
             file.ParentFolder = parentFolder;
 
-            // Add file to file list
+            // Add file to file list and file index
             parentFolder.Files.Add(file);
+            FileIndex.Add(file.RelativePath, file);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace Parsec.Shaiya.Data
             var currentFolder = RootFolder;
 
             //  Iterate recursively through subfolders creating the missing one/
-            foreach (string folderName in pathFolders)
+            foreach (var folderName in pathFolders)
                 if (!currentFolder.HasSubfolder(folderName))
                 {
                     // Create new folder if it doesn't exist
@@ -144,21 +145,13 @@ namespace Parsec.Shaiya.Data
             // Create byte list which will have the sah's data
             var buffer = new List<byte>();
 
-            // Write sah signature
             buffer.AddRange("SAH".GetBytes());
-
             // Write 4 unknown 0x00 bytes
             buffer.AddRange(new byte[4]);
-
-            // Write total file count
             buffer.AddRange(FileCount.GetBytes());
-
             // Write padding
             buffer.AddRange(new byte[40]);
-
-            // Write root folder and all subfolders with files
             buffer.AddRange(RootFolder.GetBytes());
-
             // Write last 8 empty bytes
             buffer.AddRange(new byte[8]);
 

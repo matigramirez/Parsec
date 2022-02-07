@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -86,22 +85,10 @@ namespace Parsec.Shaiya.Data
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
-            // Write file name length including string null terminator
-            buffer.AddRange(BitConverter.GetBytes(Name.Length + 1));
-
-            // Write file name including string null terminator
-            buffer.AddRange(Encoding.ASCII.GetBytes(Name + '\0'));
-
-            // Write file offset
-            buffer.AddRange(BitConverter.GetBytes(Offset));
-
-            // Write file length
-            buffer.AddRange(BitConverter.GetBytes(Length));
-
-            // Write file version
-            buffer.AddRange(BitConverter.GetBytes(Version));
-
+            buffer.AddRange(Name.GetBytes());
+            buffer.AddRange(Offset.GetBytes());
+            buffer.AddRange(Length.GetBytes());
+            buffer.AddRange(Version.GetBytes());
             return buffer.ToArray();
         }
     }
