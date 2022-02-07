@@ -19,18 +19,18 @@ namespace Parsec.Shaiya.SData
         /// The signature present in the header of encrypted files
         /// </summary>
         [JsonIgnore]
-        private const string _encryptionSignature = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
+        private const string SEED_SIGNATURE = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
 
         /// <summary>
         /// Checks if the file is encrypted with the SEED algorithm
         /// </summary>
         public static bool IsEncrypted(byte[] data)
         {
-            if (data.Length < _encryptionSignature.Length)
+            if (data.Length < SEED_SIGNATURE.Length)
                 return false;
 
-            string sDataHeader = Encoding.ASCII.GetString(data.SubArray(0, _encryptionSignature.Length));
-            return sDataHeader == _encryptionSignature;
+            string sDataHeader = Encoding.ASCII.GetString(data.SubArray(0, SEED_SIGNATURE.Length));
+            return sDataHeader == SEED_SIGNATURE;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Parsec.Shaiya.SData
                 return decryptedData;
 
             // Create SEED header
-            var header = new SDataHeader(_encryptionSignature, 0, (uint)decryptedData.Length, new byte[16]);
+            var header = new SDataHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, new byte[16]);
 
             // Calculate alignment size
             var alignmentSize = header.RealSize;
