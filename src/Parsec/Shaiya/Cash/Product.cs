@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -44,13 +45,12 @@ namespace Parsec.Shaiya.Cash
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(Index));
-            buffer.AddRange(BitConverter.GetBytes(Bag));
-            buffer.AddRange(BitConverter.GetBytes(Unknown));
-            buffer.AddRange(BitConverter.GetBytes(Cost));
+            buffer.AddRange(Index.GetBytes());
+            buffer.AddRange(Bag.GetBytes());
+            buffer.AddRange(Unknown.GetBytes());
+            buffer.AddRange(Cost.GetBytes());
 
-            foreach (var item in Items)
-                buffer.AddRange(item.GetBytes());
+            buffer.AddRange(Items.GetBytes(false));
 
             // For some reason these strings have 2 string terminators
             buffer.AddRange(BitConverter.GetBytes(ProductName.Length + 2));

@@ -40,14 +40,7 @@ make reading and manipulating the game's file formats easy.
 
 ### Prerequisites
 
-- `.NET 6 SDK (recommended)` or `.NET 5 SDK`
-
-### Run
-
-1. Create a C# project in Visual Studio/Rider/VSCode/CLI
-2. Add `Parsec` as a dependency, either through the NuGet package or the library's source code itself
-
-or... Use one of the samples from the [samples section](https://github.com/matigramirez/Parsec/tree/main/samples).
+- `.NET 6 SDK (recommended)` or any .NET version that can run on top of `.NET Standard 2.0`
 
 ## Documentation
 
@@ -135,14 +128,13 @@ Console.WriteLine($"Data file count: {createdData.FileCount}");
 Encryption / Decryption
 
 ```cs
-var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
+var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.SData", Format.EP5);
 
 // Save encrypted file
-var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
-FileHelper.WriteFile("NpcQuest.SData.Encrypted", encryptedBytes);
+npcQuest.WriteEncrypted("NpcQuest.encrypted.SData");
 
-var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
-FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
+// Save decrypted file
+npcQuest.WriteDecrypted("NpcQuest.decrypted.SData");
 ```
 
 ### `svmap`

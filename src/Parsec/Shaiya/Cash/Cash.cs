@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 
 namespace Parsec.Shaiya.Cash
 {
@@ -25,16 +25,6 @@ namespace Parsec.Shaiya.Cash
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-
-            buffer.AddRange(BitConverter.GetBytes(Products.Count));
-
-            foreach (var product in Products)
-                buffer.AddRange(product.GetBytes());
-
-            return buffer.ToArray();
-        }
+        public override byte[] GetBytes(params object[] options) => Products.GetBytes();
     }
 }
