@@ -44,8 +44,10 @@ namespace Parsec.Samples
             #region Item
 
             var item = Reader.ReadFromFile<Item>("Item.SData");
-            var encryptedBuffer = SData.Encrypt(item.Buffer);
-            FileHelper.WriteFile("Item.SData.Encrypted", encryptedBuffer);
+            item.WriteEncrypted("Item.encrypted.SData");
+
+            // Export as csv
+            item.ExportCSV("Item.csv");
 
             #endregion
 
