@@ -62,7 +62,7 @@ namespace Parsec.Shaiya.Data
             // Write folder's relative path based on parent folder
             RelativePath = parentFolder == null || parentFolder.Name == ""
                 ? Name
-                : string.Join('/', parentFolder.RelativePath, Name);
+                : string.Join("/", parentFolder.RelativePath, Name);
 
             folderIndex.Add(RelativePath, this);
 

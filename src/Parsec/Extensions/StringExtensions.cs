@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Parsec.Extensions
@@ -17,21 +18,7 @@ namespace Parsec.Extensions
         /// <param name="separator">Separator character</param>
         public static string[] Separate(this string text, char? separator = null) =>
             separator == null ? text.Split(_separator) : text.Split((char)separator);
-
-        /// <summary>
-        /// Joins a string array adding a separator character between the elements.
-        /// </summary>
-        /// <param name="stringArray">String array to join</param>
-        /// <param name="separator">Separator character</param>
-        public static string Join(this string[] stringArray, char separator)
-        {
-            var stringBuilder = new StringBuilder();
-
-            stringBuilder.AppendJoin(separator, stringArray);
-
-            return stringBuilder.ToString();
-        }
-
+        
         /// <summary>
         /// The list of invalid characters
         /// </summary>
@@ -43,21 +30,13 @@ namespace Parsec.Extensions
         /// </summary>
         /// <param name="str">String to check</param>
         /// <returns>True if it has invalid characters, false if it doesn't</returns>
-        public static bool HasInvalidCharacters(this string str)
-        {
-            foreach (char c in str)
-            {
-                if (_invalidCharacters.Contains(c))
-                    return true;
-            }
-
-            return false;
-        }
+        public static bool HasInvalidCharacters(this string str) =>
+            str.Any(c => _invalidCharacters.Contains(c.ToString()));
 
         /// <summary>
         /// Converts a string's first character to lowercase
         /// </summary>
         /// <param name="str">String to convert</param>
-        public static string ToCamelCase(this string str) => char.ToLowerInvariant(str[0]) + str[1..];
+        public static string ToCamelCase(this string str) => char.ToLowerInvariant(str[0]) + str.Substring(1, str.Length - 1);
     }
 }

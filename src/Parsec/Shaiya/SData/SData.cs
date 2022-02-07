@@ -83,7 +83,7 @@ namespace Parsec.Shaiya.SData
             // Encrypt in chunks of 16 bytes
             for (var i = 0; i < alignmentSize / 16; ++i)
             {
-                var data16 = data[(i * 16)..((i + 1) * 16)];
+                var data16 = data.SubArray(i * 16, 16);
                 SEED.EncryptChunk(data16, out var encryptedData16);
                 buffer.AddRange(encryptedData16);
             }
@@ -109,7 +109,7 @@ namespace Parsec.Shaiya.SData
             var header = new SDataHeader(encryptedBuffer);
 
             // Get data without header
-            var encryptedData = encryptedBuffer[64..];
+            var encryptedData = encryptedBuffer.SubArray(64, encryptedBuffer.Length - 64);
 
             // Create array of decrypted data
             var data = new List<byte>();
@@ -118,7 +118,7 @@ namespace Parsec.Shaiya.SData
             for (var i = 0; i < encryptedData.Length / 16; ++i)
             {
                 // Get 16 bytes
-                var data16 = encryptedData[(i * 16)..((i + 1) * 16)];
+                var data16 = encryptedData.SubArray(i * 16, 16);
 
                 // Decrypt seed
                 SEED.DecryptChunk(data16, out var decryptedData16);

@@ -23,14 +23,6 @@ namespace Parsec.Tests.Extensions
             }
         }
 
-        [Theory]
-        [InlineData(new[] { "C:", "Users", "Parsec", "filename.ext" }, "C:\\Users\\Parsec\\filename.ext", '\\')]
-        [InlineData(new[] { "C:", "Users", "Parsec", "filename.ext" }, "C:/Users/Parsec/filename.ext", '/')]
-        public void JoinTest(string[] stringArray, string jointString, char separator)
-        {
-            Assert.Equal(jointString, stringArray.Join(separator));
-        }
-
         [Fact]
         public void InvalidCharactersTest()
         {
