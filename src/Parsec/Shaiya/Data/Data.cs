@@ -39,31 +39,34 @@ namespace Parsec.Shaiya.Data
             if (!FileHelper.FileExists(path))
                 throw new FileNotFoundException($"Data file not found at {path}");
 
-            if (Path.GetExtension(path) == ".sah")
+            switch (Path.GetExtension(path))
             {
-                var safPath = path[..^3] + "saf";
+                case ".sah":
+                {
+                    var safPath = path.Substring(0, path.Length - 3) + "saf";
 
-                if (!FileHelper.FileExists(safPath))
-                    throw new FileNotFoundException(
-                        "A valid saf file must be placed in the same directory as the sah file.");
+                    if (!FileHelper.FileExists(safPath))
+                        throw new FileNotFoundException(
+                            "A valid saf file must be placed in the same directory as the sah file.");
 
-                Sah = Reader.ReadFromFile<Sah>(path);
-                Saf = new Saf(safPath);
-            }
-            else if (Path.GetExtension(path) == ".saf")
-            {
-                var sahPath = path[..^3] + "sah";
+                    Sah = Reader.ReadFromFile<Sah>(path);
+                    Saf = new Saf(safPath);
+                    break;
+                }
+                case ".saf":
+                {
+                    var sahPath = path.Substring(0, path.Length - 3) + "sah";
 
-                if (!FileHelper.FileExists(sahPath))
-                    throw new FileNotFoundException(
-                        "A valid sah file must be placed in the same directory as the saf file.");
+                    if (!FileHelper.FileExists(sahPath))
+                        throw new FileNotFoundException(
+                            "A valid sah file must be placed in the same directory as the saf file.");
 
-                Sah = Reader.ReadFromFile<Sah>(sahPath);
-                Saf = new Saf(path);
-            }
-            else
-            {
-                throw new ArgumentException("The provided path must belong to either a .sah or a .saf file");
+                    Sah = Reader.ReadFromFile<Sah>(sahPath);
+                    Saf = new Saf(path);
+                    break;
+                }
+                default:
+                    throw new ArgumentException("The provided path must belong to either a .sah or a .saf file");
             }
         }
 

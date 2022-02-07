@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using Parsec.Extensions;
 
 namespace Parsec.Helpers
 {
@@ -23,15 +25,10 @@ namespace Parsec.Helpers
                 RenameFile(path, $"{path}.bak");
             }
 
-            var separatedPath = path.Split('\\', '/');
-
-            // Ensure directory exists
-            if (separatedPath.Length > 1)
-            {
-                // Create directory path string
-                var directoryPath = string.Join('\\', separatedPath[..^1]);
+            var directoryPath = Path.GetDirectoryName(path);
+            
+            if(!string.IsNullOrEmpty(directoryPath))
                 CreateDirectory(directoryPath);
-            }
 
             // Create file and save data
             using var binaryWriter =
@@ -78,7 +75,7 @@ namespace Parsec.Helpers
         /// <param name="directoryPath">Directory path</param>
         public static void CreateDirectory(string directoryPath)
         {
-            if (DirectoryExists(directoryPath))
+            if (DirectoryExists(directoryPath) || string.IsNullOrEmpty(directoryPath))
                 return;
 
             Directory.CreateDirectory(directoryPath);

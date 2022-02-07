@@ -31,8 +31,8 @@ namespace Parsec.Shaiya.SData
         public SDataHeader(byte[] data)
         {
             Signature = Encoding.ASCII.GetString(data.SubArray(0, 40));
-            Checksum = BitConverter.ToUInt32(data.SubArray(40, 4));
-            RealSize = BitConverter.ToUInt32(data.SubArray(44, 4));
+            Checksum = BitConverter.ToUInt32(data, 40);
+            RealSize = BitConverter.ToUInt32(data, 44);
             Padding = data.SubArray(48, 16);
         }
     }

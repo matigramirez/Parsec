@@ -213,8 +213,8 @@ namespace Parsec.Readers
 
             _offset += length;
 
-            if (removeStringTerminator && str.Length > 1 && str[^1] == '\0')
-                str = str[..^1];
+            if (removeStringTerminator && str.Length > 1 && str[str.Length - 1] == '\0')
+                str = str.Substring(0, str.Length - 1);
 
             if (str == "\0")
                 str = "";

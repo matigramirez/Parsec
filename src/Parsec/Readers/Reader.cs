@@ -40,7 +40,7 @@ namespace Parsec.Readers
             if (!FileHelper.FileExists(path))
                 throw new FileNotFoundException($"File ${path} not found");
 
-            if (path.Length < 6 || path[^5..] != ".json")
+            if (path.Length < 6 || path.Substring(path.Length - 5, 5) != ".json")
                 throw new FileLoadException("The provided file to deserialize must be a valid json file");
 
             // Read json file content
@@ -67,7 +67,8 @@ namespace Parsec.Readers
                 // Check if file extension matches the appropriate FileBase child extension
                 // This is needed since a file could be called MobFox.3DC.json, meaning it already has
                 // its extension after the ".json" part is removed
-                var fileExtension = fileNameWithoutJsonExtension[^objectExtension.Length..];
+                var fileExtension = fileNameWithoutJsonExtension.Substring(
+                    fileNameWithoutJsonExtension.Length - objectExtension.Length, objectExtension.Length);
 
                 if (fileExtension != objectExtension)
                     deserializedObject.Path = $"{fileNameWithoutJsonExtension}.{objectExtension}";
