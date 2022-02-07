@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Parsec.Extensions;
+﻿using System.IO;
 
 namespace Parsec.Helpers
 {
@@ -26,8 +24,8 @@ namespace Parsec.Helpers
             }
 
             var directoryPath = Path.GetDirectoryName(path);
-            
-            if(!string.IsNullOrEmpty(directoryPath))
+
+            if (!string.IsNullOrEmpty(directoryPath))
                 CreateDirectory(directoryPath);
 
             // Create file and save data
