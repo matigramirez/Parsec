@@ -157,4 +157,17 @@ Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
 svmap.ExportJson($"{svmap.FileName}.json", nameof(svmap.MapHeight));
 ```
 
+### `Item.SData`
+
+The `Item.SData` format, represented by the `Item` class, can also be imported/exported as csv
+
+```cs
+// Export as csv
+var item = Reader.ReadFromFile<Item>("Item.SData");
+item.ExportCSV("Item.csv")
+
+// Read from csv
+var item = Item.ReadFromCSV("Item.csv");
+```
+
 More samples in the [samples section](https://github.com/matigramirez/Parsec/tree/main/samples).
