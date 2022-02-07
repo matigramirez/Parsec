@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -10,14 +12,26 @@ namespace Parsec.Shaiya.Item
         public int MaxTypeId { get; set; }
         public List<ItemDefinition> ItemDefinitions { get; } = new();
 
-        public Type(SBinaryReader binaryReader)
+        [JsonConstructor]
+        public Type()
+        {
+        }
+
+        public Type(int maxTypeId, IEnumerable<ItemDefinition> itemDefinitions)
+        {
+            MaxTypeId = maxTypeId;
+            ItemDefinitions = itemDefinitions.ToList();
+        }
+
+        public Type(SBinaryReader binaryReader, IDictionary<(byte type, byte typeId), ItemDefinition> itemIndex)
         {
             MaxTypeId = binaryReader.Read<int>();
 
             for (int i = 0; i < MaxTypeId; i++)
             {
-                var definition = new ItemDefinition(binaryReader);
-                ItemDefinitions.Add(definition);
+                var item = new ItemDefinition(binaryReader);
+                ItemDefinitions.Add(item);
+                itemIndex.Add((item.Type, item.TypeId), item);
             }
         }
 

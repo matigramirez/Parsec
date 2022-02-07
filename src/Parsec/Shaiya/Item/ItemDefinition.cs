@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -7,10 +8,25 @@ namespace Parsec.Shaiya.Item
 {
     public class ItemDefinition : IBinary
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        /// <summary>
+        /// Order: 2. Changed because of CSV.
+        /// </summary>
         public byte Type { get; set; }
+        /// <summary>
+        /// Order: 3. Changed because of CSV.
+        /// </summary>
         public byte TypeId { get; set; }
+
+        /// <summary>
+        /// Order: 0. Changed because of CSV.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Order: 1. Changed because of CSV.
+        /// </summary>
+        public string Description { get; set; }
+
         public byte Model { get; set; }
         public byte Icon { get; set; }
         public short Level { get; set; }
@@ -83,6 +99,11 @@ namespace Parsec.Shaiya.Item
         public int UnknownInt8 { get; set; }
         public int UnknownInt9 { get; set; }
         public int UnknownInt10 { get; set; }
+
+        [JsonConstructor]
+        public ItemDefinition()
+        {
+        }
 
         public ItemDefinition(SBinaryReader binaryReader)
         {

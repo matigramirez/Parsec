@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Parsec.Cryptography;
 using Parsec.Extensions;
+using Parsec.Helpers;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -168,6 +169,20 @@ namespace Parsec.Shaiya.SData
                 var decryptedBuffer = Decrypt(Buffer);
                 _binaryReader = new SBinaryReader(decryptedBuffer);
             }
+        }
+
+        /// <inheritdoc />
+        public void WriteEncrypted(string path)
+        {
+            var encryptedBuffer = Encrypt(Buffer);
+            FileHelper.WriteFile(path, encryptedBuffer);
+        }
+
+        /// <inheritdoc />
+        public void WriteDecrypted(string path)
+        {
+            var decryptedBuffer = Decrypt(Buffer);
+            FileHelper.WriteFile(path, decryptedBuffer);
         }
     }
 }
