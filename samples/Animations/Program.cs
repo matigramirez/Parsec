@@ -2,6 +2,7 @@
 using Parsec.Readers;
 using Parsec.Shaiya.ALT;
 using Parsec.Shaiya.Ani;
+using Parsec.Shaiya.MAni;
 
 namespace Parsec.Samples
 {
@@ -33,6 +34,13 @@ namespace Parsec.Samples
 
             var alt = Reader.ReadFromFile<ALT>("demf_action.alt");
             alt.ExportJson($"{alt.FileName}.json");
+
+            #endregion
+
+            #region MAni
+
+            var mani = Reader.ReadFromFile<MAni>("Boat.mani");
+            mani.ExportJson($"{mani.FileName}.json");
 
             #endregion
         }

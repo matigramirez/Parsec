@@ -7,6 +7,11 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.VAni
 {
+    /// <summary>
+    /// Represents a .VANI file.
+    /// According to the game client, VAni files are called "SModelAnimation", but a better name for it
+    /// would probably be "Environmental Model with Animation"
+    /// </summary>
     public class VAniObject : IBinary
     {
         /// <summary>

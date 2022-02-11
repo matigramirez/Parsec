@@ -29,6 +29,7 @@ make reading and manipulating the game's file formats easy.
 - `zon`
 - `ALT`
 - `VAni`
+- `MAni`
 
 ## Features
 
