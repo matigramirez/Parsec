@@ -26,6 +26,9 @@
       <None Update="A1_ElfDoor.SMOD">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="A1_butterfly01.VANI">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

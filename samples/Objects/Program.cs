@@ -4,6 +4,7 @@ using Parsec.Shaiya.Mlt;
 using Parsec.Shaiya.Obj3DC;
 using Parsec.Shaiya.Obj3DO;
 using Parsec.Shaiya.Smod;
+using Parsec.Shaiya.VAni;
 
 namespace Parsec.Samples.Object3D
 {
@@ -43,6 +44,13 @@ namespace Parsec.Samples.Object3D
 
             var smod = Reader.ReadFromFile<Smod>("A1_ElfDoor.SMOD");
             smod.ExportJson($"{smod.FileNameWithoutExtension}.json");
+
+            #endregion
+
+            #region VAni
+
+            var vani = Reader.ReadFromFile<VAni>("A1_butterfly01.VANI");
+            vani.ExportJson($"{vani.FileName}.json");
 
             #endregion
         }
