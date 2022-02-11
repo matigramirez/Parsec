@@ -30,6 +30,7 @@ make reading and manipulating the game's file formats easy.
 - `ALT`
 - `VAni`
 - `MAni`
+- `MLX`
 
 ## Features
 
