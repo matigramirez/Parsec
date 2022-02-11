@@ -11,7 +11,7 @@ namespace Parsec.Shaiya.Wld
         /// <summary>
         /// The area of the portal
         /// </summary>
-        public CubicArea Area { get; set; }
+        public BoundingBox Area { get; set; }
 
         /// <summary>
         /// Usually 0L. Possibly a condition to use the portal (Level? maybe it's 2 int values with minLevel and maxLevel?)
@@ -49,7 +49,7 @@ namespace Parsec.Shaiya.Wld
 
         public Portal(SBinaryReader binaryReader)
         {
-            Area = new CubicArea(binaryReader);
+            Area = new BoundingBox(binaryReader);
             Unknown_1 = binaryReader.Read<int>();
             Text1 = binaryReader.ReadString(256);
             Text2 = binaryReader.ReadString(256);

@@ -11,14 +11,14 @@ namespace Parsec.Shaiya.Svmap
         public int Unknown1 { get; set; }
         public FactionInt Faction { get; set; }
         public int Unknown2 { get; set; }
-        public CubicArea Area { get; set; }
+        public BoundingBox Area { get; set; }
 
         public Spawn(SBinaryReader binaryReader)
         {
             Unknown1 = binaryReader.Read<int>();
             Faction = (FactionInt)binaryReader.Read<int>();
             Unknown2 = binaryReader.Read<int>();
-            Area = new CubicArea(binaryReader);
+            Area = new BoundingBox(binaryReader);
         }
 
         public byte[] GetBytes(params object[] options)

@@ -11,12 +11,12 @@ namespace Parsec.Shaiya.Svmap
     /// </summary>
     public class MonsterArea : IBinary
     {
-        public CubicArea Area { get; set; }
+        public BoundingBox Area { get; set; }
         public List<Monster> Monsters { get; set; } = new();
 
         public MonsterArea(SBinaryReader binaryReader)
         {
-            Area = new CubicArea(binaryReader);
+            Area = new BoundingBox(binaryReader);
 
             var monsterCount = binaryReader.Read<int>();
 

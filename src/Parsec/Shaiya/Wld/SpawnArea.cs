@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.Wld
         /// <summary>
         /// The spawn area
         /// </summary>
-        public CubicArea Area { get; set; }
+        public BoundingBox Area { get; set; }
 
         /// <summary>
         /// Almost always 0
@@ -36,7 +36,7 @@ namespace Parsec.Shaiya.Wld
         public SpawnArea(SBinaryReader binaryReader)
         {
             Unknown_1 = binaryReader.Read<int>();
-            Area = new CubicArea(binaryReader);
+            Area = new BoundingBox(binaryReader);
             Unknown_2 = binaryReader.Read<int>();
             Faction = (FactionInt)binaryReader.Read<int>();
             Unknown_3 = binaryReader.Read<int>();

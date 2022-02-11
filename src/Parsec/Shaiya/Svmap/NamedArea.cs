@@ -8,13 +8,13 @@ namespace Parsec.Shaiya.Svmap
 {
     public class NamedArea : IBinary
     {
-        public CubicArea Area { get; set; }
+        public BoundingBox Area { get; set; }
         public int NameIdentifier1 { get; set; }
         public int NameIdentifier2 { get; set; }
 
         public NamedArea(SBinaryReader binaryReader)
         {
-            Area = new CubicArea(binaryReader);
+            Area = new BoundingBox(binaryReader);
             NameIdentifier1 = binaryReader.Read<int>();
             NameIdentifier2 = binaryReader.Read<int>();
         }

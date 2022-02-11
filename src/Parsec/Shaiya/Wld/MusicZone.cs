@@ -11,7 +11,7 @@ namespace Parsec.Shaiya.Wld
         /// <summary>
         /// The rectangular area of the music zone
         /// </summary>
-        public CubicArea Area { get; set; }
+        public BoundingBox Area { get; set; }
 
         /// <summary>
         /// Usually 0.0f
@@ -30,7 +30,7 @@ namespace Parsec.Shaiya.Wld
 
         public MusicZone(SBinaryReader binaryReader)
         {
-            Area = new CubicArea(binaryReader);
+            Area = new BoundingBox(binaryReader);
             Unknown_1 = binaryReader.Read<float>();
             Id = binaryReader.Read<int>();
             Unknown_2 = binaryReader.Read<int>();

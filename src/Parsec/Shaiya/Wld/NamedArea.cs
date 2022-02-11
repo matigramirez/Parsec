@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.Wld
         /// <summary>
         /// The Area where this Named Area applies
         /// </summary>
-        public CubicArea Area { get; set; }
+        public BoundingBox Area { get; set; }
 
         /// <summary>
         /// Almost always

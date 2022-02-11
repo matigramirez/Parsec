@@ -5,7 +5,7 @@ namespace Parsec.Shaiya.Wld
 {
     public class ZoneList
     {
-        public CubicArea CubicArea { get; set; }
+        public BoundingBox BoundingBox { get; set; }
         public List<int> Identifiers { get; set; }
     }
 }
