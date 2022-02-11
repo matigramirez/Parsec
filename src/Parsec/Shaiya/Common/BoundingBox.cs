@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.Common
     /// Cube formed by the volume between 2 points which form its diagonal.
     /// The cube is unique; it doesn't form any angle with the x and y axis.
     /// </summary>
-    public class CubicArea : IBinary
+    public class BoundingBox : IBinary
     {
         /// <summary>
         /// Point used as reference for the rectangle
@@ -22,17 +22,17 @@ namespace Parsec.Shaiya.Common
         public Vector3 UpperLimit { get; set; }
 
         [JsonConstructor]
-        public CubicArea()
+        public BoundingBox()
         {
         }
 
-        public CubicArea(Vector3 lowerLimit, Vector3 upperLimit)
+        public BoundingBox(Vector3 lowerLimit, Vector3 upperLimit)
         {
             LowerLimit = lowerLimit;
             UpperLimit = upperLimit;
         }
 
-        public CubicArea(SBinaryReader binaryReader)
+        public BoundingBox(SBinaryReader binaryReader)
         {
             LowerLimit = new Vector3(binaryReader);
             UpperLimit = new Vector3(binaryReader);

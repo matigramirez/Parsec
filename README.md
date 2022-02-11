@@ -28,6 +28,7 @@ make reading and manipulating the game's file formats easy.
 - `seff`
 - `zon`
 - `ALT`
+- `VAni`
 
 ## Features
 
