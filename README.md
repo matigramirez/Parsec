@@ -31,6 +31,7 @@ make reading and manipulating the game's file formats easy.
 - `VAni`
 - `MAni`
 - `MLX`
+- `MON`
 
 ## Features
 
