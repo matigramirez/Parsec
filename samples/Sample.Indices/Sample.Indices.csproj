@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
+        <Nullable>disable</Nullable>
         <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
@@ -11,16 +12,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Mob_Fox_01.3DC">
+      <None Update="demf.MLX">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="03_F_201.3DO">
+      <None Update="02.ITM">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="A1_ElfDoor.SMOD">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="A1_butterfly01.VANI">
+      <None Update="humf_face.MLT">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
