@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
@@ -13,14 +12,10 @@ namespace Parsec.Shaiya.EFT
 
         [JsonIgnore]
         public EFTFormat Format { get; set; }
-        public int File3DECount { get; set; }
-        public List<string> File3DENames { get; } = new();
-        public int FileDDSCount { get; set; }
-        public List<string> FileDDSNames { get; } = new();
-        public int SceneCount { get; set; }
-        public List<Scene> Scenes { get; } = new();
-        public int SequenceCount { get; set; }
-        public List<Sequence> Sequences { get; } = new();
+        public List<EffectObject> Objects { get; } = new();
+        public List<EffectTexture> Textures { get; } = new();
+        public List<Effect> Effects { get; } = new();
+        public List<EffectSequence> EffectSequences { get; } = new();
 
         [JsonIgnore]
         public override string Extension => "EFT";
@@ -32,74 +27,56 @@ namespace Parsec.Shaiya.EFT
             Format = Signature switch
             {
                 "EFT" => EFTFormat.EFT,
+                "EF2" => EFTFormat.EF2,
                 "EF3" => EFTFormat.EF3,
                 _     => EFTFormat.Unknown
             };
 
-            File3DECount = _binaryReader.Read<int>();
+            var effectObjectCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < File3DECount; i++)
+            for (int i = 0; i < effectObjectCount; i++)
             {
-                var name = _binaryReader.ReadString();
-                File3DENames.Add(name);
+                var effectObject = new EffectObject(_binaryReader, i);
+                Objects.Add(effectObject);
             }
 
-            FileDDSCount = _binaryReader.Read<int>();
+            var textureCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < FileDDSCount; i++)
+            for (int i = 0; i < textureCount; i++)
             {
-                var name = _binaryReader.ReadString();
-                FileDDSNames.Add(name);
+                var texture = new EffectTexture(_binaryReader, i);
+                Textures.Add(texture);
             }
 
-            SceneCount = _binaryReader.Read<int>();
+            var sceneCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < SceneCount; i++)
+            for (int i = 0; i < sceneCount; i++)
             {
-                var scene = new Scene(Format, _binaryReader);
-                Scenes.Add(scene);
+                var scene = new Effect(_binaryReader, Format, i);
+                Effects.Add(scene);
             }
 
-            SequenceCount = _binaryReader.Read<int>();
+            var eftSub2Count = _binaryReader.Read<int>();
 
-            for (int i = 0; i < SequenceCount; i++)
+            for (int i = 0; i < eftSub2Count; i++)
             {
-                var sequence = new Sequence(_binaryReader);
-                Sequences.Add(sequence);
+                var sub2 = new EffectSequence(_binaryReader);
+                EffectSequences.Add(sub2);
             }
         }
 
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(Encoding.ASCII.GetBytes(Signature));
+            buffer.AddRange(Signature.GetBytes());
+            buffer.AddRange(Objects.GetBytes());
+            buffer.AddRange(Textures.Count.GetBytes());
+            buffer.AddRange(Effects.GetBytes());
 
-            buffer.AddRange(BitConverter.GetBytes(File3DENames.Count));
-
-            foreach (var file3DEName in File3DENames)
-            {
-                buffer.AddRange(BitConverter.GetBytes(file3DEName.Length + 1));
-                buffer.AddRange(Encoding.ASCII.GetBytes(file3DEName + '\0'));
-            }
-
-            buffer.AddRange(BitConverter.GetBytes(FileDDSNames.Count));
-
-            foreach (var fileDDSName in FileDDSNames)
-            {
-                buffer.AddRange(BitConverter.GetBytes(fileDDSName.Length + 1));
-                buffer.AddRange(Encoding.ASCII.GetBytes(fileDDSName + '\0'));
-            }
-
-            buffer.AddRange(BitConverter.GetBytes(Scenes.Count));
-
-            foreach (var scene in Scenes)
+            foreach (var scene in Effects)
                 buffer.AddRange(scene.GetBytes(Format));
 
-            buffer.AddRange(BitConverter.GetBytes(Sequences.Count));
-
-            foreach (var sequence in Sequences)
-                buffer.AddRange(sequence.GetBytes());
-
+            buffer.AddRange(EffectSequences.GetBytes());
             return buffer.ToArray();
         }
     }

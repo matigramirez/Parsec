@@ -3,6 +3,7 @@
     public enum EFTFormat
     {
         EFT,
+        EF2,
         EF3,
         Unknown
     }
