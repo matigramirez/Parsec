@@ -22,7 +22,7 @@ namespace Parsec.Shaiya.VAni
         /// <summary>
         /// VAni's don't have bones, that's why this value is always -1.
         /// </summary>
-        public int BoneIndex { get; set; } = -1;
+        public int BoneId { get; set; } = -1;
 
         /// <summary>
         /// Texture mapping
@@ -38,7 +38,7 @@ namespace Parsec.Shaiya.VAni
         {
             Coordinates = new Vector3(binaryReader);
             Normal = new Vector3(binaryReader);
-            BoneIndex = binaryReader.Read<int>();
+            BoneId = binaryReader.Read<int>();
             UV = new Vector2(binaryReader);
         }
 
@@ -47,7 +47,7 @@ namespace Parsec.Shaiya.VAni
             var buffer = new List<byte>();
             buffer.AddRange(Coordinates.GetBytes());
             buffer.AddRange(Normal.GetBytes());
-            buffer.AddRange(BoneIndex.GetBytes());
+            buffer.AddRange(BoneId.GetBytes());
             buffer.AddRange(UV.GetBytes());
             return buffer.ToArray();
         }
