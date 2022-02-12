@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.Obj3DE
         /// <summary>
         /// 3DE's don't have vertex groups like 3DC's, that's why this value is always -1.
         /// </summary>
-        public int Bone { get; set; }
+        public int BoneId { get; set; } = -1;
 
         /// <summary>
         /// UV Texture mapping
@@ -32,7 +32,7 @@ namespace Parsec.Shaiya.Obj3DE
         public Vertex(SBinaryReader binaryReader)
         {
             Coordinates = new Vector3(binaryReader);
-            Bone = binaryReader.Read<int>();
+            BoneId = binaryReader.Read<int>();
             UV = new Vector2(binaryReader);
         }
 
@@ -40,7 +40,7 @@ namespace Parsec.Shaiya.Obj3DE
         {
             var buffer = new List<byte>();
             buffer.AddRange(Coordinates.GetBytes());
-            buffer.AddRange(Bone.GetBytes());
+            buffer.AddRange(BoneId.GetBytes());
             buffer.AddRange(UV.GetBytes());
             return buffer.ToArray();
         }

@@ -8,7 +8,7 @@ namespace Parsec.Shaiya.Obj3DE
 {
     public class Obj3DE : FileBase, IJsonReadable
     {
-        public int Signature { get; set; }
+        public string Texture { get; set; }
         public List<Vertex> Vertices { get; } = new();
         public List<Face> Faces { get; } = new();
         public int MaxKeyframe { get; set; }
@@ -17,7 +17,7 @@ namespace Parsec.Shaiya.Obj3DE
 
         public override void Read(params object[] options)
         {
-            Signature = _binaryReader.Read<int>();
+            Texture = _binaryReader.ReadString();
 
             var vertexCount = _binaryReader.Read<int>();
 
@@ -50,7 +50,7 @@ namespace Parsec.Shaiya.Obj3DE
         {
             var buffer = new List<byte>();
 
-            buffer.AddRange(Signature.GetBytes());
+            buffer.AddRange(Texture.GetLengthPrefixedBytes());
             buffer.AddRange(Vertices.GetBytes());
             buffer.AddRange(Faces.GetBytes());
             buffer.AddRange(MaxKeyframe.GetBytes());
