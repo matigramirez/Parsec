@@ -70,12 +70,12 @@ namespace Parsec.Extensions
         /// Serializes a string prefixed by its length (int32) using ASCII encoding
         /// </summary>
         public static byte[] GetLengthPrefixedBytes(this string str, bool includeStringTerminator = true) =>
-            GetLengthPrefixedBytes(str, Encoding.ASCII, includeStringTerminator);
+            GetLengthPrefixedBytes(str, Encoding.UTF8, includeStringTerminator);
 
         /// <summary>
-        /// Serializes the string into a byte array with ASCII encoding. It doesn't include a string terminator.
+        /// Serializes the string into a byte array with UTF8 encoding. It doesn't include a string terminator.
         /// </summary>
-        public static byte[] GetBytes(this string str) => GetBytes(str, Encoding.ASCII);
+        public static byte[] GetBytes(this string str) => GetBytes(str, Encoding.UTF8);
 
         /// <summary>
         /// Serializes the string into a byte array with the provided encoding. It doesn't include a string terminator.

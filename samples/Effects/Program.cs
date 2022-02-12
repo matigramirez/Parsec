@@ -2,6 +2,7 @@
 using Parsec.Shaiya.EFT;
 using Parsec.Shaiya.Obj3DE;
 using Parsec.Shaiya.Seff;
+using Parsec.Shaiya.Wtr;
 
 namespace Parsec.Samples
 {
@@ -27,6 +28,13 @@ namespace Parsec.Samples
 
             var seff = Reader.ReadFromFile<Seff>("weapon.seff");
             seff.ExportJson($"{seff.FileName}.json");
+
+            #endregion
+
+            #region wtr
+
+            var wtr = Reader.ReadFromFile<Wtr>("A2.wtr");
+            wtr.ExportJson($"{wtr.FileName}.json");
 
             #endregion
         }

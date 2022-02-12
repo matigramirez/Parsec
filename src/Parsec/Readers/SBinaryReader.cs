@@ -234,17 +234,17 @@ namespace Parsec.Readers
         }
 
         /// <summary>
-        /// Reads a length-prefixed ASCII string
+        /// Reads length-fixed string with UTF8 encoding
         /// </summary>
         /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
         public string ReadString(bool removeStringTerminator = true) =>
-            ReadString(Encoding.ASCII, removeStringTerminator);
+            ReadString(Encoding.UTF8, removeStringTerminator);
 
         /// <summary>
-        /// Reads length-fixed ASCII string
+        /// Reads length-fixed string with UTF8 encoding
         /// </summary>
         /// <param name="length">The string's length</param>
-        public string ReadString(int length) => ReadString(Encoding.ASCII, length);
+        public string ReadString(int length) => ReadString(Encoding.UTF8, length);
 
         /// <summary>
         /// Resets the reading offset
