@@ -1,7 +1,7 @@
 ﻿using Parsec.Readers;
 using Parsec.Shaiya.Obj3DC;
 using Parsec.Shaiya.Obj3DO;
-using Parsec.Shaiya.Smod;
+using Parsec.Shaiya.SMOD;
 using Parsec.Shaiya.VAni;
 
 namespace Parsec.Samples.Object3D
@@ -26,8 +26,8 @@ namespace Parsec.Samples.Object3D
 
             #region SMOD
 
-            var smod = Reader.ReadFromFile<Smod>("A1_ElfDoor.SMOD");
-            smod.ExportJson($"{smod.FileNameWithoutExtension}.json");
+            var smod = Reader.ReadFromFile<SMOD>("A1_ElfDoor.SMOD");
+            smod.ExportJson($"{smod.FileName}.json");
 
             #endregion
 

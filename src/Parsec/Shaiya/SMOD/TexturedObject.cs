@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Smod
+namespace Parsec.Shaiya.SMOD
 {
     public class TexturedObject : IBinary
     {
+        /// <summary>
+        /// Name of the .tga texture file
+        /// </summary>
         public string TextureName { get; set; }
         public List<Vertex> Vertices { get; } = new();
         public List<Face> Faces { get; } = new();
@@ -43,20 +45,9 @@ namespace Parsec.Shaiya.Smod
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
-            buffer.AddRange(BitConverter.GetBytes(TextureName.Length + 1));
-            buffer.AddRange(Encoding.ASCII.GetBytes(TextureName + '\0'));
-
-            buffer.AddRange(BitConverter.GetBytes(Vertices.Count));
-
-            foreach (var vertex in Vertices)
-                buffer.AddRange(vertex.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(Faces.Count));
-
-            foreach (var face in Faces)
-                buffer.AddRange(face.GetBytes());
-
+            buffer.AddRange(TextureName.GetLengthPrefixedBytes());
+            buffer.AddRange(Vertices.GetBytes());
+            buffer.AddRange(Faces.GetBytes());
             return buffer.ToArray();
         }
     }

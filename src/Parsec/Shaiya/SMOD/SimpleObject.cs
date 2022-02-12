@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Smod
+namespace Parsec.Shaiya.SMOD
 {
-    public class Object : IBinary
+    public class SimpleObject : IBinary
     {
-        public List<Vector3> Vertices { get; } = new();
+        public List<SimpleVertex> Vertices { get; } = new();
         public List<Face> Faces { get; } = new();
 
         [JsonConstructor]
-        public Object()
+        public SimpleObject()
         {
         }
 
-        public Object(SBinaryReader binaryReader)
+        public SimpleObject(SBinaryReader binaryReader)
         {
             var vertexCount = binaryReader.Read<int>();
 
             for (int i = 0; i < vertexCount; i++)
             {
-                var vertex = new Vector3(binaryReader);
+                var vertex = new SimpleVertex(binaryReader);
                 Vertices.Add(vertex);
             }
 
@@ -39,16 +39,8 @@ namespace Parsec.Shaiya.Smod
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(Vertices.Count));
-
-            foreach (var vertex in Vertices)
-                buffer.AddRange(vertex.GetBytes());
-
-            buffer.AddRange(BitConverter.GetBytes(Faces.Count));
-
-            foreach (var face in Faces)
-                buffer.AddRange(face.GetBytes());
-
+            buffer.AddRange(Vertices.GetBytes());
+            buffer.AddRange(Faces.GetBytes());
             return buffer.ToArray();
         }
     }
