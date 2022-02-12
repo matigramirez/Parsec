@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MON
 {
-    public class MON : FileBase
+    public class MON : FileBase, IJsonReadable
     {
         /// <summary>
         /// File signature. "MO2", "MO4". Read as char[3]

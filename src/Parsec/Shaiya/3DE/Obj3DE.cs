@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Obj3DE
 {
-    public class Obj3DE : FileBase
+    public class Obj3DE : FileBase, IJsonReadable
     {
         public int Signature { get; set; }
         public List<Vertex> Vertices { get; } = new();
