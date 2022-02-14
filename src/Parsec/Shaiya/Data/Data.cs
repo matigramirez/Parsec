@@ -124,5 +124,35 @@ namespace Parsec.Shaiya.Data
         /// <param name="file"><see cref="SFile"/> instance</param>
         /// <returns>The file buffer</returns>
         public byte[] GetFileBuffer(SFile file) => Saf.ReadBytes(file.Offset, file.Length);
+
+        /// <summary>
+        /// Removes a file from both the sah and saf files
+        /// </summary>
+        /// <param name="path"></param>
+        public void RemoveFile(string path)
+        {
+            if (!FileIndex.TryGetValue(path, out var file))
+                return;
+
+            // Remove file from sah
+            Sah.FileCount--;
+            file.ParentFolder.Files.Remove(file);
+            FileIndex.Remove(path);
+
+            // Clear bytes on saf
+            Saf.ClearBytes(file.Offset, file.Length);
+        }
+
+        /// <summary>
+        /// Removes
+        /// </summary>
+        /// <param name="lstPath">Path to delete.lst file</param>
+        public void RemoveFilesFromLst(string lstPath)
+        {
+            var filePaths = File.ReadAllLines(lstPath);
+
+            foreach (var file in filePaths)
+                RemoveFile(file);
+        }
     }
 }

@@ -26,5 +26,20 @@ namespace Parsec.Shaiya.Data
             byte[] bytes = safReader.ReadBytes(length);
             return bytes;
         }
+
+        /// <summary>
+        /// Clears a section of the saf file. The section will be set to `0`, since it can't be removed directly
+        /// </summary>
+        /// <param name="offset">Offset where to start clearing</param>
+        /// <param name="length">Amount of bytes to clear</param>
+        public void ClearBytes(long offset, int length)
+        {
+            // Create binary reader
+            using var safWriter = new BinaryWriter(File.OpenWrite(Path));
+            safWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
+
+            var emptyBytes = new byte[length];
+            safWriter.Write(emptyBytes);
+        }
     }
 }
