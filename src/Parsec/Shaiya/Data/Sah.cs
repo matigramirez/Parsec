@@ -12,6 +12,16 @@ namespace Parsec.Shaiya.Data
     public class Sah : FileBase, IJsonReadable
     {
         /// <summary>
+        /// SAH signature, normally "SAH" but it can be changed. Read as char[3].
+        /// </summary>
+        public string Signature { get; set; }
+
+        /// <summary>
+        /// 4 bytes after signature. Meaning isn't truly known but it's suspected that's used for versioning.
+        /// </summary>
+        public int Version { get; set; }
+
+        /// <summary>
         /// Path to the saf file
         /// </summary>
         public string SafPath => string.Concat(Path.Substring(0, Path.Length - 3), "saf");
@@ -60,10 +70,8 @@ namespace Parsec.Shaiya.Data
 
         public override void Read(params object[] options)
         {
-            // Skip signature (3) and unknown bytes (4)
-            _binaryReader.Skip(7);
-
-            // Read total file count
+            Signature = _binaryReader.ReadString(3);
+            Version = _binaryReader.Read<int>();
             FileCount = _binaryReader.Read<int>();
 
             // Index where data starts (after header - skip padding bytes)
@@ -145,9 +153,8 @@ namespace Parsec.Shaiya.Data
             // Create byte list which will have the sah's data
             var buffer = new List<byte>();
 
-            buffer.AddRange("SAH".GetBytes());
-            // Write 4 unknown 0x00 bytes
-            buffer.AddRange(new byte[4]);
+            buffer.AddRange(Signature.GetBytes());
+            buffer.AddRange(Version.GetBytes());
             buffer.AddRange(FileCount.GetBytes());
             // Write padding
             buffer.AddRange(new byte[40]);

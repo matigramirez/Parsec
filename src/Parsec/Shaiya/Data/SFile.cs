@@ -85,7 +85,7 @@ namespace Parsec.Shaiya.Data
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(Name.GetBytes());
+            buffer.AddRange(Name.GetLengthPrefixedBytes());
             buffer.AddRange(Offset.GetBytes());
             buffer.AddRange(Length.GetBytes());
             buffer.AddRange(Version.GetBytes());

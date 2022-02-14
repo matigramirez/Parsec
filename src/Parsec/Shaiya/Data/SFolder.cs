@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -117,28 +116,9 @@ namespace Parsec.Shaiya.Data
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
-            // Write folder name length + 1 for string null terminator
-            int folderNameLength = string.IsNullOrEmpty(Name) ? 1 : Name.Length + 1;
-            buffer.AddRange(BitConverter.GetBytes(folderNameLength));
-
-            // Write folder name including string null terminator
-            buffer.AddRange(Encoding.ASCII.GetBytes(Name + '\0'));
-
-            // Write file count
-            buffer.AddRange(BitConverter.GetBytes(Files.Count));
-
-            // Write files
-            foreach (var file in Files)
-                buffer.AddRange(file.GetBytes());
-
-            // Write subfolder count
-            buffer.AddRange(BitConverter.GetBytes(Subfolders.Count));
-
-            // Recursively write subfolders
-            foreach (var subfolder in Subfolders)
-                buffer.AddRange(subfolder.GetBytes());
-
+            buffer.AddRange(Name.GetLengthPrefixedBytes());
+            buffer.AddRange(Files.GetBytes());
+            buffer.AddRange(Subfolders.GetBytes());
             return buffer.ToArray();
         }
     }
