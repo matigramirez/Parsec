@@ -6,6 +6,7 @@ using Parsec.Shaiya.Cash;
 using Parsec.Shaiya.DualLayerClothes;
 using Parsec.Shaiya.GuildHouse;
 using Parsec.Shaiya.KillStatus;
+using Parsec.Shaiya.Monster;
 using Parsec.Shaiya.NpcQuest;
 using Parsec.Shaiya.SData;
 using Parsec.Shaiya.SetItem;
@@ -76,6 +77,14 @@ namespace Parsec.Samples
 
             var setItem = Reader.ReadFromFile<SetItem>("SetItem.SData");
             setItem.ExportJson("SetItem.json");
+
+            #endregion
+
+            #region Monster
+
+            var monster = Reader.ReadFromFile<Monster>("Monster.SData");
+            monster.WriteDecrypted("Monster.dec.SData");
+            monster.ExportCSV("Monster.csv");
 
             #endregion
         }

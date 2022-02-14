@@ -16,6 +16,7 @@ make reading and manipulating the game's file formats easy.
 - `SetItem.SData`
 - `DualLayerClothes.SData`
 - `GuildHouse.SData`
+- `Monster.SData`
 - `svmap`
 - `ANI`
 - `3DC`
@@ -125,6 +126,17 @@ Create data or patch from a directory
 var createdData = DataBuilder.CreateFromDirectory("input", "output", "update");
 
 Console.WriteLine($"Data file count: {createdData.FileCount}");
+```
+
+Patch
+
+```cs
+// Load target data and patch data
+var data = new Data("data.sah");
+var patchData = new Data("update.sah");
+
+// Patch
+DataPatcher.Patch(data, patchData);
 ```
 
 ### `SData`
