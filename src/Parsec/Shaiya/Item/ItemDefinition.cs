@@ -29,7 +29,7 @@ namespace Parsec.Shaiya.Item
 
         public byte Model { get; set; }
         public byte Icon { get; set; }
-        public short Level { get; set; }
+        public short MinLevel { get; set; }
         public byte Country { get; set; }
         public byte AttackFighter { get; set; }
         public byte DefenseFighter { get; set; }
@@ -77,28 +77,28 @@ namespace Parsec.Shaiya.Item
         public byte Server { get; set; }
         public byte Count { get; set; }
 
-        public int UnknownInt1 { get; set; }
+        public int Duration { get; set; }
 
-        public byte UnknownByte1 { get; set; }
-        public byte UnknownByte2 { get; set; }
-        public byte UnknownByte3 { get; set; }
-        public byte UnknownByte4 { get; set; }
-        public byte UnknownByte5 { get; set; }
-        public byte UnknownByte6 { get; set; }
-        public byte UnknownByte7 { get; set; }
-        public byte UnknownByte8 { get; set; }
-        public byte UnknownByte9 { get; set; }
-        public byte UnknownByte10 { get; set; }
+        public byte ExpandDuration { get; set; }
+        public byte SecOption { get; set; }
+        public byte OptionRate { get; set; }
+        public byte BuyMethod { get; set; }
+        public byte MaxLevel { get; set; }
+        public byte Arg1 { get; set; }
+        public byte Arg2 { get; set; }
+        public byte Arg3 { get; set; }
+        public byte Arg4 { get; set; }
+        public byte Arg5 { get; set; }
 
-        public int UnknownInt2 { get; set; }
-        public int UnknownInt3 { get; set; }
-        public int UnknownInt4 { get; set; }
-        public int UnknownInt5 { get; set; }
-        public int UnknownInt6 { get; set; }
-        public int UnknownInt7 { get; set; }
-        public int UnknownInt8 { get; set; }
-        public int UnknownInt9 { get; set; }
-        public int UnknownInt10 { get; set; }
+        public int Arg6 { get; set; }
+        public int Arg7 { get; set; }
+        public int Arg8 { get; set; }
+        public int Arg9 { get; set; }
+        public int Arg10 { get; set; }
+        public int Arg11 { get; set; }
+        public int Arg12 { get; set; }
+        public int Arg13 { get; set; }
+        public int Arg14 { get; set; }
 
         [JsonConstructor]
         public ItemDefinition()
@@ -113,7 +113,7 @@ namespace Parsec.Shaiya.Item
             TypeId = binaryReader.Read<byte>();
             Model = binaryReader.Read<byte>();
             Icon = binaryReader.Read<byte>();
-            Level = binaryReader.Read<short>();
+            MinLevel = binaryReader.Read<short>();
             Country = binaryReader.Read<byte>();
             AttackFighter = binaryReader.Read<byte>();
             DefenseFighter = binaryReader.Read<byte>();
@@ -162,28 +162,28 @@ namespace Parsec.Shaiya.Item
             Count = binaryReader.Read<byte>();
 
             // Read unknown fields
-            UnknownInt1 = binaryReader.Read<int>();
+            Duration = binaryReader.Read<int>();
 
-            UnknownByte1 = binaryReader.Read<byte>();
-            UnknownByte2 = binaryReader.Read<byte>();
-            UnknownByte3 = binaryReader.Read<byte>();
-            UnknownByte4 = binaryReader.Read<byte>();
-            UnknownByte5 = binaryReader.Read<byte>();
-            UnknownByte6 = binaryReader.Read<byte>();
-            UnknownByte7 = binaryReader.Read<byte>();
-            UnknownByte8 = binaryReader.Read<byte>();
-            UnknownByte9 = binaryReader.Read<byte>();
-            UnknownByte10 = binaryReader.Read<byte>();
+            ExpandDuration = binaryReader.Read<byte>();
+            SecOption = binaryReader.Read<byte>();
+            OptionRate = binaryReader.Read<byte>();
+            BuyMethod = binaryReader.Read<byte>();
+            MaxLevel = binaryReader.Read<byte>();
+            Arg1 = binaryReader.Read<byte>();
+            Arg2 = binaryReader.Read<byte>();
+            Arg3 = binaryReader.Read<byte>();
+            Arg4 = binaryReader.Read<byte>();
+            Arg5 = binaryReader.Read<byte>();
 
-            UnknownInt2 = binaryReader.Read<int>();
-            UnknownInt3 = binaryReader.Read<int>();
-            UnknownInt4 = binaryReader.Read<int>();
-            UnknownInt5 = binaryReader.Read<int>();
-            UnknownInt6 = binaryReader.Read<int>();
-            UnknownInt7 = binaryReader.Read<int>();
-            UnknownInt8 = binaryReader.Read<int>();
-            UnknownInt9 = binaryReader.Read<int>();
-            UnknownInt10 = binaryReader.Read<int>();
+            Arg6 = binaryReader.Read<int>();
+            Arg7 = binaryReader.Read<int>();
+            Arg8 = binaryReader.Read<int>();
+            Arg9 = binaryReader.Read<int>();
+            Arg10 = binaryReader.Read<int>();
+            Arg11 = binaryReader.Read<int>();
+            Arg12 = binaryReader.Read<int>();
+            Arg13 = binaryReader.Read<int>();
+            Arg14 = binaryReader.Read<int>();
         }
 
         public byte[] GetBytes(params object[] options)
@@ -196,7 +196,7 @@ namespace Parsec.Shaiya.Item
             buffer.Add(TypeId);
             buffer.Add(Model);
             buffer.Add(Icon);
-            buffer.AddRange(Level.GetBytes());
+            buffer.AddRange(MinLevel.GetBytes());
             buffer.Add(Country);
             buffer.Add(AttackFighter);
             buffer.Add(DefenseFighter);
@@ -244,26 +244,26 @@ namespace Parsec.Shaiya.Item
             buffer.Add(Server);
             buffer.Add(Count);
 
-            buffer.AddRange(UnknownInt1.GetBytes());
-            buffer.Add(UnknownByte1);
-            buffer.Add(UnknownByte2);
-            buffer.Add(UnknownByte3);
-            buffer.Add(UnknownByte4);
-            buffer.Add(UnknownByte5);
-            buffer.Add(UnknownByte6);
-            buffer.Add(UnknownByte7);
-            buffer.Add(UnknownByte8);
-            buffer.Add(UnknownByte9);
-            buffer.Add(UnknownByte10);
-            buffer.AddRange(UnknownInt2.GetBytes());
-            buffer.AddRange(UnknownInt3.GetBytes());
-            buffer.AddRange(UnknownInt4.GetBytes());
-            buffer.AddRange(UnknownInt5.GetBytes());
-            buffer.AddRange(UnknownInt6.GetBytes());
-            buffer.AddRange(UnknownInt7.GetBytes());
-            buffer.AddRange(UnknownInt8.GetBytes());
-            buffer.AddRange(UnknownInt9.GetBytes());
-            buffer.AddRange(UnknownInt10.GetBytes());
+            buffer.AddRange(Duration.GetBytes());
+            buffer.Add(ExpandDuration);
+            buffer.Add(SecOption);
+            buffer.Add(OptionRate);
+            buffer.Add(BuyMethod);
+            buffer.Add(MaxLevel);
+            buffer.Add(Arg1);
+            buffer.Add(Arg2);
+            buffer.Add(Arg3);
+            buffer.Add(Arg4);
+            buffer.Add(Arg5);
+            buffer.AddRange(Arg6.GetBytes());
+            buffer.AddRange(Arg7.GetBytes());
+            buffer.AddRange(Arg8.GetBytes());
+            buffer.AddRange(Arg9.GetBytes());
+            buffer.AddRange(Arg10.GetBytes());
+            buffer.AddRange(Arg11.GetBytes());
+            buffer.AddRange(Arg12.GetBytes());
+            buffer.AddRange(Arg13.GetBytes());
+            buffer.AddRange(Arg14.GetBytes());
 
             return buffer.ToArray();
         }
