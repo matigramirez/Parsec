@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Parsec.Readers;
 
 namespace Parsec.Helpers
 {
@@ -90,6 +91,19 @@ namespace Parsec.Helpers
                 return;
 
             Directory.Delete(directoryPath, recursive);
+        }
+
+        /// <summary>
+        /// Reads a file's content as a byte array
+        /// </summary>
+        /// <param name="filePath">Path to file</param>
+        public static byte[] ReadBytes(string filePath)
+        {
+            if (!FileExists(filePath))
+                throw new FileNotFoundException($"File {filePath} not found.");
+
+            var binaryReader = new SBinaryReader(filePath);
+            return binaryReader.Buffer;
         }
     }
 }

@@ -184,5 +184,19 @@ namespace Parsec.Shaiya.SData
             var decryptedBuffer = Decrypt(Buffer);
             FileHelper.WriteFile(path, decryptedBuffer);
         }
+
+        public static void EncryptFile(string inputFilePath, string outputFilePath)
+        {
+            var fileData = FileHelper.ReadBytes(inputFilePath);
+            var encryptedData = Encrypt(fileData);
+            FileHelper.WriteFile(outputFilePath, encryptedData);
+        }
+
+        public static void DecryptFile(string inputFilePath, string outputFilePath)
+        {
+            var fileData = FileHelper.ReadBytes(inputFilePath);
+            var decryptedData = Decrypt(fileData);
+            FileHelper.WriteFile(outputFilePath, decryptedData);
+        }
     }
 }

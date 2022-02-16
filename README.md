@@ -141,16 +141,14 @@ DataPatcher.Patch(data, patchData);
 
 ### `SData`
 
-Encryption / Decryption
+Encryption / Decryption of
 
 ```cs
-var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.SData", Format.EP5);
+// Encrypt
+SData.EncryptFile("NpcQuest.SData", "NpcQuest.encrypted.SData");
 
-// Save encrypted file
-npcQuest.WriteEncrypted("NpcQuest.encrypted.SData");
-
-// Save decrypted file
-npcQuest.WriteDecrypted("NpcQuest.decrypted.SData");
+// Decrypt
+SData.DecryptFile("NpcQuest.SData", "NpcQuest.decrypted.SData");
 ```
 
 ### `svmap`
