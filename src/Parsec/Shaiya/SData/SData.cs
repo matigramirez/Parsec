@@ -44,7 +44,7 @@ namespace Parsec.Shaiya.SData
                 return decryptedData;
 
             // Create SEED header
-            var header = new SDataHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, new byte[16]);
+            var header = new KisaSeedHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, new byte[16]);
 
             // Calculate alignment size
             var alignmentSize = header.RealSize;
@@ -95,7 +95,7 @@ namespace Parsec.Shaiya.SData
         /// <summary>
         /// Function that decrypts the SData buffer using the SEED algorithm
         /// </summary>
-        public static byte[] Decrypt(byte[] encryptedBuffer)
+        public static byte[] Decrypt(byte[] encryptedBuffer, bool validateChecksum = false)
         {
             // Check if data is encrypted
             if (!IsEncrypted(encryptedBuffer))
@@ -106,7 +106,7 @@ namespace Parsec.Shaiya.SData
                 throw new FormatException("SData file is not properly aligned.");
 
             // Read SEED Header
-            var header = new SDataHeader(encryptedBuffer);
+            var header = new KisaSeedHeader(encryptedBuffer);
 
             // Get data without header
             var encryptedData = encryptedBuffer.SubArray(64, encryptedBuffer.Length - 64);
@@ -125,24 +125,27 @@ namespace Parsec.Shaiya.SData
                 data.AddRange(decryptedData16);
             }
 
-            var checksum = uint.MaxValue;
-
-            // Checksum is calculated with the whole file's data except for the header (not with the real size)
-            for (var i = 0; i < header.RealSize; i++)
+            if (validateChecksum)
             {
-                var dat = data[i];
-                var index = (checksum & 0xFF) ^ dat;
-                var key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
-                key = SEED.EndianessSwap(key);
-                checksum >>= 8;
-                checksum ^= key;
+                var checksum = uint.MaxValue;
+
+                // Checksum is calculated with the whole file's data except for the header (not with the real size)
+                for (var i = 0; i < header.RealSize; i++)
+                {
+                    var dat = data[i];
+                    var index = (checksum & 0xFF) ^ dat;
+                    var key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
+                    key = SEED.EndianessSwap(key);
+                    checksum >>= 8;
+                    checksum ^= key;
+                }
+
+                // Validate checksum
+                checksum = ~checksum;
+
+                if (checksum != header.Checksum)
+                    throw new FormatException("Invalid SEED checksum.");
             }
-
-            // Validate checksum
-            checksum = ~checksum;
-
-            if (checksum != header.Checksum)
-                throw new FormatException("Invalid SEED checksum.");
 
             var decryptedData = new byte[header.RealSize];
             Array.Copy(data.ToArray(), decryptedData, header.RealSize);
@@ -161,12 +164,12 @@ namespace Parsec.Shaiya.SData
         }
 
         /// <inheritdoc />
-        public void DecryptBuffer()
+        public void DecryptBuffer(bool validateChecksum = false)
         {
             // Decrypt buffer if it's encrypted
             if (IsEncrypted(Buffer))
             {
-                var decryptedBuffer = Decrypt(Buffer);
+                var decryptedBuffer = Decrypt(Buffer, validateChecksum);
                 _binaryReader = new SBinaryReader(decryptedBuffer);
             }
         }
@@ -174,14 +177,14 @@ namespace Parsec.Shaiya.SData
         /// <inheritdoc />
         public void WriteEncrypted(string path)
         {
-            var encryptedBuffer = Encrypt(Buffer);
+            var encryptedBuffer = Encrypt(GetBytes());
             FileHelper.WriteFile(path, encryptedBuffer);
         }
 
         /// <inheritdoc />
         public void WriteDecrypted(string path)
         {
-            var decryptedBuffer = Decrypt(Buffer);
+            var decryptedBuffer = GetBytes();
             FileHelper.WriteFile(path, decryptedBuffer);
         }
 
@@ -192,10 +195,10 @@ namespace Parsec.Shaiya.SData
             FileHelper.WriteFile(outputFilePath, encryptedData);
         }
 
-        public static void DecryptFile(string inputFilePath, string outputFilePath)
+        public static void DecryptFile(string inputFilePath, string outputFilePath, bool ignoreChecksum = false)
         {
             var fileData = FileHelper.ReadBytes(inputFilePath);
-            var decryptedData = Decrypt(fileData);
+            var decryptedData = Decrypt(fileData, ignoreChecksum);
             FileHelper.WriteFile(outputFilePath, decryptedData);
         }
     }
