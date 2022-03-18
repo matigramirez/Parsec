@@ -17,8 +17,13 @@ make reading and manipulating the game's file formats easy.
 - `DualLayerClothes.SData`
 - `GuildHouse.SData`
 - `Monster.SData`
+- `DBMonsterData.SData`
+- `DBMonsterText.SData`
 - `Item.SData` (EP5 and EP6)
 - `DBItemData.SData`
+- `DBItemText.SData`
+- `DBSkillData.SData`
+- `DBSkillText.SData`
 - `svmap`
 - `ANI`
 - `3DC`
