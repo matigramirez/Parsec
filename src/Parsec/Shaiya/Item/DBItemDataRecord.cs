@@ -5,7 +5,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Item
 {
-    public class BinaryItemRecord : IBinarySDataRecord
+    public class DBItemDataRecord : IBinarySDataRecord
     {
         public long ItemType { get; set; }
         public long ItemTypeId { get; set; }
