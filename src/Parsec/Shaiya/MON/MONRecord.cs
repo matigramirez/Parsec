@@ -47,7 +47,7 @@ namespace Parsec.Shaiya.MON
         {
         }
 
-        public MONRecord(SBinaryReader binaryReader)
+        public MONRecord(SBinaryReader binaryReader, MONFormat format)
         {
             Name = binaryReader.ReadString();
             Unknown = binaryReader.Read<byte>();
@@ -70,7 +70,9 @@ namespace Parsec.Shaiya.MON
             Attack2Effect = binaryReader.ReadString();
             Attack3Effect = binaryReader.ReadString();
             DieEffect = binaryReader.ReadString();
-            AttachEffect = binaryReader.ReadString();
+
+            if (format == MONFormat.MO4)
+                AttachEffect = binaryReader.ReadString();
 
             var objectCount = binaryReader.Read<int>();
 
@@ -93,6 +95,11 @@ namespace Parsec.Shaiya.MON
 
         public byte[] GetBytes(params object[] options)
         {
+            var outputFormat = MONFormat.MO2;
+
+            if (options.Length > 0)
+                outputFormat = (MONFormat)options[0];
+
             var buffer = new List<byte>();
             buffer.AddRange(Name.GetLengthPrefixedBytes(false));
             buffer.Add(Unknown);
@@ -116,7 +123,9 @@ namespace Parsec.Shaiya.MON
             buffer.AddRange(Attack2Effect.GetLengthPrefixedBytes(false));
             buffer.AddRange(Attack3Effect.GetLengthPrefixedBytes(false));
             buffer.AddRange(DieEffect.GetLengthPrefixedBytes(false));
-            buffer.AddRange(AttachEffect.GetLengthPrefixedBytes(false));
+
+            if (outputFormat == MONFormat.MO4)
+                buffer.AddRange(AttachEffect.GetLengthPrefixedBytes(false));
 
             buffer.AddRange(Objects.GetBytes());
             buffer.AddRange(Height.GetBytes());

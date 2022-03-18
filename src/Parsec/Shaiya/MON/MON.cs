@@ -12,6 +12,8 @@ namespace Parsec.Shaiya.MON
         /// </summary>
         public string Signature { get; set; }
 
+        public MONFormat Format { get; set; } = MONFormat.MO2;
+
         public List<MONRecord> Records { get; } = new();
 
         public override string Extension => "MON";
@@ -20,20 +22,41 @@ namespace Parsec.Shaiya.MON
         {
             Signature = _binaryReader.ReadString(3);
 
+            switch (Signature)
+            {
+                case "MO2":
+                default:
+                    Format = MONFormat.MO2;
+                    break;
+                case "MO4":
+                    Format = MONFormat.MO4;
+                    break;
+            }
+
             var recordCount = _binaryReader.Read<int>();
 
             for (int i = 0; i < recordCount; i++)
             {
-                var record = new MONRecord(_binaryReader);
+                var record = new MONRecord(_binaryReader, Format);
                 Records.Add(record);
             }
         }
 
         public override byte[] GetBytes(params object[] options)
         {
+            var outputFormat = Format;
+
+            if (options.Length > 0)
+                outputFormat = (MONFormat)options[0];
+
             var buffer = new List<byte>();
-            buffer.AddRange(Signature.GetBytes());
-            buffer.AddRange(Records.GetBytes());
+            buffer.AddRange(outputFormat.ToString().GetBytes());
+
+            buffer.AddRange(Records.Count.GetBytes());
+
+            foreach (var record in Records)
+                buffer.AddRange(record.GetBytes(outputFormat));
+
             return buffer.ToArray();
         }
     }
