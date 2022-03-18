@@ -11,19 +11,23 @@ namespace Parsec.Shaiya.Item
 {
     public class Item : SData.SData, IJsonReadable, ICsv
     {
+        public ItemFormat Format { get; set; } = ItemFormat.EP5;
         public int MaxType { get; set; }
         public List<Type> Types { get; } = new();
 
         [JsonIgnore]
-        public Dictionary<(byte type, byte typeId), ItemDefinition> ItemIndex = new();
+        public Dictionary<(byte type, byte typeId), IItemDefinition> ItemIndex = new();
 
         public override void Read(params object[] options)
         {
+            if (options.Length > 0)
+                Format = (ItemFormat)options[0];
+
             MaxType = _binaryReader.Read<int>();
 
             for (int i = 0; i < MaxType; i++)
             {
-                var type = new Type(_binaryReader, ItemIndex);
+                var type = new Type(_binaryReader, Format, ItemIndex);
                 Types.Add(type);
             }
         }
@@ -43,7 +47,19 @@ namespace Parsec.Shaiya.Item
         /// <inheritdoc />
         public void ExportCSV(string path)
         {
-            var csv = ItemIndex.Values.ToList().ToCsv();
+            string csv;
+
+            switch (Format)
+            {
+                case ItemFormat.EP5:
+                default:
+                    csv = ItemIndex.Values.ToList().ConvertTo<List<ItemDefinitionEp5>>().ToCsv();
+                    break;
+                case ItemFormat.EP6:
+                    csv = ItemIndex.Values.ToList().ConvertTo<List<ItemDefinitionEp6>>().ToCsv();
+                    break;
+            }
+
             FileHelper.WriteFile(path, csv.GetBytes());
         }
 
@@ -51,21 +67,39 @@ namespace Parsec.Shaiya.Item
         /// Reads the Item.SData format from a csv file
         /// </summary>
         /// <param name="path">csv file path</param>
+        /// <param name="format">The Item.SData format</param>
         /// <returns><see cref="Item"/> instance</returns>
-        public static Item ReadFromCSV(string path)
+        public static Item ReadFromCSV(string path, ItemFormat format)
         {
-            // Read all item definitions from csv file
-            var itemDefinitions = File.ReadAllText(path).FromCsv<List<ItemDefinition>>();
-
             // Create Item.SData instance
-            var item = new Item
+            var item = new Item();
+
+            // Read all item definitions from csv file
+            switch (format)
             {
-                MaxType = itemDefinitions.Max(x => x.Type),
-                ItemIndex = itemDefinitions.ToDictionary(itemDef => (itemDef.Type, itemDef.TypeId))
-            };
+                case ItemFormat.EP5:
+                default:
+                {
+                    var itemDefinitions = File.ReadAllText(path).FromCsv<List<ItemDefinitionEp5>>();
+                    var genericItemDefinitions = itemDefinitions.Cast<IItemDefinition>().ToList();
+                    item.MaxType = itemDefinitions.Max(x => x.Type);
+                    var itemIndex = genericItemDefinitions.ToDictionary(itemDef => (itemDef.Type, itemDef.TypeId));
+                    item.ItemIndex = itemIndex;
+                    break;
+                }
+                case ItemFormat.EP6:
+                {
+                    var itemDefinitions = File.ReadAllText(path).FromCsv<List<ItemDefinitionEp6>>();
+                    var genericItemDefinitions = itemDefinitions.Cast<IItemDefinition>().ToList();
+                    item.MaxType = itemDefinitions.Max(x => x.Type);
+                    var itemIndex = genericItemDefinitions.ToDictionary(itemDef => (itemDef.Type, itemDef.TypeId));
+                    item.ItemIndex = itemIndex;
+                    break;
+                }
+            }
 
             // Group items by Type
-            var groupedItems = itemDefinitions.GroupBy(x => x.Type);
+            var groupedItems = item.ItemIndex.Values.GroupBy(x => x.Type);
 
             foreach (var typeGroup in groupedItems)
             {

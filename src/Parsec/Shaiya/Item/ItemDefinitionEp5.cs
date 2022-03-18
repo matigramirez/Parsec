@@ -6,7 +6,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Item
 {
-    public class ItemDefinition : IBinary
+    public class ItemDefinitionEp5 : IBinary, IItemDefinition
     {
         /// <summary>
         /// Order: 2. Changed because of CSV.
@@ -45,11 +45,11 @@ namespace Parsec.Shaiya.Item
         public short ReqRec { get; set; }
         public short ReqInt { get; set; }
         public short ReqWis { get; set; }
-        public int ReqLuc { get; set; }
+        public short ReqLuc { get; set; }
         public short ReqVg { get; set; }
         public byte ReqOg { get; set; }
         public byte ReqIg { get; set; }
-        public short Range { get; set; }
+        public byte Range { get; set; }
         public byte AttackTime { get; set; }
         public byte Attrib { get; set; }
         public byte Special { get; set; }
@@ -77,35 +77,12 @@ namespace Parsec.Shaiya.Item
         public byte Server { get; set; }
         public byte Count { get; set; }
 
-        public int Duration { get; set; }
-
-        public byte ExpandDuration { get; set; }
-        public byte SecOption { get; set; }
-        public byte OptionRate { get; set; }
-        public byte BuyMethod { get; set; }
-        public byte MaxLevel { get; set; }
-        public byte Arg1 { get; set; }
-        public byte Arg2 { get; set; }
-        public byte Arg3 { get; set; }
-        public byte Arg4 { get; set; }
-        public byte Arg5 { get; set; }
-
-        public int Arg6 { get; set; }
-        public int Arg7 { get; set; }
-        public int Arg8 { get; set; }
-        public int Arg9 { get; set; }
-        public int Arg10 { get; set; }
-        public int Arg11 { get; set; }
-        public int Arg12 { get; set; }
-        public int Arg13 { get; set; }
-        public int Arg14 { get; set; }
-
         [JsonConstructor]
-        public ItemDefinition()
+        public ItemDefinitionEp5()
         {
         }
 
-        public ItemDefinition(SBinaryReader binaryReader)
+        public ItemDefinitionEp5(SBinaryReader binaryReader)
         {
             Name = binaryReader.ReadString();
             Description = binaryReader.ReadString();
@@ -129,11 +106,11 @@ namespace Parsec.Shaiya.Item
             ReqRec = binaryReader.Read<short>();
             ReqInt = binaryReader.Read<short>();
             ReqWis = binaryReader.Read<short>();
-            ReqLuc = binaryReader.Read<int>();
+            ReqLuc = binaryReader.Read<short>();
             ReqVg = binaryReader.Read<short>();
             ReqOg = binaryReader.Read<byte>();
             ReqIg = binaryReader.Read<byte>();
-            Range = binaryReader.Read<short>();
+            Range = binaryReader.Read<byte>();
             AttackTime = binaryReader.Read<byte>();
             Attrib = binaryReader.Read<byte>();
             Special = binaryReader.Read<byte>();
@@ -160,36 +137,11 @@ namespace Parsec.Shaiya.Item
             Drop = binaryReader.Read<short>();
             Server = binaryReader.Read<byte>();
             Count = binaryReader.Read<byte>();
-
-            // Read unknown fields
-            Duration = binaryReader.Read<int>();
-
-            ExpandDuration = binaryReader.Read<byte>();
-            SecOption = binaryReader.Read<byte>();
-            OptionRate = binaryReader.Read<byte>();
-            BuyMethod = binaryReader.Read<byte>();
-            MaxLevel = binaryReader.Read<byte>();
-            Arg1 = binaryReader.Read<byte>();
-            Arg2 = binaryReader.Read<byte>();
-            Arg3 = binaryReader.Read<byte>();
-            Arg4 = binaryReader.Read<byte>();
-            Arg5 = binaryReader.Read<byte>();
-
-            Arg6 = binaryReader.Read<int>();
-            Arg7 = binaryReader.Read<int>();
-            Arg8 = binaryReader.Read<int>();
-            Arg9 = binaryReader.Read<int>();
-            Arg10 = binaryReader.Read<int>();
-            Arg11 = binaryReader.Read<int>();
-            Arg12 = binaryReader.Read<int>();
-            Arg13 = binaryReader.Read<int>();
-            Arg14 = binaryReader.Read<int>();
         }
 
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
             buffer.AddRange(Name.GetLengthPrefixedBytes());
             buffer.AddRange(Description.GetLengthPrefixedBytes());
             buffer.Add(Type);
@@ -216,7 +168,7 @@ namespace Parsec.Shaiya.Item
             buffer.AddRange(ReqVg.GetBytes());
             buffer.Add(ReqOg);
             buffer.Add(ReqIg);
-            buffer.AddRange(Range.GetBytes());
+            buffer.Add(Range);
             buffer.Add(AttackTime);
             buffer.Add(Attrib);
             buffer.Add(Special);
@@ -243,28 +195,6 @@ namespace Parsec.Shaiya.Item
             buffer.AddRange(Drop.GetBytes());
             buffer.Add(Server);
             buffer.Add(Count);
-
-            buffer.AddRange(Duration.GetBytes());
-            buffer.Add(ExpandDuration);
-            buffer.Add(SecOption);
-            buffer.Add(OptionRate);
-            buffer.Add(BuyMethod);
-            buffer.Add(MaxLevel);
-            buffer.Add(Arg1);
-            buffer.Add(Arg2);
-            buffer.Add(Arg3);
-            buffer.Add(Arg4);
-            buffer.Add(Arg5);
-            buffer.AddRange(Arg6.GetBytes());
-            buffer.AddRange(Arg7.GetBytes());
-            buffer.AddRange(Arg8.GetBytes());
-            buffer.AddRange(Arg9.GetBytes());
-            buffer.AddRange(Arg10.GetBytes());
-            buffer.AddRange(Arg11.GetBytes());
-            buffer.AddRange(Arg12.GetBytes());
-            buffer.AddRange(Arg13.GetBytes());
-            buffer.AddRange(Arg14.GetBytes());
-
             return buffer.ToArray();
         }
     }
