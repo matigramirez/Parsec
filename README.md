@@ -24,6 +24,8 @@ make reading and manipulating the game's file formats easy.
 - `DBItemText.SData`
 - `DBSkillData.SData`
 - `DBSkillText.SData`
+- `DBItemSell.SData`
+- `DBItemSellText.SData`
 - `svmap`
 - `ANI`
 - `3DC`
