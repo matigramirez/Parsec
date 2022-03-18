@@ -10,7 +10,7 @@
         /// <summary>
         /// Decrypts the file's buffer
         /// </summary>
-        void DecryptBuffer();
+        void DecryptBuffer(bool validateChecksum = false);
 
         /// <summary>
         /// Writes the file with encryption
