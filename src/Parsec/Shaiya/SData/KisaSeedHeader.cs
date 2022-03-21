@@ -16,7 +16,7 @@ namespace Parsec.Shaiya.SData
         public uint RealSize { get; set; }
 
         /// <summary>
-        /// Read as char[16]
+        /// Read as char[12] or char[16], depending on the header type
         /// </summary>
         public byte[] Padding { get; set; }
 
@@ -45,7 +45,8 @@ namespace Parsec.Shaiya.SData
             RealSize = BitConverter.ToUInt32(data, currentOffset);
             currentOffset += 4;
 
-            Padding = data.SubArray(currentOffset, 16);
+            var paddingLength = currentOffset == 48 ? 16 : 12;
+            Padding = data.SubArray(currentOffset, paddingLength);
         }
     }
 }
