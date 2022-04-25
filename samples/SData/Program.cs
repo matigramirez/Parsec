@@ -22,16 +22,23 @@ namespace Parsec.Samples
 
             var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
 
-            Console.WriteLine($"Merchant Count: {npcQuest.Merchants.Count}");
-            Console.WriteLine($"GateKeeper Count: {npcQuest.Gatekeepers.Count}");
-            Console.WriteLine($"Quest Count: {npcQuest.Quests.Count}");
-            npcQuest.ExportJson("NpcQuest.json");
+            Console.WriteLine($"Merchant Count (EP 5): {npcQuest.Merchants.Count}");
+            Console.WriteLine($"GateKeeper Count (EP 5): {npcQuest.Gatekeepers.Count}");
+            Console.WriteLine($"Quest Count (EP 5): {npcQuest.Quests.Count}");
+            npcQuest.ExportJson("NpcQuest.EP5.json");
 
             var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
-            FileHelper.WriteFile("NpcQuest.SData.Encrypted", encryptedBytes);
+            FileHelper.WriteFile("NpcQuest.EP5.SData.Encrypted", encryptedBytes);
 
             var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
-            FileHelper.WriteFile("NpcQuest.SData.Decrypted", decryptedBytes);
+            FileHelper.WriteFile("NpcQuest.EP5.SData.Decrypted", decryptedBytes);
+
+            npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP8.SData", Format.EP8);
+
+            Console.WriteLine($"Merchant Count (EP 8): {npcQuest.Merchants.Count}");
+            Console.WriteLine($"GateKeeper Count (EP 8): {npcQuest.Gatekeepers.Count}");
+            Console.WriteLine($"Quest Count (EP 8): {npcQuest.Quests.Count}");
+            npcQuest.ExportJson("NpcQuest.EP8.json");
 
             #endregion
 

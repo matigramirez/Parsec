@@ -39,8 +39,8 @@ namespace Parsec.Shaiya.NpcQuest
             }
 
             // TODO: Remove this when support for EP5+ is added
-            if (Format > Format.EP5)
-                throw new NotSupportedException("Only NpcQuest EP4 and EP5 format can be read");
+            if (Format > Format.EP5 && Format != Format.EP8)
+                throw new NotSupportedException("Only NpcQuest EP4, EP5 and EP8 format can be read");
 
             ReadMerchants();
             ReadGatekeepers();
@@ -65,7 +65,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             for (int i = 0; i < merchantCount; i++)
             {
-                var merchant = new Merchant(_binaryReader);
+                var merchant = new Merchant(_binaryReader, Format);
                 Merchants.Add(merchant);
             }
         }
@@ -76,7 +76,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             for (int i = 0; i < gateKeeperCount; i++)
             {
-                var gatekeeper = new GateKeeper(_binaryReader);
+                var gatekeeper = new GateKeeper(_binaryReader, Format);
                 Gatekeepers.Add(gatekeeper);
             }
         }
@@ -87,7 +87,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             for (int i = 0; i < count; i++)
             {
-                var npc = new StandardNpc(_binaryReader);
+                var npc = new StandardNpc(_binaryReader, Format);
                 npcList.Add(npc);
             }
         }

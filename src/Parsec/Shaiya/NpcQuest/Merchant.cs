@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Parsec.Readers;
+using Parsec.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest
@@ -11,7 +12,7 @@ namespace Parsec.Shaiya.NpcQuest
 
         public List<MerchantItem> SaleItems { get; } = new();
 
-        public Merchant(SBinaryReader binaryReader)
+        public Merchant(SBinaryReader binaryReader, Format format) : base(format)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             MerchantType = (MerchantType)binaryReader.Read<byte>();
