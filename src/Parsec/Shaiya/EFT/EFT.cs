@@ -69,9 +69,19 @@ namespace Parsec.Shaiya.EFT
         {
             var buffer = new List<byte>();
             buffer.AddRange(Signature.GetBytes());
+
             buffer.AddRange(Objects.GetBytes());
-            buffer.AddRange(Textures.Count.GetBytes());
-            buffer.AddRange(Effects.GetBytes());
+            buffer.AddRange(Textures.GetBytes());
+
+            Format = Signature switch
+            {
+                "EFT" => EFTFormat.EFT,
+                "EF2" => EFTFormat.EF2,
+                "EF3" => EFTFormat.EF3,
+                _ => EFTFormat.Unknown
+            };
+
+            buffer.AddRange(Effects.Count.GetBytes());
 
             foreach (var scene in Effects)
                 buffer.AddRange(scene.GetBytes(Format));
