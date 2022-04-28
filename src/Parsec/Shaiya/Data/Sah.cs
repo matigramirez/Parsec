@@ -60,6 +60,7 @@ namespace Parsec.Shaiya.Data
         /// <param name="fileCount"></param>
         public Sah(string path, SFolder rootFolder, int fileCount)
         {
+            Signature = "SAH";
             Path = path;
             RootFolder = rootFolder;
             FileCount = fileCount;
