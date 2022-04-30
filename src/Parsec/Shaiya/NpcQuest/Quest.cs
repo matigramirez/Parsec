@@ -216,6 +216,10 @@ namespace Parsec.Shaiya.NpcQuest
             }
         }
 
+        public Quest()
+        {
+        }
+
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();

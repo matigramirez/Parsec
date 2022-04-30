@@ -16,6 +16,10 @@ namespace Parsec.Shaiya.NpcQuest
             Count = binaryReader.Read<byte>();
         }
 
+        public QuestItem()
+        {
+        }
+
         public byte[] GetBytes(params object[] options) => new[]
         {
             Type, TypeId, Count

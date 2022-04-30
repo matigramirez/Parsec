@@ -15,6 +15,10 @@ namespace Parsec.Shaiya.Svmap
         public int DestinationMapId { get; set; }
         public Vector3 DestinationPosition { get; set; }
 
+        public Portal() 
+        {
+        }
+
         public Portal(SBinaryReader binaryReader)
         {
             Position = new Vector3(binaryReader);

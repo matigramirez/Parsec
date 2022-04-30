@@ -63,6 +63,10 @@ namespace Parsec.Shaiya.NpcQuest
             NextQuest = binaryReader.Read<ushort>();
         }
 
+        public QuestResult()
+        {
+        }
+
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
