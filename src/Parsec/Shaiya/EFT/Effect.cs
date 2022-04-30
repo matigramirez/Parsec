@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class Effect : IBinary
+    public class Effect
     {
         /// <summary>
         /// Not part of the structure, but left here for readability purposes
@@ -84,7 +86,7 @@ namespace Parsec.Shaiya.EFT
         public Effect(SBinaryReader binaryReader, EFTFormat format, int index)
         {
             Index = index;
-            Name = binaryReader.ReadString();
+            Name = binaryReader.ReadString(Encoding.ASCII);
 
             Unknown1 = binaryReader.Read<int>();
             Unknown2 = binaryReader.Read<int>();
@@ -171,9 +173,70 @@ namespace Parsec.Shaiya.EFT
         /// <summary>
         /// Expects <see cref="EFTFormat"/> as a parameter
         /// </summary>
-        public byte[] GetBytes(params object[] options)
+        public byte[] GetBytes(EFTFormat format, params object[] options)
         {
             var buffer = new List<byte>();
+            buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII));
+
+            buffer.AddRange(Unknown1.GetBytes());
+            buffer.AddRange(Unknown2.GetBytes());
+            buffer.AddRange(Unknown3.GetBytes());
+            buffer.AddRange(Unknown4.GetBytes());
+            buffer.AddRange(Unknown5.GetBytes());
+            buffer.AddRange(Unknown6.GetBytes());
+
+            buffer.AddRange(TextureId.GetBytes());
+
+            buffer.AddRange(Unknown8.GetBytes());
+
+            buffer.AddRange(Object3DEId.GetBytes());
+
+            buffer.AddRange(Unknown10.GetBytes());
+            buffer.AddRange(Unknown11.GetBytes());
+            buffer.AddRange(Unknown12.GetBytes());
+            buffer.AddRange(Unknown13.GetBytes());
+            buffer.AddRange(Unknown14.GetBytes());
+            buffer.AddRange(Unknown15.GetBytes());
+            buffer.AddRange(Unknown16.GetBytes());
+            buffer.AddRange(Unknown17.GetBytes());
+            buffer.AddRange(Unknown18.GetBytes());
+
+            buffer.AddRange(UnknownVec1.GetBytes());
+            buffer.AddRange(UnknownVec2.GetBytes());
+
+            buffer.AddRange(Position.GetBytes());
+
+            buffer.AddRange(UnknownVec4.GetBytes());
+            buffer.AddRange(UnknownVec5.GetBytes());
+
+            buffer.AddRange(Unknown19.GetBytes());
+            buffer.AddRange(Unknown20.GetBytes());
+            buffer.AddRange(Unknown21.GetBytes());
+
+            buffer.AddRange(UnknownVec6.GetBytes());
+
+            buffer.AddRange(Unknown22.GetBytes());
+            buffer.AddRange(Unknown23.GetBytes());
+            buffer.AddRange(Unknown24.GetBytes());
+            buffer.AddRange(Unknown25.GetBytes());
+            buffer.AddRange(Unknown26.GetBytes());
+
+            if (format == EFTFormat.EF3)
+            {
+                buffer.AddRange(Unknown27.GetBytes());
+                buffer.AddRange(Unknown28.GetBytes());
+            }
+
+            buffer.AddRange(Rotations.GetBytes());
+            buffer.AddRange(EffectSub2.GetBytes());
+            buffer.AddRange(EffectSub3.GetBytes());
+
+            buffer.AddRange(Unknown29.GetBytes());
+            buffer.AddRange(Unknown30.GetBytes());
+            buffer.AddRange(Unknown31.GetBytes());
+            buffer.AddRange(Unknown32.GetBytes());
+
+            buffer.AddRange(EffectSub4.GetBytes());
             return buffer.ToArray();
         }
     }
