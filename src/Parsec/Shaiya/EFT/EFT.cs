@@ -48,20 +48,20 @@ namespace Parsec.Shaiya.EFT
                 Textures.Add(texture);
             }
 
-            var sceneCount = _binaryReader.Read<int>();
+            var effectCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < sceneCount; i++)
+            for (int i = 0; i < effectCount; i++)
             {
-                var scene = new Effect(_binaryReader, Format, i);
-                Effects.Add(scene);
+                var effect = new Effect(_binaryReader, Format, i);
+                Effects.Add(effect);
             }
 
-            var eftSub2Count = _binaryReader.Read<int>();
+            var sequenceCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < eftSub2Count; i++)
+            for (int i = 0; i < sequenceCount; i++)
             {
-                var sub2 = new EffectSequence(_binaryReader);
-                EffectSequences.Add(sub2);
+                var sequence = new EffectSequence(_binaryReader);
+                EffectSequences.Add(sequence);
             }
         }
 
