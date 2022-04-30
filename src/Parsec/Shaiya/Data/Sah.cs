@@ -14,7 +14,7 @@ namespace Parsec.Shaiya.Data
         /// <summary>
         /// SAH signature, normally "SAH" but it can be changed. Read as char[3].
         /// </summary>
-        public string Signature { get; set; }
+        public string Signature { get; set; } = "SAH";
 
         /// <summary>
         /// 4 bytes after signature. Meaning isn't truly known but it's suspected that's used for versioning.
@@ -60,7 +60,6 @@ namespace Parsec.Shaiya.Data
         /// <param name="fileCount"></param>
         public Sah(string path, SFolder rootFolder, int fileCount)
         {
-            Signature = "SAH";
             Path = path;
             RootFolder = rootFolder;
             FileCount = fileCount;
