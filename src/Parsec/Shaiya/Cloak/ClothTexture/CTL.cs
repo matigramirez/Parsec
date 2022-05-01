@@ -4,12 +4,10 @@ using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.CTL
+namespace Parsec.Shaiya.Cloak.ClothTexture
 {
     public class CTL : FileBase, IJsonReadable
     {
-        public int Count { get; set; }
-
         public List<Texture> Textures { get; } = new();
 
         [JsonIgnore]
@@ -22,11 +20,11 @@ namespace Parsec.Shaiya.CTL
 
         public override void Read(params object[] options)
         {
-            Count = _binaryReader.Read<int>();
+            var textureCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < textureCount; i++)
             {
-                var texture = new Texture(_binaryReader);
+                var texture = new Texture(_binaryReader, 256, (char)0xCD);
                 Textures.Add(texture);
             }
         }
@@ -34,7 +32,9 @@ namespace Parsec.Shaiya.CTL
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(Textures.GetBytes());
+            buffer.AddRange(Textures.Count.GetBytes());
+            foreach (var texture in Textures)
+                buffer.AddRange(texture.GetBytes(256, 0xCD));
             return buffer.ToArray();
         }
     }
