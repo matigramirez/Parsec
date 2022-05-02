@@ -22,7 +22,4 @@
         <PackageReference Include="ServiceStack.Text" Version="6.0.2" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Shaiya\NpcQuest\EP8\" />
-    </ItemGroup>
 </Project>
