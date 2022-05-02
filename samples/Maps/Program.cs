@@ -1,5 +1,4 @@
 ﻿using System;
-using Parsec.Readers;
 using Parsec.Shaiya.Svmap;
 using Parsec.Shaiya.Zon;
 

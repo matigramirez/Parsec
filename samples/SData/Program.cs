@@ -1,7 +1,6 @@
 ﻿using System;
 using Parsec.Common;
 using Parsec.Helpers;
-using Parsec.Readers;
 using Parsec.Shaiya.Cash;
 using Parsec.Shaiya.DualLayerClothes;
 using Parsec.Shaiya.GuildHouse;

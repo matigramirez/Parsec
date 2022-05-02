@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -11,6 +12,11 @@ namespace Parsec.Shaiya.Svmap
         public int NpcId { get; set; }
         public List<NpcLocation> Locations { get; set; } = new();
 
+        [JsonConstructor]
+        public Npc()
+        {
+        }
+        
         public Npc(SBinaryReader binaryReader)
         {
             Type = binaryReader.Read<int>();
