@@ -14,13 +14,22 @@ namespace Parsec.Shaiya.MLX
 
         public override string Extension => "MLX";
 
+        public MLXVersion Version { get; set; } = MLXVersion.MLX1;
+
         public override void Read(params object[] options)
         {
+            var signature = _binaryReader.ReadString(4);
+
+            if (signature == "MLX2")
+                Version = MLXVersion.MLX2;
+            else
+                _binaryReader.ResetOffset();
+            
             var recordCount = _binaryReader.Read<int>();
 
             for (int i = 0; i < recordCount; i++)
             {
-                var record = new MLXRecord(_binaryReader);
+                var record = new MLXRecord(_binaryReader, Version);
                 Records.Add(record);
             }
         }
