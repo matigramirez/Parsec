@@ -28,41 +28,42 @@ namespace Parsec.Shaiya.MLX
         {
         }
 
-        public MLXRecord(SBinaryReader binaryReader, MLXVersion version)
+        public MLXRecord(SBinaryReader binaryReader, MLXFormat format)
         {
             Id = binaryReader.Read<int>();
             Name = binaryReader.ReadString();
+
             UpperTextureName = binaryReader.ReadString();
             Upper3DCName = binaryReader.ReadString();
             
-            if(version == MLXVersion.MLX2)
+            if(format == MLXFormat.MLX2)
                 UpperNumber = binaryReader.Read<int>();
             
             LowerTextureName = binaryReader.ReadString();
             Lower3DCName = binaryReader.ReadString();
             
-            if(version == MLXVersion.MLX2)
+            if(format == MLXFormat.MLX2)
                 LowerNumber = binaryReader.Read<int>();
             
             BootsTextureName = binaryReader.ReadString();
             Boots3DCName = binaryReader.ReadString();
             
-            if(version == MLXVersion.MLX2)
+            if(format == MLXFormat.MLX2)
                 BootsNumber = binaryReader.Read<int>();
             
             HandsTextureName = binaryReader.ReadString();
             Hands3DCName = binaryReader.ReadString();
             
-            if(version == MLXVersion.MLX2)
+            if(format == MLXFormat.MLX2)
                 HandsNumber = binaryReader.Read<int>();
         }
 
         public byte[] GetBytes(params object[] options)
         {
-            var version = MLXVersion.MLX1;
+            var version = MLXFormat.MLX1;
             
             if(options.Length > 0)
-                version = (MLXVersion)options[0];
+                version = (MLXFormat)options[0];
             
             
             var buffer = new List<byte>();
@@ -71,25 +72,25 @@ namespace Parsec.Shaiya.MLX
             buffer.AddRange(UpperTextureName.GetLengthPrefixedBytes());
             buffer.AddRange(Upper3DCName.GetLengthPrefixedBytes());
             
-            if(version == MLXVersion.MLX2)
+            if(version == MLXFormat.MLX2)
                 buffer.AddRange(UpperNumber.GetBytes());
             
             buffer.AddRange(LowerTextureName.GetLengthPrefixedBytes());
             buffer.AddRange(Lower3DCName.GetLengthPrefixedBytes());
             
-            if(version == MLXVersion.MLX2)
+            if(version == MLXFormat.MLX2)
                 buffer.AddRange(LowerNumber.GetBytes());
             
             buffer.AddRange(BootsTextureName.GetLengthPrefixedBytes());
             buffer.AddRange(Boots3DCName.GetLengthPrefixedBytes());
             
-            if(version == MLXVersion.MLX2)
+            if(version == MLXFormat.MLX2)
                 buffer.AddRange(BootsNumber.GetBytes());
             
             buffer.AddRange(HandsTextureName.GetLengthPrefixedBytes());
             buffer.AddRange(Hands3DCName.GetLengthPrefixedBytes());
             
-            if(version == MLXVersion.MLX2)
+            if(version == MLXFormat.MLX2)
                 buffer.AddRange(HandsNumber.GetBytes());
             
             return buffer.ToArray();
