@@ -23,4 +23,13 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\Parsec\Parsec.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Shaiya\EFT\Monster.EFT">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\EFT\Monster.EFT.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>
