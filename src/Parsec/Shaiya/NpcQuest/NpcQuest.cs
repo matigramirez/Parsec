@@ -131,8 +131,6 @@ namespace Parsec.Shaiya.NpcQuest
 
         public override byte[] GetBytes(params object[] options)
         {
-            throw new NotImplementedException();
-
             var buffer = new List<byte>();
 
             buffer.AddRange(Merchants.GetBytes());

@@ -25,7 +25,7 @@ namespace Parsec.Shaiya.NpcQuest
             _format = format;
             MapId = binaryReader.Read<short>();
             Position = new Vector3(binaryReader);
-            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
                 TargetName = binaryReader.ReadString(false);
             Cost = binaryReader.Read<int>();
         }
@@ -41,7 +41,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             buffer.AddRange(MapId.GetBytes());
             buffer.AddRange(Position.GetBytes());
-            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
                 buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
             buffer.AddRange(Cost.GetBytes());
 
