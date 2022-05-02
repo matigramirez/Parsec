@@ -14,14 +14,18 @@ namespace Parsec.Shaiya.MLX
 
         public override string Extension => "MLX";
 
-        public MLXVersion Version { get; set; } = MLXVersion.MLX1;
+        public MLXFormat Format { get; set; } = MLXFormat.MLX1;
 
         public override void Read(params object[] options)
         {
+            // For some reason, sometimes MLX files are empty
+            if(_binaryReader.Buffer.Length == 0)
+                return;
+            
             var signature = _binaryReader.ReadString(4);
 
             if (signature == "MLX2")
-                Version = MLXVersion.MLX2;
+                Format = MLXFormat.MLX2;
             else
                 _binaryReader.ResetOffset();
             
@@ -29,7 +33,7 @@ namespace Parsec.Shaiya.MLX
 
             for (int i = 0; i < recordCount; i++)
             {
-                var record = new MLXRecord(_binaryReader, Version);
+                var record = new MLXRecord(_binaryReader, Format);
                 Records.Add(record);
             }
         }

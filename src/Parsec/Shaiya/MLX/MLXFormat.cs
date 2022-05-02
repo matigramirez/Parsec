@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.MLX
 {
-    public enum MLXVersion
+    public enum MLXFormat
     {
         MLX1,
         MLX2
