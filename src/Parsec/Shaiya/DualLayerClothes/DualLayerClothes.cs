@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Parsec.Common;
+using Parsec.Extensions;
 
 namespace Parsec.Shaiya.DualLayerClothes
 {
@@ -23,7 +24,7 @@ namespace Parsec.Shaiya.DualLayerClothes
         {
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(Costumes.Count));
+            buffer.AddRange(Costumes.Count.GetBytes());
 
             foreach (var costume in Costumes)
                 buffer.AddRange(costume.GetBytes());

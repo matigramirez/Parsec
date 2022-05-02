@@ -53,11 +53,11 @@ namespace Parsec.Shaiya.Cash
             buffer.AddRange(Items.GetBytes(false));
 
             // For some reason these strings have 2 string terminators
-            buffer.AddRange(BitConverter.GetBytes(ProductName.Length + 2));
+            buffer.AddRange((ProductName.Length + 2).GetBytes());
             buffer.AddRange(Encoding.ASCII.GetBytes(ProductName + "\0\0"));
-            buffer.AddRange(BitConverter.GetBytes(ProductCode.Length + 2));
+            buffer.AddRange((ProductCode.Length + 2).GetBytes());
             buffer.AddRange(Encoding.ASCII.GetBytes(ProductCode + "\0\0"));
-            buffer.AddRange(BitConverter.GetBytes(Description.Length + 2));
+            buffer.AddRange((Description.Length + 2).GetBytes());
             buffer.AddRange(Encoding.ASCII.GetBytes(Description + "\0\0"));
 
             return buffer.ToArray();

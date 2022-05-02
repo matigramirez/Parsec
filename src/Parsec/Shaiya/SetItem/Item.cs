@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -25,8 +26,8 @@ namespace Parsec.Shaiya.SetItem
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(Type));
-            buffer.AddRange(BitConverter.GetBytes(TypeId));
+            buffer.AddRange(Type.GetBytes());
+            buffer.AddRange(TypeId.GetBytes());
             return buffer.ToArray();
         }
     }

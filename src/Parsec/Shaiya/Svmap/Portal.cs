@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -35,10 +36,10 @@ namespace Parsec.Shaiya.Svmap
         {
             var buffer = new List<byte>();
             buffer.AddRange(Position.GetBytes());
-            buffer.AddRange(BitConverter.GetBytes(FactionOrPortalId));
-            buffer.AddRange(BitConverter.GetBytes(MinLevel));
-            buffer.AddRange(BitConverter.GetBytes(MaxLevel));
-            buffer.AddRange(BitConverter.GetBytes(DestinationMapId));
+            buffer.AddRange(FactionOrPortalId.GetBytes());
+            buffer.AddRange(MinLevel.GetBytes());
+            buffer.AddRange(MaxLevel.GetBytes());
+            buffer.AddRange(DestinationMapId.GetBytes());
             buffer.AddRange(DestinationPosition.GetBytes());
             return buffer.ToArray();
         }

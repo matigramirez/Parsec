@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Parsec.Extensions;
 using Parsec.Readers;
 
 namespace Parsec.Helpers
@@ -16,9 +17,10 @@ namespace Parsec.Helpers
         /// </summary>
         /// <param name="path">File path</param>
         /// <param name="data">The data byte array</param>
-        public static void WriteFile(string path, byte[] data)
+        /// <param name="backupIfExists">Makes a backup of the file if it already existed</param>
+        public static bool WriteFile(string path, byte[] data, bool backupIfExists = true)
         {
-            if (FileExists(path))
+            if (backupIfExists && FileExists(path))
             {
                 DeleteFile($"{path}.bak");
                 RenameFile(path, $"{path}.bak");
@@ -26,15 +28,29 @@ namespace Parsec.Helpers
 
             var directoryPath = Path.GetDirectoryName(path);
 
+            // Check that directory isn't an empty string
             if (!string.IsNullOrEmpty(directoryPath))
-                CreateDirectory(directoryPath);
+            {
+                // Create directory. If it fails to create it because of invalid characters, execution is stopped.
+                if (!CreateDirectory(directoryPath))
+                    return false;
+            }
 
-            // Create file and save data
-            using var binaryWriter =
-                new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
+            // Try to write file, it can fail if invalid characters are used in the path.
+            try
+            {
+                // Create file and save data
+                using var binaryWriter =
+                    new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
 
-            binaryWriter.Write(data);
-            binaryWriter.Dispose();
+                binaryWriter.Write(data);
+                binaryWriter.Dispose();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -72,12 +88,24 @@ namespace Parsec.Helpers
         /// Creates a directory at the specified path.
         /// </summary>
         /// <param name="directoryPath">Directory path</param>
-        public static void CreateDirectory(string directoryPath)
+        public static bool CreateDirectory(string directoryPath)
         {
-            if (DirectoryExists(directoryPath) || string.IsNullOrEmpty(directoryPath))
-                return;
+            if (DirectoryExists(directoryPath))
+                return true;
 
-            Directory.CreateDirectory(directoryPath);
+            if (string.IsNullOrEmpty(directoryPath))
+                return false;
+
+            // Try to create the directory, it will fail and throw an exception if characters are invalid.
+            try
+            {
+                Directory.CreateDirectory(directoryPath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>

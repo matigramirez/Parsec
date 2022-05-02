@@ -120,7 +120,7 @@ namespace Parsec.Shaiya.NpcQuest
         {
             _format = format;
             Id = binaryReader.Read<short>();
-            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
             {
                 Name = binaryReader.ReadString();
                 Summary = binaryReader.ReadString();
@@ -205,7 +205,7 @@ namespace Parsec.Shaiya.NpcQuest
                 Results.Add(result);
             }
 
-            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
             {
                 InitialDescription = binaryReader.ReadString(false);
                 QuestWindowSummary = binaryReader.ReadString(false);
@@ -227,7 +227,7 @@ namespace Parsec.Shaiya.NpcQuest
             var buffer = new List<byte>();
 
             buffer.AddRange(Id.GetBytes());
-            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
             {
                 buffer.AddRange(Name.GetLengthPrefixedBytes(false));
                 buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
@@ -289,7 +289,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             buffer.AddRange(Results.GetBytes());
 
-            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
             {
                 buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
                 buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());

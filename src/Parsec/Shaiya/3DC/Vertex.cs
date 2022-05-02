@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -109,12 +110,12 @@ namespace Parsec.Shaiya.Obj3DC
                 format = (Format)options[0];
 
             buffer.AddRange(Position.GetBytes());
-            buffer.AddRange(BitConverter.GetBytes(BoneWeight));
+            buffer.AddRange(BoneWeight.GetBytes());
 
             if (format >= Format.EP6)
             {
-                buffer.AddRange(BitConverter.GetBytes(Bone2Weight));
-                buffer.AddRange(BitConverter.GetBytes(Bone3Weight));
+                buffer.AddRange(Bone2Weight.GetBytes());
+                buffer.AddRange(Bone3Weight.GetBytes());
             }
 
             buffer.Add(BoneVertexGroup1);

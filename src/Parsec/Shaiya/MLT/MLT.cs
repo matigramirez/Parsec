@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Mlt
@@ -62,29 +63,17 @@ namespace Parsec.Shaiya.Mlt
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(Encoding.ASCII.GetBytes(Signature));
+            buffer.AddRange(Signature.GetBytes());
 
-            buffer.AddRange(BitConverter.GetBytes(Obj3DCNames.Count));
-
+            buffer.AddRange(Obj3DCNames.Count.GetBytes());
             foreach (var obj3dcName in Obj3DCNames)
-            {
-                buffer.AddRange(BitConverter.GetBytes(obj3dcName.Length + 1));
-                buffer.AddRange(Encoding.ASCII.GetBytes(obj3dcName + '\0'));
-            }
+                obj3dcName.GetLengthPrefixedBytes();
 
-            buffer.AddRange(BitConverter.GetBytes(TextureNames.Count));
-
+            buffer.AddRange(TextureNames.Count.GetBytes());
             foreach (var textureName in TextureNames)
-            {
-                buffer.AddRange(BitConverter.GetBytes(textureName.Length + 1));
-                buffer.AddRange(Encoding.ASCII.GetBytes(textureName + '\0'));
-            }
+                textureName.GetLengthPrefixedBytes();
 
-            buffer.AddRange(BitConverter.GetBytes(Records.Count));
-
-            foreach (var record in Records)
-                buffer.AddRange(record.GetBytes());
-
+            buffer.AddRange(Records.GetBytes());
             return buffer.ToArray();
         }
     }

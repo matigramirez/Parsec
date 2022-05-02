@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Parsec.Extensions;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SData
 {
-    public class KisaSeedHeader
+    public class KisaSeedHeader : IBinary
     {
         /// <summary>
         /// Encryption signature. Read as char[40]
@@ -47,6 +49,16 @@ namespace Parsec.Shaiya.SData
 
             var paddingLength = currentOffset == 48 ? 16 : 12;
             Padding = data.SubArray(currentOffset, paddingLength);
+        }
+
+        public byte[] GetBytes(params object[] options)
+        {
+            var buffer = new List<byte>();
+            buffer.AddRange(Signature.GetBytes());
+            buffer.AddRange(Checksum.GetBytes());
+            buffer.AddRange(RealSize.GetBytes());
+            buffer.AddRange(Padding);
+            return buffer.ToArray();
         }
     }
 }

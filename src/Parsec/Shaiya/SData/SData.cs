@@ -75,10 +75,7 @@ namespace Parsec.Shaiya.SData
             var buffer = new List<byte>();
 
             // Add header bytes
-            buffer.AddRange(header.Signature.GetBytes());
-            buffer.AddRange(header.Checksum.GetBytes());
-            buffer.AddRange(header.RealSize.GetBytes());
-            buffer.AddRange(header.Padding);
+            buffer.AddRange(header.GetBytes());
 
             // Encrypt in chunks of 16 bytes
             for (var i = 0; i < alignmentSize / 16; ++i)

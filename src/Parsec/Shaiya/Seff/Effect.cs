@@ -86,9 +86,7 @@ namespace Parsec.Shaiya.Seff
             buffer.AddRange(Unknown5.GetBytes());
             buffer.AddRange(Unknown6.GetBytes());
 
-            // Name Length + 1 for the string terminator
-            buffer.AddRange(BitConverter.GetBytes(Name.Length));
-            buffer.AddRange(Encoding.Unicode.GetBytes(Name));
+            buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.Unicode));
 
             buffer.Add(Red);
             buffer.Add(Green);

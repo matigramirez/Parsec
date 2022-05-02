@@ -28,14 +28,12 @@ namespace Parsec.Shaiya.Zon
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
             buffer.AddRange(Format.GetBytes());
 
             buffer.AddRange(Records.Count.GetBytes());
-
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes(Format));
-
+            
             return buffer.ToArray();
         }
     }
