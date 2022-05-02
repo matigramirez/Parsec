@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -216,6 +217,7 @@ namespace Parsec.Shaiya.NpcQuest
             }
         }
 
+        [JsonConstructor]
         public Quest()
         {
         }

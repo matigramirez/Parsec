@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Parsec.Readers;
 using Parsec.Common;
 using Parsec.Shaiya.Core;
+using Newtonsoft.Json;
 
 namespace Parsec.Shaiya.NpcQuest
 {
@@ -29,6 +30,7 @@ namespace Parsec.Shaiya.NpcQuest
             ReadBaseNpcThirdSegment(binaryReader);
         }
 
+        [JsonConstructor]
         public Merchant(Format format = Format.EP5) : base(format)
         {
         }

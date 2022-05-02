@@ -4,7 +4,7 @@ using Parsec.Common;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Readers
+namespace Parsec
 {
     public static class Reader
     {

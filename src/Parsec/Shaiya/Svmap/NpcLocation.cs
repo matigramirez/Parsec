@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -11,6 +12,11 @@ namespace Parsec.Shaiya.Svmap
         public Vector3 Position { get; set; }
         public float Orientation { get; set; }
 
+        [JsonConstructor]
+        public NpcLocation()
+        {
+        }
+        
         public NpcLocation(SBinaryReader binaryReader)
         {
             Position = new Vector3(binaryReader);

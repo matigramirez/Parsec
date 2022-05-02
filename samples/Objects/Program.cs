@@ -1,4 +1,5 @@
-﻿using Parsec.Readers;
+﻿using Parsec.Shaiya.Cloak.ClothTexture;
+using Parsec.Shaiya.Emblem;
 using Parsec.Shaiya.Obj3DC;
 using Parsec.Shaiya.Obj3DO;
 using Parsec.Shaiya.SMOD;
@@ -35,6 +36,20 @@ namespace Parsec.Samples.Object3D
 
             var vani = Reader.ReadFromFile<VAni>("A1_butterfly01.VANI");
             vani.ExportJson($"{vani.FileName}.json");
+
+            #endregion
+
+            #region CTL
+
+            var ctl = Reader.ReadFromFile<CTL>("CLOTH_TEXTHRE_DE.CTL");
+            ctl.ExportJson("CLOTH_TEXTHRE_DE.json");
+
+            #endregion
+
+            #region Emblem dat
+
+            var dat = Reader.ReadFromFile<EmblemDat>("EmblemList.dat");
+            dat.ExportJson("EmblemList.json");
 
             #endregion
         }

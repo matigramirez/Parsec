@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -63,6 +64,7 @@ namespace Parsec.Shaiya.NpcQuest
             NextQuest = binaryReader.Read<ushort>();
         }
 
+        [JsonConstructor]
         public QuestResult()
         {
         }

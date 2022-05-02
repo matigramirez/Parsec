@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -13,6 +14,11 @@ namespace Parsec.Shaiya.Svmap
         public int Unknown2 { get; set; }
         public BoundingBox Area { get; set; }
 
+        [JsonConstructor]
+        public Spawn()
+        {
+        }
+        
         public Spawn(SBinaryReader binaryReader)
         {
             Unknown1 = binaryReader.Read<int>();

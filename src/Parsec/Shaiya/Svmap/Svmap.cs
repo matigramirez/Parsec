@@ -19,6 +19,7 @@ namespace Parsec.Shaiya.Svmap
         public List<Spawn> Spawns { get; } = new();
         public List<NamedArea> NamedAreas { get; } = new();
 
+        [JsonConstructor]
         public Svmap()
         {
         }

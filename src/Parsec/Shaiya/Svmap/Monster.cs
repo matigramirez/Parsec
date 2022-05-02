@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -10,6 +11,11 @@ namespace Parsec.Shaiya.Svmap
         public int MobId { get; set; }
         public int Count { get; set; }
 
+        [JsonConstructor]
+        public Monster()
+        {
+        }
+        
         public Monster(SBinaryReader binaryReader)
         {
             MobId = binaryReader.Read<int>();

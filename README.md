@@ -42,6 +42,8 @@ make reading and manipulating the game's file formats easy.
 - `MAni`
 - `MLX`
 - `MON`
+- `CTL`
+- `dat` (Cloth/Emblem)
 
 ## Features
 

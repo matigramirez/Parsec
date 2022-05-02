@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Parsec.Readers;
 using Parsec.Common;
+using Newtonsoft.Json;
 
 namespace Parsec.Shaiya.NpcQuest
 {
@@ -22,6 +23,7 @@ namespace Parsec.Shaiya.NpcQuest
             ReadBaseNpcThirdSegment(binaryReader);
         }
 
+        [JsonConstructor]
         public GateKeeper(Format format = Format.EP5) : base(format)
         {
         }

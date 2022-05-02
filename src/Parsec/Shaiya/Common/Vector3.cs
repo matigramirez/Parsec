@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -24,7 +25,8 @@ namespace Parsec.Shaiya.Common
         /// 3rd (third) element of the vector
         /// </summary>
         public float Z { get; set; }
-
+        
+        [JsonConstructor]
         public Vector3(float x, float y, float z)
         {
             X = x;

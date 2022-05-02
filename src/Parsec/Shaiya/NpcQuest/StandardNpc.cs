@@ -1,5 +1,6 @@
 ﻿using Parsec.Readers;
 using Parsec.Common;
+using Newtonsoft.Json;
 
 namespace Parsec.Shaiya.NpcQuest
 {
@@ -10,6 +11,7 @@ namespace Parsec.Shaiya.NpcQuest
             ReadNpcBaseComplete(binaryReader);
         }
 
+        [JsonConstructor]
         public StandardNpc(Format format = Format.EP5) : base(format)
         {
         }

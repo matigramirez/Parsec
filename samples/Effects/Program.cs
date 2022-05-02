@@ -1,5 +1,4 @@
-﻿using Parsec.Readers;
-using Parsec.Shaiya.EFT;
+﻿using Parsec.Shaiya.EFT;
 using Parsec.Shaiya.Obj3DE;
 using Parsec.Shaiya.Seff;
 using Parsec.Shaiya.Wtr;

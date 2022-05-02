@@ -1,4 +1,5 @@
-﻿using Parsec.Readers;
+﻿using Newtonsoft.Json;
+using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest
@@ -16,6 +17,7 @@ namespace Parsec.Shaiya.NpcQuest
             Count = binaryReader.Read<byte>();
         }
 
+        [JsonConstructor]
         public QuestItem()
         {
         }

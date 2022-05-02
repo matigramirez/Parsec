@@ -1,5 +1,4 @@
 ﻿using System;
-using Parsec.Readers;
 using Parsec.Shaiya.ALT;
 using Parsec.Shaiya.Ani;
 using Parsec.Shaiya.MAni;
