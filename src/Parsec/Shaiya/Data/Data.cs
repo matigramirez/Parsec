@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Parsec.Extensions;
 using Parsec.Helpers;
-using Parsec.Readers;
 
 namespace Parsec.Shaiya.Data
 {
@@ -91,7 +89,9 @@ namespace Parsec.Shaiya.Data
             if (folder != Sah.RootFolder)
                 extractionPath = Path.Combine(extractionDirectory, folder.Name);
 
-            FileHelper.CreateDirectory(extractionPath);
+            // If extraction directory couldn't be created because of invalid characters, skip it
+            if (!FileHelper.CreateDirectory(extractionPath))
+                return;
 
             // Extract files
             foreach (var file in folder.Files)
@@ -109,11 +109,6 @@ namespace Parsec.Shaiya.Data
         /// <param name="extractionDirectory">Extraction directory path</param>
         public void Extract(SFile file, string extractionDirectory)
         {
-            // TODO: Find a better solution for files with korean characters
-            // Skip files with invalid characters
-            if (file.Name.HasInvalidCharacters())
-                return;
-
             var fileBytes = Saf.ReadBytes(file.Offset, file.Length);
             FileHelper.WriteFile(Path.Combine(extractionDirectory, file.Name), fileBytes);
         }
