@@ -33,8 +33,10 @@ namespace Parsec.Shaiya.Cloak.ClothTexture
         {
             var buffer = new List<byte>();
             buffer.AddRange(Textures.Count.GetBytes());
+
             foreach (var texture in Textures)
-                buffer.AddRange(texture.GetBytes(256, 0xCD));
+                buffer.AddRange(texture.GetBytes(256, (char)0xCD));
+
             return buffer.ToArray();
         }
     }

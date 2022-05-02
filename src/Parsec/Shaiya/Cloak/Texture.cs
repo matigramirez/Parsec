@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace Parsec.Shaiya.Cloak
 
         [JsonIgnore]
         private int _fixedLength;
-        
+
         [JsonIgnore]
         private char _padChar = '\0';
 
@@ -38,10 +39,10 @@ namespace Parsec.Shaiya.Cloak
 
             if (options.Length >= 2)
             {
-                _fixedLength = (int) options[0];
-                _padChar = (char) options[1];
+                _fixedLength = (int)options[0];
+                _padChar = Convert.ToChar(options[1]);
             }
-            
+
             buffer.AddRange(Name.GetLengthPrefixedBytes());
 
             var padLength = _fixedLength - Name.Length - 1;
