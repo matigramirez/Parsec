@@ -83,8 +83,8 @@ namespace Parsec.Shaiya.EFT
 
             buffer.AddRange(Effects.Count.GetBytes());
 
-            foreach (var scene in Effects)
-                buffer.AddRange(scene.GetBytes(Format));
+            foreach (var effect in Effects)
+                buffer.AddRange(effect.GetBytes(Format));
 
             buffer.AddRange(EffectSequences.GetBytes());
             return buffer.ToArray();

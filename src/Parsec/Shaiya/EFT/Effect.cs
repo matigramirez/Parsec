@@ -8,7 +8,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT
 {
-    public class Effect
+    public class Effect : IBinary
     {
         /// <summary>
         /// Not part of the structure, but left here for readability purposes
@@ -71,9 +71,9 @@ namespace Parsec.Shaiya.EFT
         public List<EffectSub2> EffectSub2 { get; } = new();
         public List<EffectSub3> EffectSub3 { get; } = new();
 
-        public float Unknown29 { get; set; }
+        public int Unknown29 { get; set; }
         public int Unknown30 { get; set; }
-        public float Unknown31 { get; set; }
+        public int Unknown31 { get; set; }
         public int Unknown32 { get; set; }
 
         public List<EffectSub4> EffectSub4 { get; } = new();
@@ -132,9 +132,9 @@ namespace Parsec.Shaiya.EFT
                 Unknown28 = binaryReader.Read<float>();
             }
 
-            var sceneSub1Count = binaryReader.Read<int>();
+            var rotationCount = binaryReader.Read<int>();
 
-            for (int i = 0; i < sceneSub1Count; i++)
+            for (int i = 0; i < rotationCount; i++)
             {
                 var rotation = new Rotation(binaryReader);
                 Rotations.Add(rotation);
@@ -156,9 +156,9 @@ namespace Parsec.Shaiya.EFT
                 EffectSub3.Add(sub3);
             }
 
-            Unknown29 = binaryReader.Read<float>();
+            Unknown29 = binaryReader.Read<int>();
             Unknown30 = binaryReader.Read<int>();
-            Unknown31 = binaryReader.Read<float>();
+            Unknown31 = binaryReader.Read<int>();
             Unknown32 = binaryReader.Read<int>();
 
             var sceneSub4Count = binaryReader.Read<int>();
@@ -173,8 +173,13 @@ namespace Parsec.Shaiya.EFT
         /// <summary>
         /// Expects <see cref="EFTFormat"/> as a parameter
         /// </summary>
-        public byte[] GetBytes(EFTFormat format, params object[] options)
+        public byte[] GetBytes(params object[] options)
         {
+            var format = EFTFormat.Unknown;
+
+            if (options.Length > 0)
+                format = (EFTFormat)options[0];
+            
             var buffer = new List<byte>();
             buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII));
 
@@ -186,9 +191,7 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(Unknown6.GetBytes());
 
             buffer.AddRange(TextureId.GetBytes());
-
             buffer.AddRange(Unknown8.GetBytes());
-
             buffer.AddRange(Object3DEId.GetBytes());
 
             buffer.AddRange(Unknown10.GetBytes());
