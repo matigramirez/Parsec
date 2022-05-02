@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -7,8 +8,9 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest
 {
-    public class BaseNpc : IBinary
+    public abstract class BaseNpc : IBinary
     {
+        private readonly Format _format;
         public NpcType Type { get; set; }
         public short TypeId { get; set; }
         public int Model { get; set; }
@@ -20,6 +22,11 @@ namespace Parsec.Shaiya.NpcQuest
 
         public List<short> InQuestIds { get; } = new();
         public List<short> OutQuestIds { get; } = new();
+
+        public BaseNpc(Format format)
+        {
+            _format = format;
+        }
 
         protected void ReadNpcBaseComplete(SBinaryReader binaryReader)
         {
@@ -46,8 +53,12 @@ namespace Parsec.Shaiya.NpcQuest
             MoveDistance = binaryReader.Read<int>();
             MoveSpeed = binaryReader.Read<int>();
             Faction = (FactionInt)binaryReader.Read<int>();
-            Name = binaryReader.ReadString(false);
-            WelcomeMessage = binaryReader.ReadString(false);
+
+            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            {
+                Name = binaryReader.ReadString(false);
+                WelcomeMessage = binaryReader.ReadString(false);
+            }
         }
 
         protected void WriteBaseNpcSecondSegmentBytes(List<byte> buffer)
@@ -56,8 +67,11 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(MoveDistance.GetBytes());
             buffer.AddRange(MoveSpeed.GetBytes());
             buffer.AddRange(((int)Faction).GetBytes());
-            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
-            buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(false));
+            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            {
+                buffer.AddRange(Name.GetLengthPrefixedBytes(false));
+                buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(false));
+            }
         }
 
         protected void ReadBaseNpcThirdSegment(SBinaryReader binaryReader)

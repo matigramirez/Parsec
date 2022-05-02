@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -10,6 +11,7 @@ namespace Parsec.Shaiya.NpcQuest
 {
     public class Quest : IBinary
     {
+        private readonly Format _format;
         public short Id { get; set; }
         public string Name { get; set; }
         public string Summary { get; set; }
@@ -116,9 +118,13 @@ namespace Parsec.Shaiya.NpcQuest
 
         public Quest(SBinaryReader binaryReader, Format format)
         {
+            _format = format;
             Id = binaryReader.Read<short>();
-            Name = binaryReader.ReadString();
-            Summary = binaryReader.ReadString();
+            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            {
+                Name = binaryReader.ReadString();
+                Summary = binaryReader.ReadString();
+            }
 
             MinLevel = binaryReader.Read<ushort>();
             MaxLevel = binaryReader.Read<ushort>();
@@ -167,7 +173,6 @@ namespace Parsec.Shaiya.NpcQuest
             StartItemType = binaryReader.Read<byte>();
             StartItemId = binaryReader.Read<byte>();
 
-            // This is variable, in EP6 there's 6 I think
             for (int i = 0; i < 3; i++)
             {
                 var requiredItem = new QuestItem(binaryReader);
@@ -178,7 +183,6 @@ namespace Parsec.Shaiya.NpcQuest
             EndNpcType = binaryReader.Read<byte>();
             EndNpcId = binaryReader.Read<short>();
 
-            // This is variable, in EP6 there's 6 I think
             for (int i = 0; i < 3; i++)
             {
                 var rewardItem = new QuestItem(binaryReader);
@@ -194,20 +198,28 @@ namespace Parsec.Shaiya.NpcQuest
             ResultType = binaryReader.Read<byte>();
             ResultUserSelect = binaryReader.Read<byte>();
 
-            // Is this variable too?
-            for (int i = 0; i < 3; i++)
+
+            for (int i = 0; i < (_format <= Format.EP5 ? 3 : 6); i++)
             {
                 var result = new QuestResult(binaryReader, format);
                 Results.Add(result);
             }
 
-            InitialDescription = binaryReader.ReadString(false);
-            QuestWindowSummary = binaryReader.ReadString(false);
-            ReminderInstructions = binaryReader.ReadString(false);
-            AlternateResponse = binaryReader.ReadString(false);
-            CompletionMessage = binaryReader.ReadString(false);
-            AlternateCompletionMessage1 = binaryReader.ReadString(false);
-            AlternateCompletionMessage2 = binaryReader.ReadString(false);
+            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            {
+                InitialDescription = binaryReader.ReadString(false);
+                QuestWindowSummary = binaryReader.ReadString(false);
+                ReminderInstructions = binaryReader.ReadString(false);
+                AlternateResponse = binaryReader.ReadString(false);
+                CompletionMessage = binaryReader.ReadString(false);
+                AlternateCompletionMessage1 = binaryReader.ReadString(false);
+                AlternateCompletionMessage2 = binaryReader.ReadString(false);
+            }
+        }
+
+        [JsonConstructor]
+        public Quest()
+        {
         }
 
         public byte[] GetBytes(params object[] options)
@@ -215,8 +227,11 @@ namespace Parsec.Shaiya.NpcQuest
             var buffer = new List<byte>();
 
             buffer.AddRange(Id.GetBytes());
-            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
-            buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
+            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            {
+                buffer.AddRange(Name.GetLengthPrefixedBytes(false));
+                buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
+            }
             buffer.AddRange(MinLevel.GetBytes());
             buffer.AddRange(MaxLevel.GetBytes());
             buffer.Add((byte)Faction);
@@ -274,13 +289,16 @@ namespace Parsec.Shaiya.NpcQuest
 
             buffer.AddRange(Results.GetBytes());
 
-            buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
-            buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
-            buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
-            buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
-            buffer.AddRange(CompletionMessage.GetLengthPrefixedBytes());
-            buffer.AddRange(AlternateCompletionMessage1.GetLengthPrefixedBytes());
-            buffer.AddRange(AlternateCompletionMessage2.GetLengthPrefixedBytes());
+            if (_format < Format.EP8) // In ep 8, messages are moved to separe translation files.
+            {
+                buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
+                buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
+                buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
+                buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
+                buffer.AddRange(CompletionMessage.GetLengthPrefixedBytes());
+                buffer.AddRange(AlternateCompletionMessage1.GetLengthPrefixedBytes());
+                buffer.AddRange(AlternateCompletionMessage2.GetLengthPrefixedBytes());
+            }
 
             return buffer.ToArray();
         }

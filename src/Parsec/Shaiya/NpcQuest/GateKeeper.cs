@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Parsec.Readers;
+using Parsec.Common;
+using Newtonsoft.Json;
 
 namespace Parsec.Shaiya.NpcQuest
 {
@@ -7,18 +9,23 @@ namespace Parsec.Shaiya.NpcQuest
     {
         public List<GateTarget> GateTargets { get; } = new();
 
-        public GateKeeper(SBinaryReader binaryReader)
+        public GateKeeper(SBinaryReader binaryReader, Format format) : base(format)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             ReadBaseNpcSecondSegment(binaryReader);
 
             for (int i = 0; i < 3; i++)
             {
-                var gateTarget = new GateTarget(binaryReader);
+                var gateTarget = new GateTarget(binaryReader, format);
                 GateTargets.Add(gateTarget);
             }
 
             ReadBaseNpcThirdSegment(binaryReader);
+        }
+
+        [JsonConstructor]
+        public GateKeeper(Format format = Format.EP5) : base(format)
+        {
         }
 
         public override byte[] GetBytes(params object[] options)

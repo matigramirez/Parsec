@@ -11,13 +11,18 @@ namespace Parsec.Shaiya.Svmap
     {
         public int MapSize { get; set; }
         public List<byte> MapHeight { get; private set; } = new();
-        public int Unknown { get; set; }
+        public int CellSize { get; set; }
         public List<Ladder> Ladders { get; } = new();
         public List<MonsterArea> MonsterAreas { get; } = new();
         public List<Npc> Npcs { get; } = new();
         public List<Portal> Portals { get; } = new();
         public List<Spawn> Spawns { get; } = new();
         public List<NamedArea> NamedAreas { get; } = new();
+
+        [JsonConstructor]
+        public Svmap()
+        {
+        }
 
         [JsonIgnore]
         public override string Extension => "svmap";
@@ -29,7 +34,7 @@ namespace Parsec.Shaiya.Svmap
             var mapHeightCount = MapSize * MapSize / 8;
             MapHeight = _binaryReader.ReadBytes(mapHeightCount).ToList();
 
-            Unknown = _binaryReader.Read<int>();
+            CellSize = _binaryReader.Read<int>();
 
             var ladderCount = _binaryReader.Read<int>();
 
@@ -86,7 +91,7 @@ namespace Parsec.Shaiya.Svmap
 
             buffer.AddRange(MapSize.GetBytes());
             buffer.AddRange(MapHeight);
-            buffer.AddRange(Unknown.GetBytes());
+            buffer.AddRange(CellSize.GetBytes());
 
             buffer.AddRange(Ladders.GetBytes());
             buffer.AddRange(MonsterAreas.GetBytes());
