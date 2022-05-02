@@ -1,5 +1,4 @@
-﻿using Parsec.Readers;
-using Parsec.Shaiya.Itm;
+﻿using Parsec.Shaiya.Itm;
 using Parsec.Shaiya.Mlt;
 using Parsec.Shaiya.MLX;
 using Parsec.Shaiya.MON;
