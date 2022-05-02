@@ -1,5 +1,4 @@
 ﻿using System;
-using Parsec.Readers;
 using Parsec.Shaiya.Data;
 using Parsec.Shaiya.Svmap;
 
