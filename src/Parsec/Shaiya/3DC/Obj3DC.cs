@@ -14,12 +14,12 @@ namespace Parsec.Shaiya.Obj3DC
         /// <summary>
         ///  Indicates the format of the 3DC file. Its value is 0 for EP5 format and 0x01BC for EP6+ format
         /// </summary>
-        public int Tag { get; set; }
+        public int Signature { get; set; }
 
         /// <summary>
-        /// The format of this file which is taken from the <see cref="Tag"/> value
+        /// The format of this file which is taken from the <see cref="Signature"/> value
         /// </summary>
-        public Format Format => Tag > 0 ? Format.EP6 : Format.EP5;
+        public Format Format => Signature > 0 ? Format.EP6 : Format.EP5;
 
         /// <summary>
         /// List of bones linked to this 3d model. Although a model might be linked to a few bones (for example boots models), the 3DC file contains the definitions for all the bones in the whole skeleton.
@@ -41,7 +41,7 @@ namespace Parsec.Shaiya.Obj3DC
 
         public override void Read(params object[] options)
         {
-            Tag = _binaryReader.Read<int>();
+            Signature = _binaryReader.Read<int>();
 
             var boneCount = _binaryReader.Read<int>();
 
@@ -74,7 +74,7 @@ namespace Parsec.Shaiya.Obj3DC
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(Tag.GetBytes());
+            buffer.AddRange(Signature.GetBytes());
 
             buffer.AddRange(Bones.GetBytes());
             buffer.AddRange(Vertices.Count.GetBytes());

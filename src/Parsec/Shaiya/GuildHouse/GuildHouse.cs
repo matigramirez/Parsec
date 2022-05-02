@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Parsec.Common;
+using Parsec.Extensions;
 
 namespace Parsec.Shaiya.GuildHouse
 {
@@ -35,15 +36,15 @@ namespace Parsec.Shaiya.GuildHouse
         {
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(Unknown));
-            buffer.AddRange(BitConverter.GetBytes(HousePrice));
-            buffer.AddRange(BitConverter.GetBytes(ServicePrice));
+            buffer.AddRange(Unknown.GetBytes());
+            buffer.AddRange(HousePrice.GetBytes());
+            buffer.AddRange(ServicePrice.GetBytes());
 
             foreach (var npcInfo in NpcInfoList)
                 buffer.AddRange(npcInfo.GetBytes());
 
-            foreach (int npcId in NpcIds)
-                buffer.AddRange(BitConverter.GetBytes(npcId));
+            foreach (var npcId in NpcIds)
+                buffer.AddRange(npcId.GetBytes());
 
             return buffer.ToArray();
         }

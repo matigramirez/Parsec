@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -27,7 +28,7 @@ namespace Parsec.Shaiya.KillStatus
             var buffer = new List<byte>();
 
             buffer.Add((byte)Type);
-            buffer.AddRange(BitConverter.GetBytes(Value));
+            buffer.AddRange(Value.GetBytes());
 
             return buffer.ToArray();
         }

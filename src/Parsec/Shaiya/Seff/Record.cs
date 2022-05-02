@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 
 namespace Parsec.Shaiya.Seff
@@ -32,8 +33,8 @@ namespace Parsec.Shaiya.Seff
         {
             var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(Id));
-            buffer.AddRange(BitConverter.GetBytes(Effects.Count));
+            buffer.AddRange(Id.GetBytes());
+            buffer.AddRange(Effects.Count.GetBytes());
 
             foreach (var effectInfo in Effects)
                 buffer.AddRange(effectInfo.GetBytes(format));

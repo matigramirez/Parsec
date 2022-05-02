@@ -88,7 +88,6 @@ namespace Parsec.Shaiya.Svmap
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-
             buffer.AddRange(MapSize.GetBytes());
             buffer.AddRange(MapHeight);
             buffer.AddRange(CellSize.GetBytes());
@@ -99,7 +98,6 @@ namespace Parsec.Shaiya.Svmap
             buffer.AddRange(Portals.GetBytes());
             buffer.AddRange(Spawns.GetBytes());
             buffer.AddRange(NamedAreas.GetBytes());
-
             return buffer.ToArray();
         }
     }

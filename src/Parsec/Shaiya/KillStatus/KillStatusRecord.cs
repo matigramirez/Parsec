@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -37,8 +38,8 @@ namespace Parsec.Shaiya.KillStatus
             var buffer = new List<byte>();
 
             buffer.Add((byte)Faction);
-            buffer.AddRange(BitConverter.GetBytes(BlessValue));
-            buffer.AddRange(BitConverter.GetBytes(Index));
+            buffer.AddRange(BlessValue.GetBytes());
+            buffer.AddRange(Index.GetBytes());
 
             foreach (var bonus in Bonuses)
                 buffer.AddRange(bonus.GetBytes());

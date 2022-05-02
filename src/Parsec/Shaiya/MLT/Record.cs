@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -38,9 +39,9 @@ namespace Parsec.Shaiya.Mlt
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(BitConverter.GetBytes(Obj3DCIndex));
-            buffer.AddRange(BitConverter.GetBytes(TextureIndex));
-            buffer.AddRange(BitConverter.GetBytes(Alpha));
+            buffer.AddRange(Obj3DCIndex.GetBytes());
+            buffer.AddRange(TextureIndex.GetBytes());
+            buffer.AddRange(Alpha.GetBytes());
             return buffer.ToArray();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -49,10 +50,10 @@ namespace Parsec.Shaiya.GuildHouse
             buffer.Add(RapiceMixPercentRate);
             buffer.Add(RapiceMixDecreRate);
             buffer.Add(MinRank);
-            buffer.AddRange(BitConverter.GetBytes(Icon));
-            buffer.AddRange(BitConverter.GetBytes(SysMsgId));
-            buffer.AddRange(BitConverter.GetBytes(UpPrice));
-            buffer.AddRange(BitConverter.GetBytes(ServicePrice));
+            buffer.AddRange(Icon.GetBytes());
+            buffer.AddRange(SysMsgId.GetBytes());
+            buffer.AddRange(UpPrice.GetBytes());
+            buffer.AddRange(ServicePrice.GetBytes());
             buffer.Add(NpcType);
             buffer.Add(Group);
 

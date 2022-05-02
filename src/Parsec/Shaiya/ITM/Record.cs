@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -92,19 +93,19 @@ namespace Parsec.Shaiya.Itm
             if (options.Length > 0)
                 format = (ITMFormat)options[0];
 
-            buffer.AddRange(BitConverter.GetBytes(Obj3DOIndex));
-            buffer.AddRange(BitConverter.GetBytes(TextureIndex));
-            buffer.AddRange(BitConverter.GetBytes(Glow));
-            buffer.AddRange(BitConverter.GetBytes(Unknown1));
-            buffer.AddRange(BitConverter.GetBytes(Format));
-            buffer.AddRange(BitConverter.GetBytes(Unknown2));
+            buffer.AddRange(Obj3DOIndex.GetBytes());
+            buffer.AddRange(TextureIndex.GetBytes());
+            buffer.AddRange(Glow.GetBytes());
+            buffer.AddRange(Unknown1.GetBytes());
+            buffer.AddRange(Format.GetBytes());
+            buffer.AddRange(Unknown2.GetBytes());
 
             if (Format == 1)
             {
-                buffer.AddRange(BitConverter.GetBytes(RGBA));
-                buffer.AddRange(BitConverter.GetBytes(Rotation));
-                buffer.AddRange(BitConverter.GetBytes(Scale));
-                buffer.AddRange(BitConverter.GetBytes(Unknown3));
+                buffer.AddRange(RGBA.GetBytes());
+                buffer.AddRange(Rotation.GetBytes());
+                buffer.AddRange(Scale.GetBytes());
+                buffer.AddRange(Unknown3.GetBytes());
             }
 
             if (format == ITMFormat.IT2)

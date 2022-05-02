@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Itm
@@ -74,25 +75,19 @@ namespace Parsec.Shaiya.Itm
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
-            buffer.AddRange(Encoding.ASCII.GetBytes(Signature));
+            buffer.AddRange(Signature.GetBytes());
 
-            buffer.AddRange(BitConverter.GetBytes(Obj3DONames.Count));
+            buffer.AddRange(Obj3DONames.Count.GetBytes());
 
             foreach (var obj3doName in Obj3DONames)
-            {
-                buffer.AddRange(BitConverter.GetBytes(obj3doName.Length + 1));
-                buffer.AddRange(Encoding.ASCII.GetBytes(obj3doName + '\0'));
-            }
+                buffer.AddRange(obj3doName.GetLengthPrefixedBytes());
 
-            buffer.AddRange(BitConverter.GetBytes(TextureNames.Count));
+            buffer.AddRange(TextureNames.Count.GetBytes());
 
             foreach (var textureName in TextureNames)
-            {
-                buffer.AddRange(BitConverter.GetBytes(textureName.Length + 1));
-                buffer.AddRange(Encoding.ASCII.GetBytes(textureName + '\0'));
-            }
+                buffer.AddRange(textureName.GetLengthPrefixedBytes());
 
-            buffer.AddRange(BitConverter.GetBytes(Records.Count));
+            buffer.AddRange(Records.Count.GetBytes());
 
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes(Format));

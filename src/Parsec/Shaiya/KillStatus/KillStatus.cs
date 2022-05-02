@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.KillStatus
@@ -28,16 +29,6 @@ namespace Parsec.Shaiya.KillStatus
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-
-            buffer.AddRange(BitConverter.GetBytes(Records.Count));
-
-            foreach (var record in Records)
-                buffer.AddRange(record.GetBytes());
-
-            return buffer.ToArray();
-        }
+        public override byte[] GetBytes(params object[] options) => Records.GetBytes();
     }
 }
