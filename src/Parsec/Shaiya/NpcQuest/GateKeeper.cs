@@ -22,6 +22,10 @@ namespace Parsec.Shaiya.NpcQuest
             ReadBaseNpcThirdSegment(binaryReader);
         }
 
+        public GateKeeper(Format format = Format.EP5) : base(format)
+        {
+        }
+
         public override byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();

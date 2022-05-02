@@ -19,6 +19,10 @@ namespace Parsec.Shaiya.Svmap
         public List<Spawn> Spawns { get; } = new();
         public List<NamedArea> NamedAreas { get; } = new();
 
+        public Svmap()
+        {
+        }
+
         [JsonIgnore]
         public override string Extension => "svmap";
 

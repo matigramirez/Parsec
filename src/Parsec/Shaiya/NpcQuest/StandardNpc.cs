@@ -9,5 +9,9 @@ namespace Parsec.Shaiya.NpcQuest
         {
             ReadNpcBaseComplete(binaryReader);
         }
+
+        public StandardNpc(Format format = Format.EP5) : base(format)
+        {
+        }
     }
 }
