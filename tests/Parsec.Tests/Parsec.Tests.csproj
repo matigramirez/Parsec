@@ -31,5 +31,65 @@
       <None Update="Shaiya\EFT\Monster.EFT.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Shaiya\Data\sample_data\AutoStat_Mode.cfg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\cl.tga">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\filter.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Item\02.ITM">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Item\19.ITM">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Item\34.ITM">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Item\3DO\01011.3DO">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Item\3DO\01021.3DO">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Item\3DO\01041.3DO">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Item\3DO\01101.3DO">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\KillStatus.SData">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\Human\humf_action.alt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\Human\humf_hand.MLT">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\Human\humf_upper.MLT">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\Human\ANI\humf_000_normal.ANI">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\Human\ANI\humf_001_walk.ANI">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\Human\ANI\humf_002_run.ANI">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample_data\Character\Human\ANI\humf_003_bstep.ANI">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample.saf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaiya\Data\sample.sah">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

@@ -10,6 +10,8 @@ namespace Parsec.Shaiya.Data
         public Sah Sah { get; set; }
         public Saf Saf { get; set; }
 
+        public SFolder RootFolder => Sah.RootFolder;
+
         public int FileCount
         {
             get => Sah.FileCount;
