@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using Parsec.Shaiya.Data;
 using Xunit;
@@ -8,16 +9,18 @@ namespace Parsec.Tests.Shaiya;
 public class DataTests
 {
     [Fact]
+    [Description("Tests opening and reading the data file")]
     public void DataReadingTest()
     {
         var dataFromSah = new Data("Shaiya/Data/sample.sah");
         var dataFromSaf = new Data("Shaiya/Data/sample.saf");
-        
+
         Assert.Equal(dataFromSah.FileIndex.Count, dataFromSaf.FileIndex.Count);
         Assert.Equal(dataFromSah.FolderIndex.Count, dataFromSaf.FolderIndex.Count);
     }
-    
+
     [Fact]
+    [Description("Tests building both data.sah and data.saf from a directory")]
     public void DataBuildingTest()
     {
         DataBuilder.CreateFromDirectory("Shaiya/Data/sample_data", "Shaiya/Data/output_data");
@@ -30,6 +33,7 @@ public class DataTests
     }
 
     [Fact]
+    [Description("Tests extracting a data file fully")]
     public void DataExtractionTest()
     {
         var data = new Data("Shaiya/Data/sample.sah");
@@ -40,6 +44,7 @@ public class DataTests
     }
 
     [Fact]
+    [Description("Tests extracting a single folder from a data file")]
     public void DataFolderExtractionTest()
     {
         var data = new Data("Shaiya/Data/sample.sah");
@@ -69,6 +74,7 @@ public class DataTests
     }
 
     [Fact]
+    [Description("Tests extracting a single file from a data file")]
     public void DataFileExtractionTest()
     {
         var data = new Data("Shaiya/Data/sample.sah");
@@ -91,29 +97,45 @@ public class DataTests
     }
 
     [Fact]
+    [Description("Tests applying multiple patches to a data file")]
     public void DataPatchingTest()
     {
         // Load data
-        var data = new Data("Shaiya/Data/sample.sah");
+        var data = new Data("Shaiya/Data/target.sah");
         var initialFiles = data.FileIndex.Keys.ToList();
-        
+
         // Load patches
         var patch = new Data("Shaiya/Data/patch.sah");
         var patch2 = new Data("Shaiya/Data/patch2.sah");
 
-        var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys);
-        
+        var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys).ToList();
+
         // Apply patch
         DataPatcher.Patch(data, patch, patch2);
 
         // Get files that were added to the data and weren't present before
         var newFiles = patchFiles.Except(initialFiles).ToList();
-        
+
         // Check the data file count
         Assert.Equal(initialFiles.Count + newFiles.Count, data.FileIndex.Count);
-        
+
         // Check that patch files are present in the data
-        foreach(var patchFile in patchFiles)
+        foreach (var patchFile in patchFiles)
             Assert.True(data.FileIndex.ContainsKey(patchFile));
+    }
+
+    [Fact]
+    [Description("Tests deleting files from a delete.lst list")]
+    public void DataDeleteListTest()
+    {
+        var data = new Data("Shaiya/Data/delete.sah");
+
+        var lstPath = "Shaiya/Data/delete.lst";
+        data.RemoveFilesFromLst(lstPath);
+
+        var fileList = File.ReadAllLines(lstPath);
+        
+        foreach(var fileName in fileList)
+            Assert.True(!data.FileIndex.ContainsKey(fileName));
     }
 }
