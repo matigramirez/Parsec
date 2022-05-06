@@ -7,11 +7,24 @@ namespace Parsec.Shaiya.Data
 {
     public class Data
     {
+        /// <summary>
+        /// <see cref="Sah"/> instance for the current data
+        /// </summary>
         public Sah Sah { get; set; }
+        
+        /// <summary>
+        /// <see cref="Saf"/> instance for the current data
+        /// </summary>
         public Saf Saf { get; set; }
 
+        /// <summary>
+        /// The data's root folder from the sah index
+        /// </summary>
         public SFolder RootFolder => Sah.RootFolder;
 
+        /// <summary>
+        /// The data's file count
+        /// </summary>
         public int FileCount
         {
             get => Sah.FileCount;
@@ -43,26 +56,25 @@ namespace Parsec.Shaiya.Data
             {
                 case ".sah":
                 {
-                    var safPath = path.Substring(0, path.Length - 3) + "saf";
+                    Sah = Reader.ReadFromFile<Sah>(path);
 
-                    if (!FileHelper.FileExists(safPath))
+                    if (!FileHelper.FileExists(Sah.SafPath))
                         throw new FileNotFoundException(
                             "A valid saf file must be placed in the same directory as the sah file.");
 
-                    Sah = Reader.ReadFromFile<Sah>(path);
-                    Saf = new Saf(safPath);
+                    Saf = new Saf(Sah.SafPath);
                     break;
                 }
                 case ".saf":
                 {
-                    var sahPath = path.Substring(0, path.Length - 3) + "sah";
+                    Saf = new Saf(path);
 
-                    if (!FileHelper.FileExists(sahPath))
+                    if (!FileHelper.FileExists(Saf.SahPath))
                         throw new FileNotFoundException(
                             "A valid sah file must be placed in the same directory as the saf file.");
 
-                    Sah = Reader.ReadFromFile<Sah>(sahPath);
-                    Saf = new Saf(path);
+                    Sah = Reader.ReadFromFile<Sah>(Saf.SahPath);
+
                     break;
                 }
                 default:
@@ -89,7 +101,7 @@ namespace Parsec.Shaiya.Data
             string extractionPath = extractionDirectory;
 
             if (folder != Sah.RootFolder)
-                extractionPath = Path.Combine(extractionDirectory, folder.Name);
+                extractionPath = Path.Combine(extractionDirectory, folder.RelativePath);
 
             // If extraction directory couldn't be created because of invalid characters, skip it
             if (!FileHelper.CreateDirectory(extractionPath))
@@ -101,7 +113,7 @@ namespace Parsec.Shaiya.Data
 
             // Extract subfolders
             foreach (var subfolder in folder.Subfolders)
-                Extract(subfolder, extractionPath);
+                Extract(subfolder, extractionDirectory);
         }
 
         /// <summary>
@@ -141,7 +153,7 @@ namespace Parsec.Shaiya.Data
         }
 
         /// <summary>
-        /// Removes
+        /// Removes data files from a deletion list (delete.lst)
         /// </summary>
         /// <param name="lstPath">Path to delete.lst file</param>
         public void RemoveFilesFromLst(string lstPath)

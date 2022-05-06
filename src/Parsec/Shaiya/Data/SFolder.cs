@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -15,29 +16,31 @@ namespace Parsec.Shaiya.Data
         /// The folder's name
         /// </summary>
         [DataMember]
-        public string Name;
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// The relative path to the folder
         /// </summary>
-        public string RelativePath;
+        public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
+            ? Name
+            : string.Join("/", ParentFolder.RelativePath, Name);
 
         /// <summary>
         /// List of files the folder has
         /// </summary>
         [DataMember]
-        public List<SFile> Files = new();
+        public List<SFile> Files { get; } = new();
 
         /// <summary>
         /// List of subfolders the file has
         /// </summary>
         [DataMember]
-        public List<SFolder> Subfolders = new();
+        public List<SFolder> Subfolders { get; } = new();
 
         /// <summary>
         /// The folder's parent directory
         /// </summary>
-        public SFolder ParentFolder;
+        public SFolder ParentFolder { get; set; }
 
         [JsonConstructor]
         public SFolder()
@@ -56,12 +59,9 @@ namespace Parsec.Shaiya.Data
             Dictionary<string, SFile> fileIndex
         )
         {
+            ParentFolder = parentFolder;
+            
             Name = binaryReader.ReadString();
-
-            // Write folder's relative path based on parent folder
-            RelativePath = parentFolder == null || parentFolder.Name == ""
-                ? Name
-                : string.Join("/", parentFolder.RelativePath, Name);
 
             folderIndex.Add(RelativePath, this);
 
@@ -71,7 +71,7 @@ namespace Parsec.Shaiya.Data
             for (int i = 0; i < fileCount; i++)
             {
                 var file = new SFile(binaryReader, this, fileIndex);
-                Files.Add(file);
+                AddFile(file);
             }
 
             var subfolderCount = binaryReader.Read<int>();
@@ -80,13 +80,39 @@ namespace Parsec.Shaiya.Data
             for (int i = 0; i < subfolderCount; i++)
             {
                 var subfolder = new SFolder(binaryReader, this, folderIndex, fileIndex);
-                Subfolders.Add(subfolder);
+                AddSubfolder(subfolder);
             }
         }
 
         public SFolder(string name, SFolder parentFolder) : this(parentFolder)
         {
             Name = name;
+        }
+
+        /// <summary>
+        /// Adds a <see cref="SFile"/> child to this folder
+        /// </summary>
+        /// <param name="file">The file instance</param>
+        /// <exception cref="Exception">When file with the same name already existed</exception>
+        public void AddFile(SFile file)
+        {
+            if (HasFile(file.Name))
+                throw new Exception($"File {file.Name} already exists in folder {Name}");
+
+            Files.Add(file);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="SFolder"/> child to this folder
+        /// </summary>
+        /// <param name="subfolder">The subfolder instance</param>
+        /// <exception cref="Exception">When subfolder with the same name already existed</exception>
+        public void AddSubfolder(SFolder subfolder)
+        {
+            if (HasSubfolder(subfolder.Name))
+                throw new Exception($"Folder {subfolder.Name} already exists in {Name}");
+
+            Subfolders.Add(subfolder);
         }
 
         /// <summary>
@@ -113,6 +139,7 @@ namespace Parsec.Shaiya.Data
         /// <param name="name">Subfolder name</param>
         public SFolder GetSubfolder(string name) => Subfolders.FirstOrDefault(sf => sf.Name == name);
 
+        /// <inheritdoc />
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();

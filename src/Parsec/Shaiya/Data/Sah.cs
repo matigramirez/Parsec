@@ -22,7 +22,7 @@ namespace Parsec.Shaiya.Data
         public int Version { get; set; }
 
         /// <summary>
-        /// Path to the saf file
+        /// Path to the saf file linked to this sah
         /// </summary>
         public string SafPath => string.Concat(Path.Substring(0, Path.Length - 3), "saf");
 
@@ -48,6 +48,7 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         public Dictionary<string, SFile> FileIndex = new();
 
+        [JsonConstructor]
         public Sah()
         {
         }
@@ -68,6 +69,7 @@ namespace Parsec.Shaiya.Data
         [JsonIgnore]
         public override string Extension => "sah";
 
+        /// <inheritdoc />
         public override void Read(params object[] options)
         {
             Signature = _binaryReader.ReadString(3);
@@ -95,13 +97,13 @@ namespace Parsec.Shaiya.Data
         public void AddFile(string directoryPath, SFile file)
         {
             // Ensure directory exists
-            var parentFolder = EnsureFolderExists(directoryPath);
+            var parentFolder = AddFolder(directoryPath);
 
             // Assign parent folder to file
             file.ParentFolder = parentFolder;
 
             // Add file to file list and file index
-            parentFolder.Files.Add(file);
+            parentFolder.AddFile(file);
             FileIndex.Add(file.RelativePath, file);
         }
 
@@ -128,11 +130,8 @@ namespace Parsec.Shaiya.Data
                     // Create new folder if it doesn't exist
                     var newFolder = new SFolder(folderName, currentFolder);
 
-                    // Create relative path
-                    newFolder.RelativePath = System.IO.Path.Combine(currentFolder.RelativePath, newFolder.Name);
-
                     // Add new folder to current folder's subfolders
-                    currentFolder.Subfolders.Add(newFolder);
+                    currentFolder.AddSubfolder(newFolder);
 
                     // Add folder to folder index
                     FolderIndex.Add(newFolder.RelativePath, newFolder);
@@ -147,7 +146,20 @@ namespace Parsec.Shaiya.Data
 
             return currentFolder;
         }
+        
+        /// <summary>
+        /// Checks if the sah has a folder with the given path
+        /// </summary>
+        /// <param name="relativePath">Folder's relative path (ie. "Character/Human")</param>
+        public bool HasFolder(string relativePath) => FolderIndex.ContainsKey(relativePath);
+        
+        /// <summary>
+        /// Checks if the sah has a file with the given path
+        /// </summary>
+        /// <param name="relativePath">File's relative path (ie. "Character/Human/3DC/model.3DC")</param>
+        public bool HasFile(string relativePath) => FileIndex.ContainsKey(relativePath);
 
+        /// <inheritdoc />
         public override byte[] GetBytes(params object[] options)
         {
             // Create byte list which will have the sah's data

@@ -4,7 +4,15 @@ namespace Parsec.Shaiya.Data
 {
     public class Saf
     {
+        /// <summary>
+        /// Absolute path to the saf file
+        /// </summary>
         public string Path { get; set; }
+        
+        /// <summary>
+        /// Absolute path to the saf file linked to this saf
+        /// </summary>
+        public string SahPath => string.Concat(Path.Substring(0, Path.Length - 3), "sah");
 
         public Saf(string path)
         {

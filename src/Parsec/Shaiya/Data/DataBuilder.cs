@@ -47,10 +47,7 @@ namespace Parsec.Shaiya.Data
                 _safWriter = new BinaryWriter(File.OpenWrite(safPath));
 
                 // Create root folder
-                var rootFolder = new SFolder(null)
-                {
-                    RelativePath = string.Empty
-                };
+                var rootFolder = new SFolder(null);
 
                 // Read data folder
                 ReadFolderFromDirectory(rootFolder, inputFolderPath);
@@ -92,10 +89,10 @@ namespace Parsec.Shaiya.Data
                 var shaiyaFolder = new SFolder(folder)
                 {
                     Name = subfolder,
-                    RelativePath = Path.Combine(folder.RelativePath, subfolder)
+                    ParentFolder = folder
                 };
 
-                folder.Subfolders.Add(shaiyaFolder);
+                folder.AddSubfolder(shaiyaFolder);
 
                 // Recursively read subfolders
                 ReadFolderFromDirectory(shaiyaFolder, Path.Combine(directoryPath, subfolder));
@@ -122,13 +119,13 @@ namespace Parsec.Shaiya.Data
                 {
                     Name = file,
                     Length = (int)fileStream.Length,
-                    RelativePath = Path.Combine(folder.RelativePath, file)
+                    //RelativePath = Path.Combine(folder.RelativePath, file)
                 };
 
                 // Write file in saf file
                 WriteFile(shaiyaFile);
 
-                folder.Files.Add(shaiyaFile);
+                folder.AddFile(shaiyaFile);
 
                 // Increase file count
                 _fileCount++;
