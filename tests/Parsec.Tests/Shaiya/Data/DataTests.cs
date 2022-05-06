@@ -8,11 +8,25 @@ namespace Parsec.Tests.Shaiya;
 public class DataTests
 {
     [Fact]
+    public void DataReadingTest()
+    {
+        var dataFromSah = new Data("Shaiya/Data/sample.sah");
+        var dataFromSaf = new Data("Shaiya/Data/sample.saf");
+        
+        Assert.Equal(dataFromSah.FileIndex.Count, dataFromSaf.FileIndex.Count);
+        Assert.Equal(dataFromSah.FolderIndex.Count, dataFromSaf.FolderIndex.Count);
+    }
+    
+    [Fact]
     public void DataBuildingTest()
     {
         DataBuilder.CreateFromDirectory("Shaiya/Data/sample_data", "Shaiya/Data/output_data");
         Assert.True(File.Exists("Shaiya/Data/output_data/output_data.sah"));
         Assert.True(File.Exists("Shaiya/Data/output_data/output_data.saf"));
+
+        Assert.Throws<DirectoryNotFoundException>(
+            () => DataBuilder.CreateFromDirectory("Shaiya/wrong_folder_path/does_not_exist",
+                                                  "Shaiya/Data/output_data/"));
     }
 
     [Fact]
@@ -38,7 +52,7 @@ public class DataTests
         {
             data.Extract(folder1, extractionDirectory);
             Assert.True(Directory.Exists($"{extractionDirectory}/{folder1.Name}"));
-            
+
             foreach (var file in folder1.Files)
                 Assert.True(File.Exists($"{extractionDirectory}/{file.RelativePath}"));
         }
@@ -46,9 +60,9 @@ public class DataTests
         if (folder2 != null)
         {
             data.Extract(folder2, extractionDirectory);
-            
+
             Assert.True(Directory.Exists($"{extractionDirectory}/{folder1.Name}"));
-            
+
             foreach (var file in folder1.Files)
                 Assert.True(File.Exists($"{extractionDirectory}/{file.RelativePath}"));
         }
@@ -74,5 +88,32 @@ public class DataTests
             data.Extract(file2, extractionDirectory);
             Assert.True(File.Exists($"{extractionDirectory}/{file2.Name}"));
         }
+    }
+
+    [Fact]
+    public void DataPatchingTest()
+    {
+        // Load data
+        var data = new Data("Shaiya/Data/sample.sah");
+        var initialFiles = data.FileIndex.Keys.ToList();
+        
+        // Load patches
+        var patch = new Data("Shaiya/Data/patch.sah");
+        var patch2 = new Data("Shaiya/Data/patch2.sah");
+
+        var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys);
+        
+        // Apply patch
+        DataPatcher.Patch(data, patch, patch2);
+
+        // Get files that were added to the data and weren't present before
+        var newFiles = patchFiles.Except(initialFiles).ToList();
+        
+        // Check the data file count
+        Assert.Equal(initialFiles.Count + newFiles.Count, data.FileIndex.Count);
+        
+        // Check that patch files are present in the data
+        foreach(var patchFile in patchFiles)
+            Assert.True(data.FileIndex.ContainsKey(patchFile));
     }
 }

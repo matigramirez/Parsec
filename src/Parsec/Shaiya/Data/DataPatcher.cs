@@ -56,7 +56,7 @@ namespace Parsec.Shaiya.Data
         private static void PatchFiles(Data targetData, Data patchData)
         {
             foreach (var patchFile in patchData.FileIndex.Values)
-                // File was already present in the data - it needs to be replaced
+                // File was already present in the data - it needs to be replaced and doesn't need to be added to the FileIndex
                 if (targetData.FileIndex.TryGetValue(patchFile.RelativePath, out var targetFile))
                 {
                     // Clear previous file's bytes
@@ -81,7 +81,7 @@ namespace Parsec.Shaiya.Data
                         targetFile.Length = patchFile.Length;
                     }
                 }
-                // File wasn't part of the data - it will be added at the end of the file
+                // File wasn't part of the data - it will be added at the end of the file and it must be added to the FileIndex
                 else
                 {
                     var offset = AppendFile(patchFile);
@@ -95,6 +95,9 @@ namespace Parsec.Shaiya.Data
 
                     // Increase data file count
                     targetData.FileCount++;
+                    
+                    // Add file to file index
+                    targetData.FileIndex.Add(patchFile.RelativePath, patchFile);
                 }
         }
 
