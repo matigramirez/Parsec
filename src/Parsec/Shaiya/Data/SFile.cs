@@ -14,35 +14,37 @@ namespace Parsec.Shaiya.Data
         /// The name of the file
         /// </summary>
         [DataMember]
-        public string Name;
+        public string Name { get; set; }
 
         /// <summary>
         /// The offset in data.saf where the file is located
         /// </summary>
         [DataMember]
-        public long Offset;
+        public long Offset { get; set; }
 
         /// <summary>
         /// The length of the file in kbs
         /// </summary>
         [DataMember]
-        public int Length;
+        public int Length { get; set; }
 
         /// <summary>
-        /// The file version -- not used by the game so this value doesn't really matter
+        /// The file version -not used by the game so this value doesn't really matter
         /// </summary>
         [DataMember]
-        public int Version;
+        public int Version { get; set; }
 
         /// <summary>
         /// The relative path to the file
         /// </summary>
-        public string RelativePath;
+        public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
+            ? Name
+            : string.Join("/", ParentFolder.RelativePath, Name);
 
         /// <summary>
         /// The directory in which the file is
         /// </summary>
-        public SFolder ParentFolder;
+        public SFolder ParentFolder { get; set; }
 
         [JsonConstructor]
         public SFile()
@@ -54,12 +56,11 @@ namespace Parsec.Shaiya.Data
             ParentFolder = parentFolder;
         }
 
-        public SFile(string name, long offset, int length, SFolder folder) : this(folder)
+        public SFile(string name, long offset, int length)
         {
             Name = name;
             Offset = offset;
             Length = length;
-            Version = 0;
         }
 
         public SFile(SBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
@@ -69,11 +70,6 @@ namespace Parsec.Shaiya.Data
             Length = binaryReader.Read<int>();
             Version = binaryReader.Read<int>();
 
-            // Write folder's relative path based on parent folder
-            RelativePath = ParentFolder == null || ParentFolder.Name == ""
-                ? Name
-                : string.Join("/", folder.RelativePath, Name);
-
             // Add file to the sah's file dictionary
             if (!fileIndex.ContainsKey(RelativePath))
                 fileIndex.Add(RelativePath, this);
@@ -82,6 +78,7 @@ namespace Parsec.Shaiya.Data
                 fileIndex.Add(RelativePath + "_pv", this);
         }
 
+        /// <inheritdoc />
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
