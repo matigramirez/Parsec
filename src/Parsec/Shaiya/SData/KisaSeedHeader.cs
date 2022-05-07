@@ -38,6 +38,7 @@ namespace Parsec.Shaiya.SData
             Checksum = BitConverter.ToUInt32(data, currentOffset);
             currentOffset += 4;
 
+            // Some headers have 4 extra empty bytes and the checksum comes right after them
             if (Checksum == 0)
             {
                 Checksum = BitConverter.ToUInt32(data, currentOffset);
@@ -47,6 +48,7 @@ namespace Parsec.Shaiya.SData
             RealSize = BitConverter.ToUInt32(data, currentOffset);
             currentOffset += 4;
 
+            // Depending on the header type, the padding is 12 or 16 bytes (based on the existence of the 4 empty bytes)
             var paddingLength = currentOffset == 48 ? 16 : 12;
             Padding = data.SubArray(currentOffset, paddingLength);
         }

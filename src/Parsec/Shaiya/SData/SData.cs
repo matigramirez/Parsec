@@ -150,17 +150,6 @@ namespace Parsec.Shaiya.SData
         }
 
         /// <inheritdoc />
-        public void EncryptBuffer()
-        {
-            // Encrypt buffer if it's decrypted
-            if (!IsEncrypted(Buffer))
-            {
-                var encryptedBuffer = Encrypt(Buffer);
-                _binaryReader = new SBinaryReader(encryptedBuffer);
-            }
-        }
-
-        /// <inheritdoc />
         public void DecryptBuffer(bool validateChecksum = false)
         {
             // Decrypt buffer if it's encrypted
@@ -172,18 +161,17 @@ namespace Parsec.Shaiya.SData
         }
 
         /// <inheritdoc />
-        public void WriteEncrypted(string path)
+        public byte[] GetEncryptedBytes(params object[] options) => Encrypt(GetBytes(options));
+
+        /// <inheritdoc />
+        public void WriteEncrypted(string path, params object[] options)
         {
-            var encryptedBuffer = Encrypt(GetBytes());
+            var encryptedBuffer = Encrypt(GetBytes(options));
             FileHelper.WriteFile(path, encryptedBuffer);
         }
 
         /// <inheritdoc />
-        public void WriteDecrypted(string path)
-        {
-            var decryptedBuffer = GetBytes();
-            FileHelper.WriteFile(path, decryptedBuffer);
-        }
+        public void WriteDecrypted(string path, params object[] options) => Write(path, options);
 
         public static void EncryptFile(string inputFilePath, string outputFilePath)
         {
