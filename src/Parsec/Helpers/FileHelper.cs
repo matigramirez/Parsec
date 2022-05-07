@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Parsec.Extensions;
 using Parsec.Readers;
 
 namespace Parsec.Helpers
@@ -18,7 +17,7 @@ namespace Parsec.Helpers
         /// <param name="path">File path</param>
         /// <param name="data">The data byte array</param>
         /// <param name="backupIfExists">Makes a backup of the file if it already existed</param>
-        public static bool WriteFile(string path, byte[] data, bool backupIfExists = true)
+        public static bool WriteFile(string path, byte[] data, bool backupIfExists = false)
         {
             if (backupIfExists && FileExists(path))
             {
@@ -44,7 +43,6 @@ namespace Parsec.Helpers
                     new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
 
                 binaryWriter.Write(data);
-                binaryWriter.Dispose();
                 return true;
             }
             catch
