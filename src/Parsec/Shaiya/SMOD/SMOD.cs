@@ -18,7 +18,7 @@ namespace Parsec.Shaiya.SMOD
         public BoundingBox BoundingBox1 { get; set; }
         public List<TexturedObject> TexturedObjects { get; } = new();
         public BoundingBox BoundingBox2 { get; set; }
-        public List<SimpleObject> SimpleObjects { get; } = new();
+        public List<CollisionObject> SimpleObjects { get; } = new();
 
         [JsonIgnore]
         public override string Extension => "SMOD";
@@ -39,11 +39,11 @@ namespace Parsec.Shaiya.SMOD
 
             BoundingBox2 = new BoundingBox(_binaryReader);
 
-            var objectCount = _binaryReader.Read<int>();
+            var collisionObjectCount = _binaryReader.Read<int>();
 
-            for (int i = 0; i < objectCount; i++)
+            for (int i = 0; i < collisionObjectCount; i++)
             {
-                var obj = new SimpleObject(_binaryReader);
+                var obj = new CollisionObject(_binaryReader);
                 SimpleObjects.Add(obj);
             }
         }

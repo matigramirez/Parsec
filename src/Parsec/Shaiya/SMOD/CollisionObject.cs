@@ -7,17 +7,17 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SMOD
 {
-    public class SimpleObject : IBinary
+    public class CollisionObject : IBinary
     {
         public List<SimpleVertex> Vertices { get; } = new();
         public List<Face> Faces { get; } = new();
 
         [JsonConstructor]
-        public SimpleObject()
+        public CollisionObject()
         {
         }
 
-        public SimpleObject(SBinaryReader binaryReader)
+        public CollisionObject(SBinaryReader binaryReader)
         {
             var vertexCount = binaryReader.Read<int>();
 

@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.SMOD
     public class TexturedObject : IBinary
     {
         /// <summary>
-        /// Name of the .tga texture file
+        /// Name of the .tga texture file. Although they have the .tga extension, the client actually has .dds files.
         /// </summary>
         public string TextureName { get; set; }
         public List<Vertex> Vertices { get; } = new();
