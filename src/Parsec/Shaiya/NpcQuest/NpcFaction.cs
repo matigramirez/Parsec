@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.NpcQuest
 {
-    public enum NpcFaction: byte
+    public enum NpcFaction
     {
         Any,
         Light,
