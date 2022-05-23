@@ -134,7 +134,7 @@ Create data or patch from a directory
 
 ```cs
 // Create patch data
-var createdData = DataBuilder.CreateFromDirectory("input", "output", "update");
+var createdData = DataBuilder.CreateFromDirectory("input", "output");
 
 Console.WriteLine($"Data file count: {createdData.FileCount}");
 ```
@@ -195,4 +195,4 @@ item.ExportCSV("Item.csv")
 var item = Item.ReadFromCSV("Item.csv");
 ```
 
-More samples in the [samples section](https://github.com/matigramirez/Parsec/tree/main/samples).
+More examples are in the [samples](https://github.com/matigramirez/Parsec/tree/main/samples) directory. Examples for C++ developers can be found [here](https://github.com/kurtraburn/parsec-samples).
