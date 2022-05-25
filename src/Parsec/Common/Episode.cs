@@ -1,7 +1,8 @@
 ﻿namespace Parsec.Common
 {
-    public enum Format
+    public enum Episode
     {
+        Unknown,
         EP4,
         EP5,
         EP6,
