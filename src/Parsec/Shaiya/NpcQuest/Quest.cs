@@ -75,7 +75,7 @@ namespace Parsec.Shaiya.NpcQuest
         /// <summary>
         /// 3 for EP4 and EP5?
         /// </summary>
-        public List<QuestItem> RewardItems { get; } = new();
+        public List<QuestItem> FarmItems { get; } = new();
 
         /// <summary>
         /// byPCKillCount = pvp kills?
@@ -186,7 +186,7 @@ namespace Parsec.Shaiya.NpcQuest
             for (int i = 0; i < 3; i++)
             {
                 var rewardItem = new QuestItem(binaryReader);
-                RewardItems.Add(rewardItem);
+                FarmItems.Add(rewardItem);
             }
 
             PvpKillCount = binaryReader.Read<byte>();
@@ -276,7 +276,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.Add(EndNpcType);
             buffer.AddRange(EndNpcId.GetBytes());
 
-            buffer.AddRange(RewardItems.GetBytes());
+            buffer.AddRange(FarmItems.GetBytes());
 
             buffer.Add(PvpKillCount);
             buffer.AddRange(RequiredMobId1.GetBytes());
