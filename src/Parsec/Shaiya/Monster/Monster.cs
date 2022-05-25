@@ -35,7 +35,7 @@ namespace Parsec.Shaiya.Monster
             }
         }
 
-        public override byte[] GetBytes(params object[] options) => Records.GetBytes();
+        public override IEnumerable<byte> GetBytes(Episode? episode = null) => Records.GetBytes();
 
         public void ExportCSV(string path)
         {

@@ -63,7 +63,7 @@ namespace Parsec.Shaiya.VAni
             Unknown2 = _binaryReader.Read<int>();
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Center.GetBytes());

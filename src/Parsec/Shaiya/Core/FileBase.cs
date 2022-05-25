@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -33,6 +34,9 @@ namespace Parsec.Shaiya.Core
 
         [JsonIgnore]
         public abstract string Extension { get; }
+
+        [JsonIgnore]
+        public Episode Episode { get; } = Episode.Unknown;
 
         /// <summary>
         /// Plain file name
@@ -118,11 +122,21 @@ namespace Parsec.Shaiya.Core
         public abstract void Read(params object[] options);
 
         /// <inheritdoc />
-        public virtual void Write(string path, params object[] options) =>
-            FileHelper.WriteFile(path, GetBytes(options));
+        public virtual void Write(string path, Episode? episode = null) =>
+            FileHelper.WriteFile(path, GetBytes(episode));
 
         /// <inheritdoc />
-        public abstract byte[] GetBytes(params object[] options);
+        public virtual IEnumerable<byte> GetBytes(Episode? episode = null)
+        {
+            var buffer = new List<byte>();
+            
+            var properties = GetType().GetProperties();
+
+            foreach (var property in properties)
+                buffer.AddRange(Binary.GetPropertyBytes(this, property, episode ?? Episode));
+
+            return buffer.ToArray();
+        }
 
         /// <inheritdoc/>
         public void ExportJson(string path, params string[] ignoredPropertyNames) =>

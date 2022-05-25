@@ -9,14 +9,14 @@ namespace Parsec.Shaiya.NpcQuest
     {
         public List<GateTarget> GateTargets { get; } = new();
 
-        public GateKeeper(SBinaryReader binaryReader, Format format) : base(format)
+        public GateKeeper(SBinaryReader binaryReader, Episode episode) : base(episode)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             ReadBaseNpcSecondSegment(binaryReader);
 
             for (int i = 0; i < 3; i++)
             {
-                var gateTarget = new GateTarget(binaryReader, format);
+                var gateTarget = new GateTarget(binaryReader, episode);
                 GateTargets.Add(gateTarget);
             }
 
@@ -24,7 +24,7 @@ namespace Parsec.Shaiya.NpcQuest
         }
 
         [JsonConstructor]
-        public GateKeeper(Format format = Format.EP5) : base(format)
+        public GateKeeper(Episode episode = Episode.EP5) : base(episode)
         {
         }
 

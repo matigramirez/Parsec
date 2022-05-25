@@ -42,7 +42,8 @@ namespace Parsec.Shaiya.MON
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        // TODO: This method needs attention because the MON format doesn't depend on the episode itself, sometimes MO2 and MO4 are mixed within the same client
+        public byte[] GetBytes(params object[] options)
         {
             var outputFormat = Format;
 

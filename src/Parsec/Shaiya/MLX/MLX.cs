@@ -38,7 +38,7 @@ namespace Parsec.Shaiya.MLX
             }
         }
 
-        public override byte[] GetBytes(params object[] options) => Records.GetBytes();
+        public override IEnumerable<byte> GetBytes(Episode? episode = null) => Records.GetBytes();
 
         /// <summary>
         /// Helper method to recalculate MLX record indices, just in case they get messed up or new records have been added

@@ -13,7 +13,7 @@ namespace Parsec.Shaiya.NpcQuest
 
         public List<MerchantItem> SaleItems { get; } = new();
 
-        public Merchant(SBinaryReader binaryReader, Format format) : base(format)
+        public Merchant(SBinaryReader binaryReader, Episode episode) : base(episode)
         {
             ReadBaseNpcFirstSegment(binaryReader);
             MerchantType = (MerchantType)binaryReader.Read<byte>();
@@ -31,7 +31,7 @@ namespace Parsec.Shaiya.NpcQuest
         }
 
         [JsonConstructor]
-        public Merchant(Format format = Format.EP5) : base(format)
+        public Merchant(Episode episode = Episode.EP5) : base(episode)
         {
         }
 

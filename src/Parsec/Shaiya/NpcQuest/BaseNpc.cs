@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.NpcQuest
 {
     public abstract class BaseNpc : IBinary
     {
-        private readonly Format _format;
+        private readonly Episode _episode;
         public NpcType Type { get; set; }
         public short TypeId { get; set; }
         public int Model { get; set; }
@@ -23,9 +23,9 @@ namespace Parsec.Shaiya.NpcQuest
         public List<short> InQuestIds { get; } = new();
         public List<short> OutQuestIds { get; } = new();
 
-        public BaseNpc(Format format)
+        public BaseNpc(Episode episode)
         {
-            _format = format;
+            _episode = episode;
         }
 
         protected void ReadNpcBaseComplete(SBinaryReader binaryReader)
@@ -54,7 +54,7 @@ namespace Parsec.Shaiya.NpcQuest
             MoveSpeed = binaryReader.Read<int>();
             Faction = (FactionInt)binaryReader.Read<int>();
 
-            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
+            if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
             {
                 Name = binaryReader.ReadString(false);
                 WelcomeMessage = binaryReader.ReadString(false);
@@ -67,7 +67,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(MoveDistance.GetBytes());
             buffer.AddRange(MoveSpeed.GetBytes());
             buffer.AddRange(((int)Faction).GetBytes());
-            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
+            if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
             {
                 buffer.AddRange(Name.GetLengthPrefixedBytes(false));
                 buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(false));

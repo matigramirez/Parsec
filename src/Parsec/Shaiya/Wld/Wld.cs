@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Wld
@@ -33,7 +35,7 @@ namespace Parsec.Shaiya.Wld
             throw new NotImplementedException();
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             throw new NotImplementedException();
         }

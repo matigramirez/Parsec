@@ -1,6 +1,9 @@
-﻿namespace Parsec.Shaiya.Core
+﻿using System.Collections.Generic;
+using Parsec.Common;
+
+namespace Parsec.Shaiya.Core
 {
-    public interface IFileBase : IBinary
+    public interface IFileBase
     {
         /// <summary>
         /// Reads and parses the file
@@ -12,7 +15,13 @@
         /// Writes the file to its original format
         /// </summary>
         /// <param name="path">Path where to write the file</param>
-        /// <param name="options">Extra options</param>
-        void Write(string path, params object[] options);
+        /// <param name="episode">The desired output format</param>
+        void Write(string path, Episode? episode = null);
+
+        /// <summary>
+        /// Gets the serialized file data
+        /// </summary>
+        /// <param name="episode">The desired file episode</param>
+        IEnumerable<byte> GetBytes(Episode? episode = null);
     }
 }

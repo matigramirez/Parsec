@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.NpcQuest
 {
     public class QuestResult : IBinary
     {
-        private readonly Format _format;
+        private readonly Episode _episode;
         public ushort NeedMobId { get; set; }
         public byte NeedMobCount { get; set; }
         public byte NeedItemId { get; set; }
@@ -31,9 +31,9 @@ namespace Parsec.Shaiya.NpcQuest
         public byte ItemCount3 { get; set; }
         public ushort NextQuest { get; set; }
 
-        public QuestResult(SBinaryReader binaryReader, Format format)
+        public QuestResult(SBinaryReader binaryReader, Episode episode)
         {
-            _format = format;
+            _episode = episode;
             NeedMobId = binaryReader.Read<ushort>();
             NeedMobCount = binaryReader.Read<byte>();
             NeedItemId = binaryReader.Read<byte>();
@@ -48,7 +48,7 @@ namespace Parsec.Shaiya.NpcQuest
             ItemTypeId1 = binaryReader.Read<byte>();
 
             // Some extra values are read here for EP6+
-            if (format > Format.EP5)
+            if (episode > Episode.EP5)
             {
                 ItemCount1 = binaryReader.Read<byte>();
 
@@ -85,7 +85,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(BitConverter.GetBytes(Money));
             buffer.Add(ItemType1);
             buffer.Add(ItemTypeId1);
-            if (_format > Format.EP5)
+            if (_episode > Episode.EP5)
             {
                 buffer.Add(ItemCount1);
 

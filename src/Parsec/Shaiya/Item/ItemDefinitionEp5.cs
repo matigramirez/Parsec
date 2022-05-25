@@ -127,8 +127,8 @@ namespace Parsec.Shaiya.Item
             Wis = binaryReader.Read<short>();
             Luc = binaryReader.Read<short>();
             Hp = binaryReader.Read<short>();
-            Mp = binaryReader.Read<short>();
             Sp = binaryReader.Read<short>();
+            Mp = binaryReader.Read<short>();
             Speed = binaryReader.Read<byte>();
             Exp = binaryReader.Read<byte>();
             BuyPrice = binaryReader.Read<int>();

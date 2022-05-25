@@ -29,6 +29,6 @@ namespace Parsec.Shaiya.KillStatus
             }
         }
 
-        public override byte[] GetBytes(params object[] options) => Records.GetBytes();
+        public override IEnumerable<byte> GetBytes(Episode? episode = null) => Records.GetBytes();
     }
 }

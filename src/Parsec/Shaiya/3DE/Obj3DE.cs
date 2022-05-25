@@ -46,7 +46,7 @@ namespace Parsec.Shaiya.Obj3DE
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
 

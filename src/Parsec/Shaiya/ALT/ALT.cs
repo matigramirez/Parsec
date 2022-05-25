@@ -34,7 +34,7 @@ namespace Parsec.Shaiya.ALT
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
 

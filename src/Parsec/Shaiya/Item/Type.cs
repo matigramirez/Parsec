@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -9,6 +10,7 @@ namespace Parsec.Shaiya.Item
 {
     public class Type : IBinary
     {
+        public int Id { get; set; }
         public int MaxTypeId { get; set; }
         public List<IItemDefinition> ItemDefinitions { get; } = new();
 
@@ -17,31 +19,34 @@ namespace Parsec.Shaiya.Item
         {
         }
 
-        public Type(int maxTypeId, IEnumerable<IItemDefinition> itemDefinitions)
+        public Type(int id, int maxTypeId, IEnumerable<IItemDefinition> itemDefinitions)
         {
+            Id = id;
             MaxTypeId = maxTypeId;
             ItemDefinitions = itemDefinitions.ToList();
         }
 
         public Type(
             SBinaryReader binaryReader,
-            ItemFormat format,
+            int id,
+            Episode episode,
             IDictionary<(byte type, byte typeId), IItemDefinition> itemIndex
         )
         {
+            Id = id;
             MaxTypeId = binaryReader.Read<int>();
 
             for (int i = 0; i < MaxTypeId; i++)
             {
-                switch (format)
+                switch (episode)
                 {
-                    case ItemFormat.EP5:
+                    case Episode.EP5:
                     default:
                         var itemEp5 = new ItemDefinitionEp5(binaryReader);
                         ItemDefinitions.Add(itemEp5);
                         itemIndex.Add((itemEp5.Type, itemEp5.TypeId), itemEp5);
                         break;
-                    case ItemFormat.EP6:
+                    case Episode.EP6:
                         var itemEp6 = new ItemDefinitionEp6(binaryReader);
                         ItemDefinitions.Add(itemEp6);
                         itemIndex.Add((itemEp6.Type, itemEp6.TypeId), itemEp6);
@@ -52,10 +57,10 @@ namespace Parsec.Shaiya.Item
 
         public byte[] GetBytes(params object[] options)
         {
-            var format = ItemFormat.EP5;
+            var format = Episode.EP5;
 
             if (options.Length > 0)
-                format = (ItemFormat)options[0];
+                format = (Episode)options[0];
 
             var buffer = new List<byte>();
 
@@ -66,11 +71,11 @@ namespace Parsec.Shaiya.Item
                 // Add item definitions based on format
                 switch (format)
                 {
-                    case ItemFormat.EP5:
+                    case Episode.EP5:
                     default:
                         buffer.AddRange(((ItemDefinitionEp5)itemDefinition).GetBytes());
                         break;
-                    case ItemFormat.EP6:
+                    case Episode.EP6:
                         buffer.AddRange(((ItemDefinitionEp6)itemDefinition).GetBytes());
                         break;
                 }

@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.NpcQuest
     public class NpcQuest : SData.SData, IJsonReadable
     {
         [JsonIgnore]
-        public Format Format { get; set; }
+        public Episode Episode { get; set; }
         public List<Merchant> Merchants { get; } = new();
         public List<GateKeeper> Gatekeepers { get; } = new();
         public List<StandardNpc> Blacksmiths { get; } = new();
@@ -31,15 +31,15 @@ namespace Parsec.Shaiya.NpcQuest
             if (options.Length > 0)
             {
                 object format = options[0];
-                Format = (Format)format;
+                Episode = (Episode)format;
             }
             else
             {
-                Format = Format.EP5;
+                Episode = Episode.EP5;
             }
 
             // TODO: Remove this when support for EP5+ is added
-            if (Format > Format.EP5 && Format != Format.EP8)
+            if (Episode > Episode.EP5 && Episode != Episode.EP8)
                 throw new NotSupportedException("Only NpcQuest EP4, EP5 and EP8 format can be read");
 
             ReadMerchants();
@@ -65,7 +65,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             for (int i = 0; i < merchantCount; i++)
             {
-                var merchant = new Merchant(_binaryReader, Format);
+                var merchant = new Merchant(_binaryReader, Episode);
                 Merchants.Add(merchant);
             }
         }
@@ -76,7 +76,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             for (int i = 0; i < gateKeeperCount; i++)
             {
-                var gatekeeper = new GateKeeper(_binaryReader, Format);
+                var gatekeeper = new GateKeeper(_binaryReader, Episode);
                 Gatekeepers.Add(gatekeeper);
             }
         }
@@ -87,7 +87,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             for (int i = 0; i < count; i++)
             {
-                var npc = new StandardNpc(_binaryReader, Format);
+                var npc = new StandardNpc(_binaryReader, Episode);
                 npcList.Add(npc);
             }
         }
@@ -124,12 +124,12 @@ namespace Parsec.Shaiya.NpcQuest
 
             for (int i = 0; i < questCount; i++)
             {
-                var quest = new Quest(_binaryReader, Format);
+                var quest = new Quest(_binaryReader, Episode);
                 Quests.Add(quest);
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
 

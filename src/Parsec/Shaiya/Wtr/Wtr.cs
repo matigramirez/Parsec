@@ -34,7 +34,7 @@ namespace Parsec.Shaiya.Wtr
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Unknown1.GetBytes());

@@ -19,7 +19,7 @@ namespace Parsec.Samples
         {
             #region NpcQuest
 
-            var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
+            var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Episode.EP5);
 
             Console.WriteLine($"Merchant Count (EP 5): {npcQuest.Merchants.Count}");
             Console.WriteLine($"GateKeeper Count (EP 5): {npcQuest.Gatekeepers.Count}");
@@ -32,7 +32,7 @@ namespace Parsec.Samples
             var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
             FileHelper.WriteFile("NpcQuest.EP5.SData.Decrypted", decryptedBytes);
 
-            npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP8.SData", Format.EP8);
+            npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP8.SData", Episode.EP8);
 
             Console.WriteLine($"Merchant Count (EP 8): {npcQuest.Merchants.Count}");
             Console.WriteLine($"GateKeeper Count (EP 8): {npcQuest.Gatekeepers.Count}");

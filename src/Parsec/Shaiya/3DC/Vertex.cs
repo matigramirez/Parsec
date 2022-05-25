@@ -68,13 +68,13 @@ namespace Parsec.Shaiya.Obj3DC
         /// </summary>
         public Vector2 UV { get; set; }
 
-        public Vertex(int index, Format format, SBinaryReader binaryReader)
+        public Vertex(int index, Episode episode, SBinaryReader binaryReader)
         {
             Index = index;
             Position = new Vector3(binaryReader);
             BoneWeight = binaryReader.Read<float>();
 
-            if (format >= Format.EP6)
+            if (episode >= Episode.EP6)
             {
                 Bone2Weight = binaryReader.Read<float>();
                 Bone3Weight = binaryReader.Read<float>();
@@ -98,21 +98,21 @@ namespace Parsec.Shaiya.Obj3DC
 
         /// <summary>
         /// Serializes the vertex data into a byte array that's ready to be written into a file
-        /// Expects <see cref="Format"/> as an option parameter
+        /// Expects <see cref="Episode"/> as an option parameter
         /// </summary>
         public byte[] GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
-            var format = Format.EP5;
+            var format = Episode.EP5;
 
             if (options.Length > 0)
-                format = (Format)options[0];
+                format = (Episode)options[0];
 
             buffer.AddRange(Position.GetBytes());
             buffer.AddRange(BoneWeight.GetBytes());
 
-            if (format >= Format.EP6)
+            if (format >= Episode.EP6)
             {
                 buffer.AddRange(Bone2Weight.GetBytes());
                 buffer.AddRange(Bone3Weight.GetBytes());

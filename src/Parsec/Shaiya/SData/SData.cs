@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Cryptography;
 using Parsec.Extensions;
 using Parsec.Helpers;
@@ -161,17 +163,17 @@ namespace Parsec.Shaiya.SData
         }
 
         /// <inheritdoc />
-        public byte[] GetEncryptedBytes(params object[] options) => Encrypt(GetBytes(options));
+        public byte[] GetEncryptedBytes(Episode? episode = null) => Encrypt(GetBytes(episode).ToArray());
 
         /// <inheritdoc />
-        public void WriteEncrypted(string path, params object[] options)
+        public void WriteEncrypted(string path, Episode? episode = null)
         {
-            var encryptedBuffer = Encrypt(GetBytes(options));
+            var encryptedBuffer = Encrypt(GetBytes(episode).ToArray());
             FileHelper.WriteFile(path, encryptedBuffer);
         }
 
         /// <inheritdoc />
-        public void WriteDecrypted(string path, params object[] options) => Write(path, options);
+        public void WriteDecrypted(string path, Episode? episode = null) => Write(path, episode);
 
         public static void EncryptFile(string inputFilePath, string outputFilePath)
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Parsec.Common;
 using Parsec.Extensions;
 
 namespace Parsec.Shaiya.SData
@@ -35,7 +36,7 @@ namespace Parsec.Shaiya.SData
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Header);

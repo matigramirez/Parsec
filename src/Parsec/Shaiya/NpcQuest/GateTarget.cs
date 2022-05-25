@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.NpcQuest
 {
     public class GateTarget : IBinary
     {
-        private readonly Format _format;
+        private readonly Episode _episode;
         public short MapId { get; set; }
         public Vector3 Position { get; set; }
         public string TargetName { get; set; }
@@ -20,12 +20,12 @@ namespace Parsec.Shaiya.NpcQuest
         /// </summary>
         public int Cost { get; set; }
 
-        public GateTarget(SBinaryReader binaryReader, Format format)
+        public GateTarget(SBinaryReader binaryReader, Episode episode)
         {
-            _format = format;
+            _episode = episode;
             MapId = binaryReader.Read<short>();
             Position = new Vector3(binaryReader);
-            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
+            if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
                 TargetName = binaryReader.ReadString(false);
             Cost = binaryReader.Read<int>();
         }
@@ -41,7 +41,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             buffer.AddRange(MapId.GetBytes());
             buffer.AddRange(Position.GetBytes());
-            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
+            if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
                 buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
             buffer.AddRange(Cost.GetBytes());
 

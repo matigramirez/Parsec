@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.Obj3DC
         /// <summary>
         /// The format of this file which is taken from the <see cref="Signature"/> value
         /// </summary>
-        public Format Format => Signature > 0 ? Format.EP6 : Format.EP5;
+        public Episode Episode => Signature > 0 ? Episode.EP6 : Episode.EP5;
 
         /// <summary>
         /// List of bones linked to this 3d model. Although a model might be linked to a few bones (for example boots models), the 3DC file contains the definitions for all the bones in the whole skeleton.
@@ -55,7 +55,7 @@ namespace Parsec.Shaiya.Obj3DC
 
             for (int i = 0; i < vertexCount; i++)
             {
-                var vertex = new Vertex(i, Format, _binaryReader);
+                var vertex = new Vertex(i, Episode, _binaryReader);
                 Vertices.Add(vertex);
             }
 
@@ -71,7 +71,7 @@ namespace Parsec.Shaiya.Obj3DC
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Signature.GetBytes());
@@ -80,7 +80,7 @@ namespace Parsec.Shaiya.Obj3DC
             buffer.AddRange(Vertices.Count.GetBytes());
 
             foreach (var vertex in Vertices)
-                buffer.AddRange(vertex.GetBytes(Format));
+                buffer.AddRange(vertex.GetBytes(Episode));
 
             buffer.AddRange(Faces.GetBytes());
 

@@ -87,7 +87,8 @@ namespace Parsec.Extensions
         /// </summary>
         /// <param name="list"><see cref="IEnumerable{T}"/> of type <see cref="IBinary"/></param>
         /// <param name="lengthPrefixed">Indicates if the data should be prefixed with the array's length (int32) </param>
-        public static byte[] GetBytes(this IEnumerable<IBinary> list, bool lengthPrefixed = true)
+        /// <param name="options">Optional parameters</param>
+        public static byte[] GetBytes(this IEnumerable<IBinary> list, bool lengthPrefixed = true, params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -99,7 +100,7 @@ namespace Parsec.Extensions
 
             // Add item bytes
             foreach (var item in enumerable)
-                buffer.AddRange(item.GetBytes());
+                buffer.AddRange(item.GetBytes(options));
 
             return buffer.ToArray();
         }

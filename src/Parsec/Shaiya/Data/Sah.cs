@@ -160,7 +160,7 @@ namespace Parsec.Shaiya.Data
         public bool HasFile(string relativePath) => FileIndex.ContainsKey(relativePath);
 
         /// <inheritdoc />
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             // Create byte list which will have the sah's data
             var buffer = new List<byte>();
