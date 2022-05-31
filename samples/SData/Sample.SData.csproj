@@ -15,6 +15,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="DBSkillData.SData">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="ItemEP5.SData">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="NpcQuest.EP5.SData">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

@@ -9,6 +9,7 @@ using Parsec.Shaiya.Monster;
 using Parsec.Shaiya.NpcQuest;
 using Parsec.Shaiya.SData;
 using Parsec.Shaiya.SetItem;
+using Parsec.Shaiya.Skill;
 using Item = Parsec.Shaiya.Item.Item;
 
 namespace Parsec.Samples
@@ -50,11 +51,11 @@ namespace Parsec.Samples
 
             #region Item
 
-            var item = Reader.ReadFromFile<Item>("Item.SData");
-            item.WriteEncrypted("Item.encrypted.SData");
+            var item = Reader.ReadFromFile<Item>("ItemEP5.SData");
+            item.WriteEncrypted("ItemEP5.encrypted.SData");
 
             // Export as csv
-            item.ExportCSV("Item.csv");
+            item.ExportCSV("ItemEP5.csv");
 
             #endregion
 
@@ -91,6 +92,13 @@ namespace Parsec.Samples
             var monster = Reader.ReadFromFile<Monster>("Monster.SData");
             monster.WriteDecrypted("Monster.dec.SData");
             monster.ExportCSV("Monster.csv");
+
+            #endregion
+
+            #region Skills
+
+            var skills = Reader.ReadFromFile<DBSkillData>("DBSkillData.SData");
+            Console.WriteLine($"Skill Count (EP 8): {skills.Records.Count}");
 
             #endregion
         }
