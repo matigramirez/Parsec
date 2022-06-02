@@ -43,7 +43,7 @@ namespace Parsec.Shaiya.Skill
         public long Sound { get; set; }
 
         /// <summary>
-        /// Skill level.
+        /// Character required level.
         /// </summary>
         public long Level { get; set; }
 
