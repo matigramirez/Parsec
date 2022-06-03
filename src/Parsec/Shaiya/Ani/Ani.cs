@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Attributes;
 using Parsec.Common;
-using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Ani
@@ -9,27 +9,26 @@ namespace Parsec.Shaiya.Ani
     /// <summary>
     /// Class that represents an .ANI file
     /// </summary>
+    [VersionPrefixed("ANI_V2", Episode.EP6, Episode.EP8)]
     public class Ani : FileBase, IJsonReadable
     {
         /// <summary>
-        /// Indicates whether this ANI instance is of type ANI_V2 or not
-        /// </summary>
-        [JsonIgnore]
-        public bool IsAniV2 { get; set; }
-
-        /// <summary>
         /// Starting keyframe. 0 for most animations
         /// </summary>
+        [ShaiyaProperty]
         public int StartKeyframe { get; set; }
 
         /// <summary>
         /// The ending animation keyframe
         /// </summary>
+        [ShaiyaProperty]
         public int EndKeyframe { get; set; }
 
         /// <summary>
         /// The list of bones with their translations and rotations for each keyframe
         /// </summary>
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(Bone), typeof(short))]
         public List<Bone> Bones { get; } = new();
 
         [JsonIgnore]
@@ -42,7 +41,7 @@ namespace Parsec.Shaiya.Ani
             var signature = _binaryReader.ReadString(6);
 
             if (signature == "ANI_V2")
-                IsAniV2 = true;
+                Episode = Episode.EP6;
             else
                 _binaryReader.ResetOffset();
 
@@ -56,24 +55,6 @@ namespace Parsec.Shaiya.Ani
                 var aniStep = new Bone(_binaryReader, i);
                 Bones.Add(aniStep);
             }
-        }
-
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
-        {
-            var buffer = new List<byte>();
-
-            if (IsAniV2)
-                buffer.AddRange("ANI_V2".GetBytes());
-
-            buffer.AddRange(StartKeyframe.GetBytes());
-            buffer.AddRange(EndKeyframe.GetBytes());
-
-            buffer.AddRange(((short)Bones.Count).GetBytes());
-
-            foreach (var bone in Bones)
-                buffer.AddRange(bone.GetBytes());
-
-            return buffer.ToArray();
         }
     }
 }
