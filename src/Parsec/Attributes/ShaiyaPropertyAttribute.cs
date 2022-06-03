@@ -3,6 +3,7 @@ using Parsec.Common;
 
 namespace Parsec.Attributes;
 
+[AttributeUsage(AttributeTargets.Property)]
 public class ShaiyaPropertyAttribute : Attribute
 {
     public Episode MinEpisode { get; set; }
