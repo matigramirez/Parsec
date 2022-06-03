@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Attributes;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -9,8 +9,13 @@ namespace Parsec.Shaiya.Common
 {
     public class Face : IBinary
     {
+        [ShaiyaProperty]
         public ushort VertexIndex1 { get; set; }
+
+        [ShaiyaProperty]
         public ushort VertexIndex2 { get; set; }
+
+        [ShaiyaProperty]
         public ushort VertexIndex3 { get; set; }
 
         [JsonConstructor]

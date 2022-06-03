@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Attributes;
 using Parsec.Common;
-using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
@@ -9,8 +9,16 @@ namespace Parsec.Shaiya.Obj3DO
 {
     public class Obj3DO : FileBase, IJsonReadable
     {
+        [ShaiyaProperty]
+        [LengthPrefixedString(includeStringTerminator: false)]
         public string TextureName { get; set; }
+
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(Vertex))]
         public List<Vertex> Vertices { get; } = new();
+
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(Face))]
         public List<Face> Faces { get; } = new();
 
         [JsonIgnore]
@@ -35,15 +43,6 @@ namespace Parsec.Shaiya.Obj3DO
                 var face = new Face(_binaryReader);
                 Faces.Add(face);
             }
-        }
-
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(TextureName.GetBytes());
-            buffer.AddRange(Vertices.GetBytes());
-            buffer.AddRange(Faces.GetBytes());
-            return buffer.ToArray();
         }
     }
 }
