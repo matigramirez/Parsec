@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
@@ -36,7 +38,7 @@ namespace Parsec.Shaiya.Core
         public abstract string Extension { get; }
 
         [JsonIgnore]
-        public Episode Episode { get; } = Episode.Unknown;
+        public Episode Episode { get; set; } = Episode.Unknown;
 
         /// <summary>
         /// Plain file name
@@ -129,7 +131,25 @@ namespace Parsec.Shaiya.Core
         public virtual IEnumerable<byte> GetBytes(Episode? episode = null)
         {
             var buffer = new List<byte>();
-            
+
+            var type = GetType();
+
+            // Add version prefix if present (eg. "ANI_V2)
+            var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
+
+            if (isVersionPrefixed)
+            {
+                var versionPrefixes = type.GetCustomAttributes<VersionPrefixedAttribute>();
+
+                foreach (var versionPrefix in versionPrefixes)
+                {
+                    if ((episode == versionPrefix.MinEpisode && versionPrefix.MaxEpisode == Episode.Unknown) ||
+                        (episode >= versionPrefix.MinEpisode && episode <= versionPrefix.MaxEpisode))
+                        buffer.AddRange(versionPrefix.Prefix.GetBytes());
+                }
+            }
+
+            // Get bytes for all properties
             var properties = GetType().GetProperties();
 
             foreach (var property in properties)

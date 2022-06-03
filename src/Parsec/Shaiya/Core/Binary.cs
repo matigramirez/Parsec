@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,20 +9,21 @@ using Parsec.Extensions;
 
 namespace Parsec.Shaiya.Core
 {
-    public class Binary : IBinary
+    public class Binary
     {
-        public byte[] GetBytes(params object[] options)
-        {
-            throw new NotImplementedException();
-        }
-        
-        public static IEnumerable<byte> GetPropertyBytes(object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
+        public static IEnumerable<byte> GetPropertyBytes(
+            object obj,
+            PropertyInfo propertyInfo,
+            Episode episode = Episode.Unknown
+        )
         {
             var attributes = propertyInfo.GetCustomAttributes().ToList();
 
             // If property isn't marked as a ShaiyaAttribute, it must be skipped
             if (!attributes.Exists(a => a.GetType() == typeof(ShaiyaPropertyAttribute)))
                 return Array.Empty<byte>();
+
+            var propertyValue = propertyInfo.GetValue(obj);
 
             foreach (var attribute in attributes)
             {
@@ -33,7 +35,7 @@ namespace Parsec.Shaiya.Core
                         // FileBase instances include the Episode property
                         if (obj is FileBase fileBase)
                         {
-                            if(episode == Episode.Unknown)
+                            if (episode == Episode.Unknown)
                                 ep = fileBase.Episode;
                         }
 
@@ -51,51 +53,87 @@ namespace Parsec.Shaiya.Core
 
                         break;
 
-                    case LengthPrefixedListAttribute<IBinary>:
-                        return ((List<IBinary>)propertyInfo.GetValue(obj)).GetBytes(options: new object[] { episode });
+                    case LengthPrefixedListAttribute lengthPrefixedListAttribute:
+                        var lengthType = lengthPrefixedListAttribute.LengthType;
 
-                    case LengthPrefixedStringAttribute:
-                        return ((string)propertyInfo.GetValue(obj)).GetLengthPrefixedBytes();
+                        var items = propertyValue as IEnumerable;
+                        var itemCount = items.Cast<object>().Count();
+
+                        var buffer = new List<byte>();
+
+                        if (lengthType == typeof(int))
+                        {
+                            buffer.AddRange(itemCount.GetBytes());
+                        }
+                        else if (lengthType == typeof(short))
+                        {
+                            buffer.AddRange(((short)itemCount).GetBytes());
+                        }
+                        else if (lengthType == typeof(byte))
+                        {
+                            buffer.Add((byte)itemCount);
+                        }
+                        else
+                        {
+                            // only int, short and byte lengths are expected
+                            throw new NotImplementedException();
+                        }
+
+                        foreach (var item in items)
+                            foreach (var property in lengthPrefixedListAttribute.ItemType.GetProperties())
+                                buffer.AddRange(GetPropertyBytes(item, property, episode));
+
+                        return buffer.ToArray();
+
+                    case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
+                        return ((string)propertyValue).GetLengthPrefixedBytes(
+                            lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                     case FixedLengthStringAttribute:
-                        return ((string)propertyInfo.GetValue(obj)).GetBytes();
+                        return ((string)propertyValue).GetBytes();
                 }
             }
 
             var type = propertyInfo.PropertyType;
-            return GetPrimitiveBytes(type, obj);
+
+            // If property implements IBinary, bytes can be retrieved by calling GetBytes()
+            // this is the case for types Vector, Quaternion, Matrix, BoundingBox, etc.
+            if (type.GetInterfaces().Contains(typeof(IBinary)))
+                return ((IBinary)propertyValue).GetBytes();
+
+            return GetPrimitiveBytes(type, propertyValue);
         }
 
-        public static IEnumerable<byte> GetPrimitiveBytes(Type type, object obj)
+        public static IEnumerable<byte> GetPrimitiveBytes(Type type, object value)
         {
             if (type == typeof(byte))
-                return new[] { (byte)obj };
+                return new[] { (byte)value };
 
             if (type == typeof(bool))
-                return new[] { (byte)obj };
+                return new[] { (byte)value };
 
             if (type == typeof(int))
-                return ((int)obj).GetBytes();
+                return ((int)value).GetBytes();
 
             if (type == typeof(uint))
-                return ((uint)obj).GetBytes();
+                return ((uint)value).GetBytes();
 
             if (type == typeof(short))
-                return ((short)obj).GetBytes();
+                return ((short)value).GetBytes();
 
             if (type == typeof(ushort))
-                return ((short)obj).GetBytes();
+                return ((ushort)value).GetBytes();
 
             if (type == typeof(long))
-                return ((long)obj).GetBytes();
+                return ((long)value).GetBytes();
 
             if (type == typeof(ulong))
-                return ((ulong)obj).GetBytes();
+                return ((ulong)value).GetBytes();
 
             if (type == typeof(float))
-                return ((float)obj).GetBytes();
-            
-            return new byte[] {};
+                return ((float)value).GetBytes();
+
+            throw new ArgumentException();
         }
     }
 }
