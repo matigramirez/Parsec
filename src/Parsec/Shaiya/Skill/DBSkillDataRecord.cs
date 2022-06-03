@@ -388,14 +388,14 @@ namespace Parsec.Shaiya.Skill
         public long TimeHealHP { get; set; }
 
         /// <summary>
-        /// MP healed over time.
-        /// </summary>
-        public long TimeHealMP { get; set; }
-
-        /// <summary>
         /// SP healed over time.
         /// </summary>
         public long TimeHealSP { get; set; }
+
+        /// <summary>
+        /// MP healed over time.
+        /// </summary>
+        public long TimeHealMP { get; set; }
 
         /// <summary>
         /// For "Fleet Foot" it's value 2, which is block shoot attack for X %.
@@ -528,8 +528,8 @@ namespace Parsec.Shaiya.Skill
             HealMP = binaryReader.Read<long>();
             HealSP = binaryReader.Read<long>();
             TimeHealHP = binaryReader.Read<long>();
-            TimeHealMP = binaryReader.Read<long>();
             TimeHealSP = binaryReader.Read<long>();
+            TimeHealMP = binaryReader.Read<long>();
             DefenceType = binaryReader.Read<long>();
             DefenceValue = binaryReader.Read<long>();
             LimitHP = binaryReader.Read<long>();
@@ -634,8 +634,8 @@ namespace Parsec.Shaiya.Skill
             buffer.AddRange(HealMP.GetBytes());
             buffer.AddRange(HealSP.GetBytes());
             buffer.AddRange(TimeHealHP.GetBytes());
-            buffer.AddRange(TimeHealMP.GetBytes());
             buffer.AddRange(TimeHealSP.GetBytes());
+            buffer.AddRange(TimeHealMP.GetBytes());
             buffer.AddRange(DefenceType.GetBytes());
             buffer.AddRange(DefenceValue.GetBytes());
             buffer.AddRange(LimitHP.GetBytes());
