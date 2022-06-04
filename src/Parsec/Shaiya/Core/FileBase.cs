@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -121,11 +122,47 @@ namespace Parsec.Shaiya.Core
         }
 
         /// <inheritdoc/>
-        public abstract void Read(params object[] options);
+        public virtual void Read(params object[] options)
+        {
+            var type = GetType();
+
+            // Check if version prefix could be present (eg. "ANI_V2", "MO2", "MO4", etc)
+            var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
+
+            if (isVersionPrefixed)
+            {
+                var versionPrefixes = type.GetCustomAttributes<VersionPrefixedAttribute>();
+
+                foreach (var versionPrefix in versionPrefixes)
+                {
+                    var filePrefix = _binaryReader.ReadString(versionPrefix.Prefix.Length);
+
+                    // If prefix matches, episode must be set and reading must continue. If it doesn't, the reading offset must be reset to the beginning of the file
+                    if (filePrefix.Equals(versionPrefix.Prefix))
+                        Episode = versionPrefix.MinEpisode;
+                    else
+                        _binaryReader.ResetOffset();
+                }
+            }
+
+            // Read all properties
+            var properties = GetType().GetProperties();
+
+            foreach (var property in properties)
+            {
+                // skip non ShaiyaProperty properties
+                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                    continue;
+
+                var value = Binary.ReadProperty(_binaryReader, property, Episode);
+
+                // TODO: does this have issues if returned value is null?
+                property.SetValue(this, Convert.ChangeType(value, property.PropertyType));
+            }
+        }
 
         /// <inheritdoc />
-        public virtual void Write(string path, Episode? episode = null) =>
-            FileHelper.WriteFile(path, GetBytes(episode));
+        public virtual void Write(string path, Episode? episode = null) => FileHelper.WriteFile(path, GetBytes(episode));
 
         /// <inheritdoc />
         public virtual IEnumerable<byte> GetBytes(Episode? episode = null)
@@ -134,7 +171,7 @@ namespace Parsec.Shaiya.Core
 
             var type = GetType();
 
-            // Add version prefix if present (eg. "ANI_V2)
+            // Add version prefix if present (eg. "ANI_V2", "MO2", "MO4", etc)
             var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
 
             if (isVersionPrefixed)

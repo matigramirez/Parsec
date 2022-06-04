@@ -6,16 +6,123 @@ using System.Reflection;
 using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Readers;
 
 namespace Parsec.Shaiya.Core
 {
     public class Binary
     {
-        public static IEnumerable<byte> GetPropertyBytes(
-            object obj,
-            PropertyInfo propertyInfo,
-            Episode episode = Episode.Unknown
-        )
+        public static object ReadProperty(SBinaryReader binaryReader, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
+        {
+            var type = propertyInfo.PropertyType;
+
+            var attributes = propertyInfo.GetCustomAttributes().ToList();
+
+            // If property isn't marked as a ShaiyaProperty, it must be skipped
+            if (!attributes.Exists(a => a.GetType() == typeof(ShaiyaPropertyAttribute)))
+                return null;
+
+            foreach (var attribute in attributes)
+            {
+                switch (attribute)
+                {
+                    case ShaiyaPropertyAttribute shaiyaPropertyAttribute:
+                        if (shaiyaPropertyAttribute.MaxEpisode == Episode.Unknown && episode != shaiyaPropertyAttribute.MinEpisode)
+                            return null;
+
+                        if (episode < shaiyaPropertyAttribute.MinEpisode || episode > shaiyaPropertyAttribute.MaxEpisode)
+                            return null;
+
+                        break;
+
+                    case LengthPrefixedListAttribute lengthPrefixedListAttribute:
+                        int length = 0;
+
+                        var lengthType = lengthPrefixedListAttribute.LengthType;
+
+                        if (lengthType == typeof(int))
+                        {
+                            length = binaryReader.Read<int>();
+                        }
+                        else if (lengthType == typeof(uint))
+                        {
+                            length = (int)binaryReader.Read<uint>();
+                        }
+                        else if (lengthType == typeof(short))
+                        {
+                            length = binaryReader.Read<short>();
+                        }
+                        else if (lengthType == typeof(ushort))
+                        {
+                            length = binaryReader.Read<ushort>();
+                        }
+                        else if (lengthType == typeof(byte))
+                        {
+                            length = binaryReader.Read<byte>();
+                        }
+                        else if (lengthType == typeof(sbyte))
+                        {
+                            length = binaryReader.Read<sbyte>();
+                        }
+                        else
+                        {
+                            throw new NotImplementedException();
+                        }
+
+                        // Create generic list
+                        var listType = typeof(List<>);
+                        var constructedListType = listType.MakeGenericType(lengthPrefixedListAttribute.ItemType);
+                        var list = (IList)Activator.CreateInstance(constructedListType);
+
+                        var properties = lengthPrefixedListAttribute.ItemType.GetProperties();
+
+                        for (int i = 0; i < length; i++)
+                        {
+                            var item = Activator.CreateInstance(lengthPrefixedListAttribute.ItemType);
+
+                            foreach (var property in properties)
+                            {
+                                // skip non ShaiyaProperty properties
+                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                                    continue;
+
+                                var propertyValue = ReadProperty(binaryReader, property, episode);
+                                property.SetValue(item, propertyValue);
+                            }
+
+                            list.Add(item);
+                        }
+
+                        return list;
+
+                    case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
+                        var lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
+                                                                        lengthPrefixedStringAttribute.IncludeStringTerminator);
+
+                        return lengthPrefixedStr;
+
+                    case FixedLengthStringAttribute fixedLengthStringAttribute:
+                        var fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
+                                                                     fixedLengthStringAttribute.IncludeStringTerminator);
+
+                        return fixedLengthStr;
+                }
+            }
+
+            // If property implements IBinary, the IBinary must be instantiated through its single parameter constructor with takes the SBinaryReader instance
+            // this is the case for types Vector, Quaternion, Matrix, BoundingBox, etc.
+            if (type.GetInterfaces().Contains(typeof(IBinary)))
+            {
+                var binary = (IBinary)Activator.CreateInstance(type, binaryReader);
+                return binary;
+            }
+
+            return ReadPrimitive(binaryReader, type);
+        }
+
+        private static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
+
+        public static IEnumerable<byte> GetPropertyBytes(object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
         {
             var attributes = propertyInfo.GetCustomAttributes().ToList();
 
@@ -86,8 +193,7 @@ namespace Parsec.Shaiya.Core
                         return buffer.ToArray();
 
                     case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                        return ((string)propertyValue).GetLengthPrefixedBytes(
-                            lengthPrefixedStringAttribute.IncludeStringTerminator);
+                        return ((string)propertyValue).GetLengthPrefixedBytes(lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                     case FixedLengthStringAttribute:
                         return ((string)propertyValue).GetBytes();
@@ -104,7 +210,7 @@ namespace Parsec.Shaiya.Core
             return GetPrimitiveBytes(type, propertyValue);
         }
 
-        public static IEnumerable<byte> GetPrimitiveBytes(Type type, object value)
+        private static IEnumerable<byte> GetPrimitiveBytes(Type type, object value)
         {
             if (type == typeof(byte))
                 return new[] { (byte)value };
