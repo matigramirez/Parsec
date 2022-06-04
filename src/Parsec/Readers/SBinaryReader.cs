@@ -64,6 +64,36 @@ namespace Parsec.Readers
         }
 
         /// <summary>
+        /// Reads a value from the byte buffer based on its <see cref="Type"/>
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the value to be read</param>
+        /// <returns>Read value as an object</returns>
+        /// <exception cref="NotSupportedException">When the provided <see cref="Type"/> is not supported</exception>
+        public object Read(Type type)
+        {
+            var typeCode = Type.GetTypeCode(type);
+
+            object value = typeCode switch
+            {
+                TypeCode.Byte    => ReadByte(),
+                TypeCode.SByte   => ReadSByte(),
+                TypeCode.Char    => ReadChar(),
+                TypeCode.Boolean => ReadBoolean(),
+                TypeCode.Int16   => ReadInt16(),
+                TypeCode.UInt16  => ReadUInt16(),
+                TypeCode.Int32   => ReadInt32(),
+                TypeCode.UInt32  => ReadUInt32(),
+                TypeCode.Int64   => ReadInt64(),
+                TypeCode.UInt64  => ReadUInt64(),
+                TypeCode.Single  => ReadFloat(),
+                TypeCode.Double  => ReadDouble(),
+                _                => throw new NotSupportedException()
+            };
+
+            return value;
+        }
+
+        /// <summary>
         /// Reads a byte (unsigned)
         /// </summary>
         public byte ReadByte()
@@ -237,8 +267,7 @@ namespace Parsec.Readers
         /// Reads length-fixed string with UTF8 encoding
         /// </summary>
         /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
-        public string ReadString(bool removeStringTerminator = true) =>
-            ReadString(Encoding.UTF8, removeStringTerminator);
+        public string ReadString(bool removeStringTerminator = true) => ReadString(Encoding.UTF8, removeStringTerminator);
 
         /// <summary>
         /// Reads length-fixed string with UTF8 encoding
