@@ -61,6 +61,8 @@
         IncreaseHPByDex = 56,
         IncreaseHPByLuc = 57,
         SacrificeHPPercent = 70,
+        SacrificeSPPercent = 71,
+        SacrificeMPPercent = 72,
         SacrificeStr = 90,
         SacrificeRec = 91,
         SacrificeInt = 92,
