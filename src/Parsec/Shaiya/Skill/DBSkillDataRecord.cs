@@ -103,9 +103,9 @@ namespace Parsec.Shaiya.Skill
         public TypeAttack TypeAttack { get; set; }
 
         /// <summary>
-        /// ?
+        /// Additional effect description.
         /// </summary>
-        public long TypeEffect { get; set; }
+        public TypeEffect TypeEffect { get; set; }
 
         /// <summary>
         /// Type detail describes what skill does.
@@ -455,7 +455,7 @@ namespace Parsec.Shaiya.Skill
             Point = binaryReader.Read<long>();
             TypeShow = (TypeShow)binaryReader.Read<long>();
             TypeAttack = (TypeAttack)binaryReader.Read<long>();
-            TypeEffect = binaryReader.Read<long>();
+            TypeEffect = (TypeEffect)binaryReader.Read<long>();
             TypeDetail = (TypeDetail)binaryReader.Read<long>();
             NeedWeapon1 = binaryReader.Read<long>();
             NeedWeapon2 = binaryReader.Read<long>();
@@ -561,7 +561,7 @@ namespace Parsec.Shaiya.Skill
             buffer.AddRange(Point.GetBytes());
             buffer.AddRange(((long)TypeShow).GetBytes());
             buffer.AddRange(((long)TypeAttack).GetBytes());
-            buffer.AddRange(TypeEffect.GetBytes());
+            buffer.AddRange(((long)TypeEffect).GetBytes());
             buffer.AddRange(((long)TypeDetail).GetBytes());
             buffer.AddRange(NeedWeapon1.GetBytes());
             buffer.AddRange(NeedWeapon2.GetBytes());
