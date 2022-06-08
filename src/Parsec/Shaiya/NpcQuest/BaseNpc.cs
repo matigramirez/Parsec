@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
-using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest
@@ -16,7 +15,7 @@ namespace Parsec.Shaiya.NpcQuest
         public int Model { get; set; }
         public int MoveDistance { get; set; }
         public int MoveSpeed { get; set; }
-        public FactionInt Faction { get; set; }
+        public NpcFaction Faction { get; set; }
         public string Name { get; set; }
         public string WelcomeMessage { get; set; }
 
@@ -52,7 +51,7 @@ namespace Parsec.Shaiya.NpcQuest
             Model = binaryReader.Read<int>();
             MoveDistance = binaryReader.Read<int>();
             MoveSpeed = binaryReader.Read<int>();
-            Faction = (FactionInt)binaryReader.Read<int>();
+            Faction = (NpcFaction)binaryReader.Read<int>();
 
             if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
             {
