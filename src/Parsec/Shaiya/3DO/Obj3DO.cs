@@ -15,34 +15,13 @@ namespace Parsec.Shaiya.Obj3DO
 
         [ShaiyaProperty]
         [LengthPrefixedList(typeof(Vertex))]
-        public List<Vertex> Vertices { get; } = new();
+        public List<Vertex> Vertices { get; set; } = new();
 
         [ShaiyaProperty]
         [LengthPrefixedList(typeof(Face))]
-        public List<Face> Faces { get; } = new();
+        public List<Face> Faces { get; set; } = new();
 
         [JsonIgnore]
         public override string Extension => "3DO";
-
-        public override void Read(params object[] options)
-        {
-            TextureName = _binaryReader.ReadString();
-
-            var vertexCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < vertexCount; i++)
-            {
-                var vertex = new Vertex(_binaryReader);
-                Vertices.Add(vertex);
-            }
-
-            var faceCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < faceCount; i++)
-            {
-                var face = new Face(_binaryReader);
-                Faces.Add(face);
-            }
-        }
     }
 }
