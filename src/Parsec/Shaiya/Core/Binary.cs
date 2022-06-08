@@ -137,7 +137,7 @@ namespace Parsec.Shaiya.Core
                 switch (attribute)
                 {
                     case ShaiyaPropertyAttribute shaiyaProperty:
-                        var ep = Episode.Unknown;
+                        var ep = episode;
 
                         // FileBase instances include the Episode property
                         if (obj is FileBase fileBase)
@@ -150,12 +150,16 @@ namespace Parsec.Shaiya.Core
                         if (ep == Episode.Unknown)
                             break;
 
+                        // if the ShaiyaProperty didn't specify an episode, then it's present in all of them
+                        if (shaiyaProperty.MinEpisode == Episode.Unknown && shaiyaProperty.MaxEpisode == Episode.Unknown)
+                            break;
+
                         // single episode check
                         if (shaiyaProperty.MaxEpisode == Episode.Unknown && ep != shaiyaProperty.MinEpisode)
                             return Array.Empty<byte>();
 
                         // multiple episode check
-                        if (ep <= shaiyaProperty.MinEpisode && ep >= shaiyaProperty.MaxEpisode)
+                        if (ep <= shaiyaProperty.MinEpisode || ep >= shaiyaProperty.MaxEpisode)
                             return Array.Empty<byte>();
 
                         break;
@@ -187,8 +191,15 @@ namespace Parsec.Shaiya.Core
                         }
 
                         foreach (var item in items)
+                        {
                             foreach (var property in lengthPrefixedListAttribute.ItemType.GetProperties())
+                            {
+                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                                    continue;
+
                                 buffer.AddRange(GetPropertyBytes(item, property, episode));
+                            }
+                        }
 
                         return buffer.ToArray();
 
