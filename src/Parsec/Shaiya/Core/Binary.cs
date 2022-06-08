@@ -99,6 +99,33 @@ namespace Parsec.Shaiya.Core
 
                         return list;
 
+                    case FixedLengthListAttribute fixedLengthListAttribute:
+                        // Create generic list
+                        var fixedLengthListType = typeof(List<>);
+                        var constructedFixedListType = fixedLengthListType.MakeGenericType(fixedLengthListAttribute.ItemType);
+                        var itemList = (IList)Activator.CreateInstance(constructedFixedListType);
+
+                        var typeProperties = fixedLengthListAttribute.ItemType.GetProperties();
+
+                        for (int i = 0; i < fixedLengthListAttribute.Length; i++)
+                        {
+                            var item = Activator.CreateInstance(fixedLengthListAttribute.ItemType);
+
+                            foreach (var property in typeProperties)
+                            {
+                                // skip non ShaiyaProperty properties
+                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                                    continue;
+
+                                var propertyValue = ReadProperty(binaryReader, property, episode);
+                                property.SetValue(item, propertyValue);
+                            }
+
+                            itemList.Add(item);
+                        }
+
+                        return itemList;
+
                     case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
                         var lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
                                                                         lengthPrefixedStringAttribute.IncludeStringTerminator);
@@ -168,6 +195,24 @@ namespace Parsec.Shaiya.Core
 
                         break;
 
+                    case FixedLengthListAttribute fixedLengthListAttribute:
+                        var listItems = (propertyValue as IEnumerable).Cast<object>().Take(fixedLengthListAttribute.Length);
+
+                        var buf = new List<byte>();
+
+                        foreach (var item in listItems)
+                        {
+                            foreach (var property in fixedLengthListAttribute.ItemType.GetProperties())
+                            {
+                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                                    continue;
+
+                                buf.AddRange(GetPropertyBytes(item, property, episode));
+                            }
+                        }
+
+                        return buf.ToArray();
+
                     case LengthPrefixedListAttribute lengthPrefixedListAttribute:
                         var lengthType = lengthPrefixedListAttribute.LengthType;
 
@@ -206,6 +251,10 @@ namespace Parsec.Shaiya.Core
                         }
 
                         return buffer.ToArray();
+
+                    case SuffixedStringAttribute suffixedStringAttribute:
+                        propertyValue += suffixedStringAttribute.Suffix;
+                        break;
 
                     case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
                         return ((string)propertyValue).GetLengthPrefixedBytes(lengthPrefixedStringAttribute.IncludeStringTerminator);
