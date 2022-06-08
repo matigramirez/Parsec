@@ -190,7 +190,12 @@ namespace Parsec.Shaiya.Core
             var properties = GetType().GetProperties();
 
             foreach (var property in properties)
+            {
+                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                    continue;
+
                 buffer.AddRange(Binary.GetPropertyBytes(this, property, episode ?? Episode));
+            }
 
             return buffer.ToArray();
         }
