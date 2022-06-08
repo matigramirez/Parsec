@@ -39,6 +39,41 @@ namespace Parsec.Shaiya.Core
 
                         break;
 
+                    case FixedLengthListAttribute fixedLengthListAttribute:
+                        // Create generic list
+                        var fixedLengthListType = typeof(List<>);
+                        var constructedFixedListType = fixedLengthListType.MakeGenericType(fixedLengthListAttribute.ItemType);
+                        var itemList = (IList)Activator.CreateInstance(constructedFixedListType);
+
+                        var typeProperties = fixedLengthListAttribute.ItemType.GetProperties();
+                        var genericArgumentType = type.GetGenericArguments().First();
+
+                        for (int i = 0; i < fixedLengthListAttribute.Length; i++)
+                        {
+                            var item = Activator.CreateInstance(fixedLengthListAttribute.ItemType);
+
+                            if (genericArgumentType.IsPrimitive)
+                            {
+                                item = ReadPrimitive(binaryReader, genericArgumentType);
+                            }
+                            else
+                            {
+                                foreach (var property in typeProperties)
+                                {
+                                    // skip non ShaiyaProperty properties
+                                    if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                                        continue;
+
+                                    var propertyValue = ReadProperty(binaryReader, property, episode);
+                                    property.SetValue(item, propertyValue);
+                                }
+                            }
+
+                            itemList.Add(item);
+                        }
+
+                        return itemList;
+
                     case LengthPrefixedListAttribute lengthPrefixedListAttribute:
                         int length = 0;
 
@@ -78,53 +113,34 @@ namespace Parsec.Shaiya.Core
                         var constructedListType = listType.MakeGenericType(lengthPrefixedListAttribute.ItemType);
                         var list = (IList)Activator.CreateInstance(constructedListType);
 
+                        var genericItemType = type.GetGenericArguments().First();
                         var properties = lengthPrefixedListAttribute.ItemType.GetProperties();
 
                         for (int i = 0; i < length; i++)
                         {
                             var item = Activator.CreateInstance(lengthPrefixedListAttribute.ItemType);
 
-                            foreach (var property in properties)
+                            if (type.GetGenericArguments().First().IsPrimitive)
                             {
-                                // skip non ShaiyaProperty properties
-                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
-                                    continue;
+                                item = ReadPrimitive(binaryReader, genericItemType);
+                            }
+                            else
+                            {
+                                foreach (var property in properties)
+                                {
+                                    // skip non ShaiyaProperty properties
+                                    if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
+                                        continue;
 
-                                var propertyValue = ReadProperty(binaryReader, property, episode);
-                                property.SetValue(item, propertyValue);
+                                    var propertyValue = ReadProperty(binaryReader, property, episode);
+                                    property.SetValue(item, propertyValue);
+                                }
                             }
 
                             list.Add(item);
                         }
 
                         return list;
-
-                    case FixedLengthListAttribute fixedLengthListAttribute:
-                        // Create generic list
-                        var fixedLengthListType = typeof(List<>);
-                        var constructedFixedListType = fixedLengthListType.MakeGenericType(fixedLengthListAttribute.ItemType);
-                        var itemList = (IList)Activator.CreateInstance(constructedFixedListType);
-
-                        var typeProperties = fixedLengthListAttribute.ItemType.GetProperties();
-
-                        for (int i = 0; i < fixedLengthListAttribute.Length; i++)
-                        {
-                            var item = Activator.CreateInstance(fixedLengthListAttribute.ItemType);
-
-                            foreach (var property in typeProperties)
-                            {
-                                // skip non ShaiyaProperty properties
-                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
-                                    continue;
-
-                                var propertyValue = ReadProperty(binaryReader, property, episode);
-                                property.SetValue(item, propertyValue);
-                            }
-
-                            itemList.Add(item);
-                        }
-
-                        return itemList;
 
                     case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
                         var lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
@@ -155,6 +171,7 @@ namespace Parsec.Shaiya.Core
 
         public static IEnumerable<byte> GetPropertyBytes(object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
         {
+            var type = propertyInfo.PropertyType;
             var attributes = propertyInfo.GetCustomAttributes().ToList();
 
             // If property isn't marked as a ShaiyaAttribute, it must be skipped
@@ -200,14 +217,23 @@ namespace Parsec.Shaiya.Core
 
                         var buf = new List<byte>();
 
+                        var genericArgumentType = type.GetGenericArguments().First();
+
                         foreach (var item in listItems)
                         {
-                            foreach (var property in fixedLengthListAttribute.ItemType.GetProperties())
+                            if (genericArgumentType.IsPrimitive)
                             {
-                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
-                                    continue;
+                                buf.AddRange(GetPrimitiveBytes(genericArgumentType, item));
+                            }
+                            else
+                            {
+                                foreach (var property in fixedLengthListAttribute.ItemType.GetProperties())
+                                {
+                                    if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !fixedLengthListAttribute.ItemType.IsPrimitive)
+                                        continue;
 
-                                buf.AddRange(GetPropertyBytes(item, property, episode));
+                                    buf.AddRange(GetPropertyBytes(item, property, episode));
+                                }
                             }
                         }
 
@@ -218,6 +244,8 @@ namespace Parsec.Shaiya.Core
 
                         var items = propertyValue as IEnumerable;
                         var itemCount = items.Cast<object>().Count();
+
+                        var genericItemType = type.GetGenericArguments().First();
 
                         var buffer = new List<byte>();
 
@@ -241,12 +269,19 @@ namespace Parsec.Shaiya.Core
 
                         foreach (var item in items)
                         {
-                            foreach (var property in lengthPrefixedListAttribute.ItemType.GetProperties())
+                            if (genericItemType.IsPrimitive)
                             {
-                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
-                                    continue;
+                                buffer.AddRange(GetPrimitiveBytes(genericItemType, item));
+                            }
+                            else
+                            {
+                                foreach (var property in lengthPrefixedListAttribute.ItemType.GetProperties())
+                                {
+                                    if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !lengthPrefixedListAttribute.ItemType.IsPrimitive)
+                                        continue;
 
-                                buffer.AddRange(GetPropertyBytes(item, property, episode));
+                                    buffer.AddRange(GetPropertyBytes(item, property, episode));
+                                }
                             }
                         }
 
@@ -263,8 +298,6 @@ namespace Parsec.Shaiya.Core
                         return ((string)propertyValue).GetBytes();
                 }
             }
-
-            var type = propertyInfo.PropertyType;
 
             // If property implements IBinary, bytes can be retrieved by calling GetBytes()
             // this is the case for types Vector, Quaternion, Matrix, BoundingBox, etc.
