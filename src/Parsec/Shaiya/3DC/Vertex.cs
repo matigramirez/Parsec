@@ -7,17 +7,17 @@ namespace Parsec.Shaiya.Obj3DC
     public class Vertex
     {
         /// <summary>
-        /// The vertex position
+        /// The vertex's 3d coordinates
         /// </summary>
         [ShaiyaProperty]
-        public Vector3 Position { get; set; }
+        public Vector3 Coordinates { get; set; }
 
         /// <summary>
         /// If the 3DC file's format is EP5 or inferior, this value is shared between <see cref="BoneVertexGroup1"/> and <see cref="BoneVertexGroup2"/>, it indicates the weight of this vertex for those vertex groups.
         /// If the file's format is EP6 or superior, this value is the weight for <see cref="BoneVertexGroup1"/> only.
         /// </summary>
         [ShaiyaProperty]
-        public float BoneWeight { get; set; }
+        public float Bone1Weight { get; set; }
 
         /// <summary>
         /// Bone weight for <see cref="BoneVertexGroup2"/> Present in EP6+ format only
