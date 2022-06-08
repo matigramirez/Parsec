@@ -7,13 +7,24 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.ALT
 {
     /// <summary>
-    /// Class that represents an animation definition in an ALT file.
-    /// Throughout the list of animations, there's some of them which have 0-length names, when this
-    /// happens, the rest of the fields are not present in the file, so they need to be skipped when
-    /// reading or writing.
+    /// Class that represents an animation record in an ALT file.
+    /// Throughout the list of animations, there's some of them which have 0-length names, when this happens, the rest of the fields are not present
+    /// in the file, so they need to be skipped when reading or writing.
+    /// This is considered a serialization anti-pattern and that's why its read through a custom constructor and written using a custom
+    /// <see cref="GetBytes"/> method.
     /// </summary>
     public class Animation : IBinary
     {
+        public string Name { get; set; }
+
+        /// TODO: In shStudio, Mode is split into 4 separate byte's, investigate if that's correct, since the game client actually reads a single value 4-byte
+        public int Mode { get; set; }
+        public int Unknown { get; set; }
+        public float Float1 { get; set; }
+        public float Float2 { get; set; }
+        public float Float3 { get; set; }
+        public float Float4 { get; set; }
+
         [JsonConstructor]
         public Animation()
         {
@@ -34,16 +45,6 @@ namespace Parsec.Shaiya.ALT
             Float3 = binaryReader.Read<float>();
             Float4 = binaryReader.Read<float>();
         }
-
-        public string Name { get; set; }
-
-        /// TODO: In shStudio, Mode is split into 4 separate byte's, investigate if that's correct, since the game client actually reads a single value 4-byte
-        public int Mode { get; set; }
-        public int Unknown { get; set; }
-        public float Float1 { get; set; }
-        public float Float2 { get; set; }
-        public float Float3 { get; set; }
-        public float Float4 { get; set; }
 
         public byte[] GetBytes(params object[] options)
         {

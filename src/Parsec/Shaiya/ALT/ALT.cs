@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
@@ -7,7 +6,9 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.ALT
 {
     /// <summary>
-    /// Class that represents the ALT file format
+    /// Class that represents the ALT format which is used to define the available animations for characters.
+    /// This class has custom implementations of <see cref="Read"/> and <see cref="GetBytes"/> methods because its subclass <see cref="Animation"/>
+    /// has an serialization anti-pattern.
     /// </summary>
     public class ALT : FileBase, IJsonReadable
     {
@@ -15,11 +16,6 @@ namespace Parsec.Shaiya.ALT
         public List<Animation> Animations { get; } = new();
 
         public override string Extension => ".ALT";
-
-        [JsonConstructor]
-        public ALT()
-        {
-        }
 
         public override void Read(params object[] options)
         {
@@ -34,16 +30,11 @@ namespace Parsec.Shaiya.ALT
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
-
             buffer.AddRange(Signature.GetBytes());
-            buffer.AddRange(Animations.Count.GetBytes());
-
-            foreach (var animation in Animations)
-                buffer.AddRange(animation.GetBytes());
-
+            buffer.AddRange(Animations.GetBytes());
             return buffer.ToArray();
         }
     }
