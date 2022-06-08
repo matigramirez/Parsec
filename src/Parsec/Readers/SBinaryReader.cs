@@ -233,7 +233,7 @@ namespace Parsec.Readers
         public string ReadString(Encoding encoding, int length, bool removeStringTerminator = true)
         {
             if (length <= 0)
-                return "";
+                return string.Empty;
 
             // If encoding is UTF16, length needs to be doubled, since UTF16 uses 2 bytes per character
             if (encoding.Equals(Encoding.Unicode))
@@ -247,7 +247,7 @@ namespace Parsec.Readers
                 str = str.Substring(0, str.Length - 1);
 
             if (str == "\0")
-                str = "";
+                str = string.Empty;
 
             return str;
         }
