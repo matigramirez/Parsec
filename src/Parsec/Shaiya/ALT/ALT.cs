@@ -7,8 +7,8 @@ namespace Parsec.Shaiya.ALT
 {
     /// <summary>
     /// Class that represents the ALT format which is used to define the available animations for characters.
-    /// This class has custom implementations of <see cref="Read"/> and <see cref="GetBytes"/> methods because its subclass <see cref="Animation"/>
-    /// has an serialization anti-pattern.
+    /// This class has custom implementations of the <see cref="Read"/> and <see cref="GetBytes"/> methods because its subclass <see cref="Animation"/>
+    /// has a serialization anti-pattern.
     /// </summary>
     public class ALT : FileBase, IJsonReadable
     {
