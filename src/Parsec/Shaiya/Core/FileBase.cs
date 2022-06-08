@@ -156,8 +156,21 @@ namespace Parsec.Shaiya.Core
 
                 var value = Binary.ReadProperty(_binaryReader, property, Episode);
 
-                // TODO: does this have issues if returned value is null?
                 property.SetValue(this, Convert.ChangeType(value, property.PropertyType));
+
+                // Set episode based on property
+                if (property.IsDefined(typeof(EpisodeDefinerAttribute)))
+                {
+                    var definerAttributes = property.GetCustomAttributes<EpisodeDefinerAttribute>();
+
+                    foreach (var definer in definerAttributes)
+                    {
+                        if (value.Equals(definer.Value))
+                        {
+                            Episode = definer.Episode;
+                        }
+                    }
+                }
             }
         }
 
@@ -170,6 +183,9 @@ namespace Parsec.Shaiya.Core
             var buffer = new List<byte>();
 
             var type = GetType();
+
+            // If episode wasn't explicitly set, use former episode
+            episode ??= Episode;
 
             // Add version prefix if present (eg. "ANI_V2", "MO2", "MO4", etc)
             var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
