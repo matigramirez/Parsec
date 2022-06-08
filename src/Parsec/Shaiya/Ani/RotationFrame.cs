@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Parsec.Attributes;
-using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Ani
@@ -12,16 +10,5 @@ namespace Parsec.Shaiya.Ani
 
         [ShaiyaProperty]
         public Quaternion Quaternion { get; set; }
-
-        [JsonConstructor]
-        public RotationFrame()
-        {
-        }
-
-        public RotationFrame(SBinaryReader binaryReader)
-        {
-            Keyframe = binaryReader.Read<int>();
-            Quaternion = new Quaternion(binaryReader);
-        }
     }
 }

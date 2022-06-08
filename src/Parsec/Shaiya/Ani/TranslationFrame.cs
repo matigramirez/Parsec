@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Parsec.Attributes;
-using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Ani
@@ -12,16 +10,5 @@ namespace Parsec.Shaiya.Ani
 
         [ShaiyaProperty]
         public Vector3 Vector { get; set; }
-
-        [JsonConstructor]
-        public TranslationFrame()
-        {
-        }
-
-        public TranslationFrame(SBinaryReader binaryReader)
-        {
-            Keyframe = binaryReader.Read<int>();
-            Vector = new Vector3(binaryReader);
-        }
     }
 }

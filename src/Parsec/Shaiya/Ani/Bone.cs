@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using Parsec.Attributes;
-using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Ani
@@ -41,37 +39,5 @@ namespace Parsec.Shaiya.Ani
         [ShaiyaProperty]
         [LengthPrefixedList(typeof(TranslationFrame))]
         public List<TranslationFrame> TranslationFrames { get; set; } = new();
-
-        [JsonConstructor]
-        public Bone()
-        {
-        }
-
-        public Bone(SBinaryReader binaryReader, int index)
-        {
-            BoneIndex = index;
-
-            ParentBoneIndex = binaryReader.Read<int>();
-
-            Matrix = new Matrix4x4(binaryReader);
-
-            var rotationCount = binaryReader.Read<int>();
-
-            // Read rotations
-            for (int i = 0; i < rotationCount; i++)
-            {
-                var rotationFrame = new RotationFrame(binaryReader);
-                RotationFrames.Add(rotationFrame);
-            }
-
-            var translationCount = binaryReader.Read<int>();
-
-            // Read translations
-            for (int i = 0; i < translationCount; i++)
-            {
-                var translationFrame = new TranslationFrame(binaryReader);
-                TranslationFrames.Add(translationFrame);
-            }
-        }
     }
 }
