@@ -29,32 +29,9 @@ namespace Parsec.Shaiya.Ani
         /// </summary>
         [ShaiyaProperty]
         [LengthPrefixedList(typeof(Bone), typeof(short))]
-        public List<Bone> Bones { get; } = new();
+        public List<Bone> Bones { get; set; } = new();
 
         [JsonIgnore]
         public override string Extension => "ANI";
-
-        /// <inheritdoc />
-        public override void Read(params object[] options)
-        {
-            // Check signature
-            var signature = _binaryReader.ReadString(6);
-
-            if (signature == "ANI_V2")
-                Episode = Episode.EP6;
-            else
-                _binaryReader.ResetOffset();
-
-            StartKeyframe = _binaryReader.Read<int>();
-            EndKeyframe = _binaryReader.Read<int>();
-
-            var boneCount = _binaryReader.Read<short>();
-
-            for (int i = 0; i < boneCount; i++)
-            {
-                var aniStep = new Bone(_binaryReader, i);
-                Bones.Add(aniStep);
-            }
-        }
     }
 }
