@@ -183,17 +183,18 @@ namespace Parsec.Shaiya.Core
         }
 
         /// <inheritdoc />
-        public virtual void Write(string path, Episode? episode = null) => FileHelper.WriteFile(path, GetBytes(episode));
+        public virtual void Write(string path, Episode episode = Episode.Unknown) => FileHelper.WriteFile(path, GetBytes(episode));
 
         /// <inheritdoc />
-        public virtual IEnumerable<byte> GetBytes(Episode? episode = null)
+        public virtual IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
 
             var type = GetType();
 
             // If episode wasn't explicitly set, use former episode
-            episode ??= Episode;
+            if (episode == Episode.Unknown)
+                episode = Episode;
 
             // Add version prefix if present (eg. "ANI_V2", "MO2", "MO4", etc)
             var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
@@ -218,7 +219,7 @@ namespace Parsec.Shaiya.Core
                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                     continue;
 
-                buffer.AddRange(Binary.GetPropertyBytes(this, property, episode ?? Episode));
+                buffer.AddRange(Binary.GetPropertyBytes(this, property, episode));
             }
 
             return buffer.ToArray();

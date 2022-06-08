@@ -163,17 +163,17 @@ namespace Parsec.Shaiya.SData
         }
 
         /// <inheritdoc />
-        public byte[] GetEncryptedBytes(Episode? episode = null) => Encrypt(GetBytes(episode).ToArray());
+        public byte[] GetEncryptedBytes(Episode episode = Episode.Unknown) => Encrypt(GetBytes(episode).ToArray());
 
         /// <inheritdoc />
-        public void WriteEncrypted(string path, Episode? episode = null)
+        public void WriteEncrypted(string path, Episode episode = Episode.Unknown)
         {
             var encryptedBuffer = Encrypt(GetBytes(episode).ToArray());
             FileHelper.WriteFile(path, encryptedBuffer);
         }
 
         /// <inheritdoc />
-        public void WriteDecrypted(string path, Episode? episode = null) => Write(path, episode);
+        public void WriteDecrypted(string path, Episode episode = Episode.Unknown) => Write(path, episode);
 
         public static void EncryptFile(string inputFilePath, string outputFilePath)
         {

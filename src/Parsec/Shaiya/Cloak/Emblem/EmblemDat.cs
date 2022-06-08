@@ -30,12 +30,14 @@ namespace Parsec.Shaiya.Emblem
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Textures.Count.GetBytes());
+
             foreach (var texture in Textures)
                 buffer.AddRange(texture.GetBytes(260, 0xCC));
+
             return buffer.ToArray();
         }
     }

@@ -16,12 +16,12 @@ namespace Parsec.Shaiya.Core
         /// </summary>
         /// <param name="path">Path where to write the file</param>
         /// <param name="episode">The desired output format</param>
-        void Write(string path, Episode? episode = null);
+        void Write(string path, Episode episode = Episode.Unknown);
 
         /// <summary>
         /// Gets the serialized file data
         /// </summary>
         /// <param name="episode">The desired file episode</param>
-        IEnumerable<byte> GetBytes(Episode? episode = null);
+        IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown);
     }
 }

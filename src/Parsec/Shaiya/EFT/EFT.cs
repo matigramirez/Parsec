@@ -65,7 +65,7 @@ namespace Parsec.Shaiya.EFT
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Signature.GetBytes());
@@ -78,7 +78,7 @@ namespace Parsec.Shaiya.EFT
                 "EFT" => EFTFormat.EFT,
                 "EF2" => EFTFormat.EF2,
                 "EF3" => EFTFormat.EF3,
-                _ => EFTFormat.Unknown
+                _     => EFTFormat.Unknown
             };
 
             buffer.AddRange(Effects.Count.GetBytes());

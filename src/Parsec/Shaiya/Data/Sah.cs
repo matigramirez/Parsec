@@ -146,13 +146,13 @@ namespace Parsec.Shaiya.Data
 
             return currentFolder;
         }
-        
+
         /// <summary>
         /// Checks if the sah has a folder with the given path
         /// </summary>
         /// <param name="relativePath">Folder's relative path (ie. "Character/Human")</param>
         public bool HasFolder(string relativePath) => FolderIndex.ContainsKey(relativePath);
-        
+
         /// <summary>
         /// Checks if the sah has a file with the given path
         /// </summary>
@@ -160,7 +160,7 @@ namespace Parsec.Shaiya.Data
         public bool HasFile(string relativePath) => FileIndex.ContainsKey(relativePath);
 
         /// <inheritdoc />
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             // Create byte list which will have the sah's data
             var buffer = new List<byte>();

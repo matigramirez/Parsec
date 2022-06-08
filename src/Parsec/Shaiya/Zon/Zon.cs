@@ -25,15 +25,16 @@ namespace Parsec.Shaiya.Zon
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Format.GetBytes());
 
             buffer.AddRange(Records.Count.GetBytes());
+
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes(Format));
-            
+
             return buffer.ToArray();
         }
     }

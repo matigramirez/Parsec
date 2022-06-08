@@ -62,7 +62,7 @@ namespace Parsec.Shaiya.MAni
             Unknown13 = _binaryReader.Read<float>();
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Version.GetBytes());

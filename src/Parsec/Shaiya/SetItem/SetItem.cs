@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -20,6 +19,6 @@ namespace Parsec.Shaiya.SetItem
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null) => Records.GetBytes();
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Records.GetBytes();
     }
 }

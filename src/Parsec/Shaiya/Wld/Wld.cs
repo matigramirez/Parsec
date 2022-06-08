@@ -35,7 +35,7 @@ namespace Parsec.Shaiya.Wld
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             throw new NotImplementedException();
         }

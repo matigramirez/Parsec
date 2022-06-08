@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -33,8 +32,8 @@ namespace Parsec.Shaiya.Item
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
-        { 
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+        {
             var buffer = new List<byte>();
 
             buffer.AddRange(MaxType.GetBytes());
@@ -111,26 +110,26 @@ namespace Parsec.Shaiya.Item
                     break;
                 }
             }
-            
+
             // Get max type from items
             item.MaxType = itemDefinitions.Max(x => x.Type);
 
             // Add all items to item index
             var itemIndex = itemDefinitions.ToDictionary(itemDef => (itemDef.Type, itemDef.TypeId));
             item.ItemIndex = itemIndex;
-            
+
             // Create item types
             for (int i = 1; i <= item.MaxType; i++)
             {
                 // Get items for this type
                 var items = item.ItemIndex.Values.Where(x => x.Type == i).ToList();
-                    
+
                 var maxTypeId = items.Count == 0 ? 0 : items.Max(x => x.TypeId);
-                
+
                 var type = new Type(i, maxTypeId, items);
                 item.Types.Add(type);
             }
-            
+
             return item;
         }
     }

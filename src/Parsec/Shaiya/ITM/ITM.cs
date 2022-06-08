@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -72,7 +70,7 @@ namespace Parsec.Shaiya.Itm
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Signature.GetBytes());

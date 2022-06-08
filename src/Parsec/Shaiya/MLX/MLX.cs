@@ -19,16 +19,16 @@ namespace Parsec.Shaiya.MLX
         public override void Read(params object[] options)
         {
             // For some reason, sometimes MLX files are empty
-            if(_binaryReader.Buffer.Length == 0)
+            if (_binaryReader.Buffer.Length == 0)
                 return;
-            
+
             var signature = _binaryReader.ReadString(4);
 
             if (signature == "MLX2")
                 Format = MLXFormat.MLX2;
             else
                 _binaryReader.ResetOffset();
-            
+
             var recordCount = _binaryReader.Read<int>();
 
             for (int i = 0; i < recordCount; i++)
@@ -38,7 +38,7 @@ namespace Parsec.Shaiya.MLX
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null) => Records.GetBytes();
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Records.GetBytes();
 
         /// <summary>
         /// Helper method to recalculate MLX record indices, just in case they get messed up or new records have been added

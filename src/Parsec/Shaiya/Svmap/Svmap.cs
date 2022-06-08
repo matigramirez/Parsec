@@ -85,7 +85,7 @@ namespace Parsec.Shaiya.Svmap
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(MapSize.GetBytes());

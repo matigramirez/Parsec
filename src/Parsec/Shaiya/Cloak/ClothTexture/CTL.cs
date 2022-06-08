@@ -29,7 +29,7 @@ namespace Parsec.Shaiya.Cloak.ClothTexture
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Textures.Count.GetBytes());

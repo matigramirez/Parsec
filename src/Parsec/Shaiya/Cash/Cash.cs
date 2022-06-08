@@ -25,6 +25,6 @@ namespace Parsec.Shaiya.Cash
             }
         }
 
-        public override IEnumerable<byte> GetBytes(Episode? episode = null) => Products.GetBytes();
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Products.GetBytes();
     }
 }
