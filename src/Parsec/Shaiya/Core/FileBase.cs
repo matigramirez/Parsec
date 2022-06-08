@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
@@ -125,6 +126,13 @@ namespace Parsec.Shaiya.Core
         public virtual void Read(params object[] options)
         {
             var type = GetType();
+
+            // Set default version (Episode) if defined. This must be checked/set before checking the existence of the VersionPrefixedAttribute
+            if (type.IsDefined(typeof(DefaultVersionAttribute)))
+            {
+                var defaultEpisodeAttribute = type.GetCustomAttributes<DefaultVersionAttribute>().First();
+                Episode = defaultEpisodeAttribute.Episode;
+            }
 
             // Check if version prefix could be present (eg. "ANI_V2", "MO2", "MO4", etc)
             var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
