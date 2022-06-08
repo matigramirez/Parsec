@@ -1,47 +1,17 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Attributes;
 using Parsec.Shaiya.Common;
-using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SMOD
 {
-    public class CollisionObject : IBinary
+    public class CollisionObject
     {
-        public List<SimpleVertex> Vertices { get; } = new();
-        public List<Face> Faces { get; } = new();
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(SimpleVertex))]
+        public List<SimpleVertex> Vertices { get; set; } = new();
 
-        [JsonConstructor]
-        public CollisionObject()
-        {
-        }
-
-        public CollisionObject(SBinaryReader binaryReader)
-        {
-            var vertexCount = binaryReader.Read<int>();
-
-            for (int i = 0; i < vertexCount; i++)
-            {
-                var vertex = new SimpleVertex(binaryReader);
-                Vertices.Add(vertex);
-            }
-
-            var faceCount = binaryReader.Read<int>();
-
-            for (int i = 0; i < faceCount; i++)
-            {
-                var face = new Face(binaryReader);
-                Faces.Add(face);
-            }
-        }
-
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(Vertices.GetBytes());
-            buffer.AddRange(Faces.GetBytes());
-            return buffer.ToArray();
-        }
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(Face))]
+        public List<Face> Faces { get; set; } = new();
     }
 }

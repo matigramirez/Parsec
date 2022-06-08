@@ -1,54 +1,28 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Attributes;
 using Parsec.Shaiya.Common;
-using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SMOD
 {
-    public class TexturedObject : IBinary
+    /// <summary>
+    /// A 3d mesh with a texture
+    /// </summary>
+    public class TexturedObject
     {
         /// <summary>
-        /// Name of the .tga texture file. Although they have the .tga extension, the client actually has .dds files.
+        /// Name of the .tga texture file. Although they have the .tga extension, the client actually has .dds files, so they're very likely
+        /// replacing the .tga extension with .dds when searching for the texture.
         /// </summary>
+        [ShaiyaProperty]
+        [LengthPrefixedString]
         public string TextureName { get; set; }
-        public List<Vertex> Vertices { get; } = new();
-        public List<Face> Faces { get; } = new();
 
-        [JsonConstructor]
-        public TexturedObject()
-        {
-        }
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(Vertex))]
+        public List<Vertex> Vertices { get; set; } = new();
 
-        public TexturedObject(SBinaryReader binaryReader)
-        {
-            TextureName = binaryReader.ReadString();
-
-            var vertexCount = binaryReader.Read<int>();
-
-            for (int i = 0; i < vertexCount; i++)
-            {
-                var vertex = new Vertex(binaryReader);
-                Vertices.Add(vertex);
-            }
-
-            var faceCount = binaryReader.Read<int>();
-
-            for (int i = 0; i < faceCount; i++)
-            {
-                var face = new Face(binaryReader);
-                Faces.Add(face);
-            }
-        }
-
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(TextureName.GetLengthPrefixedBytes());
-            buffer.AddRange(Vertices.GetBytes());
-            buffer.AddRange(Faces.GetBytes());
-            return buffer.ToArray();
-        }
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(Face))]
+        public List<Face> Faces { get; set; } = new();
     }
 }

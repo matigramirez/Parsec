@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Attributes;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -14,11 +15,13 @@ namespace Parsec.Shaiya.Common
         /// <summary>
         /// Point used as reference for the rectangle
         /// </summary>
+        [ShaiyaProperty]
         public Vector3 LowerLimit { get; set; }
 
         /// <summary>
         /// Point used as reference for the rectangle
         /// </summary>
+        [ShaiyaProperty]
         public Vector3 UpperLimit { get; set; }
 
         [JsonConstructor]

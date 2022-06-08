@@ -1,63 +1,59 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Parsec.Attributes;
 using Parsec.Common;
-using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SMOD
 {
+    /// <summary>
+    /// Class that represents a .SMOD object which is used for buildings.
+    /// Buildings can be made up of multiple parts, each with its individual texture.
+    /// Collision objects are also included in this format in a separate list of texture-less objects.
+    /// </summary>
+    [DefaultVersion(Episode.EP5)]
     public class SMOD : FileBase, IJsonReadable
     {
+        /// <summary>
+        /// The center of the SMOD object as a whole (center of all objects)
+        /// </summary>
+        [ShaiyaProperty]
         public Vector3 Center { get; set; }
 
         /// <summary>
         /// Rotation on the Y-Axis in radians
         /// </summary>
+        [ShaiyaProperty]
         public float Orientation { get; set; }
+
+        /// <summary>
+        /// Box that surrounds the textured objects? Seems to be way bigger than a wrapper box
+        /// </summary>
+        [ShaiyaProperty]
         public BoundingBox BoundingBox1 { get; set; }
-        public List<TexturedObject> TexturedObjects { get; } = new();
+
+        /// <summary>
+        /// List of textured objects
+        /// </summary>
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(TexturedObject))]
+        public List<TexturedObject> TexturedObjects { get; set; } = new();
+
+        /// <summary>
+        /// Box that surrounds the texture-less objects? Seems to be way bigger than a wrapper box
+        /// </summary>
+        [ShaiyaProperty]
         public BoundingBox BoundingBox2 { get; set; }
-        public List<CollisionObject> SimpleObjects { get; } = new();
+
+        /// <summary>
+        /// List of texture-less objects used for collisions
+        /// </summary>
+        [ShaiyaProperty]
+        [LengthPrefixedList(typeof(CollisionObject))]
+        public List<CollisionObject> CollisionObjects { get; set; } = new();
 
         [JsonIgnore]
         public override string Extension => "SMOD";
-
-        public override void Read(params object[] options)
-        {
-            Center = new Vector3(_binaryReader);
-            Orientation = _binaryReader.Read<float>();
-            BoundingBox1 = new BoundingBox(_binaryReader);
-
-            var texturedObjectCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < texturedObjectCount; i++)
-            {
-                var texturedObject = new TexturedObject(_binaryReader);
-                TexturedObjects.Add(texturedObject);
-            }
-
-            BoundingBox2 = new BoundingBox(_binaryReader);
-
-            var collisionObjectCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < collisionObjectCount; i++)
-            {
-                var obj = new CollisionObject(_binaryReader);
-                SimpleObjects.Add(obj);
-            }
-        }
-
-        public override IEnumerable<byte> GetBytes(Episode? episode = null)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(Center.GetBytes());
-            buffer.AddRange(Orientation.GetBytes());
-            buffer.AddRange(BoundingBox1.GetBytes());
-            buffer.AddRange(TexturedObjects.GetBytes());
-            buffer.AddRange(BoundingBox2.GetBytes());
-            buffer.AddRange(SimpleObjects.GetBytes());
-            return buffer.ToArray();
-        }
     }
 }
