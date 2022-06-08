@@ -27,6 +27,10 @@ namespace Parsec.Shaiya.Core
                 switch (attribute)
                 {
                     case ShaiyaPropertyAttribute shaiyaPropertyAttribute:
+                        // If episode limits weren't specified, then property must be read
+                        if (shaiyaPropertyAttribute.MinEpisode == Episode.Unknown && shaiyaPropertyAttribute.MaxEpisode == Episode.Unknown)
+                            break;
+
                         if (shaiyaPropertyAttribute.MaxEpisode == Episode.Unknown && episode != shaiyaPropertyAttribute.MinEpisode)
                             return null;
 
