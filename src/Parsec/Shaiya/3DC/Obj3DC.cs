@@ -8,20 +8,18 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Obj3DC
 {
     /// <summary>
-    /// Class that represents a .3DC model which is used for characters, mobs, npc's, wings and any model that requires "complex" animations done through its skeleton.
+    /// Class that represents a .3DC model which is used for characters, mobs, npcs, wings, mounts and any model that requires "complex" animations done through its skeleton.
     /// </summary>
+    [DefaultVersion(Episode.EP5)]
     public class Obj3DC : FileBase, IJsonReadable
     {
         /// <summary>
-        ///  Indicates the format of the 3DC file. Its value is 0 for EP5 format and 0x01BC for EP6+ format
+        ///  Indicates the format of the 3DC file. Its value is 0 for EP5 format and 444 (0x01BC) for EP6+ format
         /// </summary>
         [ShaiyaProperty]
+        [EpisodeDefiner(Episode.EP5, 0)]
+        [EpisodeDefiner(Episode.EP6, 444)]
         public int Signature { get; set; }
-
-        /// <summary>
-        /// The format of this file which is taken from the <see cref="Signature"/> value
-        /// </summary>
-        public new Episode Episode => Signature > 0 ? Episode.EP6 : Episode.EP5;
 
         /// <summary>
         /// List of bones linked to this 3d model. Although a model might be linked to a few bones (for example boots models), the 3DC file contains the definitions for all the bones in the whole skeleton.
