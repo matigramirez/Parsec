@@ -7,6 +7,10 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Obj3DO
 {
+    /// <summary>
+    /// Class that represents a .3DO which is used for weapons and shields. This format doesn't contain bones, it's just a mesh with a texture.
+    /// </summary>
+    [DefaultVersion(Episode.EP5)]
     public class Obj3DO : FileBase, IJsonReadable
     {
         [ShaiyaProperty]
