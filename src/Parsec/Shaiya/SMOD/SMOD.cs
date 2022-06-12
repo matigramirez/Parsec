@@ -22,16 +22,18 @@ namespace Parsec.Shaiya.SMOD
         public Vector3 Center { get; set; }
 
         /// <summary>
-        /// Rotation on the Y-Axis in radians
+        /// Unknown float value. It's clearly of type float after looking at multiple SMOD files but changing its value doesn't seem to have any effect.
+        /// I've tried 0.0, very high values, negative values.. nothing seems to change when setting this value.
         /// </summary>
         [ShaiyaProperty]
-        public float Orientation { get; set; }
+        public float Unknown { get; set; }
 
         /// <summary>
-        /// Box that surrounds the textured objects? Seems to be way bigger than a wrapper box
+        /// Box that surrounds the textured objects. It's used by the game to easily determine where there are objects present, so that the player view
+        /// doesn't get obstructed (when the camera is placed in the position of an object, the view is zoomed to avoid having the object in the viewport).
         /// </summary>
         [ShaiyaProperty]
-        public BoundingBox BoundingBox1 { get; set; }
+        public BoundingBox ViewBox { get; set; }
 
         /// <summary>
         /// List of textured objects
@@ -41,10 +43,10 @@ namespace Parsec.Shaiya.SMOD
         public List<TexturedObject> TexturedObjects { get; set; } = new();
 
         /// <summary>
-        /// Box that surrounds the texture-less objects? Seems to be way bigger than a wrapper box
+        /// Box that defines the area where collisions should take place. Collision objects that are outside this box are ignored.
         /// </summary>
         [ShaiyaProperty]
-        public BoundingBox BoundingBox2 { get; set; }
+        public BoundingBox CollisionBox { get; set; }
 
         /// <summary>
         /// List of texture-less objects used for collisions
