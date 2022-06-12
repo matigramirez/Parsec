@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Cryptography;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
@@ -48,6 +49,11 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         public Dictionary<string, SFile> FileIndex = new();
 
+        /// <summary>
+        /// Defines how file and folder counts should be encrypted/decrypted.
+        /// </summary>
+        public SahCrypto Crypto { get; set; } = SahCrypto.Default;
+
         [JsonConstructor]
         public Sah()
         {
@@ -72,6 +78,9 @@ namespace Parsec.Shaiya.Data
         /// <inheritdoc />
         public override void Read(params object[] options)
         {
+            if (options.Length > 0)
+                Crypto = (SahCrypto)options[0];
+
             Signature = _binaryReader.ReadString(3);
             Version = _binaryReader.Read<int>();
             FileCount = _binaryReader.Read<int>();
@@ -80,7 +89,7 @@ namespace Parsec.Shaiya.Data
             _binaryReader.SetOffset(51);
 
             // Read root folder and all of its subfolders
-            RootFolder = new SFolder(_binaryReader, null, FolderIndex, FileIndex);
+            RootFolder = new SFolder(_binaryReader, null, FolderIndex, FileIndex, Crypto);
         }
 
         /// <summary>

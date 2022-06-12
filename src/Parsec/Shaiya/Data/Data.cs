@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Parsec.Cryptography;
 using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Data
@@ -11,7 +12,7 @@ namespace Parsec.Shaiya.Data
         /// <see cref="Sah"/> instance for the current data
         /// </summary>
         public Sah Sah { get; set; }
-        
+
         /// <summary>
         /// <see cref="Saf"/> instance for the current data
         /// </summary>
@@ -47,7 +48,7 @@ namespace Parsec.Shaiya.Data
             Saf = saf;
         }
 
-        public Data(string path)
+        public Data(string path, SahCrypto crypto = null)
         {
             if (!FileHelper.FileExists(path))
                 throw new FileNotFoundException($"Data file not found at {path}");
@@ -56,11 +57,10 @@ namespace Parsec.Shaiya.Data
             {
                 case ".sah":
                 {
-                    Sah = Reader.ReadFromFile<Sah>(path);
+                    Sah = Reader.ReadFromFile<Sah>(path, crypto);
 
                     if (!FileHelper.FileExists(Sah.SafPath))
-                        throw new FileNotFoundException(
-                            "A valid saf file must be placed in the same directory as the sah file.");
+                        throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
 
                     Saf = new Saf(Sah.SafPath);
                     break;
@@ -70,10 +70,9 @@ namespace Parsec.Shaiya.Data
                     Saf = new Saf(path);
 
                     if (!FileHelper.FileExists(Saf.SahPath))
-                        throw new FileNotFoundException(
-                            "A valid sah file must be placed in the same directory as the saf file.");
+                        throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
 
-                    Sah = Reader.ReadFromFile<Sah>(Saf.SahPath);
+                    Sah = Reader.ReadFromFile<Sah>(Saf.SahPath, crypto);
 
                     break;
                 }
