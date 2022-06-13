@@ -373,14 +373,14 @@ namespace Parsec.Shaiya.Skill
         public long HealHP { get; set; }
 
         /// <summary>
-        /// How many mana points can be healed.
-        /// </summary>
-        public long HealMP { get; set; }
-
-        /// <summary>
         /// How many stamina points can be healed.
         /// </summary>
         public long HealSP { get; set; }
+
+        /// <summary>
+        /// How many mana points can be healed.
+        /// </summary>
+        public long HealMP { get; set; }
 
         /// <summary>
         /// HP healed over time.
@@ -525,8 +525,8 @@ namespace Parsec.Shaiya.Skill
             AbilityType10 = (AbilityType)binaryReader.Read<long>();
             AbilityValue10 = binaryReader.Read<long>();
             HealHP = binaryReader.Read<long>();
-            HealMP = binaryReader.Read<long>();
             HealSP = binaryReader.Read<long>();
+            HealMP = binaryReader.Read<long>();
             TimeHealHP = binaryReader.Read<long>();
             TimeHealSP = binaryReader.Read<long>();
             TimeHealMP = binaryReader.Read<long>();
