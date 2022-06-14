@@ -63,6 +63,7 @@
         SacrificeHPPercent = 70,
         SacrificeSPPercent = 71,
         SacrificeMPPercent = 72,
+        IncreaseMagicDefenceByPersent = 78,
         SacrificeStr = 90,
         SacrificeRec = 91,
         SacrificeInt = 92,
