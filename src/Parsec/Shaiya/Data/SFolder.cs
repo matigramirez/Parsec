@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Parsec.Cryptography;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -23,7 +25,7 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
             ? Name
-            : string.Join("/", ParentFolder.RelativePath, Name);
+            : Path.Combine(ParentFolder.RelativePath, Name);
 
         /// <summary>
         /// List of files the folder has
@@ -56,16 +58,21 @@ namespace Parsec.Shaiya.Data
             SBinaryReader binaryReader,
             SFolder parentFolder,
             Dictionary<string, SFolder> folderIndex,
-            Dictionary<string, SFile> fileIndex
+            Dictionary<string, SFile> fileIndex,
+            SahCrypto crypto = null
         )
         {
             ParentFolder = parentFolder;
-            
+
             Name = binaryReader.ReadString();
 
             folderIndex.Add(RelativePath, this);
 
             var fileCount = binaryReader.Read<int>();
+
+            // Decrypt value
+            if (crypto != null)
+                fileCount = crypto.DecryptFileCount(fileCount);
 
             // Read all files in this folder
             for (int i = 0; i < fileCount; i++)
@@ -76,10 +83,14 @@ namespace Parsec.Shaiya.Data
 
             var subfolderCount = binaryReader.Read<int>();
 
+            // Decrypt value
+            if (crypto != null)
+                subfolderCount = crypto.DecryptFolderCount(subfolderCount);
+
             // Recursively read subfolders data
             for (int i = 0; i < subfolderCount; i++)
             {
-                var subfolder = new SFolder(binaryReader, this, folderIndex, fileIndex);
+                var subfolder = new SFolder(binaryReader, this, folderIndex, fileIndex, crypto);
                 AddSubfolder(subfolder);
             }
         }
@@ -97,7 +108,7 @@ namespace Parsec.Shaiya.Data
         public void AddFile(SFile file)
         {
             if (HasFile(file.Name))
-                throw new Exception($"File {file.Name} already exists in folder {Name}");
+                file.Name += "_pv";
 
             Files.Add(file);
         }

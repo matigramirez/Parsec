@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Parsec.Extensions;
@@ -39,7 +40,7 @@ namespace Parsec.Shaiya.Data
         /// </summary>
         public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
             ? Name
-            : string.Join("/", ParentFolder.RelativePath, Name);
+            : Path.Combine(ParentFolder.RelativePath, Name);
 
         /// <summary>
         /// The directory in which the file is
