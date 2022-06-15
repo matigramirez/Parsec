@@ -7,6 +7,8 @@
         /// <summary>
         /// Percent of HP, SP or MP.
         /// </summary>
-        Percent
+        Percent,
+
+        DoublePrevious = 12
     }
 }
