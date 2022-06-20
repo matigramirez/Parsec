@@ -37,7 +37,7 @@ namespace Parsec.Shaiya.Data
         /// The data's root directory.
         /// </summary>
         [DataMember]
-        public SFolder RootFolder { get; private set; }
+        public SFolder RootFolder { get; set; }
 
         /// <summary>
         /// Dictionary of folders that can be accessed by path
