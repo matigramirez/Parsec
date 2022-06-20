@@ -50,8 +50,8 @@ class Program
 
         #region Item
 
-        var item = Reader.ReadFromFile<Item>("Item.SData");
-        item.WriteEncrypted("Item.encrypted.SData");
+        var item = Reader.ReadFromFile<Item>("ItemEP6.SData", Episode.EP6);
+        item.WriteEncrypted("Item.encrypted.SData", Episode.EP6);
 
         // Export as csv
         item.ExportCSV("Item.csv");
