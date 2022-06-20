@@ -9,9 +9,9 @@ public class SahTests
 {
     [Theory]
     [InlineData("new_folder", "new_file.fl")]
-    [InlineData("new_folder/sub1", "new_file.fl")]
-    [InlineData("new_folder/sub1/sub2", "new_file.fl")]
-    [InlineData("new_folder/sub1/sub2/sub3", "new_file.fl")]
+    [InlineData(@"new_folder\sub1", "new_file.fl")]
+    [InlineData(@"new_folder\sub1\sub2", "new_file.fl")]
+    [InlineData(@"new_folder\sub1\sub2\sub3", "new_file.fl")]
     public void SahFileExistenceTest(string folderName, string fileName)
     {
         var sah = Reader.ReadFromFile<Sah>("Shaiya/Data/sample.sah");
@@ -34,7 +34,8 @@ public class SahTests
         Assert.True(newFolder.HasSubfolder("sub"));
 
         // Try to add the file and subfolder again
-        Assert.Throws<Exception>(() => newFolder.AddFile(newFile1));
+        newFolder.AddFile(newFile1);
+        Assert.True(newFolder.HasFile($"{fileName}_pv"));
         Assert.Throws<Exception>(() => newFolder.AddSubfolder(newSubfolder));
     }
 
