@@ -7,7 +7,7 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.Core;
 
-public class Binary
+public static class Binary
 {
     public static object ReadProperty(SBinaryReader binaryReader, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
     {
@@ -47,7 +47,7 @@ public class Binary
 
                     for (int i = 0; i < fixedLengthListAttribute.Length; i++)
                     {
-                        var item = Activator.CreateInstance(fixedLengthListAttribute.ItemType);
+                        object item = Activator.CreateInstance(fixedLengthListAttribute.ItemType);
 
                         if (genericArgumentType.IsPrimitive)
                         {
@@ -61,7 +61,7 @@ public class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                                     continue;
 
-                                var propertyValue = ReadProperty(binaryReader, property, episode);
+                                object propertyValue = ReadProperty(binaryReader, property, episode);
                                 property.SetValue(item, propertyValue);
                             }
                         }
@@ -110,14 +110,14 @@ public class Binary
                     var constructedListType = listType.MakeGenericType(lengthPrefixedListAttribute.ItemType);
                     var list = (IList)Activator.CreateInstance(constructedListType);
 
-                    var genericItemType = type.GetGenericArguments().First();
-                    var properties = lengthPrefixedListAttribute.ItemType.GetProperties();
+                    var genericItemType = lengthPrefixedListAttribute.ItemType;
+                    var properties = genericItemType.GetProperties();
 
                     for (int i = 0; i < length; i++)
                     {
-                        var item = Activator.CreateInstance(lengthPrefixedListAttribute.ItemType);
+                        object item = Activator.CreateInstance(lengthPrefixedListAttribute.ItemType);
 
-                        if (type.GetGenericArguments().First().IsPrimitive)
+                        if (genericItemType.IsPrimitive)
                         {
                             item = ReadPrimitive(binaryReader, genericItemType);
                         }
@@ -129,7 +129,7 @@ public class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                                     continue;
 
-                                var propertyValue = ReadProperty(binaryReader, property, episode);
+                                object propertyValue = ReadProperty(binaryReader, property, episode);
                                 property.SetValue(item, propertyValue);
                             }
                         }
@@ -140,14 +140,14 @@ public class Binary
                     return list;
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                    var lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
-                                                                    lengthPrefixedStringAttribute.IncludeStringTerminator);
+                    string lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
+                                                                       lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                     return lengthPrefixedStr;
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
-                    var fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
-                                                                 fixedLengthStringAttribute.IncludeStringTerminator);
+                    string fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
+                                                                    fixedLengthStringAttribute.IncludeStringTerminator);
 
                     return fixedLengthStr;
             }
@@ -175,7 +175,7 @@ public class Binary
         if (!attributes.Exists(a => a.GetType() == typeof(ShaiyaPropertyAttribute)))
             return Array.Empty<byte>();
 
-        var propertyValue = propertyInfo.GetValue(obj);
+        object propertyValue = propertyInfo.GetValue(obj);
 
         foreach (var attribute in attributes)
         {
@@ -216,7 +216,7 @@ public class Binary
 
                     var genericArgumentType = type.GetGenericArguments().First();
 
-                    foreach (var item in listItems)
+                    foreach (object item in listItems)
                     {
                         if (genericArgumentType.IsPrimitive)
                         {
@@ -240,7 +240,7 @@ public class Binary
                     var lengthType = lengthPrefixedListAttribute.LengthType;
 
                     var items = propertyValue as IEnumerable;
-                    var itemCount = items.Cast<object>().Count();
+                    int itemCount = items.Cast<object>().Count();
 
                     var genericItemType = type.GetGenericArguments().First();
 
@@ -264,7 +264,7 @@ public class Binary
                         throw new NotImplementedException();
                     }
 
-                    foreach (var item in items)
+                    foreach (object item in items)
                     {
                         if (genericItemType.IsPrimitive)
                         {

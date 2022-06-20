@@ -52,15 +52,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     [JsonIgnore]
     public string FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(Path);
 
-    public FileBase(SBinaryReader binaryReader)
-    {
-    }
-
-    [JsonConstructor]
-    public FileBase()
-    {
-    }
-
     /// <summary>
     /// Reads the shaiya file format from a file
     /// </summary>
@@ -125,7 +116,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
         }
 
         // Check if version prefix could be present (eg. "ANI_V2", "MO2", "MO4", etc)
-        var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
+        bool isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
 
         if (isVersionPrefixed)
         {
@@ -133,7 +124,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
             foreach (var versionPrefix in versionPrefixes)
             {
-                var filePrefix = _binaryReader.ReadString(versionPrefix.Prefix.Length);
+                string filePrefix = _binaryReader.ReadString(versionPrefix.Prefix.Length);
 
                 // If prefix matches, episode must be set and reading must continue. If it doesn't, the reading offset must be reset to the beginning of the file
                 if (filePrefix.Equals(versionPrefix.Prefix))
@@ -152,7 +143,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                 continue;
 
-            var value = Binary.ReadProperty(_binaryReader, property, Episode);
+            object value = Binary.ReadProperty(_binaryReader, property, Episode);
 
             property.SetValue(this, Convert.ChangeType(value, property.PropertyType));
 
@@ -187,7 +178,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             episode = Episode;
 
         // Add version prefix if present (eg. "ANI_V2", "MO2", "MO4", etc)
-        var isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
+        bool isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
 
         if (isVersionPrefixed)
         {
