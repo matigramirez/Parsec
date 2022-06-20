@@ -1,6 +1,5 @@
-﻿namespace Parsec.Common
+﻿namespace Parsec.Common;
+
+public interface IJsonReadable
 {
-    public interface IJsonReadable
-    {
-    }
 }

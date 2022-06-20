@@ -4,63 +4,62 @@ using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.VAni
+namespace Parsec.Shaiya.VAni;
+
+/// <summary>
+/// Represents a .VANI file.
+/// According to the game client, VAni files are called "SModelAnimation", but a better name for it
+/// would probably be "Environmental Model with Animation"
+/// </summary>
+public class VAniObject : IBinary
 {
     /// <summary>
-    /// Represents a .VANI file.
-    /// According to the game client, VAni files are called "SModelAnimation", but a better name for it
-    /// would probably be "Environmental Model with Animation"
+    /// Texture name of the .dds file
     /// </summary>
-    public class VAniObject : IBinary
+    public string TextureName { get; set; }
+
+    /// <summary>
+    /// List of the 3d object's faces (polygons - triangles)
+    /// </summary>
+    public List<Face> Faces { get; } = new();
+
+    /// <summary>
+    /// List of the 3d object's vertices
+    /// </summary>
+    public List<Vertex> Vertices { get; } = new();
+
+    [JsonConstructor]
+    public VAniObject()
     {
-        /// <summary>
-        /// Texture name of the .dds file
-        /// </summary>
-        public string TextureName { get; set; }
+    }
 
-        /// <summary>
-        /// List of the 3d object's faces (polygons - triangles)
-        /// </summary>
-        public List<Face> Faces { get; } = new();
+    public VAniObject(SBinaryReader binaryReader, int frameCount)
+    {
+        TextureName = binaryReader.ReadString();
 
-        /// <summary>
-        /// List of the 3d object's vertices
-        /// </summary>
-        public List<Vertex> Vertices { get; } = new();
+        var faceCount = binaryReader.Read<int>();
 
-        [JsonConstructor]
-        public VAniObject()
+        for (int i = 0; i < faceCount; i++)
         {
+            var face = new Face(binaryReader);
+            Faces.Add(face);
         }
 
-        public VAniObject(SBinaryReader binaryReader, int frameCount)
+        var vertexCount = binaryReader.Read<int>();
+
+        for (int i = 0; i < vertexCount; i++)
         {
-            TextureName = binaryReader.ReadString();
-
-            var faceCount = binaryReader.Read<int>();
-
-            for (int i = 0; i < faceCount; i++)
-            {
-                var face = new Face(binaryReader);
-                Faces.Add(face);
-            }
-
-            var vertexCount = binaryReader.Read<int>();
-
-            for (int i = 0; i < vertexCount; i++)
-            {
-                var vertex = new Vertex(binaryReader, frameCount);
-                Vertices.Add(vertex);
-            }
+            var vertex = new Vertex(binaryReader, frameCount);
+            Vertices.Add(vertex);
         }
+    }
 
-        public IEnumerable<byte> GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(TextureName.GetLengthPrefixedBytes());
-            buffer.AddRange(Faces.GetBytes());
-            buffer.AddRange(Vertices.GetBytes());
-            return buffer;
-        }
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
+        buffer.AddRange(TextureName.GetLengthPrefixedBytes());
+        buffer.AddRange(Faces.GetBytes());
+        buffer.AddRange(Vertices.GetBytes());
+        return buffer;
     }
 }

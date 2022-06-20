@@ -1,9 +1,8 @@
-﻿namespace Parsec.Shaiya.NpcQuest
+﻿namespace Parsec.Shaiya.NpcQuest;
+
+public enum NpcFaction
 {
-    public enum NpcFaction
-    {
-        Any,
-        Light,
-        Fury
-    }
+    Any,
+    Light,
+    Fury
 }

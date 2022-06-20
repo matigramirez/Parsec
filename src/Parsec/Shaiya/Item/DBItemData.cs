@@ -1,8 +1,7 @@
 ﻿using Parsec.Shaiya.SData;
 
-namespace Parsec.Shaiya.Item
+namespace Parsec.Shaiya.Item;
+
+public class DBItemData : BinarySData<DBItemDataRecord>
 {
-    public class DBItemData : BinarySData<DBItemDataRecord>
-    {
-    }
 }

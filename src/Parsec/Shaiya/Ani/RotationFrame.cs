@@ -1,14 +1,13 @@
 ﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Ani
-{
-    public class RotationFrame
-    {
-        [ShaiyaProperty]
-        public int Keyframe { get; set; }
+namespace Parsec.Shaiya.Ani;
 
-        [ShaiyaProperty]
-        public Quaternion Quaternion { get; set; }
-    }
+public class RotationFrame
+{
+    [ShaiyaProperty]
+    public int Keyframe { get; set; }
+
+    [ShaiyaProperty]
+    public Quaternion Quaternion { get; set; }
 }

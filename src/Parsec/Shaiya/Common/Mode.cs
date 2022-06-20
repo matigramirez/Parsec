@@ -1,11 +1,10 @@
-﻿namespace Parsec.Shaiya.Common
+﻿namespace Parsec.Shaiya.Common;
+
+public enum Mode : byte
 {
-    public enum Mode : byte
-    {
-        Easy,
-        Normal,
-        Hard,
-        Ultimate,
-        Any
-    }
+    Easy,
+    Normal,
+    Hard,
+    Ultimate,
+    Any
 }

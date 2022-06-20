@@ -1,8 +1,7 @@
 ﻿using Parsec.Shaiya.SData;
 
-namespace Parsec.Shaiya.Skill
+namespace Parsec.Shaiya.Skill;
+
+public class DBSkillText : BinarySData<DBSkillTextRecord>
 {
-    public class DBSkillText : BinarySData<DBSkillTextRecord>
-    {
-    }
 }

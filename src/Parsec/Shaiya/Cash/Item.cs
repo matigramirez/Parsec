@@ -1,13 +1,12 @@
 using Parsec.Attributes;
 
-namespace Parsec.Shaiya.Cash
-{
-    public class Item
-    {
-        [ShaiyaProperty]
-        public int ItemId { get; set; }
+namespace Parsec.Shaiya.Cash;
 
-        [ShaiyaProperty]
-        public byte Count { get; set; }
-    }
+public class Item
+{
+    [ShaiyaProperty]
+    public int ItemId { get; set; }
+
+    [ShaiyaProperty]
+    public byte Count { get; set; }
 }

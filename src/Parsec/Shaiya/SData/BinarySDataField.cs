@@ -3,24 +3,23 @@ using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SData
+namespace Parsec.Shaiya.SData;
+
+public class BinarySDataField : IBinary
 {
-    public class BinarySDataField : IBinary
+    public string Name { get; set; }
+
+    public BinarySDataField(SBinaryReader binaryReader)
     {
-        public string Name { get; set; }
+        var length = binaryReader.Read<byte>();
+        Name = binaryReader.ReadString(Encoding.Unicode, length);
+    }
 
-        public BinarySDataField(SBinaryReader binaryReader)
-        {
-            var length = binaryReader.Read<byte>();
-            Name = binaryReader.ReadString(Encoding.Unicode, length);
-        }
-
-        public IEnumerable<byte> GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.Add((byte)Name.Length);
-            buffer.AddRange(Name.GetBytes(Encoding.Unicode));
-            return buffer;
-        }
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
+        buffer.Add((byte)Name.Length);
+        buffer.AddRange(Name.GetBytes(Encoding.Unicode));
+        return buffer;
     }
 }

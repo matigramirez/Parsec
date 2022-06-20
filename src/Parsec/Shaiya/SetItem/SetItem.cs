@@ -1,23 +1,22 @@
 using Parsec.Common;
 using Parsec.Extensions;
 
-namespace Parsec.Shaiya.SetItem
+namespace Parsec.Shaiya.SetItem;
+
+public class SetItem : SData.SData, IJsonReadable
 {
-    public class SetItem : SData.SData, IJsonReadable
+    public List<SetItemRecord> Records { get; } = new();
+
+    public override void Read(params object[] options)
     {
-        public List<SetItemRecord> Records { get; } = new();
+        var recordCount = _binaryReader.Read<int>();
 
-        public override void Read(params object[] options)
+        for (int i = 0; i < recordCount; i++)
         {
-            var recordCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < recordCount; i++)
-            {
-                var set = new SetItemRecord(_binaryReader);
-                Records.Add(set);
-            }
+            var set = new SetItemRecord(_binaryReader);
+            Records.Add(set);
         }
-
-        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Records.GetBytes();
     }
+
+    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Records.GetBytes();
 }

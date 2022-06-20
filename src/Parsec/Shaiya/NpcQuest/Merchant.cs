@@ -3,52 +3,51 @@ using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.NpcQuest
+namespace Parsec.Shaiya.NpcQuest;
+
+public class Merchant : BaseNpc, IBinary
 {
-    public class Merchant : BaseNpc, IBinary
+    public MerchantType MerchantType { get; set; }
+
+    public List<MerchantItem> SaleItems { get; } = new();
+
+    public Merchant(SBinaryReader binaryReader, Episode episode) : base(episode)
     {
-        public MerchantType MerchantType { get; set; }
+        ReadBaseNpcFirstSegment(binaryReader);
+        MerchantType = (MerchantType)binaryReader.Read<byte>();
+        ReadBaseNpcSecondSegment(binaryReader);
 
-        public List<MerchantItem> SaleItems { get; } = new();
+        var saleItemCount = binaryReader.Read<int>();
 
-        public Merchant(SBinaryReader binaryReader, Episode episode) : base(episode)
+        for (int i = 0; i < saleItemCount; i++)
         {
-            ReadBaseNpcFirstSegment(binaryReader);
-            MerchantType = (MerchantType)binaryReader.Read<byte>();
-            ReadBaseNpcSecondSegment(binaryReader);
-
-            var saleItemCount = binaryReader.Read<int>();
-
-            for (int i = 0; i < saleItemCount; i++)
-            {
-                var merchantItem = new MerchantItem(binaryReader);
-                SaleItems.Add(merchantItem);
-            }
-
-            ReadBaseNpcThirdSegment(binaryReader);
+            var merchantItem = new MerchantItem(binaryReader);
+            SaleItems.Add(merchantItem);
         }
 
-        [JsonConstructor]
-        public Merchant(Episode episode = Episode.EP5) : base(episode)
-        {
-        }
+        ReadBaseNpcThirdSegment(binaryReader);
+    }
 
-        public override IEnumerable<byte> GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
+    [JsonConstructor]
+    public Merchant(Episode episode = Episode.EP5) : base(episode)
+    {
+    }
 
-            WriteBaseNpcFirstSegmentBytes(buffer);
-            buffer.Add((byte)MerchantType);
-            WriteBaseNpcSecondSegmentBytes(buffer);
+    public override IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
 
-            buffer.AddRange(BitConverter.GetBytes(SaleItems.Count));
+        WriteBaseNpcFirstSegmentBytes(buffer);
+        buffer.Add((byte)MerchantType);
+        WriteBaseNpcSecondSegmentBytes(buffer);
 
-            foreach (var saleItem in SaleItems)
-                buffer.AddRange(saleItem.GetBytes());
+        buffer.AddRange(BitConverter.GetBytes(SaleItems.Count));
 
-            WriteBaseNpcThirdSegmentBytes(buffer);
+        foreach (var saleItem in SaleItems)
+            buffer.AddRange(saleItem.GetBytes());
 
-            return buffer;
-        }
+        WriteBaseNpcThirdSegmentBytes(buffer);
+
+        return buffer;
     }
 }

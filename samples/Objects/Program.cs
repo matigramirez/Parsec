@@ -6,53 +6,52 @@ using Parsec.Shaiya.Emblem;
 using Parsec.Shaiya.SMOD;
 using Parsec.Shaiya.VAni;
 
-namespace Sample.Objects
+namespace Sample.Objects;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            #region 3DC
+        #region 3DC
 
-            var obj3dc = Reader.ReadFromFile<_3DC>("Mob_Fox_01.3DC");
-            obj3dc.ExportJson($"{obj3dc.FileName}.json");
+        var obj3dc = Reader.ReadFromFile<_3DC>("Mob_Fox_01.3DC");
+        obj3dc.ExportJson($"{obj3dc.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region 3DO
+        #region 3DO
 
-            var obj3do = Reader.ReadFromFile<_3DO>("03_F_201.3DO");
-            obj3do.ExportJson($"{obj3do.FileName}.json");
+        var obj3do = Reader.ReadFromFile<_3DO>("03_F_201.3DO");
+        obj3do.ExportJson($"{obj3do.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region SMOD
+        #region SMOD
 
-            var smod = Reader.ReadFromFile<SMOD>("A1_ElfDoor.SMOD");
-            smod.ExportJson($"{smod.FileName}.json");
+        var smod = Reader.ReadFromFile<SMOD>("A1_ElfDoor.SMOD");
+        smod.ExportJson($"{smod.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region VAni
+        #region VAni
 
-            var vani = Reader.ReadFromFile<VAni>("A1_butterfly01.VANI");
-            vani.ExportJson($"{vani.FileName}.json");
+        var vani = Reader.ReadFromFile<VAni>("A1_butterfly01.VANI");
+        vani.ExportJson($"{vani.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region CTL
+        #region CTL
 
-            var ctl = Reader.ReadFromFile<CTL>("CLOTH_TEXTHRE_DE.CTL");
-            ctl.ExportJson("CLOTH_TEXTHRE_DE.json");
+        var ctl = Reader.ReadFromFile<CTL>("CLOTH_TEXTHRE_DE.CTL");
+        ctl.ExportJson("CLOTH_TEXTHRE_DE.json");
 
-            #endregion
+        #endregion
 
-            #region Emblem dat
+        #region Emblem dat
 
-            var dat = Reader.ReadFromFile<EmblemDat>("EmblemList.dat");
-            dat.ExportJson("EmblemList.json");
+        var dat = Reader.ReadFromFile<EmblemDat>("EmblemList.dat");
+        dat.ExportJson("EmblemList.json");
 
-            #endregion
-        }
+        #endregion
     }
 }

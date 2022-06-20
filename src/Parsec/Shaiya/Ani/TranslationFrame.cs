@@ -1,14 +1,13 @@
 ﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Ani
-{
-    public class TranslationFrame
-    {
-        [ShaiyaProperty]
-        public int Keyframe { get; set; }
+namespace Parsec.Shaiya.Ani;
 
-        [ShaiyaProperty]
-        public Vector3 Vector { get; set; }
-    }
+public class TranslationFrame
+{
+    [ShaiyaProperty]
+    public int Keyframe { get; set; }
+
+    [ShaiyaProperty]
+    public Vector3 Vector { get; set; }
 }

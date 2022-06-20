@@ -3,37 +3,36 @@ using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.DualLayerClothes
+namespace Parsec.Shaiya.DualLayerClothes;
+
+public class Costume : IBinary
 {
-    public class Costume : IBinary
+    public short Index { get; set; }
+
+    public List<Layer> Layers { get; } = new();
+
+    [JsonConstructor]
+    public Costume()
     {
-        public short Index { get; set; }
+    }
 
-        public List<Layer> Layers { get; } = new();
+    public Costume(SBinaryReader binaryReader)
+    {
+        Index = binaryReader.Read<short>();
 
-        [JsonConstructor]
-        public Costume()
-        {
-        }
+        var layer = new Layer(binaryReader);
+        Layers.Add(layer);
+    }
 
-        public Costume(SBinaryReader binaryReader)
-        {
-            Index = binaryReader.Read<short>();
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
 
-            var layer = new Layer(binaryReader);
-            Layers.Add(layer);
-        }
+        buffer.AddRange(Index.GetBytes());
 
-        public IEnumerable<byte> GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
+        foreach (var layer in Layers)
+            buffer.AddRange(layer.GetBytes());
 
-            buffer.AddRange(Index.GetBytes());
-
-            foreach (var layer in Layers)
-                buffer.AddRange(layer.GetBytes());
-
-            return buffer;
-        }
+        return buffer;
     }
 }

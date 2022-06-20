@@ -2,7 +2,7 @@
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Mlt
+namespace Parsec.Shaiya.MLT
 {
     public class MLT : FileBase, IJsonReadable
     {

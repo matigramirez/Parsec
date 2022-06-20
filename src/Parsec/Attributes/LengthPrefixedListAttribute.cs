@@ -1,20 +1,19 @@
-﻿namespace Parsec.Attributes
+﻿namespace Parsec.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class LengthPrefixedListAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class LengthPrefixedListAttribute : Attribute
+    public Type ItemType { get; set; }
+    public Type LengthType { get; set; } = typeof(int);
+
+    public LengthPrefixedListAttribute(Type itemType)
     {
-        public Type ItemType { get; set; }
-        public Type LengthType { get; set; } = typeof(int);
+        ItemType = itemType;
+    }
 
-        public LengthPrefixedListAttribute(Type itemType)
-        {
-            ItemType = itemType;
-        }
-
-        public LengthPrefixedListAttribute(Type itemType, Type lengthType)
-        {
-            ItemType = itemType;
-            LengthType = lengthType;
-        }
+    public LengthPrefixedListAttribute(Type itemType, Type lengthType)
+    {
+        ItemType = itemType;
+        LengthType = lengthType;
     }
 }
