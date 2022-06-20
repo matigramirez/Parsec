@@ -1,7 +1,8 @@
 ﻿namespace Parsec.Cryptography
 {
     /// <summary>
-    /// Class that implements the methods needed to encrypt and decrypt files which use the KISA SEED encryption algorithm
+    /// Class that implements the methods needed to encrypt and decrypt files which use the KISA SEED encryption algorithm.
+    /// For more information visit <a href="https://en.wikipedia.org/wiki/SEED">this link</a>.
     /// </summary>
     public static class SEED
     {
@@ -20,7 +21,7 @@
             return value;
         }
 
-        public static void UInt32ToByteArray(uint input, byte[] output, uint offset)
+        private static void UInt32ToByteArray(uint input, byte[] output, uint offset)
         {
             output[offset] = (byte)(input >> 24);
             output[offset + 1] = (byte)(input >> 16);
@@ -35,7 +36,7 @@
             return x1 | x2;
         }
 
-        public static uint EndianessSwap(uint value)
+        public static uint EndiannessSwap(uint value)
         {
             uint value1 = LeftRotation(value, 8) & 0x00ff00ff;
             uint value2 = LeftRotation(value, 24) & 0xff00ff00;
@@ -44,14 +45,14 @@
 
         private static void SeedRound(ref uint L0, ref uint L1, uint R0, uint R1, byte[] K, uint offset)
         {
-            var K0 = ByteArrayToUInt32(K, offset * 4 + 0);
-            var K1 = ByteArrayToUInt32(K, (offset + 1) * 4);
+            uint K0 = ByteArrayToUInt32(K, offset * 4 + 0);
+            uint K1 = ByteArrayToUInt32(K, (offset + 1) * 4);
 
-            K0 = EndianessSwap(K0);
-            K1 = EndianessSwap(K1);
+            K0 = EndiannessSwap(K0);
+            K1 = EndiannessSwap(K1);
 
-            var T0 = R0 ^ K0;
-            var T1 = R1 ^ K1;
+            uint T0 = R0 ^ K0;
+            uint T1 = R1 ^ K1;
             T1 ^= T0;
             T1 = GetSeed(T1);
             T0 += T1;

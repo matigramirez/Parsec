@@ -64,7 +64,7 @@ namespace Parsec.Shaiya.SData
                 var dat = decryptedData[i];
                 var index = (checksum & 0xFF) ^ dat;
                 var key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
-                key = SEED.EndianessSwap(key);
+                key = SEED.EndiannessSwap(key);
                 checksum >>= 8;
                 checksum ^= key;
             }
@@ -132,7 +132,7 @@ namespace Parsec.Shaiya.SData
                     var dat = data[i];
                     var index = (checksum & 0xFF) ^ dat;
                     var key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
-                    key = SEED.EndianessSwap(key);
+                    key = SEED.EndiannessSwap(key);
                     checksum >>= 8;
                     checksum ^= key;
                 }
