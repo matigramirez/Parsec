@@ -161,6 +161,12 @@ public static class Binary
             return binary;
         }
 
+        if (type.IsEnum)
+        {
+            var underlyingEnumType = Enum.GetUnderlyingType(type);
+            return ReadPrimitive(binaryReader, underlyingEnumType);
+        }
+
         return ReadPrimitive(binaryReader, type);
     }
 
