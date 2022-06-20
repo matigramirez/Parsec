@@ -1,34 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Parsec.Attributes;
 using Parsec.Common;
-using Parsec.Extensions;
-using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.KillStatus
+namespace Parsec.Shaiya.KillStatus;
+
+/// <summary>
+/// Class that represents the KillStatus.SData file format.
+/// This file contains the bonuses each faction receives based on bless of the goddess values.
+/// </summary>
+[DefaultVersion(Episode.EP5)]
+public class KillStatus : SData.SData, IJsonReadable
 {
-    public class KillStatus : SData.SData, IJsonReadable
-    {
-        public List<KillStatusRecord> Records { get; } = new();
-
-        [JsonIgnore]
-        public List<KillStatusRecord> LightRecords => Records.Where(r => r.Faction == FactionInt.Light).ToList();
-
-        [JsonIgnore]
-        public List<KillStatusRecord> FuryRecords => Records.Where(r => r.Faction == FactionInt.Fury).ToList();
-
-        public override void Read(params object[] options)
-        {
-            var totalStatus = _binaryReader.Read<int>();
-
-            for (int i = 0; i < totalStatus; i++)
-            {
-                var record = new KillStatusRecord(_binaryReader);
-                Records.Add(record);
-            }
-        }
-
-        public override byte[] GetBytes(params object[] options) => Records.GetBytes();
-    }
+    [ShaiyaProperty]
+    [LengthPrefixedList(typeof(KillStatusRecord))]
+    public List<KillStatusRecord> Records { get; set; } = new();
 }

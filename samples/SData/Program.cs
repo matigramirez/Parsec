@@ -11,88 +11,87 @@ using Parsec.Shaiya.SData;
 using Parsec.Shaiya.SetItem;
 using Item = Parsec.Shaiya.Item.Item;
 
-namespace Parsec.Samples
+namespace Parsec.Samples;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            #region NpcQuest
+        #region NpcQuest
 
-            var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Format.EP5);
+        var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Episode.EP5);
 
-            Console.WriteLine($"Merchant Count (EP 5): {npcQuest.Merchants.Count}");
-            Console.WriteLine($"GateKeeper Count (EP 5): {npcQuest.Gatekeepers.Count}");
-            Console.WriteLine($"Quest Count (EP 5): {npcQuest.Quests.Count}");
-            npcQuest.ExportJson("NpcQuest.EP5.json");
+        Console.WriteLine($"Merchant Count (EP 5): {npcQuest.Merchants.Count}");
+        Console.WriteLine($"GateKeeper Count (EP 5): {npcQuest.Gatekeepers.Count}");
+        Console.WriteLine($"Quest Count (EP 5): {npcQuest.Quests.Count}");
+        npcQuest.ExportJson("NpcQuest.EP5.json");
 
-            var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
-            FileHelper.WriteFile("NpcQuest.EP5.SData.Encrypted", encryptedBytes);
+        var encryptedBytes = SData.Encrypt(npcQuest.Buffer);
+        FileHelper.WriteFile("NpcQuest.EP5.SData.Encrypted", encryptedBytes);
 
-            var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
-            FileHelper.WriteFile("NpcQuest.EP5.SData.Decrypted", decryptedBytes);
+        var decryptedBytes = SData.Decrypt(npcQuest.Buffer);
+        FileHelper.WriteFile("NpcQuest.EP5.SData.Decrypted", decryptedBytes);
 
-            npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP8.SData", Format.EP8);
+        npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP8.SData", Episode.EP8);
 
-            Console.WriteLine($"Merchant Count (EP 8): {npcQuest.Merchants.Count}");
-            Console.WriteLine($"GateKeeper Count (EP 8): {npcQuest.Gatekeepers.Count}");
-            Console.WriteLine($"Quest Count (EP 8): {npcQuest.Quests.Count}");
-            npcQuest.ExportJson("NpcQuest.EP8.json");
+        Console.WriteLine($"Merchant Count (EP 8): {npcQuest.Merchants.Count}");
+        Console.WriteLine($"GateKeeper Count (EP 8): {npcQuest.Gatekeepers.Count}");
+        Console.WriteLine($"Quest Count (EP 8): {npcQuest.Quests.Count}");
+        npcQuest.ExportJson("NpcQuest.EP8.json");
 
-            #endregion
+        #endregion
 
-            #region GuildHouse
+        #region GuildHouse
 
-            var guildHouse = Reader.ReadFromFile<GuildHouse>("GuildHouse.SData");
-            guildHouse.ExportJson("GuildHouse.json");
+        var guildHouse = Reader.ReadFromFile<GuildHouse>("GuildHouse.SData");
+        guildHouse.ExportJson("GuildHouse.json");
 
-            #endregion
+        #endregion
 
-            #region Item
+        #region Item
 
-            var item = Reader.ReadFromFile<Item>("Item.SData");
-            item.WriteEncrypted("Item.encrypted.SData");
+        var item = Reader.ReadFromFile<Item>("ItemEP6.SData", Episode.EP6);
+        item.WriteEncrypted("Item.encrypted.SData", Episode.EP6);
 
-            // Export as csv
-            item.ExportCSV("Item.csv");
+        // Export as csv
+        item.ExportCSV("Item.csv");
 
-            #endregion
+        #endregion
 
-            #region Cash
+        #region Cash
 
-            var cash = Reader.ReadFromFile<Cash>("Cash.SData");
-            cash.ExportJson("Cash.json");
+        var cash = Reader.ReadFromFile<Cash>("Cash.SData");
+        cash.ExportJson("Cash.json");
 
-            #endregion
+        #endregion
 
-            #region KillStatus
+        #region KillStatus
 
-            var killStatus = Reader.ReadFromFile<KillStatus>("KillStatus.SData");
-            killStatus.ExportJson("KillStatus.json");
+        var killStatus = Reader.ReadFromFile<KillStatus>("KillStatus.SData");
+        killStatus.ExportJson("KillStatus.json");
 
-            #endregion
+        #endregion
 
-            #region DualLayerClothes
+        #region DualLayerClothes
 
-            var dualLayerClothes = Reader.ReadFromFile<DualLayerClothes>("DualLayerClothes.SData");
-            dualLayerClothes.ExportJson("DualLayerClothes.json");
+        var dualLayerClothes = Reader.ReadFromFile<DualLayerClothes>("DualLayerClothes.SData");
+        dualLayerClothes.ExportJson("DualLayerClothes.json");
 
-            #endregion
+        #endregion
 
-            #region SetItem
+        #region SetItem
 
-            var setItem = Reader.ReadFromFile<SetItem>("SetItem.SData");
-            setItem.ExportJson("SetItem.json");
+        var setItem = Reader.ReadFromFile<SetItem>("SetItem.SData");
+        setItem.ExportJson("SetItem.json");
 
-            #endregion
+        #endregion
 
-            #region Monster
+        #region Monster
 
-            var monster = Reader.ReadFromFile<Monster>("Monster.SData");
-            monster.WriteDecrypted("Monster.dec.SData");
-            monster.ExportCSV("Monster.csv");
+        var monster = Reader.ReadFromFile<Monster>("Monster.SData");
+        monster.WriteDecrypted("Monster.dec.SData");
+        monster.ExportCSV("Monster.csv");
 
-            #endregion
-        }
+        #endregion
     }
 }

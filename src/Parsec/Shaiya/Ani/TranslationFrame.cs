@@ -1,35 +1,13 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
-using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Ani
+namespace Parsec.Shaiya.Ani;
+
+public class TranslationFrame
 {
-    public class TranslationFrame : IBinary
-    {
-        public int Keyframe { get; set; }
-        public Vector3 Vector { get; set; }
+    [ShaiyaProperty]
+    public int Keyframe { get; set; }
 
-        [JsonConstructor]
-        public TranslationFrame()
-        {
-        }
-
-        public TranslationFrame(SBinaryReader binaryReader)
-        {
-            Keyframe = binaryReader.Read<int>();
-            Vector = new Vector3(binaryReader);
-        }
-
-        /// <inheritdoc />
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(Keyframe.GetBytes());
-            buffer.AddRange(Vector.GetBytes());
-            return buffer.ToArray();
-        }
-    }
+    [ShaiyaProperty]
+    public Vector3 Vector { get; set; }
 }

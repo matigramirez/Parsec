@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <LangVersion>10</LangVersion>
-        <Platforms>AnyCPU;x86</Platforms>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>1.0.0-alpha.5.0.0</Version>
-        <Authors>Matias Ramirez</Authors>
-        <Copyright>Matias Ramirez 2022</Copyright>
-        <PackageProjectUrl>https://github.com/matigramirez/Parsec</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/matigramirez/Parsec</RepositoryUrl>
-        <PackageTags>csharp, shaiya, file, parser, dotnet</PackageTags>
-        <Description>Parsec is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.0. Its goal is to make reading and manipulating the game's file formats with ease.</Description>
-        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageVersion>1.0.0-alpha.5.0.0</PackageVersion>
-        <TargetFramework>netstandard2.0</TargetFramework>
-    </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>10</LangVersion>
+    <Platforms>AnyCPU;x86</Platforms>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0-alpha.5.0.0</Version>
+    <Authors>Matias Ramirez</Authors>
+    <Copyright>Matias Ramirez 2022</Copyright>
+    <PackageProjectUrl>https://github.com/matigramirez/Parsec</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/matigramirez/Parsec</RepositoryUrl>
+    <PackageTags>csharp, shaiya, file, parser, dotnet</PackageTags>
+    <Description>Parsec is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.0. Its goal is to make reading and manipulating the game's file formats with ease.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageVersion>1.0.0-alpha.5.0.0</PackageVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="ServiceStack.Text" Version="6.0.2" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="ServiceStack.Text" Version="6.0.2" />
+  </ItemGroup>
 </Project>

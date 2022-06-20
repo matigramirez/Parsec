@@ -1,10 +1,9 @@
-﻿namespace Parsec.Shaiya.EFT
+﻿namespace Parsec.Shaiya.EFT;
+
+public enum EFTFormat
 {
-    public enum EFTFormat
-    {
-        EFT,
-        EF2,
-        EF3,
-        Unknown
-    }
+    EFT,
+    EF2,
+    EF3,
+    Unknown
 }

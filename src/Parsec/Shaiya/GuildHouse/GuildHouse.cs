@@ -1,52 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Parsec.Attributes;
 using Parsec.Common;
-using Parsec.Extensions;
 
-namespace Parsec.Shaiya.GuildHouse
+namespace Parsec.Shaiya.GuildHouse;
+
+public class GuildHouse : SData.SData, IJsonReadable
 {
-    public class GuildHouse : SData.SData, IJsonReadable
-    {
-        public int Unknown { get; set; }
-        public int HousePrice { get; set; }
-        public int ServicePrice { get; set; }
-        public List<NpcInfo> NpcInfoList { get; } = new();
-        public List<int> NpcIds { get; } = new();
+    [ShaiyaProperty]
+    public int Unknown { get; set; }
 
-        public override void Read(params object[] options)
-        {
-            Unknown = _binaryReader.Read<int>();
-            HousePrice = _binaryReader.Read<int>();
-            ServicePrice = _binaryReader.Read<int>();
+    [ShaiyaProperty]
+    public int HousePrice { get; set; }
 
-            for (int i = 0; i < 36; i++)
-            {
-                var npcInfo = new NpcInfo(_binaryReader);
-                NpcInfoList.Add(npcInfo);
-            }
+    [ShaiyaProperty]
+    public int ServicePrice { get; set; }
 
-            for (int i = 0; i < 24; i++)
-            {
-                var id = _binaryReader.Read<int>();
-                NpcIds.Add(id);
-            }
-        }
+    [ShaiyaProperty]
+    [FixedLengthList(typeof(NpcInfo), 36)]
+    public List<NpcInfo> NpcInfoList { get; set; } = new();
 
-        public override byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-
-            buffer.AddRange(Unknown.GetBytes());
-            buffer.AddRange(HousePrice.GetBytes());
-            buffer.AddRange(ServicePrice.GetBytes());
-
-            foreach (var npcInfo in NpcInfoList)
-                buffer.AddRange(npcInfo.GetBytes());
-
-            foreach (var npcId in NpcIds)
-                buffer.AddRange(npcId.GetBytes());
-
-            return buffer.ToArray();
-        }
-    }
+    [ShaiyaProperty]
+    [FixedLengthList(typeof(int), 24)]
+    public List<int> NpcIds { get; set; } = new();
 }

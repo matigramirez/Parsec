@@ -1,63 +1,59 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Parsec.Attributes;
 using Parsec.Common;
-using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SMOD
+namespace Parsec.Shaiya.SMOD;
+
+/// <summary>
+/// Class that represents a .SMOD object which is used for buildings.
+/// Buildings can be made up of multiple parts, each with its individual texture.
+/// Collision objects are also included in this format in a separate list of texture-less objects.
+/// </summary>
+[DefaultVersion(Episode.EP5)]
+public class SMOD : FileBase, IJsonReadable
 {
-    public class SMOD : FileBase, IJsonReadable
-    {
-        public Vector3 Center { get; set; }
+    /// <summary>
+    /// The center of the SMOD object as a whole (center of all objects)
+    /// </summary>
+    [ShaiyaProperty]
+    public Vector3 Center { get; set; }
 
-        /// <summary>
-        /// Rotation on the Y-Axis in radians
-        /// </summary>
-        public float Orientation { get; set; }
-        public BoundingBox BoundingBox1 { get; set; }
-        public List<TexturedObject> TexturedObjects { get; } = new();
-        public BoundingBox BoundingBox2 { get; set; }
-        public List<CollisionObject> SimpleObjects { get; } = new();
+    /// <summary>
+    /// The distance between the vertices of the <see cref="BoundingBox"/> and the <see cref="Center"/> of the SMOD object. Used for game calculations.
+    /// </summary>
+    [ShaiyaProperty]
+    public float DistanceToCenter { get; set; }
 
-        [JsonIgnore]
-        public override string Extension => "SMOD";
+    /// <summary>
+    /// Box that surrounds the textured objects. Used for game calculations.
+    /// It's used by the game to easily determine where there are objects present, so that the player view doesn't get obstructed
+    /// (when the camera is placed in the position of an object, the view is zoomed to avoid having the object in the viewport).
+    /// </summary>
+    [ShaiyaProperty]
+    public BoundingBox ViewBox { get; set; }
 
-        public override void Read(params object[] options)
-        {
-            Center = new Vector3(_binaryReader);
-            Orientation = _binaryReader.Read<float>();
-            BoundingBox1 = new BoundingBox(_binaryReader);
+    /// <summary>
+    /// List of textured objects
+    /// </summary>
+    [ShaiyaProperty]
+    [LengthPrefixedList(typeof(TexturedObject))]
+    public List<TexturedObject> TexturedObjects { get; set; } = new();
 
-            var texturedObjectCount = _binaryReader.Read<int>();
+    /// <summary>
+    /// Box that defines the area where collisions should take place. Collision objects that are outside this box are ignored.
+    /// </summary>
+    [ShaiyaProperty]
+    public BoundingBox CollisionBox { get; set; }
 
-            for (int i = 0; i < texturedObjectCount; i++)
-            {
-                var texturedObject = new TexturedObject(_binaryReader);
-                TexturedObjects.Add(texturedObject);
-            }
+    /// <summary>
+    /// List of texture-less objects used for collisions
+    /// </summary>
+    [ShaiyaProperty]
+    [LengthPrefixedList(typeof(CollisionObject))]
+    public List<CollisionObject> CollisionObjects { get; set; } = new();
 
-            BoundingBox2 = new BoundingBox(_binaryReader);
-
-            var collisionObjectCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < collisionObjectCount; i++)
-            {
-                var obj = new CollisionObject(_binaryReader);
-                SimpleObjects.Add(obj);
-            }
-        }
-
-        public override byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(Center.GetBytes());
-            buffer.AddRange(Orientation.GetBytes());
-            buffer.AddRange(BoundingBox1.GetBytes());
-            buffer.AddRange(TexturedObjects.GetBytes());
-            buffer.AddRange(BoundingBox2.GetBytes());
-            buffer.AddRange(SimpleObjects.GetBytes());
-            return buffer.ToArray();
-        }
-    }
+    [JsonIgnore]
+    public override string Extension => "SMOD";
 }

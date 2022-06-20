@@ -1,46 +1,46 @@
-﻿using Parsec.Shaiya.Itm;
-using Parsec.Shaiya.Mlt;
+﻿using Parsec;
+using Parsec.Shaiya.ITM;
+using Parsec.Shaiya.MLT;
 using Parsec.Shaiya.MLX;
 using Parsec.Shaiya.MON;
 
-namespace Parsec.Samples
+namespace Sample.Indices;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            #region MLX
+        #region MLX
 
-            var mlx = Reader.ReadFromFile<MLX>("demf.MLX");
+        var mlx = Reader.ReadFromFile<MLX>("demf.MLX");
 
-            // Since each MLX record has its Id appended, it's important to recalculate the indices after
-            // adding or removing a record
-            mlx.RecalculateIndices();
+        // Since each MLX record has its Id appended, it's important to recalculate the indices after
+        // adding or removing a record
+        mlx.RecalculateIndices();
 
-            mlx.ExportJson($"{mlx.FileName}.json");
+        mlx.ExportJson($"{mlx.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region MLT
+        #region MLT
 
-            var mlt = Reader.ReadFromFile<MLT>("humf_face.MLT");
-            mlt.ExportJson($"{mlt.FileName}.json");
+        var mlt = Reader.ReadFromFile<MLT>("humf_face.MLT");
+        mlt.ExportJson($"{mlt.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region ITM
+        #region ITM
 
-            var itm = Reader.ReadFromFile<ITM>("02.ITM");
-            itm.ExportJson($"{itm.FileName}.json");
+        var itm = Reader.ReadFromFile<ITM>("02.ITM");
+        itm.ExportJson($"{itm.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region MON
+        #region MON
 
-            var mon = Reader.ReadFromFile<MON>("Monster.MON");
-            mon.ExportJson($"{mon.FileName}.json");
+        var mon = Reader.ReadFromFile<MON>("Monster.MON");
+        mon.ExportJson($"{mon.FileName}.json");
 
-            #endregion
-        }
+        #endregion
     }
 }

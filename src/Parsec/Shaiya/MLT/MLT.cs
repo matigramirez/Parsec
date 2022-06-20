@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Mlt
+namespace Parsec.Shaiya.MLT
 {
     public class MLT : FileBase, IJsonReadable
     {
@@ -60,21 +57,23 @@ namespace Parsec.Shaiya.Mlt
             }
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Signature.GetBytes());
 
             buffer.AddRange(Obj3DCNames.Count.GetBytes());
+
             foreach (var obj3dcName in Obj3DCNames)
                 obj3dcName.GetLengthPrefixedBytes();
 
             buffer.AddRange(TextureNames.Count.GetBytes());
+
             foreach (var textureName in TextureNames)
                 textureName.GetLengthPrefixedBytes();
 
             buffer.AddRange(Records.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

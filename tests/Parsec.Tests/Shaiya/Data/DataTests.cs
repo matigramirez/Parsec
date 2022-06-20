@@ -28,8 +28,7 @@ public class DataTests
         Assert.True(File.Exists("Shaiya/Data/output_data/output_data.saf"));
 
         Assert.Throws<DirectoryNotFoundException>(
-            () => DataBuilder.CreateFromDirectory("Shaiya/wrong_folder_path/does_not_exist",
-                                                  "Shaiya/Data/output_data/"));
+            () => DataBuilder.CreateFromDirectory("Shaiya/wrong_folder_path/does_not_exist", "Shaiya/Data/output_data/"));
     }
 
     [Fact]
@@ -134,8 +133,8 @@ public class DataTests
         data.RemoveFilesFromLst(lstPath);
 
         var fileList = File.ReadAllLines(lstPath);
-        
-        foreach(var fileName in fileList)
+
+        foreach (var fileName in fileList)
             Assert.True(!data.FileIndex.ContainsKey(fileName));
     }
 }

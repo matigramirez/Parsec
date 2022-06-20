@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Parsec.Cryptography;
+﻿namespace Parsec.Cryptography;
 
 public class SahCrypto
 {

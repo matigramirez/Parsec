@@ -1,47 +1,46 @@
 ﻿using System;
+using Parsec;
 using Parsec.Shaiya.ALT;
 using Parsec.Shaiya.Ani;
 using Parsec.Shaiya.MAni;
 
-namespace Parsec.Samples
+namespace Sample.Animations;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            #region ANI
+        #region ANI
 
-            var filePath = "Mob_Fox_01_Att1.ANI";
+        var filePath = "Mob_Fox_01_Att1.ANI";
 
-            var ani = Reader.ReadFromFile<Ani>(filePath);
+        var ani = Reader.ReadFromFile<Ani>(filePath);
 
-            Console.WriteLine($"Ani file {filePath}:");
-            Console.WriteLine("StartKeyframe  EndKeyframe  BoneStepsCount");
-            Console.WriteLine($"{ani.StartKeyframe}   {ani.EndKeyframe}  {ani.Bones.Count}");
+        Console.WriteLine($"Ani file {filePath}:");
+        Console.WriteLine("StartKeyframe  EndKeyframe  BoneStepsCount");
+        Console.WriteLine($"{ani.StartKeyframe}   {ani.EndKeyframe}  {ani.Bones.Count}");
 
-            Console.WriteLine("Steps:  {BoneIndex  RotationsCount  TranslationsCount}");
+        Console.WriteLine("Steps:  {BoneIndex  RotationsCount  TranslationsCount}");
 
-            foreach (var aniStep in ani.Bones)
-                Console.WriteLine(
-                    $"{{{aniStep.ParentBoneIndex}  {aniStep.RotationFrames.Count}  {aniStep.TranslationFrames.Count}}}");
+        foreach (var aniStep in ani.Bones)
+            Console.WriteLine($"{{{aniStep.ParentBoneIndex}  {aniStep.RotationFrames.Count}  {aniStep.TranslationFrames.Count}}}");
 
-            ani.ExportJson($"{ani.FileNameWithoutExtension}.json");
+        ani.ExportJson($"{ani.FileNameWithoutExtension}.json");
 
-            #endregion
+        #endregion
 
-            #region ALT
+        #region ALT
 
-            var alt = Reader.ReadFromFile<ALT>("demf_action.alt");
-            alt.ExportJson($"{alt.FileName}.json");
+        var alt = Reader.ReadFromFile<ALT>("demf_action.alt");
+        alt.ExportJson($"{alt.FileName}.json");
 
-            #endregion
+        #endregion
 
-            #region MAni
+        #region MAni
 
-            var mani = Reader.ReadFromFile<MAni>("Boat.mani");
-            mani.ExportJson($"{mani.FileName}.json");
+        var mani = Reader.ReadFromFile<MAni>("Boat.mani");
+        mani.ExportJson($"{mani.FileName}.json");
 
-            #endregion
-        }
+        #endregion
     }
 }
