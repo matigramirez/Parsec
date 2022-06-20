@@ -7,6 +7,5 @@ public class ItemTests
     [Fact]
     public void ItemLoadingTest()
     {
-        
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Parsec.Readers;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Readers;
 using Parsec.Shaiya.Core;
-using Newtonsoft.Json;
 
 namespace Parsec.Shaiya.NpcQuest
 {
@@ -35,7 +33,7 @@ namespace Parsec.Shaiya.NpcQuest
         {
         }
 
-        public override byte[] GetBytes(params object[] options)
+        public override IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -50,7 +48,7 @@ namespace Parsec.Shaiya.NpcQuest
 
             WriteBaseNpcThirdSegmentBytes(buffer);
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

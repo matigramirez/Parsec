@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -24,6 +23,6 @@ namespace Parsec.Shaiya.VAni
             }
         }
 
-        public byte[] GetBytes(params object[] options) => Frames.GetBytes();
+        public IEnumerable<byte> GetBytes(params object[] options) => Frames.GetBytes();
     }
 }

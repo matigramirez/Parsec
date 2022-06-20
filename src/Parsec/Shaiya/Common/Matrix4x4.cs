@@ -5,8 +5,6 @@
  Licensed under the MIT license. See LICENSE file in the project root for full license information.
 */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Newtonsoft.Json;
 using Parsec.Extensions;
@@ -25,8 +23,7 @@ namespace Parsec.Shaiya.Common
         /// <summary>
         /// The matrix's data serialized into an array of float arrays
         /// </summary>
-        public float[,] Data => new float[4, 4]
-            { { M11, M12, M13, M14 }, { M21, M22, M23, M24 }, { M31, M32, M33, M34 }, { M41, M42, M43, M44 } };
+        public float[,] Data => new float[4, 4] { { M11, M12, M13, M14 }, { M21, M22, M23, M24 }, { M31, M32, M33, M34 }, { M41, M42, M43, M44 } };
 
         /// <summary>
         /// Value at row 1, column 1 of the matrix.
@@ -126,8 +123,7 @@ namespace Parsec.Shaiya.Common
 
         #endregion Public Fields
 
-        private static readonly Matrix4x4 _identity =
-            new Matrix4x4(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+        private static readonly Matrix4x4 _identity = new Matrix4x4(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
 
         /// <summary>
         /// Returns the multiplicative identity matrix.
@@ -365,9 +361,9 @@ namespace Parsec.Shaiya.Common
             // a | j k l | = a ( f ( kp - lo ) - g ( jp - ln ) + h ( jo - kn ) )
             //   | n o p |
             //
-            //   | e g h |     
+            //   | e g h |
             // b | i k l | = b ( e ( kp - lo ) - g ( ip - lm ) + h ( io - km ) )
-            //   | m o p |     
+            //   | m o p |
             //
             //   | e f h |
             // c | i j l | = c ( e ( jp - ln ) - f ( ip - lm ) + h ( in - jm ) )
@@ -412,7 +408,7 @@ namespace Parsec.Shaiya.Common
             //                                       -1
             // If you have matrix M, inverse Matrix M   can compute
             //
-            //     -1       1      
+            //     -1       1
             //    M   = --------- A
             //            det(M)
             //
@@ -522,9 +518,8 @@ namespace Parsec.Shaiya.Common
 
             if (Math.Abs(det) < float.Epsilon)
             {
-                result = new Matrix4x4(float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN,
-                                       float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN,
-                                       float.NaN, float.NaN);
+                result = new Matrix4x4(float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN,
+                                       float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN);
 
                 return false;
             }
@@ -807,88 +802,40 @@ namespace Parsec.Shaiya.Common
             Matrix4x4 result;
 
             // First row
-            result.M11 = value1.M11 * value2.M11 +
-                         value1.M12 * value2.M21 +
-                         value1.M13 * value2.M31 +
-                         value1.M14 * value2.M41;
+            result.M11 = value1.M11 * value2.M11 + value1.M12 * value2.M21 + value1.M13 * value2.M31 + value1.M14 * value2.M41;
 
-            result.M12 = value1.M11 * value2.M12 +
-                         value1.M12 * value2.M22 +
-                         value1.M13 * value2.M32 +
-                         value1.M14 * value2.M42;
+            result.M12 = value1.M11 * value2.M12 + value1.M12 * value2.M22 + value1.M13 * value2.M32 + value1.M14 * value2.M42;
 
-            result.M13 = value1.M11 * value2.M13 +
-                         value1.M12 * value2.M23 +
-                         value1.M13 * value2.M33 +
-                         value1.M14 * value2.M43;
+            result.M13 = value1.M11 * value2.M13 + value1.M12 * value2.M23 + value1.M13 * value2.M33 + value1.M14 * value2.M43;
 
-            result.M14 = value1.M11 * value2.M14 +
-                         value1.M12 * value2.M24 +
-                         value1.M13 * value2.M34 +
-                         value1.M14 * value2.M44;
+            result.M14 = value1.M11 * value2.M14 + value1.M12 * value2.M24 + value1.M13 * value2.M34 + value1.M14 * value2.M44;
 
             // Second row
-            result.M21 = value1.M21 * value2.M11 +
-                         value1.M22 * value2.M21 +
-                         value1.M23 * value2.M31 +
-                         value1.M24 * value2.M41;
+            result.M21 = value1.M21 * value2.M11 + value1.M22 * value2.M21 + value1.M23 * value2.M31 + value1.M24 * value2.M41;
 
-            result.M22 = value1.M21 * value2.M12 +
-                         value1.M22 * value2.M22 +
-                         value1.M23 * value2.M32 +
-                         value1.M24 * value2.M42;
+            result.M22 = value1.M21 * value2.M12 + value1.M22 * value2.M22 + value1.M23 * value2.M32 + value1.M24 * value2.M42;
 
-            result.M23 = value1.M21 * value2.M13 +
-                         value1.M22 * value2.M23 +
-                         value1.M23 * value2.M33 +
-                         value1.M24 * value2.M43;
+            result.M23 = value1.M21 * value2.M13 + value1.M22 * value2.M23 + value1.M23 * value2.M33 + value1.M24 * value2.M43;
 
-            result.M24 = value1.M21 * value2.M14 +
-                         value1.M22 * value2.M24 +
-                         value1.M23 * value2.M34 +
-                         value1.M24 * value2.M44;
+            result.M24 = value1.M21 * value2.M14 + value1.M22 * value2.M24 + value1.M23 * value2.M34 + value1.M24 * value2.M44;
 
             // Third row
-            result.M31 = value1.M31 * value2.M11 +
-                         value1.M32 * value2.M21 +
-                         value1.M33 * value2.M31 +
-                         value1.M34 * value2.M41;
+            result.M31 = value1.M31 * value2.M11 + value1.M32 * value2.M21 + value1.M33 * value2.M31 + value1.M34 * value2.M41;
 
-            result.M32 = value1.M31 * value2.M12 +
-                         value1.M32 * value2.M22 +
-                         value1.M33 * value2.M32 +
-                         value1.M34 * value2.M42;
+            result.M32 = value1.M31 * value2.M12 + value1.M32 * value2.M22 + value1.M33 * value2.M32 + value1.M34 * value2.M42;
 
-            result.M33 = value1.M31 * value2.M13 +
-                         value1.M32 * value2.M23 +
-                         value1.M33 * value2.M33 +
-                         value1.M34 * value2.M43;
+            result.M33 = value1.M31 * value2.M13 + value1.M32 * value2.M23 + value1.M33 * value2.M33 + value1.M34 * value2.M43;
 
-            result.M34 = value1.M31 * value2.M14 +
-                         value1.M32 * value2.M24 +
-                         value1.M33 * value2.M34 +
-                         value1.M34 * value2.M44;
+            result.M34 = value1.M31 * value2.M14 + value1.M32 * value2.M24 + value1.M33 * value2.M34 + value1.M34 * value2.M44;
 
             // Fourth row
-            result.M41 = value1.M41 * value2.M11 +
-                         value1.M42 * value2.M21 +
-                         value1.M43 * value2.M31 +
-                         value1.M44 * value2.M41;
+            result.M41 = value1.M41 * value2.M11 + value1.M42 * value2.M21 + value1.M43 * value2.M31 + value1.M44 * value2.M41;
 
-            result.M42 = value1.M41 * value2.M12 +
-                         value1.M42 * value2.M22 +
-                         value1.M43 * value2.M32 +
-                         value1.M44 * value2.M42;
+            result.M42 = value1.M41 * value2.M12 + value1.M42 * value2.M22 + value1.M43 * value2.M32 + value1.M44 * value2.M42;
 
-            result.M43 = value1.M41 * value2.M13 +
-                         value1.M42 * value2.M23 +
-                         value1.M43 * value2.M33 +
-                         value1.M44 * value2.M43;
+            result.M43 = value1.M41 * value2.M13 + value1.M42 * value2.M23 + value1.M43 * value2.M33 + value1.M44 * value2.M43;
 
-            result.M44 = value1.M41 * value2.M14 +
-                         value1.M42 * value2.M24 +
-                         value1.M43 * value2.M34 +
-                         value1.M44 * value2.M44;
+            result.M44 = value1.M41 * value2.M14 + value1.M42 * value2.M24 + value1.M43 * value2.M34 + value1.M44 * value2.M44;
 
             return result;
         }
@@ -1023,88 +970,40 @@ namespace Parsec.Shaiya.Common
             Matrix4x4 m;
 
             // First row
-            m.M11 = value1.M11 * value2.M11 +
-                    value1.M12 * value2.M21 +
-                    value1.M13 * value2.M31 +
-                    value1.M14 * value2.M41;
+            m.M11 = value1.M11 * value2.M11 + value1.M12 * value2.M21 + value1.M13 * value2.M31 + value1.M14 * value2.M41;
 
-            m.M12 = value1.M11 * value2.M12 +
-                    value1.M12 * value2.M22 +
-                    value1.M13 * value2.M32 +
-                    value1.M14 * value2.M42;
+            m.M12 = value1.M11 * value2.M12 + value1.M12 * value2.M22 + value1.M13 * value2.M32 + value1.M14 * value2.M42;
 
-            m.M13 = value1.M11 * value2.M13 +
-                    value1.M12 * value2.M23 +
-                    value1.M13 * value2.M33 +
-                    value1.M14 * value2.M43;
+            m.M13 = value1.M11 * value2.M13 + value1.M12 * value2.M23 + value1.M13 * value2.M33 + value1.M14 * value2.M43;
 
-            m.M14 = value1.M11 * value2.M14 +
-                    value1.M12 * value2.M24 +
-                    value1.M13 * value2.M34 +
-                    value1.M14 * value2.M44;
+            m.M14 = value1.M11 * value2.M14 + value1.M12 * value2.M24 + value1.M13 * value2.M34 + value1.M14 * value2.M44;
 
             // Second row
-            m.M21 = value1.M21 * value2.M11 +
-                    value1.M22 * value2.M21 +
-                    value1.M23 * value2.M31 +
-                    value1.M24 * value2.M41;
+            m.M21 = value1.M21 * value2.M11 + value1.M22 * value2.M21 + value1.M23 * value2.M31 + value1.M24 * value2.M41;
 
-            m.M22 = value1.M21 * value2.M12 +
-                    value1.M22 * value2.M22 +
-                    value1.M23 * value2.M32 +
-                    value1.M24 * value2.M42;
+            m.M22 = value1.M21 * value2.M12 + value1.M22 * value2.M22 + value1.M23 * value2.M32 + value1.M24 * value2.M42;
 
-            m.M23 = value1.M21 * value2.M13 +
-                    value1.M22 * value2.M23 +
-                    value1.M23 * value2.M33 +
-                    value1.M24 * value2.M43;
+            m.M23 = value1.M21 * value2.M13 + value1.M22 * value2.M23 + value1.M23 * value2.M33 + value1.M24 * value2.M43;
 
-            m.M24 = value1.M21 * value2.M14 +
-                    value1.M22 * value2.M24 +
-                    value1.M23 * value2.M34 +
-                    value1.M24 * value2.M44;
+            m.M24 = value1.M21 * value2.M14 + value1.M22 * value2.M24 + value1.M23 * value2.M34 + value1.M24 * value2.M44;
 
             // Third row
-            m.M31 = value1.M31 * value2.M11 +
-                    value1.M32 * value2.M21 +
-                    value1.M33 * value2.M31 +
-                    value1.M34 * value2.M41;
+            m.M31 = value1.M31 * value2.M11 + value1.M32 * value2.M21 + value1.M33 * value2.M31 + value1.M34 * value2.M41;
 
-            m.M32 = value1.M31 * value2.M12 +
-                    value1.M32 * value2.M22 +
-                    value1.M33 * value2.M32 +
-                    value1.M34 * value2.M42;
+            m.M32 = value1.M31 * value2.M12 + value1.M32 * value2.M22 + value1.M33 * value2.M32 + value1.M34 * value2.M42;
 
-            m.M33 = value1.M31 * value2.M13 +
-                    value1.M32 * value2.M23 +
-                    value1.M33 * value2.M33 +
-                    value1.M34 * value2.M43;
+            m.M33 = value1.M31 * value2.M13 + value1.M32 * value2.M23 + value1.M33 * value2.M33 + value1.M34 * value2.M43;
 
-            m.M34 = value1.M31 * value2.M14 +
-                    value1.M32 * value2.M24 +
-                    value1.M33 * value2.M34 +
-                    value1.M34 * value2.M44;
+            m.M34 = value1.M31 * value2.M14 + value1.M32 * value2.M24 + value1.M33 * value2.M34 + value1.M34 * value2.M44;
 
             // Fourth row
-            m.M41 = value1.M41 * value2.M11 +
-                    value1.M42 * value2.M21 +
-                    value1.M43 * value2.M31 +
-                    value1.M44 * value2.M41;
+            m.M41 = value1.M41 * value2.M11 + value1.M42 * value2.M21 + value1.M43 * value2.M31 + value1.M44 * value2.M41;
 
-            m.M42 = value1.M41 * value2.M12 +
-                    value1.M42 * value2.M22 +
-                    value1.M43 * value2.M32 +
-                    value1.M44 * value2.M42;
+            m.M42 = value1.M41 * value2.M12 + value1.M42 * value2.M22 + value1.M43 * value2.M32 + value1.M44 * value2.M42;
 
-            m.M43 = value1.M41 * value2.M13 +
-                    value1.M42 * value2.M23 +
-                    value1.M43 * value2.M33 +
-                    value1.M44 * value2.M43;
+            m.M43 = value1.M41 * value2.M13 + value1.M42 * value2.M23 + value1.M43 * value2.M33 + value1.M44 * value2.M43;
 
-            m.M44 = value1.M41 * value2.M14 +
-                    value1.M42 * value2.M24 +
-                    value1.M43 * value2.M34 +
-                    value1.M44 * value2.M44;
+            m.M44 = value1.M41 * value2.M14 + value1.M42 * value2.M24 + value1.M43 * value2.M34 + value1.M44 * value2.M44;
 
             return m;
         }
@@ -1241,10 +1140,9 @@ namespace Parsec.Shaiya.Common
             return String.Format(
                 ci,
                 "{{ {{M11:{0} M12:{1} M13:{2} M14:{3}}} {{M21:{4} M22:{5} M23:{6} M24:{7}}} {{M31:{8} M32:{9} M33:{10} M34:{11}}} {{M41:{12} M42:{13} M43:{14} M44:{15}}} }}",
-                M11.ToString(ci), M12.ToString(ci), M13.ToString(ci), M14.ToString(ci), M21.ToString(ci),
-                M22.ToString(ci), M23.ToString(ci), M24.ToString(ci), M31.ToString(ci), M32.ToString(ci),
-                M33.ToString(ci), M34.ToString(ci), M41.ToString(ci), M42.ToString(ci), M43.ToString(ci),
-                M44.ToString(ci));
+                M11.ToString(ci), M12.ToString(ci), M13.ToString(ci), M14.ToString(ci), M21.ToString(ci), M22.ToString(ci), M23.ToString(ci),
+                M24.ToString(ci), M31.ToString(ci), M32.ToString(ci), M33.ToString(ci), M34.ToString(ci), M41.ToString(ci), M42.ToString(ci),
+                M43.ToString(ci), M44.ToString(ci));
         }
 
         /// <summary>
@@ -1271,7 +1169,7 @@ namespace Parsec.Shaiya.Common
                    M44.GetHashCode();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             // 4 bytes per matrix cell
             var buffer = new List<byte>();
@@ -1291,7 +1189,7 @@ namespace Parsec.Shaiya.Common
             buffer.AddRange(M24.GetBytes());
             buffer.AddRange(M34.GetBytes());
             buffer.AddRange(M44.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

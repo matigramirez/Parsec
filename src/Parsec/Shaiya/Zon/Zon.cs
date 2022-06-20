@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
@@ -35,7 +34,7 @@ namespace Parsec.Shaiya.Zon
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes(Format));
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

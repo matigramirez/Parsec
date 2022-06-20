@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Attributes;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -42,13 +41,13 @@ namespace Parsec.Shaiya.Common
             VertexIndex3 = binaryReader.Read<ushort>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(VertexIndex1.GetBytes());
             buffer.AddRange(VertexIndex2.GetBytes());
             buffer.AddRange(VertexIndex3.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

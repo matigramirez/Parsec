@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.SData;
 
@@ -16,12 +15,12 @@ namespace Parsec.Shaiya.Monster
             Name = binaryReader.ReadString();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Id.GetBytes());
             buffer.AddRange(Name.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

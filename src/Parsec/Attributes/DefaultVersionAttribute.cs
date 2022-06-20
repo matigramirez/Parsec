@@ -1,5 +1,4 @@
-﻿using System;
-using Parsec.Common;
+﻿using Parsec.Common;
 
 namespace Parsec.Attributes;
 

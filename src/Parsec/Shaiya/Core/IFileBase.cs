@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 
 namespace Parsec.Shaiya.Core
 {

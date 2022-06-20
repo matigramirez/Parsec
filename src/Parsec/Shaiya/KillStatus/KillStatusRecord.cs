@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -33,7 +31,7 @@ namespace Parsec.Shaiya.KillStatus
             }
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -44,7 +42,7 @@ namespace Parsec.Shaiya.KillStatus
             foreach (var bonus in Bonuses)
                 buffer.AddRange(bonus.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

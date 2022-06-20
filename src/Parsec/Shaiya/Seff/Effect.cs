@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -75,8 +73,13 @@ namespace Parsec.Shaiya.Seff
                 Unknown15 = binaryReader.Read<uint>();
         }
 
-        public byte[] GetBytes(int format)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
+            int format = 0;
+
+            if (options.Length > 0)
+                format = (int)options[0];
+
             var buffer = new List<byte>();
 
             buffer.AddRange(Unknown1.GetBytes());
@@ -111,7 +114,7 @@ namespace Parsec.Shaiya.Seff
             if (format > 5)
                 buffer.AddRange(Unknown15.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

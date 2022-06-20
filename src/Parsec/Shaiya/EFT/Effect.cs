@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -173,13 +172,13 @@ namespace Parsec.Shaiya.EFT
         /// <summary>
         /// Expects <see cref="EFTFormat"/> as a parameter
         /// </summary>
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var format = EFTFormat.Unknown;
 
             if (options.Length > 0)
                 format = (EFTFormat)options[0];
-            
+
             var buffer = new List<byte>();
             buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII));
 
@@ -240,7 +239,7 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(Unknown32.GetBytes());
 
             buffer.AddRange(EffectSub4.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

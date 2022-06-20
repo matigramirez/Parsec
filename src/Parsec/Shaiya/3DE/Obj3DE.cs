@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -56,7 +55,7 @@ namespace Parsec.Shaiya.Obj3DE
             buffer.AddRange(MaxKeyframe.GetBytes());
             buffer.AddRange(Frames.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -55,13 +54,13 @@ namespace Parsec.Shaiya.VAni
             }
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(TextureName.GetLengthPrefixedBytes());
             buffer.AddRange(Faces.GetBytes());
             buffer.AddRange(Vertices.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

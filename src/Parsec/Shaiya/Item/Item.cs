@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Parsec.Common;
@@ -52,7 +51,7 @@ namespace Parsec.Shaiya.Item
                 buffer.AddRange(type.GetBytes(episode));
             }
 
-            return buffer.ToArray();
+            return buffer;
         }
 
         /// <inheritdoc />
@@ -92,23 +91,23 @@ namespace Parsec.Shaiya.Item
             {
                 case Episode.EP5:
                 default:
-                {
-                    // Read item definitions from csv
-                    var itemEp5Definitions = File.ReadAllText(path).FromCsv<List<ItemDefinitionEp5>>();
+                    {
+                        // Read item definitions from csv
+                        var itemEp5Definitions = File.ReadAllText(path).FromCsv<List<ItemDefinitionEp5>>();
 
-                    // Cast item definitions to IItemDefinition since the FileIndex is generic for every format
-                    itemDefinitions = itemEp5Definitions.Cast<IItemDefinition>().ToList();
-                    break;
-                }
+                        // Cast item definitions to IItemDefinition since the FileIndex is generic for every format
+                        itemDefinitions = itemEp5Definitions.Cast<IItemDefinition>().ToList();
+                        break;
+                    }
                 case Episode.EP6:
-                {
-                    // Read item definitions from csv
-                    var itemEp6Definitions = File.ReadAllText(path).FromCsv<List<ItemDefinitionEp6>>();
+                    {
+                        // Read item definitions from csv
+                        var itemEp6Definitions = File.ReadAllText(path).FromCsv<List<ItemDefinitionEp6>>();
 
-                    // Cast item definitions to IItemDefinition since the FileIndex is generic for every format
-                    itemDefinitions = itemEp6Definitions.Cast<IItemDefinition>().ToList();
-                    break;
-                }
+                        // Cast item definitions to IItemDefinition since the FileIndex is generic for every format
+                        itemDefinitions = itemEp6Definitions.Cast<IItemDefinition>().ToList();
+                        break;
+                    }
             }
 
             // Get max type from items

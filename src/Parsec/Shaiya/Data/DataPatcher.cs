@@ -95,7 +95,7 @@ namespace Parsec.Shaiya.Data
 
                     // Increase data file count
                     targetData.FileCount++;
-                    
+
                     // Add file to file index
                     targetData.FileIndex.Add(patchFile.RelativePath, patchFile);
                 }

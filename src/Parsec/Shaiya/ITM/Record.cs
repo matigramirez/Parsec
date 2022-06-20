@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -84,7 +82,7 @@ namespace Parsec.Shaiya.Itm
         /// <summary>
         /// Expects <see cref="ITMFormat"/> as an option
         /// </summary>
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -111,7 +109,7 @@ namespace Parsec.Shaiya.Itm
             if (format == ITMFormat.IT2)
                 buffer.AddRange(Unknown4);
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

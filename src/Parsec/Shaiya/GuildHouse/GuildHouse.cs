@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Attributes;
+﻿using Parsec.Attributes;
 using Parsec.Common;
 
 namespace Parsec.Shaiya.GuildHouse

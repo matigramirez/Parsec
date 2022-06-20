@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Parsec.Extensions
+﻿namespace Parsec.Extensions
 {
     public static class ArrayExtensions
     {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -74,11 +72,7 @@ namespace Parsec.Shaiya.Core
         {
             var binaryReader = new SBinaryReader(path);
 
-            var instance = new T
-            {
-                Path = path,
-                _binaryReader = binaryReader
-            };
+            var instance = new T { Path = path, _binaryReader = binaryReader };
 
             if (instance is IEncryptable encryptableInstance)
                 encryptableInstance.DecryptBuffer();
@@ -100,11 +94,7 @@ namespace Parsec.Shaiya.Core
         {
             var binaryReader = new SBinaryReader(buffer);
 
-            var instance = new T
-            {
-                Path = name,
-                _binaryReader = binaryReader
-            };
+            var instance = new T { Path = name, _binaryReader = binaryReader };
 
             if (instance is IEncryptable encryptableInstance)
                 encryptableInstance.DecryptBuffer();
@@ -222,7 +212,7 @@ namespace Parsec.Shaiya.Core
                 buffer.AddRange(Binary.GetPropertyBytes(this, property, episode));
             }
 
-            return buffer.ToArray();
+            return buffer;
         }
 
         /// <inheritdoc/>
@@ -235,8 +225,7 @@ namespace Parsec.Shaiya.Core
             // Create settings with contract resolver to ignore certain properties
             var settings = new JsonSerializerSettings
             {
-                ContractResolver = new PropertyFilterCamelCaseResolver(ignoredPropertyNames),
-                DefaultValueHandling = DefaultValueHandling.Include
+                ContractResolver = new PropertyFilterCamelCaseResolver(ignoredPropertyNames), DefaultValueHandling = DefaultValueHandling.Include
             };
 
             // Add enum to string converter

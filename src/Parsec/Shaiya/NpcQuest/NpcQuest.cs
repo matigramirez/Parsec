@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 
@@ -149,7 +147,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(UnknownArray);
             buffer.AddRange(Quests.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

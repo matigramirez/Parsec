@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.SData;
 
@@ -20,14 +19,14 @@ namespace Parsec.Shaiya.Skill
             Text = binaryReader.ReadString();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Id.GetBytes());
             buffer.AddRange(SkillLevel.GetBytes());
             buffer.AddRange(Name.GetLengthPrefixedBytes());
             buffer.AddRange(Text.GetLengthPrefixedBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

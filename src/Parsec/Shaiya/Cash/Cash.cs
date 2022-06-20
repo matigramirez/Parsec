@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Parsec.Attributes;
 using Parsec.Common;
 

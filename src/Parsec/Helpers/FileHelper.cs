@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Parsec.Readers;
 
@@ -41,8 +40,7 @@ namespace Parsec.Helpers
             try
             {
                 // Create file and save data
-                using var binaryWriter =
-                    new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
+                using var binaryWriter = new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
 
                 binaryWriter.Write(data.ToArray());
                 return true;

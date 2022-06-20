@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -28,12 +27,12 @@ namespace Parsec.Shaiya.Obj3DE
             }
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Keyframe.GetBytes());
             buffer.AddRange(Translations.GetBytes(false));
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

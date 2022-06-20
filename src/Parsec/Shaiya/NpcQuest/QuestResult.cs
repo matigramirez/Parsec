@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -69,7 +67,7 @@ namespace Parsec.Shaiya.NpcQuest
         {
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -85,6 +83,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(BitConverter.GetBytes(Money));
             buffer.Add(ItemType1);
             buffer.Add(ItemTypeId1);
+
             if (_episode > Episode.EP5)
             {
                 buffer.Add(ItemCount1);
@@ -97,9 +96,10 @@ namespace Parsec.Shaiya.NpcQuest
                 buffer.Add(ItemTypeId3);
                 buffer.Add(ItemCount3);
             }
+
             buffer.AddRange(BitConverter.GetBytes(NextQuest));
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

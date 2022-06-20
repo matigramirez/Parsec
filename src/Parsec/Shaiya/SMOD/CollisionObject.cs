@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Attributes;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.SMOD;

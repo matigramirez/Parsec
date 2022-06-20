@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
@@ -53,14 +51,14 @@ namespace Parsec.Shaiya.SData
             Padding = data.SubArray(currentOffset, paddingLength);
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Signature.GetBytes());
             buffer.AddRange(Checksum.GetBytes());
             buffer.AddRange(RealSize.GetBytes());
             buffer.AddRange(Padding);
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -25,7 +24,7 @@ namespace Parsec.Shaiya.Common
         /// 3rd (third) element of the vector
         /// </summary>
         public float Z { get; set; }
-        
+
         [JsonConstructor]
         public Vector3(float x, float y, float z)
         {
@@ -41,13 +40,13 @@ namespace Parsec.Shaiya.Common
             Z = binaryReader.Read<float>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(X.GetBytes());
             buffer.AddRange(Y.GetBytes());
             buffer.AddRange(Z.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

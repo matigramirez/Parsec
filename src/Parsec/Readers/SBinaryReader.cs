@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using Parsec.Extensions;
 
@@ -15,12 +14,10 @@ namespace Parsec.Readers
         /// </summary>
         public byte[] Buffer { get; }
 
-        private int _offset;
-
         /// <summary>
         /// The binary reader's current reading position
         /// </summary>
-        public int Offset => _offset;
+        public int Offset { get; private set; }
 
         public SBinaryReader(string filePath)
         {
@@ -98,8 +95,8 @@ namespace Parsec.Readers
         /// </summary>
         public byte ReadByte()
         {
-            var result = Buffer[_offset];
-            _offset += sizeof(byte);
+            byte result = Buffer[Offset];
+            Offset += sizeof(byte);
             return result;
         }
 
@@ -108,8 +105,8 @@ namespace Parsec.Readers
         /// </summary>
         public sbyte ReadSByte()
         {
-            var result = Convert.ToSByte(Buffer[_offset]);
-            _offset += sizeof(sbyte);
+            sbyte result = Convert.ToSByte(Buffer[Offset]);
+            Offset += sizeof(sbyte);
             return result;
         }
 
@@ -119,8 +116,8 @@ namespace Parsec.Readers
         /// <param name="count">Number of bytes to read</param>
         public byte[] ReadBytes(int count)
         {
-            var result = Buffer.SubArray(_offset, count);
-            _offset += count;
+            byte[] result = Buffer.SubArray(Offset, count);
+            Offset += count;
             return result;
         }
 
@@ -129,8 +126,8 @@ namespace Parsec.Readers
         /// </summary>
         public bool ReadBoolean()
         {
-            var result = Convert.ToBoolean(Buffer[_offset]);
-            _offset += sizeof(bool);
+            bool result = Convert.ToBoolean(Buffer[Offset]);
+            Offset += sizeof(bool);
             return result;
         }
 
@@ -139,8 +136,8 @@ namespace Parsec.Readers
         /// </summary>
         public char ReadChar()
         {
-            var result = Convert.ToChar(Buffer[_offset]);
-            _offset += sizeof(char);
+            char result = Convert.ToChar(Buffer[Offset]);
+            Offset += sizeof(char);
             return result;
         }
 
@@ -149,8 +146,8 @@ namespace Parsec.Readers
         /// </summary>
         public short ReadInt16()
         {
-            var result = BitConverter.ToInt16(Buffer, _offset);
-            _offset += sizeof(short);
+            short result = BitConverter.ToInt16(Buffer, Offset);
+            Offset += sizeof(short);
             return result;
         }
 
@@ -159,8 +156,8 @@ namespace Parsec.Readers
         /// </summary>
         public ushort ReadUInt16()
         {
-            var result = BitConverter.ToUInt16(Buffer, _offset);
-            _offset += sizeof(ushort);
+            ushort result = BitConverter.ToUInt16(Buffer, Offset);
+            Offset += sizeof(ushort);
             return result;
         }
 
@@ -169,8 +166,8 @@ namespace Parsec.Readers
         /// </summary>
         public int ReadInt32()
         {
-            var result = BitConverter.ToInt32(Buffer, _offset);
-            _offset += sizeof(int);
+            int result = BitConverter.ToInt32(Buffer, Offset);
+            Offset += sizeof(int);
             return result;
         }
 
@@ -179,8 +176,8 @@ namespace Parsec.Readers
         /// </summary>
         public uint ReadUInt32()
         {
-            var result = BitConverter.ToUInt32(Buffer, _offset);
-            _offset += sizeof(uint);
+            uint result = BitConverter.ToUInt32(Buffer, Offset);
+            Offset += sizeof(uint);
             return result;
         }
 
@@ -189,8 +186,8 @@ namespace Parsec.Readers
         /// </summary>
         public long ReadInt64()
         {
-            var result = BitConverter.ToInt64(Buffer, _offset);
-            _offset += sizeof(long);
+            long result = BitConverter.ToInt64(Buffer, Offset);
+            Offset += sizeof(long);
             return result;
         }
 
@@ -199,8 +196,8 @@ namespace Parsec.Readers
         /// </summary>
         public ulong ReadUInt64()
         {
-            var result = BitConverter.ToUInt64(Buffer, _offset);
-            _offset += sizeof(ulong);
+            ulong result = BitConverter.ToUInt64(Buffer, Offset);
+            Offset += sizeof(ulong);
             return result;
         }
 
@@ -209,8 +206,8 @@ namespace Parsec.Readers
         /// </summary>
         public float ReadFloat()
         {
-            var result = BitConverter.ToSingle(Buffer, _offset);
-            _offset += sizeof(float);
+            float result = BitConverter.ToSingle(Buffer, Offset);
+            Offset += sizeof(float);
             return result;
         }
 
@@ -219,8 +216,8 @@ namespace Parsec.Readers
         /// </summary>
         public double ReadDouble()
         {
-            var result = BitConverter.ToDouble(Buffer, _offset);
-            _offset += sizeof(double);
+            double result = BitConverter.ToDouble(Buffer, Offset);
+            Offset += sizeof(double);
             return result;
         }
 
@@ -239,9 +236,9 @@ namespace Parsec.Readers
             if (encoding.Equals(Encoding.Unicode))
                 length *= 2;
 
-            var str = encoding.GetString(Buffer, _offset, length);
+            string str = encoding.GetString(Buffer, Offset, length);
 
-            _offset += length;
+            Offset += length;
 
             if (removeStringTerminator && str.Length > 1 && str[str.Length - 1] == '\0')
                 str = str.Substring(0, str.Length - 1);
@@ -259,7 +256,7 @@ namespace Parsec.Readers
         /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
         public string ReadString(Encoding encoding, bool removeStringTerminator = true)
         {
-            var length = ReadInt32();
+            int length = ReadInt32();
             return ReadString(encoding, length, removeStringTerminator);
         }
 
@@ -284,12 +281,12 @@ namespace Parsec.Readers
         /// Sets the reading offset
         /// </summary>
         /// <param name="offset">Offset value to set</param>
-        public void SetOffset(int offset) => _offset = offset;
+        public void SetOffset(int offset) => Offset = offset;
 
         /// <summary>
         /// Sets the cursor to the current position + the specified number of bytes to skip
         /// </summary>
         /// <param name="count">Number of bytes to skip</param>
-        public void Skip(int count) => SetOffset(_offset + count);
+        public void Skip(int count) => SetOffset(Offset + count);
     }
 }

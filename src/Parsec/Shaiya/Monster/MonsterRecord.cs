@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -58,7 +57,7 @@ namespace Parsec.Shaiya.Monster
             QuestItemId = binaryReader.Read<short>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(MobName.GetLengthPrefixedBytes());
@@ -81,7 +80,7 @@ namespace Parsec.Shaiya.Monster
             buffer.Add(Unknown1);
             buffer.Add(Unknown2);
             buffer.AddRange(QuestItemId.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

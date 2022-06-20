@@ -8,7 +8,7 @@ namespace Parsec.Shaiya.Data
         /// Absolute path to the saf file
         /// </summary>
         public string Path { get; set; }
-        
+
         /// <summary>
         /// Absolute path to the saf file linked to this saf
         /// </summary>

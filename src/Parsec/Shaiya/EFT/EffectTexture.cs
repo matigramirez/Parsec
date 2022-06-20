@@ -21,6 +21,6 @@ namespace Parsec.Shaiya.EFT
             Name = binaryReader.ReadString();
         }
 
-        public byte[] GetBytes(params object[] options) => Name.GetLengthPrefixedBytes();
+        public IEnumerable<byte> GetBytes(params object[] options) => Name.GetLengthPrefixedBytes();
     }
 }

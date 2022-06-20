@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -25,8 +24,10 @@ namespace Parsec.Shaiya.NpcQuest
             _episode = episode;
             MapId = binaryReader.Read<short>();
             Position = new Vector3(binaryReader);
+
             if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
                 TargetName = binaryReader.ReadString(false);
+
             Cost = binaryReader.Read<int>();
         }
 
@@ -35,17 +36,19 @@ namespace Parsec.Shaiya.NpcQuest
         {
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
             buffer.AddRange(MapId.GetBytes());
             buffer.AddRange(Position.GetBytes());
+
             if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
                 buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
+
             buffer.AddRange(Cost.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
@@ -56,7 +55,7 @@ namespace Parsec.Shaiya.Seff
             foreach (var effect in Records)
                 buffer.AddRange(effect.GetBytes(Format));
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Parsec.Common;
+﻿using Parsec.Common;
 
 namespace Parsec.Attributes;
 
@@ -17,7 +16,7 @@ public class ShaiyaPropertyAttribute : Attribute
     {
         this.MinEpisode = MinEpisode;
     }
-    
+
     public ShaiyaPropertyAttribute(Episode MinEpisode, Episode MaxEpisode)
     {
         this.MinEpisode = MinEpisode;

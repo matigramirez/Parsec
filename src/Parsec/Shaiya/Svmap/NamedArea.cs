@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -18,7 +16,7 @@ namespace Parsec.Shaiya.Svmap
         public NamedArea()
         {
         }
-        
+
         public NamedArea(SBinaryReader binaryReader)
         {
             Area = new BoundingBox(binaryReader);
@@ -26,13 +24,13 @@ namespace Parsec.Shaiya.Svmap
             NameIdentifier2 = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Area.GetBytes());
             buffer.AddRange(NameIdentifier1.GetBytes());
             buffer.AddRange(NameIdentifier2.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

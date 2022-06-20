@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -16,19 +14,19 @@ namespace Parsec.Shaiya.Svmap
         public Monster()
         {
         }
-        
+
         public Monster(SBinaryReader binaryReader)
         {
             MobId = binaryReader.Read<int>();
             Count = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(MobId.GetBytes());
             buffer.AddRange(Count.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

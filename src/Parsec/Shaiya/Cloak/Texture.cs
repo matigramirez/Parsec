@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Parsec.Extensions;
@@ -33,7 +31,7 @@ namespace Parsec.Shaiya.Cloak
             Name = Encoding.ASCII.GetString(stringBuffer.TakeWhile(b => b != '\0').ToArray());
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -53,7 +51,7 @@ namespace Parsec.Shaiya.Cloak
                 buffer.AddRange(pad.GetBytes());
             }
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

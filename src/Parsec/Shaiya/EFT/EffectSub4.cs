@@ -19,6 +19,6 @@ namespace Parsec.Shaiya.EFT
             Unknown = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes(params object[] options) => Unknown.GetBytes();
+        public IEnumerable<byte> GetBytes(params object[] options) => Unknown.GetBytes();
     }
 }

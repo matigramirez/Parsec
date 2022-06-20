@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Parsec.Common;
@@ -183,7 +182,7 @@ namespace Parsec.Shaiya.Data
             // Write last 8 empty bytes
             buffer.AddRange(new byte[8]);
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

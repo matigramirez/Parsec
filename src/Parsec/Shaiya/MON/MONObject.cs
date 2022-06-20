@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -22,12 +21,12 @@ namespace Parsec.Shaiya.MON
             TextureName = binaryReader.ReadString();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Object3DCName.GetLengthPrefixedBytes(false));
             buffer.AddRange(TextureName.GetLengthPrefixedBytes(false));
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

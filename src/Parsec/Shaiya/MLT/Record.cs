@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -36,13 +34,13 @@ namespace Parsec.Shaiya.Mlt
             Alpha = binaryReader.Read<int>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Obj3DCIndex.GetBytes());
             buffer.AddRange(TextureIndex.GetBytes());
             buffer.AddRange(Alpha.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

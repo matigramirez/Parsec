@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -38,7 +35,7 @@ namespace Parsec.Shaiya.SetItem
             }
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Index.GetBytes());
@@ -50,7 +47,7 @@ namespace Parsec.Shaiya.SetItem
             foreach (var synergy in Synergies)
                 buffer.AddRange(synergy.GetLengthPrefixedBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

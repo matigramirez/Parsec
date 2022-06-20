@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
@@ -43,7 +42,7 @@ namespace Parsec.Shaiya.MON
         }
 
         // TODO: This method needs attention because the MON format doesn't depend on the episode itself, sometimes MO2 and MO4 are mixed within the same client
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var outputFormat = Format;
 
@@ -58,7 +57,7 @@ namespace Parsec.Shaiya.MON
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes(outputFormat));
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

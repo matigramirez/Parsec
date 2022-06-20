@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -21,7 +19,7 @@ namespace Parsec.Shaiya.Svmap
         public Portal()
         {
         }
-        
+
         public Portal(SBinaryReader binaryReader)
         {
             Position = new Vector3(binaryReader);
@@ -32,7 +30,7 @@ namespace Parsec.Shaiya.Svmap
             DestinationPosition = new Vector3(binaryReader);
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Position.GetBytes());
@@ -41,7 +39,7 @@ namespace Parsec.Shaiya.Svmap
             buffer.AddRange(MaxLevel.GetBytes());
             buffer.AddRange(DestinationMapId.GetBytes());
             buffer.AddRange(DestinationPosition.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

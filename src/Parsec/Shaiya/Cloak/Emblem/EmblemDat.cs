@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Cloak;
@@ -38,7 +37,7 @@ namespace Parsec.Shaiya.Emblem
             foreach (var texture in Textures)
                 buffer.AddRange(texture.GetBytes(260, 0xCC));
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

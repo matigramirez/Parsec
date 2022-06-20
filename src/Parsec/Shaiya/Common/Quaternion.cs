@@ -5,8 +5,6 @@
  Licensed under the MIT license. See LICENSE file in the project root for full license information.
 */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Newtonsoft.Json;
 using Parsec.Extensions;
@@ -16,7 +14,7 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Common
 {
     /// <summary>
-    /// A structure encapsulating a four-dimensional vector (x,y,z,w), 
+    /// A structure encapsulating a four-dimensional vector (x,y,z,w),
     /// which is used to efficiently rotate an object about the (x,y,z) vector by the angle theta, where w = cos(theta/2).
     /// </summary>
     public struct Quaternion : IEquatable<Quaternion>, IBinary
@@ -50,7 +48,7 @@ namespace Parsec.Shaiya.Common
         }
 
         /// <summary>
-        /// Returns a Quaternion representing no rotation. 
+        /// Returns a Quaternion representing no rotation.
         /// </summary>
         public static Quaternion Identity
         {
@@ -167,10 +165,7 @@ namespace Parsec.Shaiya.Common
         /// <returns>The dot product of the Quaternions.</returns>
         public static float Dot(Quaternion quaternion1, Quaternion quaternion2)
         {
-            return quaternion1.X * quaternion2.X +
-                   quaternion1.Y * quaternion2.Y +
-                   quaternion1.Z * quaternion2.Z +
-                   quaternion1.W * quaternion2.W;
+            return quaternion1.X * quaternion2.X + quaternion1.Y * quaternion2.Y + quaternion1.Z * quaternion2.Z + quaternion1.W * quaternion2.W;
         }
 
         /// <summary>
@@ -240,10 +235,7 @@ namespace Parsec.Shaiya.Common
 
             Quaternion r = new Quaternion();
 
-            float dot = quaternion1.X * quaternion2.X +
-                        quaternion1.Y * quaternion2.Y +
-                        quaternion1.Z * quaternion2.Z +
-                        quaternion1.W * quaternion2.W;
+            float dot = quaternion1.X * quaternion2.X + quaternion1.Y * quaternion2.Y + quaternion1.Z * quaternion2.Z + quaternion1.W * quaternion2.W;
 
             if (dot >= 0.0f)
             {
@@ -625,8 +617,7 @@ namespace Parsec.Shaiya.Common
         {
             CultureInfo ci = CultureInfo.CurrentCulture;
 
-            return String.Format(ci, "{{X:{0} Y:{1} Z:{2} W:{3}}}", X.ToString(ci), Y.ToString(ci), Z.ToString(ci),
-                                 W.ToString(ci));
+            return String.Format(ci, "{{X:{0} Y:{1} Z:{2} W:{3}}}", X.ToString(ci), Y.ToString(ci), Z.ToString(ci), W.ToString(ci));
         }
 
         /// <summary>
@@ -638,7 +629,7 @@ namespace Parsec.Shaiya.Common
             return X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode() + W.GetHashCode();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -647,7 +638,7 @@ namespace Parsec.Shaiya.Common
             buffer.AddRange(Z.GetBytes());
             buffer.AddRange(W.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

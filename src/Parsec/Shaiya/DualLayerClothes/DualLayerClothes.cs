@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 
 namespace Parsec.Shaiya.DualLayerClothes
@@ -28,7 +27,7 @@ namespace Parsec.Shaiya.DualLayerClothes
             foreach (var costume in Costumes)
                 buffer.AddRange(costume.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

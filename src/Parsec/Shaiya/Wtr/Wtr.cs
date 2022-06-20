@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
@@ -51,7 +50,7 @@ namespace Parsec.Shaiya.Wtr
                     buffer.AddRange(new byte[256 - texture.Length]);
             }
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

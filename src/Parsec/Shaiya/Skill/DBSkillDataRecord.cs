@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.SData;
 
@@ -214,7 +213,7 @@ namespace Parsec.Shaiya.Skill
             TacticZoneBound = binaryReader.Read<long>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Id.GetBytes());
@@ -318,7 +317,7 @@ namespace Parsec.Shaiya.Skill
             buffer.AddRange(ChangeType.GetBytes());
             buffer.AddRange(ChangeLevel.GetBytes());
             buffer.AddRange(TacticZoneBound.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

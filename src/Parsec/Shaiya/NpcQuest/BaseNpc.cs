@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -66,6 +64,7 @@ namespace Parsec.Shaiya.NpcQuest
             buffer.AddRange(MoveDistance.GetBytes());
             buffer.AddRange(MoveSpeed.GetBytes());
             buffer.AddRange(((int)Faction).GetBytes());
+
             if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
             {
                 buffer.AddRange(Name.GetLengthPrefixedBytes(false));
@@ -105,7 +104,7 @@ namespace Parsec.Shaiya.NpcQuest
                 buffer.AddRange(BitConverter.GetBytes(outQuestId));
         }
 
-        public virtual byte[] GetBytes(params object[] options)
+        public virtual IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -113,7 +112,7 @@ namespace Parsec.Shaiya.NpcQuest
             WriteBaseNpcSecondSegmentBytes(buffer);
             WriteBaseNpcThirdSegmentBytes(buffer);
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

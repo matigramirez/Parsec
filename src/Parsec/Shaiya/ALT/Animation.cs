@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -46,7 +45,7 @@ namespace Parsec.Shaiya.ALT
             Float4 = binaryReader.Read<float>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             // When name is empty, the rest of the fields are not written and the name length must be set to '0'
             if (string.IsNullOrEmpty(Name))
@@ -64,7 +63,7 @@ namespace Parsec.Shaiya.ALT
             buffer.AddRange(Float3.GetBytes());
             buffer.AddRange(Float4.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Shaiya.Common;
+﻿using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Wld
 {

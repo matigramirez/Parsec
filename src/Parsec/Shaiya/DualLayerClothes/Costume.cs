@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -26,7 +24,7 @@ namespace Parsec.Shaiya.DualLayerClothes
             Layers.Add(layer);
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -35,7 +33,7 @@ namespace Parsec.Shaiya.DualLayerClothes
             foreach (var layer in Layers)
                 buffer.AddRange(layer.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Attributes;
+﻿using Parsec.Attributes;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -36,11 +35,11 @@ public struct BoundingBox : IBinary
     }
 
     /// <inheritdoc />
-    public byte[] GetBytes(params object[] options)
+    public IEnumerable<byte> GetBytes(params object[] options)
     {
         var buffer = new List<byte>();
         buffer.AddRange(LowerLimit.GetBytes());
         buffer.AddRange(UpperLimit.GetBytes());
-        return buffer.ToArray();
+        return buffer;
     }
 }

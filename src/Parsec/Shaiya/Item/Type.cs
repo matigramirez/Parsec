@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -26,12 +25,7 @@ namespace Parsec.Shaiya.Item
             ItemDefinitions = itemDefinitions.ToList();
         }
 
-        public Type(
-            SBinaryReader binaryReader,
-            int id,
-            Episode episode,
-            IDictionary<(byte type, byte typeId), IItemDefinition> itemIndex
-        )
+        public Type(SBinaryReader binaryReader, int id, Episode episode, IDictionary<(byte type, byte typeId), IItemDefinition> itemIndex)
         {
             Id = id;
             MaxTypeId = binaryReader.Read<int>();
@@ -55,7 +49,7 @@ namespace Parsec.Shaiya.Item
             }
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var format = Episode.EP5;
 
@@ -81,7 +75,7 @@ namespace Parsec.Shaiya.Item
                 }
             }
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

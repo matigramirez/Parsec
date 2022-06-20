@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -36,13 +35,13 @@ namespace Parsec.Shaiya.Obj3DE
             UV = new Vector2(binaryReader);
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Coordinates.GetBytes());
             buffer.AddRange(BoneId.GetBytes());
             buffer.AddRange(UV.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

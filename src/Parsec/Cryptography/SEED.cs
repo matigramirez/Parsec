@@ -15,10 +15,7 @@
 
         public static uint ByteArrayToUInt32(byte[] array, uint offset)
         {
-            uint value = ((uint)array[offset] << 24) |
-                         ((uint)array[offset + 1] << 16) |
-                         ((uint)array[offset + 2] << 8) |
-                         array[offset + 3];
+            uint value = ((uint)array[offset] << 24) | ((uint)array[offset + 1] << 16) | ((uint)array[offset + 2] << 8) | array[offset + 3];
 
             return value;
         }

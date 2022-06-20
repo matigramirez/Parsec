@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using Parsec.Cryptography;
 using Parsec.Helpers;
 
@@ -56,26 +54,26 @@ namespace Parsec.Shaiya.Data
             switch (Path.GetExtension(path))
             {
                 case ".sah":
-                {
-                    Sah = Reader.ReadFromFile<Sah>(path, crypto);
+                    {
+                        Sah = Reader.ReadFromFile<Sah>(path, crypto);
 
-                    if (!FileHelper.FileExists(Sah.SafPath))
-                        throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
+                        if (!FileHelper.FileExists(Sah.SafPath))
+                            throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
 
-                    Saf = new Saf(Sah.SafPath);
-                    break;
-                }
+                        Saf = new Saf(Sah.SafPath);
+                        break;
+                    }
                 case ".saf":
-                {
-                    Saf = new Saf(path);
+                    {
+                        Saf = new Saf(path);
 
-                    if (!FileHelper.FileExists(Saf.SahPath))
-                        throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
+                        if (!FileHelper.FileExists(Saf.SahPath))
+                            throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
 
-                    Sah = Reader.ReadFromFile<Sah>(Saf.SahPath, crypto);
+                        Sah = Reader.ReadFromFile<Sah>(Saf.SahPath, crypto);
 
-                    break;
-                }
+                        break;
+                    }
                 default:
                     throw new ArgumentException("The provided path must belong to either a .sah or a .saf file");
             }

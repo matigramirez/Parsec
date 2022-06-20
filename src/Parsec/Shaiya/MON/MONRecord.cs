@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -93,7 +92,7 @@ namespace Parsec.Shaiya.MON
             }
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var outputFormat = MONFormat.MO2;
 
@@ -131,7 +130,7 @@ namespace Parsec.Shaiya.MON
             buffer.AddRange(Height.GetBytes());
             buffer.AddRange(Effects.GetBytes());
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

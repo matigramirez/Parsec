@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -139,7 +138,7 @@ namespace Parsec.Shaiya.Item
             Count = binaryReader.Read<byte>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Name.GetLengthPrefixedBytes());
@@ -195,7 +194,7 @@ namespace Parsec.Shaiya.Item
             buffer.AddRange(Drop.GetBytes());
             buffer.Add(Server);
             buffer.Add(Count);
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

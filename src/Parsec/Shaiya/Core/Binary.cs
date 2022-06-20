@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using Parsec.Attributes;
 using Parsec.Common;
@@ -285,7 +282,7 @@ namespace Parsec.Shaiya.Core
                             }
                         }
 
-                        return buffer.ToArray();
+                        return buffer;
 
                     case SuffixedStringAttribute suffixedStringAttribute:
                         propertyValue += suffixedStringAttribute.Suffix;

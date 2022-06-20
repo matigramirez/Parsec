@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
@@ -74,7 +73,7 @@ namespace Parsec.Shaiya.Mlt
                 textureName.GetLengthPrefixedBytes();
 
             buffer.AddRange(Records.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

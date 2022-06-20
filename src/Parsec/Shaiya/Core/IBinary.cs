@@ -6,6 +6,6 @@
         /// Serializes the file into a byte array
         /// </summary>
         /// <param name="options">Extra options</param>
-        byte[] GetBytes(params object[] options);
+        IEnumerable<byte> GetBytes(params object[] options);
     }
 }

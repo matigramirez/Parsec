@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -151,13 +149,13 @@ namespace Parsec.Shaiya.Data
         public SFolder GetSubfolder(string name) => Subfolders.FirstOrDefault(sf => sf.Name == name);
 
         /// <inheritdoc />
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(Name.GetLengthPrefixedBytes());
             buffer.AddRange(Files.GetBytes());
             buffer.AddRange(Subfolders.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

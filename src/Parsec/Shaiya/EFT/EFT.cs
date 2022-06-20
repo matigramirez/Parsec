@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -87,7 +86,7 @@ namespace Parsec.Shaiya.EFT
                 buffer.AddRange(effect.GetBytes(Format));
 
             buffer.AddRange(EffectSequences.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

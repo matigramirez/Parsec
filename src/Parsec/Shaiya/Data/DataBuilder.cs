@@ -86,11 +86,7 @@ namespace Parsec.Shaiya.Data
 
             foreach (var subfolder in subfolders)
             {
-                var shaiyaFolder = new SFolder(folder)
-                {
-                    Name = subfolder,
-                    ParentFolder = folder
-                };
+                var shaiyaFolder = new SFolder(folder) { Name = subfolder, ParentFolder = folder };
 
                 folder.AddSubfolder(shaiyaFolder);
 
@@ -117,8 +113,7 @@ namespace Parsec.Shaiya.Data
 
                 var shaiyaFile = new SFile(folder)
                 {
-                    Name = file,
-                    Length = (int)fileStream.Length,
+                    Name = file, Length = (int)fileStream.Length,
                     //RelativePath = Path.Combine(folder.RelativePath, file)
                 };
 

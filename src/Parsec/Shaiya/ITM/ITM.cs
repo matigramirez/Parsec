@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
@@ -90,7 +89,7 @@ namespace Parsec.Shaiya.Itm
             foreach (var record in Records)
                 buffer.AddRange(record.GetBytes(Format));
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

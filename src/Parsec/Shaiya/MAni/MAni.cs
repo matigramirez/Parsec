@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -85,7 +84,7 @@ namespace Parsec.Shaiya.MAni
             buffer.AddRange(Unknown11.GetBytes());
             buffer.AddRange(Unknown12.GetBytes());
             buffer.AddRange(Unknown13.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

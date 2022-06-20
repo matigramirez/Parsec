@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -74,7 +73,7 @@ namespace Parsec.Shaiya.Zon
         /// <summary>
         /// Expects format (int) as an option
         /// </summary>
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
 
@@ -103,7 +102,7 @@ namespace Parsec.Shaiya.Zon
             buffer.AddRange(MapId.GetBytes());
             buffer.AddRange(Description.GetLengthPrefixedBytes(false));
 
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -46,14 +45,14 @@ namespace Parsec.Shaiya.Common
             W = binaryReader.Read<float>();
         }
 
-        public byte[] GetBytes(params object[] options)
+        public IEnumerable<byte> GetBytes(params object[] options)
         {
             var buffer = new List<byte>();
             buffer.AddRange(X.GetBytes());
             buffer.AddRange(Y.GetBytes());
             buffer.AddRange(Z.GetBytes());
             buffer.AddRange(W.GetBytes());
-            return buffer.ToArray();
+            return buffer;
         }
     }
 }

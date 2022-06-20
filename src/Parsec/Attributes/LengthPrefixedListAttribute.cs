@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Parsec.Attributes
+﻿namespace Parsec.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class LengthPrefixedListAttribute : Attribute

@@ -27,9 +27,6 @@ namespace Parsec.Shaiya.NpcQuest
         {
         }
 
-        public byte[] GetBytes(params object[] options) => new[]
-        {
-            Type, TypeId
-        };
+        public IEnumerable<byte> GetBytes(params object[] options) => new[] { Type, TypeId };
     }
 }
