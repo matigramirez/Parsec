@@ -182,10 +182,10 @@ namespace Parsec.Shaiya.SData
             FileHelper.WriteFile(outputFilePath, encryptedData);
         }
 
-        public static void DecryptFile(string inputFilePath, string outputFilePath, bool ignoreChecksum = false)
+        public static void DecryptFile(string inputFilePath, string outputFilePath, bool validateChecksum = false)
         {
             var fileData = FileHelper.ReadBytes(inputFilePath);
-            var decryptedData = Decrypt(fileData, ignoreChecksum);
+            var decryptedData = Decrypt(fileData, validateChecksum);
             FileHelper.WriteFile(outputFilePath, decryptedData);
         }
     }
