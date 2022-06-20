@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <Nullable>disable</Nullable>
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
-    <LangVersion>9</LangVersion>
+    <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
