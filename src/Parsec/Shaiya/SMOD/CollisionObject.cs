@@ -2,16 +2,24 @@
 using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.SMOD
-{
-    public class CollisionObject
-    {
-        [ShaiyaProperty]
-        [LengthPrefixedList(typeof(SimpleVertex))]
-        public List<SimpleVertex> Vertices { get; set; } = new();
+namespace Parsec.Shaiya.SMOD;
 
-        [ShaiyaProperty]
-        [LengthPrefixedList(typeof(Face))]
-        public List<Face> Faces { get; set; } = new();
-    }
+/// <summary>
+/// A 3d object used in SMOD files to represent an object where players should collide.
+/// </summary>
+public class CollisionObject
+{
+    /// <summary>
+    /// Vertices of the 3d object.
+    /// </summary>
+    [ShaiyaProperty]
+    [LengthPrefixedList(typeof(SimpleVertex))]
+    public List<SimpleVertex> Vertices { get; set; } = new();
+
+    /// <summary>
+    /// Triangular faces (polygons) of the 3d object.
+    /// </summary>
+    [ShaiyaProperty]
+    [LengthPrefixedList(typeof(Face))]
+    public List<Face> Faces { get; set; } = new();
 }
