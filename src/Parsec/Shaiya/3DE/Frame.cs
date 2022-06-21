@@ -7,9 +7,15 @@ namespace Parsec.Shaiya._3DE;
 
 public class Frame : IBinary
 {
+    /// <summary>
+    /// The frame's key.
+    /// </summary>
     public int Keyframe { get; set; }
-    // one translation per vertex
-    public List<Translation> Translations { get; } = new();
+
+    /// <summary>
+    /// The frame's vertex translations. There's one translation defined for each vertex.
+    /// </summary>
+    public List<VertexTranslation> VertexTranslations { get; } = new();
 
     [JsonConstructor]
     public Frame()
@@ -22,8 +28,8 @@ public class Frame : IBinary
 
         for (int i = 0; i < vertexCount; i++)
         {
-            var translation = new Translation(binaryReader);
-            Translations.Add(translation);
+            var translation = new VertexTranslation(binaryReader);
+            VertexTranslations.Add(translation);
         }
     }
 
@@ -31,7 +37,7 @@ public class Frame : IBinary
     {
         var buffer = new List<byte>();
         buffer.AddRange(Keyframe.GetBytes());
-        buffer.AddRange(Translations.GetBytes(false));
+        buffer.AddRange(VertexTranslations.GetBytes(false));
         return buffer;
     }
 }

@@ -5,20 +5,48 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya._3DE;
 
+/// <summary>
+/// Class that represents the .3DE file structure.
+/// 3DE (3D Effect) files are textured meshes with vertex animations used for effects
+/// </summary>
 public class _3DE : FileBase, IJsonReadable
 {
+    /// <summary>
+    /// The mesh .dds texture
+    /// </summary>
     public string Texture { get; set; }
+
+    /// <summary>
+    /// The mesh vertices
+    /// </summary>
     public List<Vertex> Vertices { get; } = new();
+
+    /// <summary>
+    /// The mesh triangular faces
+    /// </summary>
     public List<Face> Faces { get; } = new();
+
+    /// <summary>
+    /// The maximum animation keyframe
+    /// </summary>
     public int MaxKeyframe { get; set; }
+
+    /// <summary>
+    /// List of animation frames
+    /// </summary>
     public List<Frame> Frames { get; } = new();
+
     public override string Extension => "3DE";
 
+    /// <summary>
+    /// Reads the .3DE file from the file buffer. This format requires a manually defined Read method because of its "complexity" when
+    /// dealing with the vertex translation frames.
+    /// </summary>
     public override void Read(params object[] options)
     {
         Texture = _binaryReader.ReadString();
 
-        var vertexCount = _binaryReader.Read<int>();
+        int vertexCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < vertexCount; i++)
         {
@@ -26,7 +54,7 @@ public class _3DE : FileBase, IJsonReadable
             Vertices.Add(vertex);
         }
 
-        var faceCount = _binaryReader.Read<int>();
+        int faceCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < faceCount; i++)
         {
@@ -36,7 +64,7 @@ public class _3DE : FileBase, IJsonReadable
 
         MaxKeyframe = _binaryReader.Read<int>();
 
-        var frameCount = _binaryReader.Read<int>();
+        int frameCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < frameCount; i++)
         {
@@ -45,6 +73,10 @@ public class _3DE : FileBase, IJsonReadable
         }
     }
 
+    /// <summary>
+    /// Gets the file buffer. This format requires a manually defined GetBytes method because of its "complexity" when
+    /// dealing with the vertex translation frames.
+    /// </summary>
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
         var buffer = new List<byte>();
