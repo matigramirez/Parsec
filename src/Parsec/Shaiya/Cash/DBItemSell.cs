@@ -1,8 +1,7 @@
 ﻿using Parsec.Shaiya.SData;
 
-namespace Parsec.Shaiya.Cash
+namespace Parsec.Shaiya.Cash;
+
+public class DBItemSell : BinarySData<DBItemSellRecord>
 {
-    public class DBItemSell : BinarySData<DBItemSellRecord>
-    {
-    }
 }

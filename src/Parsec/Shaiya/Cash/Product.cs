@@ -1,66 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
-using Parsec.Shaiya.Core;
+using Parsec.Attributes;
 
-namespace Parsec.Shaiya.Cash
+namespace Parsec.Shaiya.Cash;
+
+public class Product
 {
-    public class Product : IBinary
-    {
-        public int Index { get; set; }
-        public int Bag { get; set; }
-        public int Unknown { get; set; }
-        public int Cost { get; set; }
-        public List<Item> Items { get; } = new();
-        public string ProductName { get; set; }
-        public string ProductCode { get; set; }
-        public string Description { get; set; }
+    [ShaiyaProperty]
+    public int Index { get; set; }
 
-        [JsonConstructor]
-        public Product()
-        {
-        }
+    [ShaiyaProperty]
+    public int Bag { get; set; }
 
-        public Product(SBinaryReader binaryReader)
-        {
-            Index = binaryReader.Read<int>();
-            Bag = binaryReader.Read<int>();
-            Unknown = binaryReader.Read<int>();
-            Cost = binaryReader.Read<int>();
+    [ShaiyaProperty]
+    public int Unknown { get; set; }
 
-            for (int i = 0; i < 24; i++)
-            {
-                var item = new Item(binaryReader);
-                Items.Add(item);
-            }
+    [ShaiyaProperty]
+    public int Cost { get; set; }
 
-            ProductName = binaryReader.ReadString();
-            ProductCode = binaryReader.ReadString();
-            Description = binaryReader.ReadString();
-        }
+    [ShaiyaProperty]
+    [FixedLengthList(typeof(Item), 24)]
+    public List<Item> Items { get; set; } = new();
 
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(Index.GetBytes());
-            buffer.AddRange(Bag.GetBytes());
-            buffer.AddRange(Unknown.GetBytes());
-            buffer.AddRange(Cost.GetBytes());
+    [ShaiyaProperty]
+    [LengthPrefixedString(false)]
+    [SuffixedString("\0\0")]
+    public string ProductName { get; set; }
 
-            buffer.AddRange(Items.GetBytes(false));
+    [ShaiyaProperty]
+    [LengthPrefixedString(false)]
+    [SuffixedString("\0\0")]
+    public string ProductCode { get; set; }
 
-            // For some reason these strings have 2 string terminators
-            buffer.AddRange((ProductName.Length + 2).GetBytes());
-            buffer.AddRange(Encoding.ASCII.GetBytes(ProductName + "\0\0"));
-            buffer.AddRange((ProductCode.Length + 2).GetBytes());
-            buffer.AddRange(Encoding.ASCII.GetBytes(ProductCode + "\0\0"));
-            buffer.AddRange((Description.Length + 2).GetBytes());
-            buffer.AddRange(Encoding.ASCII.GetBytes(Description + "\0\0"));
-
-            return buffer.ToArray();
-        }
-    }
+    [ShaiyaProperty]
+    [LengthPrefixedString(false)]
+    [SuffixedString("\0\0")]
+    public string Description { get; set; }
 }

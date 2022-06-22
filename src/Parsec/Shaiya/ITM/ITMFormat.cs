@@ -1,9 +1,8 @@
-﻿namespace Parsec.Shaiya.Itm
+﻿namespace Parsec.Shaiya.ITM;
+
+public enum ITMFormat
 {
-    public enum ITMFormat
-    {
-        ITM,
-        IT2,
-        Unknown
-    }
+    ITM,
+    IT2,
+    Unknown
 }

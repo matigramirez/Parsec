@@ -1,8 +1,7 @@
-﻿namespace Parsec.Shaiya.MON
+﻿namespace Parsec.Shaiya.MON;
+
+public enum MONFormat
 {
-    public enum MONFormat
-    {
-        MO2,
-        MO4
-    }
+    MO2,
+    MO4
 }

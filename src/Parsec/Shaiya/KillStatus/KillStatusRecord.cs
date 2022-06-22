@@ -1,50 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
-using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.KillStatus
+namespace Parsec.Shaiya.KillStatus;
+
+public class KillStatusRecord
 {
-    public class KillStatusRecord : IBinary
-    {
-        public FactionInt Faction { get; set; }
-        public int BlessValue { get; set; }
-        public short Index { get; set; }
-        public List<KillStatusBonus> Bonuses { get; } = new();
+    /// <summary>
+    /// The faction that will receive the bonus
+    /// </summary>
+    [ShaiyaProperty]
+    public FactionByte Faction { get; set; }
 
-        [JsonConstructor]
-        public KillStatusRecord()
-        {
-        }
+    /// <summary>
+    /// The absolute bless value at which the bonuses will take effect
+    /// </summary>
+    [ShaiyaProperty]
+    public int BlessValue { get; set; }
 
-        public KillStatusRecord(SBinaryReader binaryReader)
-        {
-            Faction = (FactionInt)binaryReader.Read<byte>();
-            BlessValue = binaryReader.Read<int>();
-            Index = binaryReader.Read<short>();
+    /// <summary>
+    /// The index of this record
+    /// </summary>
+    [ShaiyaProperty]
+    public short Index { get; set; }
 
-            for (int i = 0; i < 6; i++)
-            {
-                var bonus = new KillStatusBonus(binaryReader);
-                Bonuses.Add(bonus);
-            }
-        }
-
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-
-            buffer.Add((byte)Faction);
-            buffer.AddRange(BlessValue.GetBytes());
-            buffer.AddRange(Index.GetBytes());
-
-            foreach (var bonus in Bonuses)
-                buffer.AddRange(bonus.GetBytes());
-
-            return buffer.ToArray();
-        }
-    }
+    /// <summary>
+    /// The bonuses to be applied
+    /// </summary>
+    [ShaiyaProperty]
+    [FixedLengthList(typeof(KillStatusBonus), 6)]
+    public List<KillStatusBonus> Bonuses { get; set; } = new();
 }

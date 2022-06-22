@@ -1,24 +1,16 @@
-﻿using Newtonsoft.Json;
-using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
-using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.SMOD
+namespace Parsec.Shaiya.SMOD;
+
+/// <summary>
+/// Represents a vertex used in SMOD collision objects
+/// </summary>
+public class SimpleVertex
 {
-    public class SimpleVertex : IBinary
-    {
-        public Vector3 Coordinates { get; set; }
-
-        [JsonConstructor]
-        public SimpleVertex()
-        {
-        }
-
-        public SimpleVertex(SBinaryReader binaryReader)
-        {
-            Coordinates = new Vector3(binaryReader);
-        }
-
-        public byte[] GetBytes(params object[] options) => Coordinates.GetBytes();
-    }
+    /// <summary>
+    /// Coordinates of the vertex in the 3D space.
+    /// </summary>
+    [ShaiyaProperty]
+    public Vector3 Coordinates { get; set; }
 }

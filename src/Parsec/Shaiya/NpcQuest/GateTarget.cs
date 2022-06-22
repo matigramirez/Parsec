@@ -1,51 +1,53 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.NpcQuest
+namespace Parsec.Shaiya.NpcQuest;
+
+public class GateTarget : IBinary
 {
-    public class GateTarget : IBinary
+    private readonly Episode _episode;
+    public short MapId { get; set; }
+    public Vector3 Position { get; set; }
+    public string TargetName { get; set; }
+
+    /// <summary>
+    /// Teleporting gold cost
+    /// </summary>
+    public int Cost { get; set; }
+
+    public GateTarget(SBinaryReader binaryReader, Episode episode)
     {
-        private readonly Format _format;
-        public short MapId { get; set; }
-        public Vector3 Position { get; set; }
-        public string TargetName { get; set; }
+        _episode = episode;
+        MapId = binaryReader.Read<short>();
+        Position = new Vector3(binaryReader);
 
-        /// <summary>
-        /// Teleporting gold cost
-        /// </summary>
-        public int Cost { get; set; }
+        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+            TargetName = binaryReader.ReadString(false);
 
-        public GateTarget(SBinaryReader binaryReader, Format format)
-        {
-            _format = format;
-            MapId = binaryReader.Read<short>();
-            Position = new Vector3(binaryReader);
-            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
-                TargetName = binaryReader.ReadString(false);
-            Cost = binaryReader.Read<int>();
-        }
+        Cost = binaryReader.Read<int>();
+    }
 
-        [JsonConstructor]
-        public GateTarget()
-        {
-        }
+    [JsonConstructor]
+    public GateTarget()
+    {
+    }
 
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
 
-            buffer.AddRange(MapId.GetBytes());
-            buffer.AddRange(Position.GetBytes());
-            if (_format < Format.EP8) // In ep 8, messages are moved to separate translation files.
-                buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
-            buffer.AddRange(Cost.GetBytes());
+        buffer.AddRange(MapId.GetBytes());
+        buffer.AddRange(Position.GetBytes());
 
-            return buffer.ToArray();
-        }
+        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+            buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
+
+        buffer.AddRange(Cost.GetBytes());
+
+        return buffer;
     }
 }

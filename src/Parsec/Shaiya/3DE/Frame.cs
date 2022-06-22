@@ -1,39 +1,43 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Obj3DE
+namespace Parsec.Shaiya._3DE;
+
+public class Frame : IBinary
 {
-    public class Frame : IBinary
+    /// <summary>
+    /// The frame's key.
+    /// </summary>
+    public int Keyframe { get; set; }
+
+    /// <summary>
+    /// The frame's vertex translations. There's one translation defined for each vertex.
+    /// </summary>
+    public List<VertexTranslation> VertexTranslations { get; } = new();
+
+    [JsonConstructor]
+    public Frame()
     {
-        public int Keyframe { get; set; }
-        // one translation per vertex
-        public List<Translation> Translations { get; } = new();
+    }
 
-        [JsonConstructor]
-        public Frame()
+    public Frame(SBinaryReader binaryReader, int vertexCount)
+    {
+        Keyframe = binaryReader.Read<int>();
+
+        for (int i = 0; i < vertexCount; i++)
         {
+            var translation = new VertexTranslation(binaryReader);
+            VertexTranslations.Add(translation);
         }
+    }
 
-        public Frame(SBinaryReader binaryReader, int vertexCount)
-        {
-            Keyframe = binaryReader.Read<int>();
-
-            for (int i = 0; i < vertexCount; i++)
-            {
-                var translation = new Translation(binaryReader);
-                Translations.Add(translation);
-            }
-        }
-
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(Keyframe.GetBytes());
-            buffer.AddRange(Translations.GetBytes(false));
-            return buffer.ToArray();
-        }
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
+        buffer.AddRange(Keyframe.GetBytes());
+        buffer.AddRange(VertexTranslations.GetBytes(false));
+        return buffer;
     }
 }

@@ -1,33 +1,32 @@
 ﻿using Parsec.Readers;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Wld
+namespace Parsec.Shaiya.Wld;
+
+/// <summary>
+/// A circular area of the world in which music is played
+/// </summary>
+public class MusicSpot
 {
     /// <summary>
-    /// A circular area of the world in which music is played
+    /// Id of the wav file (from the linked name list of files)
     /// </summary>
-    public class MusicSpot
+    public int Id { get; set; }
+
+    /// <summary>
+    /// The center point of the circle
+    /// </summary>
+    public Vector3 Center { get; set; }
+
+    /// <summary>
+    /// The radius of the circle
+    /// </summary>
+    public float Radius { get; set; }
+
+    public MusicSpot(SBinaryReader binaryReader)
     {
-        /// <summary>
-        /// Id of the wav file (from the linked name list of files)
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// The center point of the circle
-        /// </summary>
-        public Vector3 Center { get; set; }
-
-        /// <summary>
-        /// The radius of the circle
-        /// </summary>
-        public float Radius { get; set; }
-
-        public MusicSpot(SBinaryReader binaryReader)
-        {
-            Id = binaryReader.Read<int>();
-            Center = new Vector3(binaryReader);
-            Radius = binaryReader.Read<float>();
-        }
+        Id = binaryReader.Read<int>();
+        Center = new Vector3(binaryReader);
+        Radius = binaryReader.Read<float>();
     }
 }

@@ -1,45 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Seff
+namespace Parsec.Shaiya.Seff;
+
+public class Record : IBinary
 {
-    public class Record
+    public int Id { get; set; }
+    public List<Effect> Effects { get; } = new();
+
+    [JsonConstructor]
+    public Record()
     {
-        public int Id { get; set; }
-        public List<Effect> Effects { get; } = new();
+    }
 
-        [JsonConstructor]
-        public Record()
+    public Record(SBinaryReader binaryReader, int format)
+    {
+        Id = binaryReader.Read<int>();
+
+        var effectCount = binaryReader.Read<int>();
+
+        for (int i = 0; i < effectCount; i++)
         {
+            var effect = new Effect(binaryReader, format);
+            Effects.Add(effect);
         }
+    }
 
-        public Record(SBinaryReader binaryReader, int format)
-        {
-            Id = binaryReader.Read<int>();
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        int format = 0;
 
-            var effectCount = binaryReader.Read<int>();
+        var buffer = new List<byte>();
 
-            for (int i = 0; i < effectCount; i++)
-            {
-                var effect = new Effect(binaryReader, format);
-                Effects.Add(effect);
-            }
-        }
+        if (options.Length > 0)
+            format = (int)options[0];
 
-        public byte[] GetBytes(int format)
-        {
-            var buffer = new List<byte>();
+        buffer.AddRange(Id.GetBytes());
+        buffer.AddRange(Effects.Count.GetBytes());
 
-            buffer.AddRange(Id.GetBytes());
-            buffer.AddRange(Effects.Count.GetBytes());
+        foreach (var effectInfo in Effects)
+            buffer.AddRange(effectInfo.GetBytes(format));
 
-            foreach (var effectInfo in Effects)
-                buffer.AddRange(effectInfo.GetBytes(format));
-
-            return buffer.ToArray();
-        }
+        return buffer;
     }
 }

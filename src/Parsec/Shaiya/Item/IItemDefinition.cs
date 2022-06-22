@@ -1,8 +1,7 @@
-﻿namespace Parsec.Shaiya.Item
+﻿namespace Parsec.Shaiya.Item;
+
+public interface IItemDefinition
 {
-    public interface IItemDefinition
-    {
-        public byte Type { get; set; }
-        public byte TypeId { get; set; }
-    }
+    public byte Type { get; set; }
+    public byte TypeId { get; set; }
 }

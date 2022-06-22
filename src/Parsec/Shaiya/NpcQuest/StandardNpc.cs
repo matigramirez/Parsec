@@ -1,19 +1,18 @@
-﻿using Parsec.Readers;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
-using Newtonsoft.Json;
+using Parsec.Readers;
 
-namespace Parsec.Shaiya.NpcQuest
+namespace Parsec.Shaiya.NpcQuest;
+
+public class StandardNpc : BaseNpc
 {
-    public class StandardNpc : BaseNpc
+    public StandardNpc(SBinaryReader binaryReader, Episode episode) : base(episode)
     {
-        public StandardNpc(SBinaryReader binaryReader, Format format) : base(format)
-        {
-            ReadNpcBaseComplete(binaryReader);
-        }
+        ReadNpcBaseComplete(binaryReader);
+    }
 
-        [JsonConstructor]
-        public StandardNpc(Format format = Format.EP5) : base(format)
-        {
-        }
+    [JsonConstructor]
+    public StandardNpc(Episode episode = Episode.EP5) : base(episode)
+    {
     }
 }

@@ -1,19 +1,18 @@
-﻿namespace Parsec.Shaiya.NpcQuest
+﻿namespace Parsec.Shaiya.NpcQuest;
+
+public enum NpcType
 {
-    public enum NpcType
-    {
-        Merchant = 1,
-        GateKeeper,
-        Blacksmith,
-        PvPManager,
-        GamblingHouse,
-        Warehouse,
-        Normal,
-        Guard,
-        Animal,
-        Apprentice,
-        GuildMaster,
-        DeadNPC,
-        CombatCommander
-    }
+    Merchant = 1,
+    GateKeeper,
+    Blacksmith,
+    PvPManager,
+    GamblingHouse,
+    Warehouse,
+    Normal,
+    Guard,
+    Animal,
+    Apprentice,
+    GuildMaster,
+    DeadNPC,
+    CombatCommander
 }

@@ -1,35 +1,13 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
-using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.Ani
+namespace Parsec.Shaiya.Ani;
+
+public class RotationFrame
 {
-    public class RotationFrame : IBinary
-    {
-        public int Keyframe { get; set; }
-        public Quaternion Quaternion { get; set; }
+    [ShaiyaProperty]
+    public int Keyframe { get; set; }
 
-        [JsonConstructor]
-        public RotationFrame()
-        {
-        }
-
-        public RotationFrame(SBinaryReader binaryReader)
-        {
-            Keyframe = binaryReader.Read<int>();
-            Quaternion = new Quaternion(binaryReader);
-        }
-
-        /// <inheritdoc />
-        public byte[] GetBytes(params object[] options)
-        {
-            var buffer = new List<byte>();
-            buffer.AddRange(Keyframe.GetBytes());
-            buffer.AddRange(Quaternion.GetBytes());
-            return buffer.ToArray();
-        }
-    }
+    [ShaiyaProperty]
+    public Quaternion Quaternion { get; set; }
 }
