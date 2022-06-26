@@ -143,7 +143,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                 continue;
 
-            object value = Binary.ReadProperty(_binaryReader, property, Episode);
+            object value = Binary.ReadProperty(_binaryReader, type, this, property, Episode);
 
             property.SetValue(this, Convert.ChangeType(value, property.PropertyType));
 
@@ -200,7 +200,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                 continue;
 
-            buffer.AddRange(Binary.GetPropertyBytes(this, property, episode));
+            buffer.AddRange(Binary.GetPropertyBytes(type, this, property, episode));
         }
 
         return buffer;

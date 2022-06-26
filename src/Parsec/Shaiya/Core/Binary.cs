@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 using Parsec.Attributes;
+using Parsec.Attributes.Wld;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -9,7 +10,13 @@ namespace Parsec.Shaiya.Core;
 
 public static class Binary
 {
-    public static object ReadProperty(SBinaryReader binaryReader, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
+    public static object ReadProperty(
+        SBinaryReader binaryReader,
+        Type parentType,
+        object parentInstance,
+        PropertyInfo propertyInfo,
+        Episode episode = Episode.Unknown
+    )
     {
         var type = propertyInfo.PropertyType;
 
@@ -32,6 +39,15 @@ public static class Binary
                         return null;
 
                     if (episode < shaiyaPropertyAttribute.MinEpisode || episode > shaiyaPropertyAttribute.MaxEpisode)
+                        return null;
+
+                    break;
+
+                case ConditionalPropertyAttribute conditionalPropertyAttribute:
+                    var conditioningPropertyType = parentType.GetProperty(conditionalPropertyAttribute.ConditioningPropertyName);
+                    object conditioningPropertyValue = conditioningPropertyType?.GetValue(parentInstance);
+
+                    if (!conditionalPropertyAttribute.ConditioningPropertyValue.Equals(conditioningPropertyValue))
                         return null;
 
                     break;
@@ -61,7 +77,7 @@ public static class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                                     continue;
 
-                                object propertyValue = ReadProperty(binaryReader, property, episode);
+                                object propertyValue = ReadProperty(binaryReader, genericArgumentType, item, property, episode);
                                 property.SetValue(item, propertyValue);
                             }
                         }
@@ -129,7 +145,7 @@ public static class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                                     continue;
 
-                                object propertyValue = ReadProperty(binaryReader, property, episode);
+                                object propertyValue = ReadProperty(binaryReader, genericItemType, item, property, episode);
                                 property.SetValue(item, propertyValue);
                             }
                         }
@@ -147,9 +163,21 @@ public static class Binary
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
                     string fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
-                                                                    fixedLengthStringAttribute.IncludeStringTerminator);
+                                                                    !fixedLengthStringAttribute.IncludeStringTerminator);
 
                     return fixedLengthStr;
+
+                case HeightmapAttribute heightMapAttribute:
+                    var mapSizeProperty = parentType.GetProperty(heightMapAttribute.PropertyName);
+                    int mapSize = (int)mapSizeProperty.GetValue(parentInstance);
+                    int heightMapSize = heightMapAttribute.CalculateLengthFromMapSize(mapSize);
+                    return binaryReader.ReadBytes(heightMapSize);
+
+                case TextureMapAttribute textureMapAttribute:
+                    var mapSizePropertyInfo = parentType.GetProperty(textureMapAttribute.PropertyName);
+                    int currentMapSize = (int)mapSizePropertyInfo.GetValue(parentInstance);
+                    int textureMapSize = textureMapAttribute.CalculateLengthFromMapSize(currentMapSize);
+                    return binaryReader.ReadBytes(textureMapSize);
             }
         }
 
@@ -172,7 +200,7 @@ public static class Binary
 
     private static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
 
-    public static IEnumerable<byte> GetPropertyBytes(object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
+    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
     {
         var type = propertyInfo.PropertyType;
         var attributes = propertyInfo.GetCustomAttributes().ToList();
@@ -215,6 +243,15 @@ public static class Binary
 
                     break;
 
+                case ConditionalPropertyAttribute conditionalPropertyAttribute:
+                    var conditioningPropertyType = parentType.GetProperty(conditionalPropertyAttribute.ConditioningPropertyName);
+                    object conditioningPropertyValue = conditioningPropertyType?.GetValue(obj);
+
+                    if (conditionalPropertyAttribute.ConditioningPropertyValue != conditioningPropertyValue)
+                        return Array.Empty<byte>();
+
+                    break;
+
                 case FixedLengthListAttribute fixedLengthListAttribute:
                     var listItems = (propertyValue as IEnumerable).Cast<object>().Take(fixedLengthListAttribute.Length);
 
@@ -235,7 +272,7 @@ public static class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !fixedLengthListAttribute.ItemType.IsPrimitive)
                                     continue;
 
-                                buf.AddRange(GetPropertyBytes(item, property, episode));
+                                buf.AddRange(GetPropertyBytes(genericArgumentType, item, property, episode));
                             }
                         }
                     }
@@ -283,7 +320,7 @@ public static class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !lengthPrefixedListAttribute.ItemType.IsPrimitive)
                                     continue;
 
-                                buffer.AddRange(GetPropertyBytes(item, property, episode));
+                                buffer.AddRange(GetPropertyBytes(genericItemType, item, property, episode));
                             }
                         }
                     }
