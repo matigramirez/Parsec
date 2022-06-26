@@ -1,7 +1,7 @@
-﻿using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Wld;
+namespace Parsec.Shaiya.WLD;
 
 /// <summary>
 /// Represents a Portal in the world
@@ -11,51 +11,50 @@ public class Portal
     /// <summary>
     /// The area of the portal
     /// </summary>
-    public BoundingBox Area { get; set; }
+    [ShaiyaProperty]
+    public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
-    /// Usually 0L. Possibly a condition to use the portal (Level? maybe it's 2 int values with minLevel and maxLevel?)
+    /// TODO: Check that "DistanceToCenter" fits this field
     /// </summary>
-    public int Unknown_1 { get; set; }
+    [ShaiyaProperty]
+    public int DistanceToCenter { get; set; }
 
     /// <summary>
     /// 256-byte non-localized string, usually korean characters
     /// </summary>
+    [ShaiyaProperty]
+    [FixedLengthString(256)]
     public string Text1 { get; set; }
+
     /// <summary>
     /// 256-byte non-localized string, usually empty
     /// </summary>
+    [ShaiyaProperty]
+    [FixedLengthString(256)]
     public string Text2 { get; set; }
 
     /// <summary>
     /// The destination mapId
     /// </summary>
+    [ShaiyaProperty]
     public byte MapId { get; set; }
 
     /// <summary>
     /// The faction which can use the portal
     /// </summary>
+    [ShaiyaProperty]
     public FactionShort Faction { get; set; }
 
     /// <summary>
     /// Almost always 0L
     /// </summary>
-    public byte Unknown_2 { get; set; }
+    [ShaiyaProperty]
+    public byte Unknown { get; set; }
 
     /// <summary>
     /// The destination position
     /// </summary>
+    [ShaiyaProperty]
     public Vector3 Position { get; set; }
-
-    public Portal(SBinaryReader binaryReader)
-    {
-        Area = new BoundingBox(binaryReader);
-        Unknown_1 = binaryReader.Read<int>();
-        Text1 = binaryReader.ReadString(256);
-        Text2 = binaryReader.ReadString(256);
-        MapId = binaryReader.Read<byte>();
-        Faction = (FactionShort)binaryReader.Read<short>();
-        Unknown_2 = binaryReader.Read<byte>();
-        Position = new Vector3(binaryReader);
-    }
 }

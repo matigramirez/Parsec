@@ -1,29 +1,23 @@
-﻿using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Wld;
+namespace Parsec.Shaiya.WLD;
 
 public class Npc
 {
+    [ShaiyaProperty]
     public int Type { get; set; }
+
+    [ShaiyaProperty]
     public int TypeId { get; set; }
-    public Vector3 Position { get; set; }
+
+    [ShaiyaProperty]
+    public Vector3 Coordinates { get; set; }
+
+    [ShaiyaProperty]
     public float Orientation { get; set; }
-    public List<Vector3> PatrolPositions { get; } = new();
 
-    public Npc(SBinaryReader binaryReader)
-    {
-        Type = binaryReader.Read<int>();
-        TypeId = binaryReader.Read<int>();
-        Position = new Vector3(binaryReader);
-        Orientation = binaryReader.Read<float>();
-
-        var patrolPositionCount = binaryReader.Read<int>();
-
-        for (int i = 0; i < patrolPositionCount; i++)
-        {
-            var patrolPosition = new Vector3(binaryReader);
-            PatrolPositions.Add(patrolPosition);
-        }
-    }
+    [ShaiyaProperty]
+    [LengthPrefixedList(typeof(Vector3))]
+    public List<Vector3> PatrolCoordinates { get; } = new();
 }

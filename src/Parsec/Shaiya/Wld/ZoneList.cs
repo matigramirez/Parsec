@@ -1,9 +1,14 @@
-﻿using Parsec.Shaiya.Common;
+﻿using Parsec.Attributes;
+using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Wld;
+namespace Parsec.Shaiya.WLD;
 
 public class ZoneList
 {
+    [ShaiyaProperty]
     public BoundingBox BoundingBox { get; set; }
-    public List<int> Identifiers { get; set; }
+
+    [ShaiyaProperty]
+    [LengthPrefixedList(typeof(int))]
+    public List<int> Identifiers { get; set; } = new();
 }

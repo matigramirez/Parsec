@@ -1,7 +1,7 @@
-﻿using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Wld;
+namespace Parsec.Shaiya.WLD;
 
 /// <summary>
 /// Represents an effect in the world
@@ -11,28 +11,24 @@ public class Effect
     /// <summary>
     /// Effect's position
     /// </summary>
+    [ShaiyaProperty]
     public Vector3 Position { get; set; }
 
     /// <summary>
     /// Effect's rotation
     /// </summary>
+    [ShaiyaProperty]
     public Vector3 Rotation { get; set; }
 
     /// <summary>
     /// Effect's scaling
     /// </summary>
-    public Vector3 Scaling { get; set; }
+    [ShaiyaProperty]
+    public Vector3 Scale { get; set; }
 
     /// <summary>
     /// Identifier of the effect from the linked .eft file
     /// </summary>
+    [ShaiyaProperty]
     public int Id { get; set; }
-
-    public Effect(SBinaryReader binaryReader)
-    {
-        Position = new Vector3(binaryReader);
-        Rotation = new Vector3(binaryReader);
-        Scaling = new Vector3(binaryReader);
-        Id = binaryReader.Read<int>();
-    }
 }

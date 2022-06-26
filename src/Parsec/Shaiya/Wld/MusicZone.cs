@@ -1,7 +1,7 @@
-﻿using Parsec.Readers;
+﻿using Parsec.Attributes;
 using Parsec.Shaiya.Common;
 
-namespace Parsec.Shaiya.Wld;
+namespace Parsec.Shaiya.WLD;
 
 /// <summary>
 /// A rectangular area of the world in which music is played
@@ -11,28 +11,24 @@ public class MusicZone
     /// <summary>
     /// The rectangular area of the music zone
     /// </summary>
-    public BoundingBox Area { get; set; }
+    [ShaiyaProperty]
+    public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
-    /// Usually 0.0f
+    /// TODO: Check that "DistanceToCenter" fits this field
     /// </summary>
-    public float Unknown_1 { get; set; }
+    [ShaiyaProperty]
+    public float DistanceToCenter { get; set; }
 
     /// <summary>
     /// Id of the wav file (from the linked name list of files)
     /// </summary>
+    [ShaiyaProperty]
     public int Id { get; set; }
 
     /// <summary>
     /// Usually 0L
     /// </summary>
-    public int Unknown_2 { get; set; }
-
-    public MusicZone(SBinaryReader binaryReader)
-    {
-        Area = new BoundingBox(binaryReader);
-        Unknown_1 = binaryReader.Read<float>();
-        Id = binaryReader.Read<int>();
-        Unknown_2 = binaryReader.Read<int>();
-    }
+    [ShaiyaProperty]
+    public int Unknown { get; set; }
 }
