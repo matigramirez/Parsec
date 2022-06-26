@@ -241,7 +241,7 @@ public sealed class SBinaryReader
         Offset += length;
 
         if (removeStringTerminator && str.Length > 1 && str[str.Length - 1] == '\0')
-            str = str.Substring(0, str.Length - 1);
+            str = str.Trim('\0');
 
         if (str == "\0")
             str = string.Empty;
