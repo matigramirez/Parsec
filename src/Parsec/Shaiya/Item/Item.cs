@@ -10,7 +10,6 @@ namespace Parsec.Shaiya.Item;
 
 public class Item : SData.SData, IJsonReadable, ICsv
 {
-    public Episode Episode { get; set; } = Episode.EP5;
     public int MaxType { get; set; }
     public List<Type> Types { get; } = new();
 
@@ -19,6 +18,8 @@ public class Item : SData.SData, IJsonReadable, ICsv
 
     public override void Read(params object[] options)
     {
+        Episode = Episode.EP5;
+
         if (options.Length > 0)
             Episode = (Episode)options[0];
 

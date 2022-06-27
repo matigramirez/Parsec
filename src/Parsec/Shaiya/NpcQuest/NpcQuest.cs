@@ -1,13 +1,10 @@
-﻿using Newtonsoft.Json;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 
 namespace Parsec.Shaiya.NpcQuest;
 
 public class NpcQuest : SData.SData, IJsonReadable
 {
-    [JsonIgnore]
-    public Episode Episode { get; set; }
     public List<Merchant> Merchants { get; } = new();
     public List<GateKeeper> Gatekeepers { get; } = new();
     public List<StandardNpc> Blacksmiths { get; } = new();
@@ -26,14 +23,12 @@ public class NpcQuest : SData.SData, IJsonReadable
 
     public override void Read(params object[] options)
     {
+        Episode = Episode.EP5;
+
         if (options.Length > 0)
         {
             object format = options[0];
             Episode = (Episode)format;
-        }
-        else
-        {
-            Episode = Episode.EP5;
         }
 
         // TODO: Remove this when support for EP5+ is added
