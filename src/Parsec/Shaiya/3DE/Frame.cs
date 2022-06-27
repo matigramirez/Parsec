@@ -15,7 +15,7 @@ public class Frame : IBinary
     /// <summary>
     /// The frame's vertex translations. There's one translation defined for each vertex.
     /// </summary>
-    public List<VertexTranslation> VertexTranslations { get; } = new();
+    public List<VertexFrame> VertexFrames { get; } = new();
 
     [JsonConstructor]
     public Frame()
@@ -28,8 +28,8 @@ public class Frame : IBinary
 
         for (int i = 0; i < vertexCount; i++)
         {
-            var translation = new VertexTranslation(binaryReader);
-            VertexTranslations.Add(translation);
+            var translation = new VertexFrame(binaryReader);
+            VertexFrames.Add(translation);
         }
     }
 
@@ -37,7 +37,7 @@ public class Frame : IBinary
     {
         var buffer = new List<byte>();
         buffer.AddRange(Keyframe.GetBytes());
-        buffer.AddRange(VertexTranslations.GetBytes(false));
+        buffer.AddRange(VertexFrames.GetBytes(false));
         return buffer;
     }
 }

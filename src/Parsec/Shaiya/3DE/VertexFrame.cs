@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya._3DE;
 
-public class VertexTranslation : IBinary
+public class VertexFrame : IBinary
 {
     /// <summary>
     /// The vertex coordinates
@@ -18,11 +18,11 @@ public class VertexTranslation : IBinary
     public Vector2 UV { get; set; }
 
     [JsonConstructor]
-    public VertexTranslation()
+    public VertexFrame()
     {
     }
 
-    public VertexTranslation(SBinaryReader binaryReader)
+    public VertexFrame(SBinaryReader binaryReader)
     {
         Coordinates = new Vector3(binaryReader);
         UV = new Vector2(binaryReader);
