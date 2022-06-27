@@ -9,7 +9,7 @@ public class EffectSub3 : IBinary
 {
     public float Unknown1 { get; set; }
     public float Unknown2 { get; set; }
-    public float Unknown3 { get; set; }
+    public float Time { get; set; }
 
     [JsonConstructor]
     public EffectSub3()
@@ -20,7 +20,7 @@ public class EffectSub3 : IBinary
     {
         Unknown1 = binaryReader.Read<float>();
         Unknown2 = binaryReader.Read<float>();
-        Unknown3 = binaryReader.Read<float>();
+        Time = binaryReader.Read<float>();
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -28,7 +28,7 @@ public class EffectSub3 : IBinary
         var buffer = new List<byte>();
         buffer.AddRange(Unknown1.GetBytes());
         buffer.AddRange(Unknown2.GetBytes());
-        buffer.AddRange(Unknown3.GetBytes());
+        buffer.AddRange(Time.GetBytes());
         return buffer;
     }
 }
