@@ -9,6 +9,7 @@ using Parsec.Shaiya.Monster;
 using Parsec.Shaiya.NpcQuest;
 using Parsec.Shaiya.SData;
 using Parsec.Shaiya.SetItem;
+using Parsec.Shaiya.Skill;
 using Item = Parsec.Shaiya.Item.Item;
 
 namespace Parsec.Samples;
@@ -93,5 +94,13 @@ class Program
         monster.ExportCSV("Monster.csv");
 
         #endregion
+
+        #region Skills
+
+        var skills = Reader.ReadFromFile<DBSkillData>("DBSkillData.SData");
+        Console.WriteLine($"Skill Count (EP 8): {skills.Records.Count}");
+
+        #endregion
+        
     }
 }
