@@ -1,14 +1,13 @@
-﻿namespace Parsec.Shaiya.Skill
+﻿namespace Parsec.Shaiya.Skill;
+
+public enum TimeDamageType
 {
-    public enum TimeDamageType
-    {
-        None = 0,
+    None = 0,
 
-        /// <summary>
-        /// Percent of HP, SP or MP.
-        /// </summary>
-        Percent,
+    /// <summary>
+    /// HP, SP or MP percentage.
+    /// </summary>
+    Percentage,
 
-        DoublePrevious = 12
-    }
+    DoublePrevious = 12
 }
