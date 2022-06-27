@@ -344,6 +344,12 @@ public static class Binary
         if (type.GetInterfaces().Contains(typeof(IBinary)))
             return ((IBinary)propertyValue).GetBytes();
 
+        if (type.IsEnum)
+        {
+            var underlyingEnumType = Enum.GetUnderlyingType(type);
+            return GetPrimitiveBytes(underlyingEnumType, propertyValue);
+        }
+
         return GetPrimitiveBytes(type, propertyValue);
     }
 

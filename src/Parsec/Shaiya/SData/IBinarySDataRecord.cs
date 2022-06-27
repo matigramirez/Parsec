@@ -1,9 +1,5 @@
-﻿using Parsec.Readers;
-using Parsec.Shaiya.Core;
+﻿namespace Parsec.Shaiya.SData;
 
-namespace Parsec.Shaiya.SData;
-
-public interface IBinarySDataRecord : IBinary
+public interface IBinarySDataRecord
 {
-    void Read(SBinaryReader binaryReader, params object[] options);
 }

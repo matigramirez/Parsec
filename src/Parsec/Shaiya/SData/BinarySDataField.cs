@@ -11,7 +11,7 @@ public class BinarySDataField : IBinary
 
     public BinarySDataField(SBinaryReader binaryReader)
     {
-        var length = binaryReader.Read<byte>();
+        int length = binaryReader.Read<byte>();
         Name = binaryReader.ReadString(Encoding.Unicode, length);
     }
 

@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.Cash;
 
-public class DBItemSell : BinarySData<DBItemSellRecord>
+public class DBItemSellData : BinarySData<DBItemSellRecord>
 {
 }
