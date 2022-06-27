@@ -10,22 +10,14 @@ make reading and manipulating the game's file formats easy.
 ## Currently supported files/formats
 
 - `data.sah/saf`
-- `NpcQuest.SData` (EP4-5 supported, EP5+ is pending)
+- `NpcQuest.SData` (EP4-5 & 8 supported, EP6 is pending)
 - `KillStatus.SData`
 - `Cash.SData`
 - `SetItem.SData`
 - `DualLayerClothes.SData`
 - `GuildHouse.SData`
 - `Monster.SData`
-- `DBMonsterData.SData`
-- `DBMonsterText.SData`
-- `Item.SData` (EP5 and EP6)
-- `DBItemData.SData`
-- `DBItemText.SData`
-- `DBSkillData.SData`
-- `DBSkillText.SData`
-- `DBItemSell.SData`
-- `DBItemSellText.SData`
+- `Item.SData` (EP5 & EP6)
 - `svmap`
 - `ANI`
 - `3DC`
@@ -44,6 +36,21 @@ make reading and manipulating the game's file formats easy.
 - `MON`
 - `CTL`
 - `dat` (Cloth/Emblem)
+- `DBItemData.SData`
+- `DBItemText.SData`
+- `DBMonsterData.SData`
+- `DBMonsterText.SData`
+- `DBSkillData.SData`
+- `DBSkillText.SData`
+- `DBItemSellData.SData`
+- `DBItemSellText.SData`
+- `DBNpcSkillData.SData`
+- `DBNpcSkillText.SData`
+- `DBDualLayerClothesData.SData`
+- `DBSetItemData.SData`
+- `DBSetItemText.SData`
+- `DBTransformModelData.SData`
+- `DBTransformWeaponModelData.SData`
 
 ## Features
 
