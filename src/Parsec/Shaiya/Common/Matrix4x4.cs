@@ -23,7 +23,32 @@ public struct Matrix4x4 : IEquatable<Matrix4x4>, IBinary
     /// <summary>
     /// The matrix's data serialized into an array of float arrays
     /// </summary>
-    public float[,] Data => new float[4, 4] { { M11, M12, M13, M14 }, { M21, M22, M23, M24 }, { M31, M32, M33, M34 }, { M41, M42, M43, M44 } };
+    public float[,] Data
+    {
+        get => new float[4, 4] { { M11, M12, M13, M14 }, { M21, M22, M23, M24 }, { M31, M32, M33, M34 }, { M41, M42, M43, M44 } };
+        set
+        {
+            if (value.Length < 16)
+                throw new ArgumentException("Matrix4x4.Data: Array must be of length 16");
+
+            M11 = value[0, 0];
+            M12 = value[0, 1];
+            M13 = value[0, 2];
+            M14 = value[0, 3];
+            M21 = value[1, 0];
+            M22 = value[1, 1];
+            M23 = value[1, 2];
+            M24 = value[1, 3];
+            M31 = value[2, 0];
+            M32 = value[2, 1];
+            M33 = value[2, 2];
+            M34 = value[2, 3];
+            M41 = value[3, 0];
+            M42 = value[3, 1];
+            M43 = value[3, 2];
+            M44 = value[3, 3];
+        }
+    }
 
     /// <summary>
     /// Value at row 1, column 1 of the matrix.
