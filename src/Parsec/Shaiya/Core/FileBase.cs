@@ -177,6 +177,12 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
         if (episode == Episode.Unknown)
             episode = Episode;
 
+        if (episode == Episode.Unknown && type.IsDefined(typeof(DefaultVersionAttribute)))
+        {
+            var defaultEpisodeAttribute = type.GetCustomAttributes<DefaultVersionAttribute>().FirstOrDefault();
+            episode = defaultEpisodeAttribute!.Episode;
+        }
+
         // Add version prefix if present (eg. "ANI_V2", "MO2", "MO4", etc)
         bool isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
 
