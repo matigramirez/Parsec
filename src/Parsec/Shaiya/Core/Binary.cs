@@ -198,7 +198,7 @@ public static class Binary
         return ReadPrimitive(binaryReader, type);
     }
 
-    private static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
+    public static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
 
     public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
     {
@@ -353,7 +353,7 @@ public static class Binary
         return GetPrimitiveBytes(type, propertyValue);
     }
 
-    private static IEnumerable<byte> GetPrimitiveBytes(Type type, object value)
+    public static IEnumerable<byte> GetPrimitiveBytes(Type type, object value)
     {
         if (type == typeof(byte))
             return new[] { (byte)value };

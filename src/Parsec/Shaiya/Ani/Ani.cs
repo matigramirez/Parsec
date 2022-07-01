@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.Ani;
 /// Class that represents an .ANI file which is used to animate a .3DC model.
 /// </summary>
 [DefaultVersion(Episode.EP5)]
-[VersionPrefixed("ANI_V2", Episode.EP6, Episode.EP8)]
+[VersionPrefixed(typeof(string), "ANI_V2", Episode.EP6, Episode.EP8)]
 public class Ani : FileBase, IJsonReadable
 {
     /// <summary>

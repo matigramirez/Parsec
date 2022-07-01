@@ -37,7 +37,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     [JsonIgnore]
     public abstract string Extension { get; }
 
-    [JsonIgnore]
     public Episode Episode { get; set; } = Episode.Unknown;
 
     /// <summary>
@@ -124,13 +123,29 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
             foreach (var versionPrefix in versionPrefixes)
             {
-                string filePrefix = _binaryReader.ReadString(versionPrefix.Prefix.Length);
+                object filePrefix;
+
+                if (versionPrefix.PrefixType == typeof(string))
+                {
+                    filePrefix = _binaryReader.ReadString(((string)versionPrefix.Prefix).Length);
+                }
+                else if (versionPrefix.PrefixType.IsPrimitive)
+                {
+                    filePrefix = Binary.ReadPrimitive(_binaryReader, versionPrefix.PrefixType);
+                }
+                else
+                {
+                    continue;
+                }
 
                 // If prefix matches, episode must be set and reading must continue. If it doesn't, the reading offset must be reset to the beginning of the file
                 if (filePrefix.Equals(versionPrefix.Prefix))
+                {
                     Episode = versionPrefix.MinEpisode;
-                else
-                    _binaryReader.ResetOffset();
+                    break;
+                }
+
+                _binaryReader.ResetOffset();
             }
         }
 
@@ -194,7 +209,16 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             {
                 if ((episode == versionPrefix.MinEpisode && versionPrefix.MaxEpisode == Episode.Unknown) ||
                     (episode >= versionPrefix.MinEpisode && episode <= versionPrefix.MaxEpisode))
-                    buffer.AddRange(versionPrefix.Prefix.GetBytes());
+                {
+                    if (versionPrefix.PrefixType == typeof(string))
+                    {
+                        buffer.AddRange(((string)versionPrefix.Prefix).GetBytes());
+                    }
+                    else if (versionPrefix.PrefixType.IsPrimitive)
+                    {
+                        buffer.AddRange(Binary.GetPrimitiveBytes(versionPrefix.PrefixType, versionPrefix.Prefix));
+                    }
+                }
             }
         }
 
