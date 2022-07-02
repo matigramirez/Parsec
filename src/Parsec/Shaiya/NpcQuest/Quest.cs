@@ -276,8 +276,8 @@ public class Quest : IBinary
         buffer.AddRange(MaxLevel.GetBytes());
         buffer.Add((byte)Faction);
         buffer.Add((byte)Mode);
-        buffer.Add(Convert.ToByte(MaleSex));
-        buffer.Add(Convert.ToByte(FemaleSex));
+        buffer.AddRange(MaleSex.GetBytes());
+        buffer.AddRange(FemaleSex.GetBytes());
         buffer.Add(Fighter);
         buffer.Add(Defender);
         buffer.Add(Ranger);
@@ -290,7 +290,7 @@ public class Quest : IBinary
         buffer.Add(byOG);
         buffer.Add(byIG);
         buffer.AddRange(PreviousQuestId.GetBytes());
-        buffer.Add(Convert.ToByte(RequireParty));
+        buffer.AddRange(RequireParty.GetBytes());
         buffer.Add(PartyFighter);
         buffer.Add(PartyDefender);
         buffer.Add(PartyRanger);
