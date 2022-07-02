@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum Element
+public enum Element : long
 {
     None,
     Fire1,

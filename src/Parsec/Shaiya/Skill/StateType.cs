@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum StateType
+public enum StateType : long
 {
     None = 0,
 

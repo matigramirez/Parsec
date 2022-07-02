@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum AbilityType
+public enum AbilityType : long
 {
     None = 0,
     HP = 1,

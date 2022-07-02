@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum UserFamily
+public enum UserFamily : long
 {
     /// <summary>
     /// Skill can only be used by the Human family.

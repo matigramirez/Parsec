@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum SuccessType
+public enum SuccessType : long
 {
     /// <summary>
     /// Skill success is based on luc, dex, wis etc.

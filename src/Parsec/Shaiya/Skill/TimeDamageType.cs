@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum TimeDamageType
+public enum TimeDamageType : long
 {
     None = 0,
 

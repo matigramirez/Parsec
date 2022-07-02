@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum TypeShow
+public enum TypeShow : long
 {
     NoosOther = 0,
     Passive = 1,

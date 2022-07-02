@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum TypeAttack
+public enum TypeAttack : long
 {
     Passive = 0,
     PhysicalAttack = 1,

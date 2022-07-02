@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum TypeDetail
+public enum TypeDetail : long
 {
     None = 0,
     WeaponPowerUp = 1,
