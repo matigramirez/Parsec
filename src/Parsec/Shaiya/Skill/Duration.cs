@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum Duration
+public enum Duration : long
 {
     /// <summary>
     /// Buff is cleared after death.

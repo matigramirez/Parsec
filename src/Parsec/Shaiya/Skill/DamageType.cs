@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum DamageType
+public enum DamageType : long
 {
     /// <summary>
     /// Deals fixed damage, that ignores enemy defense/resistance.

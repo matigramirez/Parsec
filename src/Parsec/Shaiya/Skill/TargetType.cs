@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum TargetType
+public enum TargetType : long
 {
     None = 0, // passive skills.
     AnyEnemy = 1,

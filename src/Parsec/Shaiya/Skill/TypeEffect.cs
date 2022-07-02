@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.Skill;
 
-public enum TypeEffect
+public enum TypeEffect : long
 {
     BuffNoss = 0,
     BasicDamage = 1,
