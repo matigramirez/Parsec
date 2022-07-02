@@ -10,14 +10,14 @@ make reading and manipulating the game's file formats easy.
 ## Currently supported files/formats
 
 - `data.sah/saf`
-- `NpcQuest.SData` (EP4-5 & 8 supported, EP6 is pending)
+- `NpcQuest.SData`
 - `KillStatus.SData`
 - `Cash.SData`
 - `SetItem.SData`
 - `DualLayerClothes.SData`
 - `GuildHouse.SData`
 - `Monster.SData`
-- `Item.SData` (EP5 & EP6)
+- `Item.SData`
 - `svmap`
 - `ANI`
 - `3DC`
@@ -52,6 +52,9 @@ make reading and manipulating the game's file formats easy.
 - `DBTransformModelData.SData`
 - `DBTransformWeaponModelData.SData`
 
+Note: These file formats have been tested on Episodes 5, 6 & 8. Lower episodes might be slightly different and this library might not work for them,
+but since they're not mainstream, there aren't plans to support them.
+
 ## Features
 
 - `data` extraction, patching and creation
@@ -69,14 +72,14 @@ make reading and manipulating the game's file formats easy.
 
 ### Reading
 
-From a standalone file
+#### From a standalone file
 
 ```cs
 // Read file
 var svmap = Reader.ReadFromFile<Svmap>("0.svmap");
 ```
 
-From data.saf
+#### From data.saf
 
 ```cs
 // Load data (sah and saf)
@@ -123,7 +126,7 @@ JSON, so that all the original fields are present in the JSON file.
 
 ### `sah/saf`
 
-Read and extract
+#### Read and extract
 
 ```cs
 // Load data (sah and saf)
@@ -137,7 +140,10 @@ if (data.Sah.FileIndex.TryGetValue("world/2.svmap", out var file))
 }
 ```
 
-Create data or patch from a directory
+NOTE: The FileIndex dictionary key is the file's relative path, for episodes below Episode 8, "world/2.svmap" should work just fine,
+but in Episode 8 the main folder was renamed to "data", so the key in that case is "data/world/2.svmap".
+
+#### Create data or patch from a directory
 
 ```cs
 // Create patch data
@@ -146,7 +152,7 @@ var createdData = DataBuilder.CreateFromDirectory("input", "output");
 Console.WriteLine($"Data file count: {createdData.FileCount}");
 ```
 
-Patch
+#### Patch
 
 ```cs
 // Load target data and patch data
@@ -159,7 +165,7 @@ DataPatcher.Patch(data, patchData);
 
 ### `SData`
 
-Encryption / Decryption of
+#### Encryption / Decryption
 
 ```cs
 // Encrypt
@@ -202,4 +208,4 @@ item.ExportCSV("Item.csv")
 var item = Item.ReadFromCSV("Item.csv");
 ```
 
-More examples are in the [samples](https://github.com/matigramirez/Parsec/tree/main/samples) directory. Examples for C++ developers can be found [here](https://github.com/kurtraburn/parsec-samples).
+More examples can be found in the [samples](https://github.com/matigramirez/Parsec/tree/main/samples) directory.
