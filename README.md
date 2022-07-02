@@ -93,6 +93,9 @@ if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
 }
 ```
 
+NOTE: The FileIndex dictionary key is the file's relative path, for episodes below Episode 8, `world/2.svmap` should work just fine,
+but in Episode 8 the main folder was renamed to `data`, so the key in that case is `data/world/2.svmap`.
+
 ### Export
 
 After modifying the file, you can save it in its original format by calling the `Write` method
@@ -139,9 +142,6 @@ if (data.Sah.FileIndex.TryGetValue("world/2.svmap", out var file))
   data.Extract(file, "extracted");
 }
 ```
-
-NOTE: The FileIndex dictionary key is the file's relative path, for episodes below Episode 8, "world/2.svmap" should work just fine,
-but in Episode 8 the main folder was renamed to "data", so the key in that case is "data/world/2.svmap".
 
 #### Create data or patch from a directory
 
