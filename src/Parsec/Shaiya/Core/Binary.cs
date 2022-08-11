@@ -157,7 +157,7 @@ public static class Binary
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
                     string lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
-                                                                       lengthPrefixedStringAttribute.IncludeStringTerminator);
+                                                                       !lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                     return lengthPrefixedStr;
 
@@ -332,7 +332,7 @@ public static class Binary
                     break;
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                    return ((string)propertyValue).GetLengthPrefixedBytes(lengthPrefixedStringAttribute.IncludeStringTerminator);
+                    return ((string)propertyValue).GetLengthPrefixedBytes(!lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                 case FixedLengthStringAttribute:
                     return ((string)propertyValue).GetBytes();
