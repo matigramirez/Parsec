@@ -36,8 +36,6 @@ class Program
         #region Quest translation
 
         var npcQuestTrans = Reader.ReadFromFile<NpcQuestTrans>("NpcQuestTrans_USA.SData");
-        Console.WriteLine($"Merchant names: {npcQuestTrans.Merchants.Count}");
-        Console.WriteLine($"GateKeeper names: {npcQuestTrans.Merchants.Count}");
 
         npcQuestTrans.ExportJson("NpcQuestTrans_USA.json");
 
@@ -129,8 +127,8 @@ class Program
         itemSell.Write($"{itemSellText.FileNameWithoutExtension}_Created.SData");
 
         var itemText = Reader.ReadFromFile<DBItemText>("DBItemText_USA.SData");
-        itemData.ExportJson($"{itemText.FileName}.json");
-        itemData.Write($"{itemText.FileNameWithoutExtension}_Created.SData");
+        itemText.ExportJson($"{itemText.FileName}.json");
+        itemText.Write($"{itemText.FileNameWithoutExtension}_Created.SData");
 
         var monsterText = Reader.ReadFromFile<DBMonsterText>("DBMonsterText_USA.SData");
         monster.ExportJson($"{monsterText.FileName}.json");
