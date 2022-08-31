@@ -19,8 +19,16 @@ namespace Parsec.Shaiya.NpcQuest
         }
     }
 
-    public class GateKeeperQuestTran : NpcQuestTran
+    public class GateKeeperQuestTran
     {
+        [ShaiyaProperty]
+        [LengthPrefixedString]
+        public string Name { get; set; }
+
+        [ShaiyaProperty]
+        [LengthPrefixedString]
+        public string WelcomeMessage { get; set; }
+
         [ShaiyaProperty]
         [LengthPrefixedString]
         public string TeleportName1 { get; set; }
