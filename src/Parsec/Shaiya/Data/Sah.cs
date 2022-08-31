@@ -41,12 +41,12 @@ public class Sah : FileBase, IJsonReadable
     /// <summary>
     /// Dictionary of folders that can be accessed by path
     /// </summary>
-    public Dictionary<string, SFolder> FolderIndex = new();
+    public Dictionary<string, SFolder> FolderIndex = new(StringComparer.InvariantCultureIgnoreCase);
 
     /// <summary>
     /// Dictionary of files that can be accessed by path
     /// </summary>
-    public Dictionary<string, SFile> FileIndex = new();
+    public Dictionary<string, SFile> FileIndex = new(StringComparer.InvariantCultureIgnoreCase);
 
     /// <summary>
     /// Defines how file and folder counts should be encrypted/decrypted.

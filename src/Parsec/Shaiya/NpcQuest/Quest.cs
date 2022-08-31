@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Linq;
+using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -9,7 +10,6 @@ namespace Parsec.Shaiya.NpcQuest;
 
 public class Quest : IBinary
 {
-    private readonly Episode _episode;
     public short Id { get; set; }
     public string Name { get; set; }
     public string Summary { get; set; }
@@ -102,24 +102,28 @@ public class Quest : IBinary
     public byte ResultUserSelect { get; set; }
 
     /// <summary>
-    /// 3 results, it this variable throughout EPs too?
+    /// 3 for EP5 and below, 6 results for EP6 and above
     /// </summary>
     public List<QuestResult> Results { get; } = new();
+
+    public List<string> CompletionMessages { get; } = new();
 
     public string InitialDescription { get; set; }
     public string QuestWindowSummary { get; set; }
     public string ReminderInstructions { get; set; }
     public string AlternateResponse { get; set; }
-    public string CompletionMessage { get; set; }
-    public string AlternateCompletionMessage1 { get; set; }
-    public string AlternateCompletionMessage2 { get; set; }
+
+    [JsonConstructor]
+    public Quest()
+    {
+    }
 
     public Quest(SBinaryReader binaryReader, Episode episode)
     {
-        _episode = episode;
         Id = binaryReader.Read<short>();
 
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        // In ep 8, messages are moved to separate translation files.
+        if (episode < Episode.EP8)
         {
             Name = binaryReader.ReadString();
             Summary = binaryReader.ReadString();
@@ -197,36 +201,72 @@ public class Quest : IBinary
         ResultType = binaryReader.Read<byte>();
         ResultUserSelect = binaryReader.Read<byte>();
 
-        for (int i = 0; i < (_episode <= Episode.EP5 ? 3 : 6); i++)
+        switch (episode)
         {
-            var result = new QuestResult(binaryReader, episode);
-            Results.Add(result);
-        }
+            case <= Episode.EP5:
+                {
+                    // Episodes 4 & 5 have 3 results and completion messages are read afterwards
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var result = new QuestResult(binaryReader, episode);
+                        Results.Add(result);
+                    }
 
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
-        {
-            InitialDescription = binaryReader.ReadString(false);
-            QuestWindowSummary = binaryReader.ReadString(false);
-            ReminderInstructions = binaryReader.ReadString(false);
-            AlternateResponse = binaryReader.ReadString(false);
-            CompletionMessage = binaryReader.ReadString(false);
-            AlternateCompletionMessage1 = binaryReader.ReadString(false);
-            AlternateCompletionMessage2 = binaryReader.ReadString(false);
-        }
-    }
+                    InitialDescription = binaryReader.ReadString(false);
+                    QuestWindowSummary = binaryReader.ReadString(false);
+                    ReminderInstructions = binaryReader.ReadString(false);
+                    AlternateResponse = binaryReader.ReadString(false);
 
-    [JsonConstructor]
-    public Quest()
-    {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        string completionMessage = binaryReader.ReadString();
+                        CompletionMessages.Add(completionMessage);
+                    }
+
+                    break;
+                }
+            case >= Episode.EP6:
+                {
+                    // Episode 6 has 6 quest results and each result value is followed by its completion message
+                    for (int i = 0; i < 6; i++)
+                    {
+                        var result = new QuestResult(binaryReader, episode);
+                        Results.Add(result);
+
+                        // Episode 8 doesn't have messages, they're part of the translation files
+                        if (episode < Episode.EP8)
+                        {
+                            string completionMessage = binaryReader.ReadString();
+                            CompletionMessages.Add(completionMessage);
+                        }
+                    }
+
+                    // Episode 8 doesn't have messages, they're part of the translation files
+                    if (episode < Episode.EP8)
+                    {
+                        InitialDescription = binaryReader.ReadString(false);
+                        QuestWindowSummary = binaryReader.ReadString(false);
+                        ReminderInstructions = binaryReader.ReadString(false);
+                        AlternateResponse = binaryReader.ReadString(false);
+                    }
+
+                    break;
+                }
+        }
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
+        var episode = Episode.EP5;
+
+        if (options.Length > 0)
+            episode = (Episode)options[0];
+
         var buffer = new List<byte>();
 
         buffer.AddRange(Id.GetBytes());
 
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
         {
             buffer.AddRange(Name.GetLengthPrefixedBytes(false));
             buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
@@ -236,8 +276,8 @@ public class Quest : IBinary
         buffer.AddRange(MaxLevel.GetBytes());
         buffer.Add((byte)Faction);
         buffer.Add((byte)Mode);
-        buffer.Add(Convert.ToByte(MaleSex));
-        buffer.Add(Convert.ToByte(FemaleSex));
+        buffer.AddRange(MaleSex.GetBytes());
+        buffer.AddRange(FemaleSex.GetBytes());
         buffer.Add(Fighter);
         buffer.Add(Defender);
         buffer.Add(Ranger);
@@ -250,7 +290,7 @@ public class Quest : IBinary
         buffer.Add(byOG);
         buffer.Add(byIG);
         buffer.AddRange(PreviousQuestId.GetBytes());
-        buffer.Add(Convert.ToByte(RequireParty));
+        buffer.AddRange(RequireParty.GetBytes());
         buffer.Add(PartyFighter);
         buffer.Add(PartyDefender);
         buffer.Add(PartyRanger);
@@ -287,17 +327,42 @@ public class Quest : IBinary
         buffer.Add(ResultType);
         buffer.Add(ResultUserSelect);
 
-        buffer.AddRange(Results.GetBytes());
-
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        switch (episode)
         {
-            buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
-            buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
-            buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
-            buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
-            buffer.AddRange(CompletionMessage.GetLengthPrefixedBytes());
-            buffer.AddRange(AlternateCompletionMessage1.GetLengthPrefixedBytes());
-            buffer.AddRange(AlternateCompletionMessage2.GetLengthPrefixedBytes());
+            case <= Episode.EP5:
+                {
+                    buffer.AddRange(Results.Take(3).GetBytes());
+
+                    buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
+                    buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
+                    buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
+                    buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
+
+                    foreach (string completionMessage in CompletionMessages.Take(3))
+                        buffer.AddRange(completionMessage.GetLengthPrefixedBytes());
+
+                    break;
+                }
+            case >= Episode.EP6:
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        buffer.AddRange(Results[i].GetBytes());
+
+                        if (episode < Episode.EP8)
+                            buffer.AddRange(CompletionMessages[i].GetLengthPrefixedBytes());
+                    }
+
+                    if (episode < Episode.EP8)
+                    {
+                        buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
+                        buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
+                        buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
+                        buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
+                    }
+
+                    break;
+                }
         }
 
         return buffer;

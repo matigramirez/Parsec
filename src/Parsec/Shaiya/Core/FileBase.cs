@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -249,7 +250,9 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
         // Create settings with contract resolver to ignore certain properties
         var settings = new JsonSerializerSettings
         {
-            ContractResolver = new PropertyFilterCamelCaseResolver(ignoredPropertyNames), DefaultValueHandling = DefaultValueHandling.Include,
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            DefaultValueHandling = DefaultValueHandling.Include,
+            StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
             Formatting = Formatting.Indented
         };
 

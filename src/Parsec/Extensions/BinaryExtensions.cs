@@ -42,6 +42,11 @@ public static class BinaryExtensions
     public static IEnumerable<byte> GetBytes(this float value) => BitConverter.GetBytes(value);
 
     /// <summary>
+    /// Serializes a boolean value into a byte array
+    /// </summary>
+    public static IEnumerable<byte> GetBytes(this bool value) => BitConverter.GetBytes(value);
+
+    /// <summary>
     /// Serializes a string prefixed by its length (int32) using the provided encoding
     /// </summary>
     public static IEnumerable<byte> GetLengthPrefixedBytes(this string str, Encoding encoding, bool includeStringTerminator = true)

@@ -31,10 +31,6 @@ public class NpcQuest : SData.SData, IJsonReadable
             Episode = (Episode)format;
         }
 
-        // TODO: Remove this when support for EP5+ is added
-        if (Episode > Episode.EP5 && Episode != Episode.EP8)
-            throw new NotSupportedException("Only NpcQuest EP4, EP5 and EP8 format can be read");
-
         ReadMerchants();
         ReadGatekeepers();
         ReadStandardNpcs(Blacksmiths);
@@ -54,7 +50,7 @@ public class NpcQuest : SData.SData, IJsonReadable
 
     private void ReadMerchants()
     {
-        var merchantCount = _binaryReader.Read<int>();
+        int merchantCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < merchantCount; i++)
         {
@@ -65,7 +61,7 @@ public class NpcQuest : SData.SData, IJsonReadable
 
     private void ReadGatekeepers()
     {
-        var gateKeeperCount = _binaryReader.Read<int>();
+        int gateKeeperCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < gateKeeperCount; i++)
         {
@@ -76,7 +72,7 @@ public class NpcQuest : SData.SData, IJsonReadable
 
     private void ReadStandardNpcs(List<StandardNpc> npcList)
     {
-        var count = _binaryReader.Read<int>();
+        int count = _binaryReader.Read<int>();
 
         for (int i = 0; i < count; i++)
         {
@@ -94,16 +90,16 @@ public class NpcQuest : SData.SData, IJsonReadable
         {
             for (int j = 0; j < 256; j++)
             {
-                var value1 = _binaryReader.Read<int>();
-                var array1 = _binaryReader.ReadBytes(2 * value1);
+                int value1 = _binaryReader.Read<int>();
+                byte[] array1 = _binaryReader.ReadBytes(2 * value1);
 
-                unknownBuffer.AddRange(BitConverter.GetBytes(value1));
+                unknownBuffer.AddRange(value1.GetBytes());
                 unknownBuffer.AddRange(array1);
 
-                var value2 = _binaryReader.Read<int>();
-                var array2 = _binaryReader.ReadBytes(2 * value2);
+                int value2 = _binaryReader.Read<int>();
+                byte[] array2 = _binaryReader.ReadBytes(2 * value2);
 
-                unknownBuffer.AddRange(BitConverter.GetBytes(value2));
+                unknownBuffer.AddRange(value2.GetBytes());
                 unknownBuffer.AddRange(array2);
             }
         }
@@ -113,7 +109,7 @@ public class NpcQuest : SData.SData, IJsonReadable
 
     private void ReadQuests()
     {
-        var questCount = _binaryReader.Read<int>();
+        int questCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < questCount; i++)
         {
@@ -124,8 +120,10 @@ public class NpcQuest : SData.SData, IJsonReadable
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
-        var buffer = new List<byte>();
+        if (episode == Episode.Unknown)
+            episode = Episode;
 
+        var buffer = new List<byte>();
         buffer.AddRange(Merchants.GetBytes());
         buffer.AddRange(Gatekeepers.GetBytes());
         buffer.AddRange(Blacksmiths.GetBytes());
@@ -140,8 +138,7 @@ public class NpcQuest : SData.SData, IJsonReadable
         buffer.AddRange(DeadNpcs.GetBytes());
         buffer.AddRange(CombatCommanders.GetBytes());
         buffer.AddRange(UnknownArray);
-        buffer.AddRange(Quests.GetBytes());
-
+        buffer.AddRange(Quests.GetBytes(true, episode));
         return buffer;
     }
 }

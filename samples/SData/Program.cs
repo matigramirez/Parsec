@@ -2,7 +2,6 @@
 using System.Text;
 using Parsec;
 using Parsec.Common;
-using Parsec.Helpers;
 using Parsec.Shaiya.Cash;
 using Parsec.Shaiya.DualLayerClothes;
 using Parsec.Shaiya.GuildHouse;
@@ -24,23 +23,12 @@ class Program
         #region NpcQuest
 
         var npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP5.SData", Episode.EP5);
-
-        Console.WriteLine($"Merchant Count (EP 5): {npcQuest.Merchants.Count}");
-        Console.WriteLine($"GateKeeper Count (EP 5): {npcQuest.Gatekeepers.Count}");
-        Console.WriteLine($"Quest Count (EP 5): {npcQuest.Quests.Count}");
         npcQuest.ExportJson("NpcQuest.EP5.json");
 
-        var encryptedBytes = Parsec.Shaiya.SData.SData.Encrypt(npcQuest.Buffer);
-        FileHelper.WriteFile("NpcQuest.EP5.SData.Encrypted", encryptedBytes);
-
-        var decryptedBytes = Parsec.Shaiya.SData.SData.Decrypt(npcQuest.Buffer);
-        FileHelper.WriteFile("NpcQuest.EP5.SData.Decrypted", decryptedBytes);
+        npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP6.SData", Episode.EP6);
+        npcQuest.ExportJson("NpcQuest.EP6.json");
 
         npcQuest = Reader.ReadFromFile<NpcQuest>("NpcQuest.EP8.SData", Episode.EP8);
-
-        Console.WriteLine($"Merchant Count (EP 8): {npcQuest.Merchants.Count}");
-        Console.WriteLine($"GateKeeper Count (EP 8): {npcQuest.Gatekeepers.Count}");
-        Console.WriteLine($"Quest Count (EP 8): {npcQuest.Quests.Count}");
         npcQuest.ExportJson("NpcQuest.EP8.json");
 
         #endregion
