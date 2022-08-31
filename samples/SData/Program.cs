@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Parsec;
 using Parsec.Common;
 using Parsec.Helpers;
@@ -41,6 +42,22 @@ class Program
         Console.WriteLine($"GateKeeper Count (EP 8): {npcQuest.Gatekeepers.Count}");
         Console.WriteLine($"Quest Count (EP 8): {npcQuest.Quests.Count}");
         npcQuest.ExportJson("NpcQuest.EP8.json");
+
+        #endregion
+
+        #region Quest translation
+
+        var npcQuestTrans = Reader.ReadFromFile<NpcQuestTrans>("NpcQuestTrans_USA.SData");
+        Console.WriteLine($"Merchant names: {npcQuestTrans.Merchants.Count}");
+        Console.WriteLine($"GateKeeper names: {npcQuestTrans.Merchants.Count}");
+
+        npcQuestTrans.ExportJson("NpcQuestTrans_USA.json");
+
+        // Imagine you change json to ascii 1251...
+
+        var npcQuestTransModified = Reader.ReadFromJson<NpcQuestTrans>("NpcQuestTrans_USA.json");
+        npcQuestTransModified.Encoding = CodePagesEncodingProvider.Instance.GetEncoding(1251);
+        npcQuestTransModified.Write("NpcQuestTrans_USA.modified.SData");
 
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -8,6 +9,11 @@ namespace Parsec.Shaiya.SData;
 public class BinarySDataField : IBinary
 {
     public string Name { get; set; }
+
+    [JsonConstructor]
+    public BinarySDataField()
+    {
+    }
 
     public BinarySDataField(SBinaryReader binaryReader)
     {

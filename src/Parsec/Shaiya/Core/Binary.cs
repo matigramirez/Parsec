@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using System.Text;
 using Parsec.Attributes;
 using Parsec.Attributes.Wld;
 using Parsec.Common;
@@ -200,7 +201,7 @@ public static class Binary
 
     public static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
 
-    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
+    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Encoding encoding, Episode episode = Episode.Unknown)
     {
         var type = propertyInfo.PropertyType;
         var attributes = propertyInfo.GetCustomAttributes().ToList();
@@ -272,7 +273,7 @@ public static class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !fixedLengthListAttribute.ItemType.IsPrimitive)
                                     continue;
 
-                                buf.AddRange(GetPropertyBytes(genericArgumentType, item, property, episode));
+                                buf.AddRange(GetPropertyBytes(genericArgumentType, item, property, encoding, episode));
                             }
                         }
                     }
@@ -320,7 +321,7 @@ public static class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !lengthPrefixedListAttribute.ItemType.IsPrimitive)
                                     continue;
 
-                                buffer.AddRange(GetPropertyBytes(genericItemType, item, property, episode));
+                                buffer.AddRange(GetPropertyBytes(genericItemType, item, property, encoding, episode));
                             }
                         }
                     }
@@ -332,7 +333,7 @@ public static class Binary
                     break;
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                    return ((string)propertyValue).GetLengthPrefixedBytes(lengthPrefixedStringAttribute.IncludeStringTerminator);
+                    return ((string)propertyValue).GetLengthPrefixedBytes(encoding, lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                 case FixedLengthStringAttribute:
                     return ((string)propertyValue).GetBytes();

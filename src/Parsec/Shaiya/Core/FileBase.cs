@@ -39,6 +39,9 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
     public Episode Episode { get; set; } = Episode.Unknown;
 
+    [JsonIgnore]
+    public Encoding Encoding { get; set; } = Encoding.UTF8;
+
     /// <summary>
     /// Plain file name
     /// </summary>
@@ -230,7 +233,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                 continue;
 
-            buffer.AddRange(Binary.GetPropertyBytes(type, this, property, episode));
+            buffer.AddRange(Binary.GetPropertyBytes(type, this, property, Encoding, episode));
         }
 
         return buffer;
@@ -238,7 +241,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
     /// <inheritdoc/>
     public void ExportJson(string path, params string[] ignoredPropertyNames) =>
-        FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames)));
+        FileHelper.WriteFile(path, Encoding.GetBytes(JsonSerialize(this, ignoredPropertyNames)));
 
     /// <inheritdoc/>
     public virtual string JsonSerialize(FileBase obj, params string[] ignoredPropertyNames)
@@ -246,7 +249,8 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
         // Create settings with contract resolver to ignore certain properties
         var settings = new JsonSerializerSettings
         {
-            ContractResolver = new PropertyFilterCamelCaseResolver(ignoredPropertyNames), DefaultValueHandling = DefaultValueHandling.Include
+            ContractResolver = new PropertyFilterCamelCaseResolver(ignoredPropertyNames), DefaultValueHandling = DefaultValueHandling.Include,
+            Formatting = Formatting.Indented
         };
 
         // Add enum to string converter
