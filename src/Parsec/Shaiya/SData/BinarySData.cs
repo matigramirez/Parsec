@@ -1,11 +1,14 @@
-﻿using Parsec.Attributes;
+﻿using System.IO;
+using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Helpers;
 using Parsec.Shaiya.Core;
+using ServiceStack;
 
 namespace Parsec.Shaiya.SData;
 
-public abstract class BinarySData<TRecord> : SData where TRecord : IBinarySDataRecord, new()
+public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinarySDataRecord, new()
 {
     /// <summary>
     /// 128-byte header unused by the game itself. It looks like a file signature + metadata
@@ -17,10 +20,10 @@ public abstract class BinarySData<TRecord> : SData where TRecord : IBinarySDataR
     /// Field names are defined before the data. They aren't really used but knowing which each field means is nice
     /// </summary>
     [ShaiyaProperty]
-    public List<BinarySDataField> Fields { get; } = new();
+    public List<BinarySDataField> Fields { get; set; } = new();
 
     [ShaiyaProperty]
-    public List<TRecord> Records { get; } = new();
+    public List<TRecord> Records { get; set; } = new();
 
     public override void Read(params object[] options)
     {
@@ -67,5 +70,20 @@ public abstract class BinarySData<TRecord> : SData where TRecord : IBinarySDataR
         }
 
         return buffer;
+    }
+
+    public void ExportCSV(string path)
+    {
+        string csv = Records.ToCsv();
+        FileHelper.WriteFile(path, csv.GetBytes());
+    }
+
+    public static T ReadFromCSV<T>(string path) where T : BinarySData<TRecord>, new()
+    {
+        var records = File.ReadAllText(path).FromCsv<List<TRecord>>();
+
+        var binarySData = new T { Header = new byte[128], Records = records };
+
+        return binarySData;
     }
 }
