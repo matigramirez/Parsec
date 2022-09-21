@@ -53,8 +53,17 @@ public class KisaSeedHeader : IBinary
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
+        var version = SDataVersion.Regular;
+
+        if (options.Length > 0)
+            version = (SDataVersion)options[0];
+
         var buffer = new List<byte>();
         buffer.AddRange(Signature.GetBytes());
+
+        if (version == SDataVersion.Binary)
+            buffer.AddRange(new byte[4]);
+
         buffer.AddRange(Checksum.GetBytes());
         buffer.AddRange(RealSize.GetBytes());
         buffer.AddRange(Padding);

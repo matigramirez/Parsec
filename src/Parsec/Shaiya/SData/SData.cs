@@ -37,14 +37,17 @@ public abstract class SData : FileBase, IEncryptable
     /// Function that encrypts the provided byte array using the SEED algorithm
     /// </summary>
     /// <param name="decryptedData">The decrypted byte array</param>
-    public static byte[] Encrypt(byte[] decryptedData)
+    /// <param name="version">Indicates whether the SData version is Pre-EP8 (Regular) or EP8 (Binary)</param>
+    public static byte[] Encrypt(byte[] decryptedData, SDataVersion version = SDataVersion.Regular)
     {
         // Check if data is decrypted
         if (IsEncrypted(decryptedData))
             return decryptedData;
 
+        var padding = version == SDataVersion.Regular ? new byte[16] : new byte[12];
+
         // Create SEED header
-        var header = new KisaSeedHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, new byte[16]);
+        var header = new KisaSeedHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, padding);
 
         // Calculate alignment size
         var alignmentSize = header.RealSize;
@@ -75,7 +78,7 @@ public abstract class SData : FileBase, IEncryptable
         var buffer = new List<byte>();
 
         // Add header bytes
-        buffer.AddRange(header.GetBytes());
+        buffer.AddRange(header.GetBytes(version));
 
         // Encrypt in chunks of 16 bytes
         for (var i = 0; i < alignmentSize / 16; ++i)
@@ -161,12 +164,13 @@ public abstract class SData : FileBase, IEncryptable
     }
 
     /// <inheritdoc />
-    public byte[] GetEncryptedBytes(Episode episode = Episode.Unknown) => Encrypt(GetBytes(episode).ToArray());
+    public byte[] GetEncryptedBytes(Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular) =>
+        Encrypt(GetBytes(episode).ToArray(), version);
 
     /// <inheritdoc />
-    public void WriteEncrypted(string path, Episode episode = Episode.Unknown)
+    public void WriteEncrypted(string path, Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular)
     {
-        var encryptedBuffer = Encrypt(GetBytes(episode).ToArray());
+        var encryptedBuffer = Encrypt(GetBytes(episode).ToArray(), version);
         FileHelper.WriteFile(path, encryptedBuffer);
     }
 

@@ -9,6 +9,11 @@ public class BinarySDataField : IBinary
 {
     public string Name { get; set; }
 
+    public BinarySDataField(string name)
+    {
+        Name = name;
+    }
+
     public BinarySDataField(SBinaryReader binaryReader)
     {
         int length = binaryReader.Read<byte>();

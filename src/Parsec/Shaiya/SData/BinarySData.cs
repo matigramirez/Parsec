@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -81,8 +82,10 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
     public static T ReadFromCSV<T>(string path) where T : BinarySData<TRecord>, new()
     {
         var records = File.ReadAllText(path).FromCsv<List<TRecord>>();
+        var columnNames = CsvHelper.ReadColumnNames(path);
+        var fields = columnNames.Select(c => new BinarySDataField(c.ToLower())).ToList();
 
-        var binarySData = new T { Header = new byte[128], Records = records };
+        var binarySData = new T { Header = new byte[128], Fields = fields, Records = records };
 
         return binarySData;
     }
