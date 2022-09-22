@@ -12,10 +12,10 @@ public class DBItemTextRecord : IBinarySDataRecord
     public long ItemTypeId { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string ItemName { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Text { get; set; }
 }

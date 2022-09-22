@@ -12,10 +12,10 @@ public class DBNpcSkillTextRecord : IBinarySDataRecord
     public long SkillLevel { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Name { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Text { get; set; }
 }

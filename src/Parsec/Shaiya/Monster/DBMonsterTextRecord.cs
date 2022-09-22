@@ -9,6 +9,6 @@ public class DBMonsterTextRecord : IBinarySDataRecord
     public long Id { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Name { get; set; }
 }

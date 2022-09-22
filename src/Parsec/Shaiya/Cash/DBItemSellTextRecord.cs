@@ -9,10 +9,10 @@ public class DBItemSellTextRecord : IBinarySDataRecord
     public long Id { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string ProductName { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Text { get; set; }
 }
