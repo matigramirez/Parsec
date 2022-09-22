@@ -48,6 +48,6 @@ public static class CsvHelper
                 return text.Slice(0, i);
         }
 
-        return text.Slice(0, text.Length - 1);
+        return text;
     }
 }
