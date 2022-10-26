@@ -5,23 +5,24 @@ using Parsec.Shaiya.Svmap;
 
 namespace Sample.Data;
 
-class Program
+internal class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         #region Read Data
 
-        // Read data
-        var data = new Parsec.Shaiya.Data.Data("data.sah");
+        // Read data from .sah and .saf files
+        Parsec.Shaiya.Data.Data data = new("data.sah");
 
-        // Find the file you want to extract
-        if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
+        // Find the file you want to extract with it's full relative path
+        // Keep in mind that in Episode 8, the relative path for this same case would be "data/world/2.svmap
+        if (data.FileIndex.TryGetValue("world/2.svmap", out SFile file))
         {
             // Extract the selected file
             data.Extract(file, "extracted");
 
             // Read and parse the file's content directly from the saf file
-            var svmap = Reader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
+            Svmap svmap = Reader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 
             Console.WriteLine($"File: {svmap.FileName}");
             Console.WriteLine($"MapSize: {svmap.MapSize}");
@@ -38,7 +39,7 @@ class Program
         #region Create Data/Patch
 
         // Create patch data
-        var createdData = DataBuilder.CreateFromDirectory("input", "output");
+        Parsec.Shaiya.Data.Data createdData = DataBuilder.CreateFromDirectory("input", "output");
 
         Console.WriteLine($"Data file count: {createdData.FileCount}");
 
