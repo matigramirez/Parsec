@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Parsec.Shaiya.Data;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Parsec.Tests.Shaiya.Data;
 
@@ -52,24 +53,21 @@ public class DataTests
         var folder1 = data.RootFolder.Subfolders.FirstOrDefault();
         var folder2 = data.RootFolder.Subfolders.LastOrDefault();
 
-        if (folder1 != null)
-        {
-            data.Extract(folder1, extractionDirectory);
-            Assert.True(Directory.Exists($"{extractionDirectory}/{folder1.Name}"));
+        if (folder1 == null || folder2 == null)
+            throw new XunitException("Folder not found in RootFolder");
 
-            foreach (var file in folder1.Files)
-                Assert.True(File.Exists($"{extractionDirectory}/{file.RelativePath}"));
-        }
+        data.Extract(folder1, extractionDirectory);
+        Assert.True(Directory.Exists($"{extractionDirectory}/{folder1.Name}"));
 
-        if (folder2 != null)
-        {
-            data.Extract(folder2, extractionDirectory);
+        foreach (var file in folder1.Files)
+            Assert.True(File.Exists($"{extractionDirectory}/{file.RelativePath}"));
 
-            Assert.True(Directory.Exists($"{extractionDirectory}/{folder1.Name}"));
+        data.Extract(folder2, extractionDirectory);
 
-            foreach (var file in folder1.Files)
-                Assert.True(File.Exists($"{extractionDirectory}/{file.RelativePath}"));
-        }
+        Assert.True(Directory.Exists($"{extractionDirectory}/{folder1.Name}"));
+
+        foreach (var file in folder1.Files)
+            Assert.True(File.Exists($"{extractionDirectory}/{file.RelativePath}"));
     }
 
     [Fact]
