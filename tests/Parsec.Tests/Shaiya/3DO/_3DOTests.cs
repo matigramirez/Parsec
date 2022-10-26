@@ -40,4 +40,34 @@ public class _3DOTests
         // Check bytes
         Assert.Equal(obj.GetBytes(), newObj.GetBytes());
     }
+
+    [Theory]
+    [InlineData("01211.3DO")]
+    [InlineData("06101.3DO")]
+    [InlineData("07151.3DO")]
+    [InlineData("07331.3DO")]
+    [InlineData("13001.3DO")]
+    [InlineData("13171.3DO")]
+    [InlineData("14251.3DO")]
+    [InlineData("34091.3DO")]
+    [InlineData("F_34_a002.3DO")]
+    public void _3DOMultipleReadWriteTest(string fileName)
+    {
+        string filePath = $"Shaiya/3DO/{fileName}";
+        string jsonPath = $"Shaiya/3DO/{fileName}.json";
+        string newObjPath = $"Shaiya/3DO/new_{fileName}";
+
+        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(filePath);
+        obj.ExportJson(jsonPath);
+        var objFromJson = Reader.ReadFromJson<Parsec.Shaiya._3DO._3DO>(jsonPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());
+
+        objFromJson.Write(newObjPath);
+        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(newObjPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), newObj.GetBytes());
+    }
 }

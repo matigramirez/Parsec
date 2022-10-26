@@ -44,4 +44,34 @@ public class _3DETests
         // Check bytes
         Assert.Equal(obj.GetBytes(), newObj.GetBytes());
     }
+
+    [Theory]
+    [InlineData("angelybill00.3DE")]
+    [InlineData("death_b01.3DE")]
+    [InlineData("death_b03.3DE")]
+    [InlineData("ghost00.3DE")]
+    [InlineData("hailstorm001.3DE")]
+    [InlineData("ice_wall_02.3DE")]
+    [InlineData("Mob_Cassiel_IP.3DE")]
+    [InlineData("sidew00.3DE")]
+    [InlineData("waterfall04.3DE")]
+    public void _3DEMultipleReadWriteTest(string fileName)
+    {
+        string filePath = $"Shaiya/3DE/{fileName}";
+        string jsonPath = $"Shaiya/3DE/{fileName}.json";
+        string newObjPath = $"Shaiya/3DE/new_{fileName}";
+
+        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DE._3DE>(filePath);
+        obj.ExportJson(jsonPath);
+        var objFromJson = Reader.ReadFromJson<Parsec.Shaiya._3DE._3DE>(jsonPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());
+
+        objFromJson.Write(newObjPath);
+        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DE._3DE>(newObjPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), newObj.GetBytes());
+    }
 }

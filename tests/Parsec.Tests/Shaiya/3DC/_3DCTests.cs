@@ -82,4 +82,38 @@ public class _3DCTests
         // Check bytes
         Assert.Equal(obj.GetBytes(), newObj.GetBytes());
     }
+
+    [Theory]
+    [InlineData("Cloud.3DC")]
+    [InlineData("co_huwf_helmet006.3DC")]
+    [InlineData("Ctl_Hors_01.3DC")]
+    [InlineData("ev_12CM_huwm.3DC")]
+    [InlineData("humf_hand011.3DC")]
+    [InlineData("M_A8B8_11_a01.3DC")]
+    [InlineData("M_A8B8_29_a01.3DC")]
+    [InlineData("Mob_Fox_01.3DC")]
+    [InlineData("pet_maddog.3DC")]
+    [InlineData("vehicle_El_06.3DC")]
+    [InlineData("WhiteWing.3DC")]
+    [InlineData("Wing_01.3DC")]
+    public void _3DCMultipleReadWriteTest(string fileName)
+    {
+        string filePath = $"Shaiya/3DC/{fileName}";
+        string jsonPath = $"Shaiya/3DC/{fileName}.json";
+        string newObjPath = $"Shaiya/3DC/new_{fileName}";
+
+        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(filePath);
+
+        obj.ExportJson(jsonPath);
+        var objFromJson = Reader.ReadFromJson<Parsec.Shaiya._3DC._3DC>(jsonPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());
+
+        objFromJson.Write(newObjPath);
+        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(newObjPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), newObj.GetBytes());
+    }
 }
