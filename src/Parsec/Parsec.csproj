@@ -14,6 +14,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageVersion>1.0.0-alpha.6.0.0</PackageVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
