@@ -238,7 +238,7 @@ public static class Binary
                         return Array.Empty<byte>();
 
                     // multiple episode check
-                    if (ep <= shaiyaProperty.MinEpisode || ep >= shaiyaProperty.MaxEpisode)
+                    if (ep < shaiyaProperty.MinEpisode || ep > shaiyaProperty.MaxEpisode)
                         return Array.Empty<byte>();
 
                     break;
