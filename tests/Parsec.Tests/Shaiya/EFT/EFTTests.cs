@@ -27,9 +27,6 @@ public class EftTests
         Assert.Equal(eft.Effects.Count, eftFromJson.Effects.Count);
         Assert.Equal(eft.EffectSequences.Count, eftFromJson.EffectSequences.Count);
 
-        // Check bytes
-        Assert.Equal(eft.GetBytes(), eftFromJson.GetBytes());
-
         const string newEftPath = "Shaiya/EFT/Monster.new.EFT";
         eftFromJson.Write(newEftPath);
 
@@ -40,8 +37,5 @@ public class EftTests
         Assert.Equal(eft.Textures.Count, newEft.Textures.Count);
         Assert.Equal(eft.Effects.Count, newEft.Effects.Count);
         Assert.Equal(eft.EffectSequences.Count, newEft.EffectSequences.Count);
-
-        // Check bytes
-        Assert.Equal(eft.GetBytes(), newEft.GetBytes());
     }
 }
