@@ -1,14 +1,14 @@
-﻿using Parsec.Shaiya.EFT;
-using Xunit;
+﻿using Xunit;
 
-namespace Parsec.Tests.Shaiya;
+namespace Parsec.Tests.Shaiya.EFT;
 
-public class EFTTests
+public class EftTests
 {
     [Fact]
-    public void Test1()
+    public void EftReadWriteTest()
     {
-        var eft = Reader.ReadFromFile<EFT>("Shaiya/EFT/Monster.EFT");
+        const string filePath = "Shaiya/EFT/Monster.EFT";
+        var eft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(filePath);
 
         // Check original EFT values
         Assert.Empty(eft.Objects);
@@ -19,9 +19,9 @@ public class EFTTests
         // Export to json
         const string jsonPath = "Shaiya/EFT/Monster.EFT.json";
         eft.ExportJson(jsonPath);
-        var eftFromJson = Reader.ReadFromJson<EFT>(jsonPath);
+        var eftFromJson = Reader.ReadFromJson<Parsec.Shaiya.EFT.EFT>(jsonPath);
 
-        // Check json files
+        // Check fields
         Assert.Equal(eft.Objects.Count, eftFromJson.Objects.Count);
         Assert.Equal(eft.Textures.Count, eftFromJson.Textures.Count);
         Assert.Equal(eft.Effects.Count, eftFromJson.Effects.Count);
@@ -29,5 +29,19 @@ public class EFTTests
 
         // Check bytes
         Assert.Equal(eft.GetBytes(), eftFromJson.GetBytes());
+
+        const string newEftPath = "Shaiya/EFT/Monster.new.EFT";
+        eftFromJson.Write(newEftPath);
+
+        var newEft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(newEftPath);
+
+        // Check fields
+        Assert.Equal(eft.Objects.Count, newEft.Objects.Count);
+        Assert.Equal(eft.Textures.Count, newEft.Textures.Count);
+        Assert.Equal(eft.Effects.Count, newEft.Effects.Count);
+        Assert.Equal(eft.EffectSequences.Count, newEft.EffectSequences.Count);
+
+        // Check bytes
+        Assert.Equal(eft.GetBytes(), newEft.GetBytes());
     }
 }
