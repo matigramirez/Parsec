@@ -6,7 +6,7 @@ namespace Parsec.Tests.Shaiya._3DO;
 public class _3DOTests
 {
     [Fact]
-    public void _3DOReadWriteEP5Test()
+    public void _3DOReadWriteTest()
     {
         const string filePath = "Shaiya/3DO/F_34_a002.3DO";
         var obj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(filePath);

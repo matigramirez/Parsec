@@ -142,5 +142,8 @@
     <None Update="Shaiya\3DE\waterfall04.3DE">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Shaiya\SMOD\a2_Elf_House_01.SMOD">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
