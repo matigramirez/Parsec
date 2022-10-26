@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// A circular area of the world in which music is played
 /// </summary>
-public class MusicSpot
+public sealed class MusicSpot
 {
     /// <summary>
     /// Id of the wav file (from the linked name list of files)

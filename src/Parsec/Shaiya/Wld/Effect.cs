@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// Represents an effect in the world
 /// </summary>
-public class Effect
+public sealed class Effect
 {
     /// <summary>
     /// Effect's position

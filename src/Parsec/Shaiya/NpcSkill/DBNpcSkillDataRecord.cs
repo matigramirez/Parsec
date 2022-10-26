@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.NpcSkill;
 
-public class DBNpcSkillDataRecord : IBinarySDataRecord
+public sealed class DBNpcSkillDataRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
     public long Id { get; set; }

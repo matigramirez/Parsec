@@ -5,11 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT;
 
-public class EffectSequence : IBinary
+public sealed class EffectSequence : IBinary
 {
-    public string Name { get; set; }
-    public List<SequenceRecord> Records { get; } = new();
-
     [JsonConstructor]
     public EffectSequence()
     {
@@ -26,6 +23,9 @@ public class EffectSequence : IBinary
             Records.Add(record);
         }
     }
+
+    public string Name { get; set; }
+    public List<SequenceRecord> Records { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

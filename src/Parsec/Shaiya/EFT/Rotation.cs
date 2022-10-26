@@ -6,11 +6,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT;
 
-public class Rotation : IBinary
+public sealed class Rotation : IBinary
 {
-    public Quaternion Quaternion { get; set; }
-    public float Time { get; set; }
-
     [JsonConstructor]
     public Rotation()
     {
@@ -21,6 +18,9 @@ public class Rotation : IBinary
         Quaternion = new Quaternion(binaryReader);
         Time = binaryReader.Read<float>();
     }
+
+    public Quaternion Quaternion { get; set; }
+    public float Time { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

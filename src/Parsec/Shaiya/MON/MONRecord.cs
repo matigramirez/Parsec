@@ -5,42 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MON;
 
-public class MONRecord : IBinary
+public sealed class MONRecord : IBinary
 {
-    public string Name { get; set; }
-    public byte Unknown { get; set; }
-    public string WalkAnimation { get; set; }
-    public string RunAnimation { get; set; }
-
-    /// <summary>
-    /// Jump or Attack1 animation. Jump for vehicles, Attack1 for mobs.
-    /// </summary>
-    public string JumpAttack1Animation { get; set; }
-
-    public string Attack2Animation { get; set; }
-    public string Attack3Animation { get; set; }
-    public string DeathAnimation { get; set; }
-    public string BreathAnimation { get; set; }
-    public string DamageAnimation { get; set; }
-    public string IdleAnimation { get; set; }
-
-    public string Attack1Wav { get; set; }
-    public string Attack2Wav { get; set; }
-    public string Attack3Wav { get; set; }
-    public string DeathWav { get; set; }
-
-    public string Attack1Effect { get; set; }
-    public string Attack2Effect { get; set; }
-    public string Attack3Effect { get; set; }
-    public string DieEffect { get; set; }
-    public string AttachEffect { get; set; }
-
-    public List<MONObject> Objects { get; } = new();
-
-    public float Height { get; set; }
-
-    public List<MONEffect> Effects { get; } = new();
-
     [JsonConstructor]
     public MONRecord()
     {
@@ -91,6 +57,40 @@ public class MONRecord : IBinary
             Effects.Add(effect);
         }
     }
+
+    public string Name { get; set; }
+    public byte Unknown { get; set; }
+    public string WalkAnimation { get; set; }
+    public string RunAnimation { get; set; }
+
+    /// <summary>
+    /// Jump or Attack1 animation. Jump for vehicles, Attack1 for mobs.
+    /// </summary>
+    public string JumpAttack1Animation { get; set; }
+
+    public string Attack2Animation { get; set; }
+    public string Attack3Animation { get; set; }
+    public string DeathAnimation { get; set; }
+    public string BreathAnimation { get; set; }
+    public string DamageAnimation { get; set; }
+    public string IdleAnimation { get; set; }
+
+    public string Attack1Wav { get; set; }
+    public string Attack2Wav { get; set; }
+    public string Attack3Wav { get; set; }
+    public string DeathWav { get; set; }
+
+    public string Attack1Effect { get; set; }
+    public string Attack2Effect { get; set; }
+    public string Attack3Effect { get; set; }
+    public string DieEffect { get; set; }
+    public string AttachEffect { get; set; }
+
+    public List<MONObject> Objects { get; } = new();
+
+    public float Height { get; set; }
+
+    public List<MONEffect> Effects { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

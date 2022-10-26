@@ -3,7 +3,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.KillStatus;
 
-public class KillStatusRecord
+public sealed class KillStatusRecord
 {
     /// <summary>
     /// The faction that will receive the bonus

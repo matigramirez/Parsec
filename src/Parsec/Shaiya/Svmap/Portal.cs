@@ -6,15 +6,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class Portal : IBinary
+public sealed class Portal : IBinary
 {
-    public Vector3 Position { get; set; }
-    public int FactionOrPortalId { get; set; }
-    public short MinLevel { get; set; }
-    public short MaxLevel { get; set; }
-    public int DestinationMapId { get; set; }
-    public Vector3 DestinationPosition { get; set; }
-
     [JsonConstructor]
     public Portal()
     {
@@ -29,6 +22,13 @@ public class Portal : IBinary
         DestinationMapId = binaryReader.Read<int>();
         DestinationPosition = new Vector3(binaryReader);
     }
+
+    public Vector3 Position { get; set; }
+    public int FactionOrPortalId { get; set; }
+    public short MinLevel { get; set; }
+    public short MaxLevel { get; set; }
+    public int DestinationMapId { get; set; }
+    public Vector3 DestinationPosition { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

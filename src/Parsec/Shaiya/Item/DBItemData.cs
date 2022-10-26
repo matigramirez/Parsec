@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.Item;
 
-public class DBItemData : BinarySData<DBItemDataRecord>
+public sealed class DBItemData : BinarySData<DBItemDataRecord>
 {
 }

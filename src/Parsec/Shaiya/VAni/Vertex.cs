@@ -5,10 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.VAni;
 
-public class Vertex : IBinary
+public sealed class Vertex : IBinary
 {
-    public List<VertexFrame> Frames { get; } = new();
-
     [JsonConstructor]
     public Vertex()
     {
@@ -22,6 +20,8 @@ public class Vertex : IBinary
             Frames.Add(frame);
         }
     }
+
+    public List<VertexFrame> Frames { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options) => Frames.GetBytes();
 }

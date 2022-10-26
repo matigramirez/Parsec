@@ -6,11 +6,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class NpcLocation : IBinary
+public sealed class NpcLocation : IBinary
 {
-    public Vector3 Position { get; set; }
-    public float Orientation { get; set; }
-
     [JsonConstructor]
     public NpcLocation()
     {
@@ -21,6 +18,9 @@ public class NpcLocation : IBinary
         Position = new Vector3(binaryReader);
         Orientation = binaryReader.Read<float>();
     }
+
+    public Vector3 Position { get; set; }
+    public float Orientation { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

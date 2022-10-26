@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.Skill;
 
-public class DBSkillText : BinarySData<DBSkillTextRecord>
+public sealed class DBSkillText : BinarySData<DBSkillTextRecord>
 {
 }

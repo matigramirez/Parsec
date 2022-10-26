@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MON;
 
-public class MON : FileBase, IJsonReadable
+public sealed class MON : FileBase, IJsonReadable
 {
     /// <summary>
     /// File signature. "MO2", "MO4". Read as char[3]

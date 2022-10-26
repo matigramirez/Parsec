@@ -3,7 +3,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya._3DC;
 
-public class Bone
+public sealed class Bone
 {
     /// <summary>
     /// The transformation matrix of this bone, which holds the starting position and rotation of the bone

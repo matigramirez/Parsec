@@ -5,13 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SetItem;
 
-public class SetItemRecord : IBinary
+public sealed class SetItemRecord : IBinary
 {
-    public short Index { get; set; }
-    public string Name { get; set; }
-    public List<Item> Items { get; } = new();
-    public List<string> Synergies { get; } = new();
-
     [JsonConstructor]
     public SetItemRecord()
     {
@@ -34,6 +29,11 @@ public class SetItemRecord : IBinary
             Synergies.Add(synergy);
         }
     }
+
+    public short Index { get; set; }
+    public string Name { get; set; }
+    public List<Item> Items { get; } = new();
+    public List<string> Synergies { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

@@ -5,11 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SetItem;
 
-public class Item : IBinary
+public sealed class Item : IBinary
 {
-    public short Type { get; set; }
-    public short TypeId { get; set; }
-
     [JsonConstructor]
     public Item()
     {
@@ -20,6 +17,9 @@ public class Item : IBinary
         Type = binaryReader.Read<short>();
         TypeId = binaryReader.Read<short>();
     }
+
+    public short Type { get; set; }
+    public short TypeId { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

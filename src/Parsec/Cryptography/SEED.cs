@@ -4,14 +4,14 @@
 /// Class that implements the methods needed to encrypt and decrypt files which use the KISA SEED encryption algorithm.
 /// For more information visit <a href="https://en.wikipedia.org/wiki/SEED">this link</a>.
 /// </summary>
-public static class SEED
+public static class Seed
 {
     private static uint GetSeed(uint val)
     {
-        return SEEDConstants.SS[0, (byte)val] ^
-               SEEDConstants.SS[1, (byte)(val >> 8)] ^
-               SEEDConstants.SS[2, (byte)(val >> 16)] ^
-               SEEDConstants.SS[3, (byte)(val >> 24)];
+        return SeedConstants.SS[0, (byte)val] ^
+               SeedConstants.SS[1, (byte)(val >> 8)] ^
+               SeedConstants.SS[2, (byte)(val >> 16)] ^
+               SeedConstants.SS[3, (byte)(val >> 24)];
     }
 
     public static uint ByteArrayToUInt32(byte[] array, uint offset)
@@ -70,7 +70,7 @@ public static class SEED
         uint L1 = ByteArrayToUInt32(input, 4);
         uint R0 = ByteArrayToUInt32(input, 8);
         uint R1 = ByteArrayToUInt32(input, 12);
-        byte[] roundKey = SEEDConstants.Key;
+        byte[] roundKey = SeedConstants.Key;
 
         output = new byte[input.Length];
 
@@ -103,7 +103,7 @@ public static class SEED
         uint L1 = ByteArrayToUInt32(input, 4);
         uint R0 = ByteArrayToUInt32(input, 8);
         uint R1 = ByteArrayToUInt32(input, 12);
-        byte[] roundKey = SEEDConstants.Key;
+        byte[] roundKey = SeedConstants.Key;
 
         output = new byte[input.Length];
 

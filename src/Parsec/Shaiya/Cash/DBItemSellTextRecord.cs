@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Cash;
 
-public class DBItemSellTextRecord : IBinarySDataRecord
+public sealed class DBItemSellTextRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
     public long Id { get; set; }

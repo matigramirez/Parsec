@@ -6,17 +6,17 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Emblem;
 
-public class EmblemDat : FileBase, IJsonReadable
+public sealed class EmblemDat : FileBase, IJsonReadable
 {
-    public List<Texture> Textures { get; } = new();
-
-    [JsonIgnore]
-    public override string Extension => "dat";
-
     [JsonConstructor]
     public EmblemDat()
     {
     }
+
+    public List<Texture> Textures { get; } = new();
+
+    [JsonIgnore]
+    public override string Extension => "dat";
 
     public override void Read(params object[] options)
     {

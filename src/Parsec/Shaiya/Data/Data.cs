@@ -1,45 +1,10 @@
-﻿using System.IO;
-using Parsec.Cryptography;
+﻿using Parsec.Cryptography;
 using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Data;
 
 public class Data
 {
-    /// <summary>
-    /// <see cref="Sah"/> instance for the current data
-    /// </summary>
-    public Sah Sah { get; set; }
-
-    /// <summary>
-    /// <see cref="Saf"/> instance for the current data
-    /// </summary>
-    public Saf Saf { get; set; }
-
-    /// <summary>
-    /// The data's root folder from the sah index
-    /// </summary>
-    public SFolder RootFolder => Sah.RootFolder;
-
-    /// <summary>
-    /// The data's file count
-    /// </summary>
-    public int FileCount
-    {
-        get => Sah.FileCount;
-        set => Sah.FileCount = value;
-    }
-
-    /// <summary>
-    /// Dictionary of folders that can be accessed by path
-    /// </summary>
-    public Dictionary<string, SFolder> FolderIndex => Sah.FolderIndex;
-
-    /// <summary>
-    /// Dictionary of files that can be accessed by path
-    /// </summary>
-    public Dictionary<string, SFile> FileIndex => Sah.FileIndex;
-
     public Data(Sah sah, Saf saf)
     {
         Sah = sah;
@@ -78,6 +43,40 @@ public class Data
                 throw new ArgumentException("The provided path must belong to either a .sah or a .saf file");
         }
     }
+
+    /// <summary>
+    /// <see cref="Sah"/> instance for the current data
+    /// </summary>
+    public Sah Sah { get; set; }
+
+    /// <summary>
+    /// <see cref="Saf"/> instance for the current data
+    /// </summary>
+    public Saf Saf { get; set; }
+
+    /// <summary>
+    /// The data's root folder from the sah index
+    /// </summary>
+    public SFolder RootFolder => Sah.RootFolder;
+
+    /// <summary>
+    /// The data's file count
+    /// </summary>
+    public int FileCount
+    {
+        get => Sah.FileCount;
+        set => Sah.FileCount = value;
+    }
+
+    /// <summary>
+    /// Dictionary of folders that can be accessed by path
+    /// </summary>
+    public Dictionary<string, SFolder> FolderIndex => Sah.FolderIndex;
+
+    /// <summary>
+    /// Dictionary of files that can be accessed by path
+    /// </summary>
+    public Dictionary<string, SFile> FileIndex => Sah.FileIndex;
 
     /// <summary>
     /// Extracts the whole data file

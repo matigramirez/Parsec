@@ -5,100 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Item;
 
-public class ItemDefinitionEp6 : IBinary, IItemDefinition
+public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
 {
-    /// <summary>
-    /// Order: 2. Changed because of CSV.
-    /// </summary>
-    public byte Type { get; set; }
-    /// <summary>
-    /// Order: 3. Changed because of CSV.
-    /// </summary>
-    public byte TypeId { get; set; }
-
-    /// <summary>
-    /// Order: 0. Changed because of CSV.
-    /// </summary>
-    public string Name { get; set; }
-
-    /// <summary>
-    /// Order: 1. Changed because of CSV.
-    /// </summary>
-    public string Description { get; set; }
-
-    public byte Model { get; set; }
-    public byte Icon { get; set; }
-    public short MinLevel { get; set; }
-    public byte Country { get; set; }
-    public byte AttackFighter { get; set; }
-    public byte DefenseFighter { get; set; }
-    public byte PatrolRogue { get; set; }
-    public byte ShootRogue { get; set; }
-    public byte AttackMage { get; set; }
-    public byte DefenseMage { get; set; }
-    public byte Grow { get; set; }
-    public byte Type2 { get; set; }
-    public byte Type3 { get; set; }
-    public short ReqStr { get; set; }
-    public short ReqDex { get; set; }
-    public short ReqRec { get; set; }
-    public short ReqInt { get; set; }
-    public short ReqWis { get; set; }
-    public int ReqLuc { get; set; }
-    public short ReqVg { get; set; }
-    public byte ReqOg { get; set; }
-    public byte ReqIg { get; set; }
-    public short Range { get; set; }
-    public byte AttackTime { get; set; }
-    public byte Attrib { get; set; }
-    public byte Special { get; set; }
-    public byte Slot { get; set; }
-    public short Quality { get; set; }
-    public short Attack { get; set; }
-    public short AttackAdd { get; set; }
-    public short Def { get; set; }
-    public short Resist { get; set; }
-    public short Str { get; set; }
-    public short Dex { get; set; }
-    public short Rec { get; set; }
-    public short Int { get; set; }
-    public short Wis { get; set; }
-    public short Luc { get; set; }
-    public short Hp { get; set; }
-    public short Sp { get; set; }
-    public short Mp { get; set; }
-    public byte Speed { get; set; }
-    public byte Exp { get; set; }
-    public int BuyPrice { get; set; }
-    public int SellPrice { get; set; }
-    public short Grade { get; set; }
-    public short Drop { get; set; }
-    public byte Server { get; set; }
-    public byte Count { get; set; }
-
-    public int Duration { get; set; }
-
-    public byte ExtDuration { get; set; }
-    public byte SecOption { get; set; }
-    public byte OptionRate { get; set; }
-    public byte BuyMethod { get; set; }
-    public byte MaxLevel { get; set; }
-    public byte Arg1 { get; set; }
-    public byte Arg2 { get; set; }
-    public byte Arg3 { get; set; }
-    public byte Arg4 { get; set; }
-    public byte Arg5 { get; set; }
-
-    public int Arg6 { get; set; }
-    public int Arg7 { get; set; }
-    public int Arg8 { get; set; }
-    public int Arg9 { get; set; }
-    public int Arg10 { get; set; }
-    public int Arg11 { get; set; }
-    public int Arg12 { get; set; }
-    public int Arg13 { get; set; }
-    public int Arg14 { get; set; }
-
     [JsonConstructor]
     public ItemDefinitionEp6()
     {
@@ -184,6 +92,89 @@ public class ItemDefinitionEp6 : IBinary, IItemDefinition
         Arg14 = binaryReader.Read<int>();
     }
 
+    /// <summary>
+    /// Order: 0. Changed because of CSV.
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Order: 1. Changed because of CSV.
+    /// </summary>
+    public string Description { get; set; }
+
+    public byte Model { get; set; }
+    public byte Icon { get; set; }
+    public short MinLevel { get; set; }
+    public byte Country { get; set; }
+    public byte AttackFighter { get; set; }
+    public byte DefenseFighter { get; set; }
+    public byte PatrolRogue { get; set; }
+    public byte ShootRogue { get; set; }
+    public byte AttackMage { get; set; }
+    public byte DefenseMage { get; set; }
+    public byte Grow { get; set; }
+    public byte Type2 { get; set; }
+    public byte Type3 { get; set; }
+    public short ReqStr { get; set; }
+    public short ReqDex { get; set; }
+    public short ReqRec { get; set; }
+    public short ReqInt { get; set; }
+    public short ReqWis { get; set; }
+    public int ReqLuc { get; set; }
+    public short ReqVg { get; set; }
+    public byte ReqOg { get; set; }
+    public byte ReqIg { get; set; }
+    public short Range { get; set; }
+    public byte AttackTime { get; set; }
+    public byte Attrib { get; set; }
+    public byte Special { get; set; }
+    public byte Slot { get; set; }
+    public short Quality { get; set; }
+    public short Attack { get; set; }
+    public short AttackAdd { get; set; }
+    public short Def { get; set; }
+    public short Resist { get; set; }
+    public short Str { get; set; }
+    public short Dex { get; set; }
+    public short Rec { get; set; }
+    public short Int { get; set; }
+    public short Wis { get; set; }
+    public short Luc { get; set; }
+    public short Hp { get; set; }
+    public short Sp { get; set; }
+    public short Mp { get; set; }
+    public byte Speed { get; set; }
+    public byte Exp { get; set; }
+    public int BuyPrice { get; set; }
+    public int SellPrice { get; set; }
+    public short Grade { get; set; }
+    public short Drop { get; set; }
+    public byte Server { get; set; }
+    public byte Count { get; set; }
+
+    public int Duration { get; set; }
+
+    public byte ExtDuration { get; set; }
+    public byte SecOption { get; set; }
+    public byte OptionRate { get; set; }
+    public byte BuyMethod { get; set; }
+    public byte MaxLevel { get; set; }
+    public byte Arg1 { get; set; }
+    public byte Arg2 { get; set; }
+    public byte Arg3 { get; set; }
+    public byte Arg4 { get; set; }
+    public byte Arg5 { get; set; }
+
+    public int Arg6 { get; set; }
+    public int Arg7 { get; set; }
+    public int Arg8 { get; set; }
+    public int Arg9 { get; set; }
+    public int Arg10 { get; set; }
+    public int Arg11 { get; set; }
+    public int Arg12 { get; set; }
+    public int Arg13 { get; set; }
+    public int Arg14 { get; set; }
+
     public IEnumerable<byte> GetBytes(params object[] options)
     {
         var buffer = new List<byte>();
@@ -262,4 +253,14 @@ public class ItemDefinitionEp6 : IBinary, IItemDefinition
         buffer.AddRange(Arg14.GetBytes());
         return buffer;
     }
+
+    /// <summary>
+    /// Order: 2. Changed because of CSV.
+    /// </summary>
+    public byte Type { get; set; }
+
+    /// <summary>
+    /// Order: 3. Changed because of CSV.
+    /// </summary>
+    public byte TypeId { get; set; }
 }

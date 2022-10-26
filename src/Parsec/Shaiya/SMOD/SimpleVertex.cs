@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.SMOD;
 /// <summary>
 /// Represents a vertex used in SMOD collision objects
 /// </summary>
-public class SimpleVertex
+public sealed class SimpleVertex
 {
     /// <summary>
     /// Coordinates of the vertex in the 3D space.

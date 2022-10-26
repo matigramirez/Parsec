@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Zon;
 
-public class Zon : FileBase, IJsonReadable
+public sealed class Zon : FileBase, IJsonReadable
 {
     public int Format { get; set; }
     public List<ZonRecord> Records { get; } = new();

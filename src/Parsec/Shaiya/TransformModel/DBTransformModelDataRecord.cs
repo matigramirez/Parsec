@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.TransformModel;
 
-public class DBTransformModelDataRecord : IBinarySDataRecord
+public sealed class DBTransformModelDataRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
     public long Id { get; set; }

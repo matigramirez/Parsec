@@ -5,12 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class Npc : IBinary
+public sealed class Npc : IBinary
 {
-    public int Type { get; set; }
-    public int NpcId { get; set; }
-    public List<NpcLocation> Locations { get; set; } = new();
-
     [JsonConstructor]
     public Npc()
     {
@@ -29,6 +25,10 @@ public class Npc : IBinary
             Locations.Add(npcLocation);
         }
     }
+
+    public int Type { get; set; }
+    public int NpcId { get; set; }
+    public List<NpcLocation> Locations { get; set; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

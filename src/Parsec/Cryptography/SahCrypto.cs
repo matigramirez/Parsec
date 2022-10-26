@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Cryptography;
 
-public class SahCrypto
+public sealed class SahCrypto
 {
     public Func<int, int> DecryptFileCount { get; set; }
     public Func<int, int> EncryptFileCount { get; set; }

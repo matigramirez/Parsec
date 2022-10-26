@@ -5,11 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MON;
 
-public class MONObject : IBinary
+public sealed class MONObject : IBinary
 {
-    public string Object3DCName { get; set; }
-    public string TextureName { get; set; }
-
     [JsonConstructor]
     public MONObject()
     {
@@ -20,6 +17,9 @@ public class MONObject : IBinary
         Object3DCName = binaryReader.ReadString();
         TextureName = binaryReader.ReadString();
     }
+
+    public string Object3DCName { get; set; }
+    public string TextureName { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

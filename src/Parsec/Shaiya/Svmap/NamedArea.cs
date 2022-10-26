@@ -6,12 +6,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class NamedArea : IBinary
+public sealed class NamedArea : IBinary
 {
-    public BoundingBox Area { get; set; }
-    public int NameIdentifier1 { get; set; }
-    public int NameIdentifier2 { get; set; }
-
     [JsonConstructor]
     public NamedArea()
     {
@@ -23,6 +19,10 @@ public class NamedArea : IBinary
         NameIdentifier1 = binaryReader.Read<int>();
         NameIdentifier2 = binaryReader.Read<int>();
     }
+
+    public BoundingBox Area { get; set; }
+    public int NameIdentifier1 { get; set; }
+    public int NameIdentifier2 { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

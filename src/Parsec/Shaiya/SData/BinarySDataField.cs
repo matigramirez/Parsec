@@ -5,10 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SData;
 
-public class BinarySDataField : IBinary
+public sealed class BinarySDataField : IBinary
 {
-    public string Name { get; set; }
-
     public BinarySDataField(string name)
     {
         Name = name;
@@ -19,6 +17,8 @@ public class BinarySDataField : IBinary
         int length = binaryReader.Read<byte>();
         Name = binaryReader.ReadString(Encoding.Unicode, length);
     }
+
+    public string Name { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

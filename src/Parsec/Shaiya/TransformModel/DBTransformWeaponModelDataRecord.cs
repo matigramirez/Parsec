@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.TransformModel;
 
-public class DBTransformWeaponModelDataRecord : IBinarySDataRecord
+public sealed class DBTransformWeaponModelDataRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
     public long Type { get; set; }

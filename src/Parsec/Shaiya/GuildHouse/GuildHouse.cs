@@ -3,7 +3,7 @@ using Parsec.Common;
 
 namespace Parsec.Shaiya.GuildHouse;
 
-public class GuildHouse : SData.SData, IJsonReadable
+public sealed class GuildHouse : SData.SData, IJsonReadable
 {
     [ShaiyaProperty]
     public int Unknown { get; set; }

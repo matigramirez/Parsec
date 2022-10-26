@@ -1,26 +1,13 @@
 ﻿using System.Text;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
+using Parsec.Shaiya.SData;
 
-namespace Parsec.Shaiya.SData;
+namespace Parsec.Cryptography;
 
-public class KisaSeedHeader : IBinary
+public sealed class SeedHeader : IBinary
 {
-    /// <summary>
-    /// Encryption signature. Read as char[40]
-    /// </summary>
-    public string Signature { get; set; }
-
-    public uint Checksum { get; set; }
-
-    public uint RealSize { get; set; }
-
-    /// <summary>
-    /// Read as char[12] or char[16], depending on the header type
-    /// </summary>
-    public byte[] Padding { get; set; }
-
-    public KisaSeedHeader(string signature, uint checksum, uint realSize, byte[] padding)
+    public SeedHeader(string signature, uint checksum, uint realSize, byte[] padding)
     {
         Signature = signature;
         Checksum = checksum;
@@ -28,7 +15,7 @@ public class KisaSeedHeader : IBinary
         Padding = padding;
     }
 
-    public KisaSeedHeader(byte[] data)
+    public SeedHeader(byte[] data)
     {
         Signature = Encoding.ASCII.GetString(data.SubArray(0, 40));
 
@@ -50,6 +37,20 @@ public class KisaSeedHeader : IBinary
         var paddingLength = currentOffset == 48 ? 16 : 12;
         Padding = data.SubArray(currentOffset, paddingLength);
     }
+
+    /// <summary>
+    /// Encryption signature. Read as char[40]
+    /// </summary>
+    public string Signature { get; set; }
+
+    public uint Checksum { get; set; }
+
+    public uint RealSize { get; set; }
+
+    /// <summary>
+    /// Read as char[12] or char[16], depending on the header type
+    /// </summary>
+    public byte[] Padding { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

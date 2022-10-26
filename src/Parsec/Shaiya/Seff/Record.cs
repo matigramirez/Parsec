@@ -5,11 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Seff;
 
-public class Record : IBinary
+public sealed class Record : IBinary
 {
-    public int Id { get; set; }
-    public List<Effect> Effects { get; } = new();
-
     [JsonConstructor]
     public Record()
     {
@@ -27,6 +24,9 @@ public class Record : IBinary
             Effects.Add(effect);
         }
     }
+
+    public int Id { get; set; }
+    public List<Effect> Effects { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

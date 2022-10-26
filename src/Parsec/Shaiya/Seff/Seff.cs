@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Seff;
 
-public class Seff : FileBase, IJsonReadable
+public sealed class Seff : FileBase, IJsonReadable
 {
     public int Format { get; set; }
     public short Unknown2 { get; set; }

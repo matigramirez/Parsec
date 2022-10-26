@@ -5,8 +5,20 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MLT;
 
-public class Record : IBinary
+public sealed class MLTRecord : IBinary
 {
+    [JsonConstructor]
+    public MLTRecord()
+    {
+    }
+
+    public MLTRecord(SBinaryReader binaryReader)
+    {
+        Obj3DCIndex = binaryReader.Read<int>();
+        TextureIndex = binaryReader.Read<int>();
+        Alpha = binaryReader.Read<int>();
+    }
+
     /// <summary>
     /// Index of the .3DC filename
     /// </summary>
@@ -21,18 +33,6 @@ public class Record : IBinary
     /// Alpha channel flag. 0: visibility  1: glow
     /// </summary>
     public int Alpha { get; set; }
-
-    [JsonConstructor]
-    public Record()
-    {
-    }
-
-    public Record(SBinaryReader binaryReader)
-    {
-        Obj3DCIndex = binaryReader.Read<int>();
-        TextureIndex = binaryReader.Read<int>();
-        Alpha = binaryReader.Read<int>();
-    }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

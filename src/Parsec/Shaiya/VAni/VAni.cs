@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.VAni;
 
-public class VAni : FileBase, IJsonReadable
+public sealed class VAni : FileBase, IJsonReadable
 {
     /// <summary>
     /// Coordinates of the center of the 3d object

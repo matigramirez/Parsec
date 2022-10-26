@@ -148,7 +148,7 @@ public struct Matrix4x4 : IEquatable<Matrix4x4>, IBinary
 
     #endregion Public Fields
 
-    private static readonly Matrix4x4 _identity = new Matrix4x4(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+    private static readonly Matrix4x4 _identity = new(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
 
     /// <summary>
     /// Returns the multiplicative identity matrix.
@@ -543,8 +543,9 @@ public struct Matrix4x4 : IEquatable<Matrix4x4>, IBinary
 
         if (Math.Abs(det) < float.Epsilon)
         {
-            result = new Matrix4x4(float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN,
-                                   float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN);
+            result = new Matrix4x4(float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN,
+                float.NaN,
+                float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN);
 
             return false;
         }
@@ -1146,9 +1147,9 @@ public struct Matrix4x4 : IEquatable<Matrix4x4>, IBinary
     /// <returns>True if the Object is equal to this matrix; False otherwise.</returns>
     public override bool Equals(object obj)
     {
-        if (obj is Matrix4x4)
+        if (obj is Matrix4x4 matrix4)
         {
-            return Equals((Matrix4x4)obj);
+            return Equals(matrix4);
         }
 
         return false;
@@ -1162,7 +1163,7 @@ public struct Matrix4x4 : IEquatable<Matrix4x4>, IBinary
     {
         CultureInfo ci = CultureInfo.CurrentCulture;
 
-        return String.Format(
+        return string.Format(
             ci,
             "{{ {{M11:{0} M12:{1} M13:{2} M14:{3}}} {{M21:{4} M22:{5} M23:{6} M24:{7}}} {{M31:{8} M32:{9} M33:{10} M34:{11}}} {{M41:{12} M42:{13} M43:{14} M44:{15}}} }}",
             M11.ToString(ci), M12.ToString(ci), M13.ToString(ci), M14.ToString(ci), M21.ToString(ci), M22.ToString(ci), M23.ToString(ci),

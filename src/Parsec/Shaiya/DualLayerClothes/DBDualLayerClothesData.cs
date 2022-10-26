@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.DualLayerClothes;
 
-public class DBDualLayerClothesData : BinarySData<DBDualLayerClothesDataRecord>
+public sealed class DBDualLayerClothesData : BinarySData<DBDualLayerClothesDataRecord>
 {
 }

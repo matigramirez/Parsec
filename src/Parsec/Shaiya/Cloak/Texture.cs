@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -7,10 +6,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Cloak;
 
-public class Texture : IBinary
+public sealed class Texture : IBinary
 {
-    public string Name { get; set; } = "";
-
     [JsonIgnore]
     private int _fixedLength;
 
@@ -30,6 +27,8 @@ public class Texture : IBinary
         var stringBuffer = binaryReader.ReadBytes(_fixedLength);
         Name = Encoding.ASCII.GetString(stringBuffer.TakeWhile(b => b != '\0').ToArray());
     }
+
+    public string Name { get; set; } = "";
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

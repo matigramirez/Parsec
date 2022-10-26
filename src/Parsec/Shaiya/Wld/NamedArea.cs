@@ -12,7 +12,7 @@ public enum NamedAreaMode
 /// <summary>
 /// Represents a NamedArea in the world
 /// </summary>
-public class NamedArea
+public sealed class NamedArea
 {
     /// <summary>
     /// The BoundingBox where this Named Area applies

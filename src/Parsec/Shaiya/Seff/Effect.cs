@@ -5,34 +5,8 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.Seff;
 
-public class Effect
+public sealed class Effect
 {
-    public int Unknown1 { get; set; }
-    public float Unknown2 { get; set; }
-    public int Unknown3 { get; set; }
-    public int Unknown4 { get; set; }
-    public int Unknown5 { get; set; }
-    public float Unknown6 { get; set; }
-
-    public string Name { get; set; }
-
-    public byte Red { get; set; }
-    public byte Green { get; set; }
-    public byte Blue { get; set; }
-
-    public float Unknown7 { get; set; }
-    public float Unknown8 { get; set; }
-    public float Unknown9 { get; set; }
-    public float Unknown10 { get; set; }
-    public float Unknown11 { get; set; }
-
-    public byte UnkByte4 { get; set; }
-
-    public float Unknown12 { get; set; }
-    public float Unknown13 { get; set; }
-    public float Unknown14 { get; set; }
-    public uint Unknown15 { get; set; }
-
     [JsonConstructor]
     public Effect()
     {
@@ -72,6 +46,32 @@ public class Effect
         if (format > 5)
             Unknown15 = binaryReader.Read<uint>();
     }
+
+    public int Unknown1 { get; set; }
+    public float Unknown2 { get; set; }
+    public int Unknown3 { get; set; }
+    public int Unknown4 { get; set; }
+    public int Unknown5 { get; set; }
+    public float Unknown6 { get; set; }
+
+    public string Name { get; set; }
+
+    public byte Red { get; set; }
+    public byte Green { get; set; }
+    public byte Blue { get; set; }
+
+    public float Unknown7 { get; set; }
+    public float Unknown8 { get; set; }
+    public float Unknown9 { get; set; }
+    public float Unknown10 { get; set; }
+    public float Unknown11 { get; set; }
+
+    public byte UnkByte4 { get; set; }
+
+    public float Unknown12 { get; set; }
+    public float Unknown13 { get; set; }
+    public float Unknown14 { get; set; }
+    public uint Unknown15 { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

@@ -5,12 +5,13 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT;
 
-public class EFT : FileBase, IJsonReadable
+public sealed class EFT : FileBase, IJsonReadable
 {
     public string Signature { get; set; }
 
     [JsonIgnore]
     public EFTFormat Format { get; set; }
+
     public List<EffectObject> Objects { get; } = new();
     public List<EffectTexture> Textures { get; } = new();
     public List<Effect> Effects { get; } = new();
@@ -28,7 +29,7 @@ public class EFT : FileBase, IJsonReadable
             "EFT" => EFTFormat.EFT,
             "EF2" => EFTFormat.EF2,
             "EF3" => EFTFormat.EF3,
-            _     => EFTFormat.Unknown
+            _ => EFTFormat.Unknown
         };
 
         var effectObjectCount = _binaryReader.Read<int>();
@@ -77,7 +78,7 @@ public class EFT : FileBase, IJsonReadable
             "EFT" => EFTFormat.EFT,
             "EF2" => EFTFormat.EF2,
             "EF3" => EFTFormat.EF3,
-            _     => EFTFormat.Unknown
+            _ => EFTFormat.Unknown
         };
 
         buffer.AddRange(Effects.Count.GetBytes());

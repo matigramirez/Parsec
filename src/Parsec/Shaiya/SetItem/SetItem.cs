@@ -3,7 +3,7 @@ using Parsec.Extensions;
 
 namespace Parsec.Shaiya.SetItem;
 
-public class SetItem : SData.SData, IJsonReadable
+public sealed class SetItem : SData.SData, IJsonReadable
 {
     public List<SetItemRecord> Records { get; } = new();
 

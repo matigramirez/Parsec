@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using Parsec.Attributes;
+﻿using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
@@ -25,6 +23,12 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
 
     [ShaiyaProperty]
     public List<TRecord> Records { get; set; } = new();
+
+    public void ExportCSV(string path)
+    {
+        string csv = Records.ToCsv();
+        FileHelper.WriteFile(path, csv.GetBytes());
+    }
 
     public override void Read(params object[] options)
     {
@@ -71,12 +75,6 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         }
 
         return buffer;
-    }
-
-    public void ExportCSV(string path)
-    {
-        string csv = Records.ToCsv();
-        FileHelper.WriteFile(path, csv.GetBytes());
     }
 
     public static T ReadFromCSV<T>(string path) where T : BinarySData<TRecord>, new()

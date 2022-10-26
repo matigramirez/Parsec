@@ -12,18 +12,8 @@ namespace Parsec.Shaiya.ALT;
 /// This is considered a serialization anti-pattern and that's why its read through a custom constructor and written using a custom
 /// <see cref="GetBytes"/> method.
 /// </summary>
-public class Animation : IBinary
+public sealed class Animation : IBinary
 {
-    public string Name { get; set; }
-
-    /// TODO: In shStudio, Mode is split into 4 separate byte's, investigate if that's correct, since the game client actually reads a single value 4-byte
-    public int Mode { get; set; }
-    public int Unknown { get; set; }
-    public float Float1 { get; set; }
-    public float Float2 { get; set; }
-    public float Float3 { get; set; }
-    public float Float4 { get; set; }
-
     [JsonConstructor]
     public Animation()
     {
@@ -44,6 +34,17 @@ public class Animation : IBinary
         Float3 = binaryReader.Read<float>();
         Float4 = binaryReader.Read<float>();
     }
+
+    public string Name { get; set; }
+
+    /// TODO: In shStudio, Mode is split into 4 separate bytes, investigate if that's correct, since the game client actually reads a single value 4-byte
+    public int Mode { get; set; }
+
+    public int Unknown { get; set; }
+    public float Float1 { get; set; }
+    public float Float2 { get; set; }
+    public float Float3 { get; set; }
+    public float Float4 { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

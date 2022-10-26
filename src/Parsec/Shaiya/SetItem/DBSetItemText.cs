@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.SetItem;
 
-public class DBSetItemText : BinarySData<DBSetItemTextRecord>
+public sealed class DBSetItemText : BinarySData<DBSetItemTextRecord>
 {
 }

@@ -3,7 +3,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.WLD;
 
-public class ZoneList
+public sealed class ZoneList
 {
     [ShaiyaProperty]
     public BoundingBox BoundingBox { get; set; }

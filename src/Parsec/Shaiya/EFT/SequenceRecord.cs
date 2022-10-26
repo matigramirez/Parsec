@@ -5,11 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT;
 
-public class SequenceRecord : IBinary
+public sealed class SequenceRecord : IBinary
 {
-    public int EffectId { get; set; }
-    public float Time { get; set; }
-
     [JsonConstructor]
     public SequenceRecord()
     {
@@ -20,6 +17,9 @@ public class SequenceRecord : IBinary
         EffectId = binaryReader.Read<int>();
         Time = binaryReader.Read<float>();
     }
+
+    public int EffectId { get; set; }
+    public float Time { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

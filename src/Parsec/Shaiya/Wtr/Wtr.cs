@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Wtr;
 
-public class Wtr : FileBase, IJsonReadable
+public sealed class Wtr : FileBase, IJsonReadable
 {
     public float Unknown1 { get; set; }
     public int Unknown2 { get; set; }

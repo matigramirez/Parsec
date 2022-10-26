@@ -3,7 +3,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Ani;
 
-public class RotationFrame
+public sealed class RotationFrame
 {
     [ShaiyaProperty]
     public int Keyframe { get; set; }

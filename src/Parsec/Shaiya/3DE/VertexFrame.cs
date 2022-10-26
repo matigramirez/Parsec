@@ -5,18 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya._3DE;
 
-public class VertexFrame : IBinary
+public sealed class VertexFrame : IBinary
 {
-    /// <summary>
-    /// The vertex coordinates
-    /// </summary>
-    public Vector3 Coordinates { get; set; }
-
-    /// <summary>
-    /// The vertex UV mapping
-    /// </summary>
-    public Vector2 UV { get; set; }
-
     [JsonConstructor]
     public VertexFrame()
     {
@@ -27,6 +17,16 @@ public class VertexFrame : IBinary
         Coordinates = new Vector3(binaryReader);
         UV = new Vector2(binaryReader);
     }
+
+    /// <summary>
+    /// The vertex coordinates
+    /// </summary>
+    public Vector3 Coordinates { get; set; }
+
+    /// <summary>
+    /// The vertex UV mapping
+    /// </summary>
+    public Vector2 UV { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

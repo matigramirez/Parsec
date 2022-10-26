@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.SMOD;
 /// <summary>
 /// A 3d object used in SMOD files to represent an object where players should collide.
 /// </summary>
-public class CollisionObject
+public sealed class CollisionObject
 {
     /// <summary>
     /// Vertices of the 3d object.

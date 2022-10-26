@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// Represents a Portal in the world
 /// </summary>
-public class Portal
+public sealed class Portal
 {
     /// <summary>
     /// The area of the portal

@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
@@ -8,13 +6,32 @@ using ServiceStack;
 
 namespace Parsec.Shaiya.Item;
 
-public class Item : SData.SData, IJsonReadable, ICsv
+public sealed class Item : SData.SData, IJsonReadable, ICsv
 {
+    [JsonIgnore]
+    public Dictionary<(byte type, byte typeId), IItemDefinition> ItemIndex = new();
+
     public int MaxType { get; set; }
     public List<Type> Types { get; } = new();
 
-    [JsonIgnore]
-    public Dictionary<(byte type, byte typeId), IItemDefinition> ItemIndex = new();
+    /// <inheritdoc />
+    public void ExportCSV(string path)
+    {
+        string csv;
+
+        switch (Episode)
+        {
+            case Episode.EP5:
+            default:
+                csv = ItemIndex.Values.ToList().ConvertTo<List<ItemDefinitionEp5>>().ToCsv();
+                break;
+            case Episode.EP6:
+                csv = ItemIndex.Values.ToList().ConvertTo<List<ItemDefinitionEp6>>().ToCsv();
+                break;
+        }
+
+        FileHelper.WriteFile(path, csv.GetBytes());
+    }
 
     public override void Read(params object[] options)
     {
@@ -53,25 +70,6 @@ public class Item : SData.SData, IJsonReadable, ICsv
         }
 
         return buffer;
-    }
-
-    /// <inheritdoc />
-    public void ExportCSV(string path)
-    {
-        string csv;
-
-        switch (Episode)
-        {
-            case Episode.EP5:
-            default:
-                csv = ItemIndex.Values.ToList().ConvertTo<List<ItemDefinitionEp5>>().ToCsv();
-                break;
-            case Episode.EP6:
-                csv = ItemIndex.Values.ToList().ConvertTo<List<ItemDefinitionEp6>>().ToCsv();
-                break;
-        }
-
-        FileHelper.WriteFile(path, csv.GetBytes());
     }
 
     /// <summary>

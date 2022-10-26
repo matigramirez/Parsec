@@ -3,7 +3,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.WLD;
 
-public class Npc
+public sealed class Npc
 {
     [ShaiyaProperty]
     public int Type { get; set; }

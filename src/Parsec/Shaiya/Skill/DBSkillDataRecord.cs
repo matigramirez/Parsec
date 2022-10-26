@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Skill;
 
-public class DBSkillDataRecord : IBinarySDataRecord
+public sealed class DBSkillDataRecord : IBinarySDataRecord
 {
     /// <summary>
     /// Id of skill.

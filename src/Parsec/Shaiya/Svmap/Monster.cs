@@ -5,11 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class Monster : IBinary
+public sealed class Monster : IBinary
 {
-    public int MobId { get; set; }
-    public int Count { get; set; }
-
     [JsonConstructor]
     public Monster()
     {
@@ -20,6 +17,9 @@ public class Monster : IBinary
         MobId = binaryReader.Read<int>();
         Count = binaryReader.Read<int>();
     }
+
+    public int MobId { get; set; }
+    public int Count { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

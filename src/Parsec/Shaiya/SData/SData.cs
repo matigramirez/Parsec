@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Cryptography;
@@ -12,14 +11,39 @@ namespace Parsec.Shaiya.SData;
 
 public abstract class SData : FileBase, IEncryptable
 {
-    [JsonIgnore]
-    public override string Extension => "SData";
-
     /// <summary>
     /// The signature present in the header of encrypted files
     /// </summary>
     [JsonIgnore]
     private const string SEED_SIGNATURE = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
+
+    [JsonIgnore]
+    public override string Extension => "SData";
+
+    /// <inheritdoc />
+    public void DecryptBuffer(bool validateChecksum = false)
+    {
+        // Decrypt buffer if it's encrypted
+        if (IsEncrypted(Buffer))
+        {
+            var decryptedBuffer = Decrypt(Buffer, validateChecksum);
+            _binaryReader = new SBinaryReader(decryptedBuffer);
+        }
+    }
+
+    /// <inheritdoc />
+    public byte[] GetEncryptedBytes(Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular) =>
+        Encrypt(GetBytes(episode).ToArray(), version);
+
+    /// <inheritdoc />
+    public void WriteEncrypted(string path, Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular)
+    {
+        var encryptedBuffer = Encrypt(GetBytes(episode).ToArray(), version);
+        FileHelper.WriteFile(path, encryptedBuffer);
+    }
+
+    /// <inheritdoc />
+    public void WriteDecrypted(string path, Episode episode = Episode.Unknown) => Write(path, episode);
 
     /// <summary>
     /// Checks if the file is encrypted with the SEED algorithm
@@ -47,7 +71,7 @@ public abstract class SData : FileBase, IEncryptable
         var padding = version == SDataVersion.Regular ? new byte[16] : new byte[12];
 
         // Create SEED header
-        var header = new KisaSeedHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, padding);
+        var header = new SeedHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, padding);
 
         // Calculate alignment size
         var alignmentSize = header.RealSize;
@@ -66,8 +90,8 @@ public abstract class SData : FileBase, IEncryptable
         {
             var dat = decryptedData[i];
             var index = (checksum & 0xFF) ^ dat;
-            var key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
-            key = SEED.EndiannessSwap(key);
+            var key = Seed.ByteArrayToUInt32(SeedConstants.ChecksumTable, index * 4);
+            key = Seed.EndiannessSwap(key);
             checksum >>= 8;
             checksum ^= key;
         }
@@ -84,7 +108,7 @@ public abstract class SData : FileBase, IEncryptable
         for (var i = 0; i < alignmentSize / 16; ++i)
         {
             var data16 = data.SubArray(i * 16, 16);
-            SEED.EncryptChunk(data16, out var encryptedData16);
+            Seed.EncryptChunk(data16, out var encryptedData16);
             buffer.AddRange(encryptedData16);
         }
 
@@ -106,7 +130,7 @@ public abstract class SData : FileBase, IEncryptable
             throw new FormatException("SData file is not properly aligned.");
 
         // Read SEED Header
-        var header = new KisaSeedHeader(encryptedBuffer);
+        var header = new SeedHeader(encryptedBuffer);
 
         // Get data without header
         var encryptedData = encryptedBuffer.SubArray(64, encryptedBuffer.Length - 64);
@@ -121,7 +145,7 @@ public abstract class SData : FileBase, IEncryptable
             var data16 = encryptedData.SubArray(i * 16, 16);
 
             // Decrypt seed
-            SEED.DecryptChunk(data16, out var decryptedData16);
+            Seed.DecryptChunk(data16, out var decryptedData16);
             data.AddRange(decryptedData16);
         }
 
@@ -134,8 +158,8 @@ public abstract class SData : FileBase, IEncryptable
             {
                 var dat = data[i];
                 var index = (checksum & 0xFF) ^ dat;
-                var key = SEED.ByteArrayToUInt32(SEEDConstants.ChecksumTable, index * 4);
-                key = SEED.EndiannessSwap(key);
+                var key = Seed.ByteArrayToUInt32(SeedConstants.ChecksumTable, index * 4);
+                key = Seed.EndiannessSwap(key);
                 checksum >>= 8;
                 checksum ^= key;
             }
@@ -151,31 +175,6 @@ public abstract class SData : FileBase, IEncryptable
         Array.Copy(data.ToArray(), decryptedData, header.RealSize);
         return decryptedData;
     }
-
-    /// <inheritdoc />
-    public void DecryptBuffer(bool validateChecksum = false)
-    {
-        // Decrypt buffer if it's encrypted
-        if (IsEncrypted(Buffer))
-        {
-            var decryptedBuffer = Decrypt(Buffer, validateChecksum);
-            _binaryReader = new SBinaryReader(decryptedBuffer);
-        }
-    }
-
-    /// <inheritdoc />
-    public byte[] GetEncryptedBytes(Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular) =>
-        Encrypt(GetBytes(episode).ToArray(), version);
-
-    /// <inheritdoc />
-    public void WriteEncrypted(string path, Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular)
-    {
-        var encryptedBuffer = Encrypt(GetBytes(episode).ToArray(), version);
-        FileHelper.WriteFile(path, encryptedBuffer);
-    }
-
-    /// <inheritdoc />
-    public void WriteDecrypted(string path, Episode episode = Episode.Unknown) => Write(path, episode);
 
     public static void EncryptFile(string inputFilePath, string outputFilePath)
     {

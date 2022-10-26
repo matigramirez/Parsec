@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Parsec.Attributes;
 using Parsec.Attributes.Wld;
 using Parsec.Common;
@@ -157,13 +156,13 @@ public static class Binary
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
                     string lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
-                                                                       !lengthPrefixedStringAttribute.IncludeStringTerminator);
+                        !lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                     return lengthPrefixedStr;
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
                     string fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
-                                                                    !fixedLengthStringAttribute.IncludeStringTerminator);
+                        !fixedLengthStringAttribute.IncludeStringTerminator);
 
                     return fixedLengthStr;
 
@@ -200,7 +199,8 @@ public static class Binary
 
     public static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
 
-    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Episode episode = Episode.Unknown)
+    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo,
+        Episode episode = Episode.Unknown)
     {
         var type = propertyInfo.PropertyType;
         var attributes = propertyInfo.GetCustomAttributes().ToList();
@@ -317,7 +317,8 @@ public static class Binary
                         {
                             foreach (var property in lengthPrefixedListAttribute.ItemType.GetProperties())
                             {
-                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !lengthPrefixedListAttribute.ItemType.IsPrimitive)
+                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) &&
+                                    !lengthPrefixedListAttribute.ItemType.IsPrimitive)
                                     continue;
 
                                 buffer.AddRange(GetPropertyBytes(genericItemType, item, property, episode));
