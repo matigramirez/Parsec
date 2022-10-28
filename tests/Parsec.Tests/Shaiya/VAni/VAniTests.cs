@@ -5,15 +5,15 @@ namespace Parsec.Tests.Shaiya.VAni;
 public class VAniTests
 {
     [Theory]
-    [InlineData("A1_butterfly01.vani")]
-    [InlineData("A1_Green_ani00.vani")]
-    [InlineData("AB7_dun2_femalebeeBUD.vani")]
-    [InlineData("AB7_UReggStoNail01b.vani")]
-    [InlineData("B2_grass_Ani01.vani")]
-    [InlineData("D_Deadbody_01.vani")]
-    [InlineData("L_A1_Ferry_Ship.vani")]
-    [InlineData("R1_Green_ani06.vani")]
-    [InlineData("R2_FireStone.vani")]
+    [InlineData("A1_butterfly01.VANI")]
+    [InlineData("A1_Green_ani00.VANI")]
+    [InlineData("AB7_dun2_femalebeeBUD.VANI")]
+    [InlineData("AB7_UReggStoNail01b.VANI")]
+    [InlineData("B2_grass_Ani01.VANI")]
+    [InlineData("D_Deadbody_01.VANI")]
+    [InlineData("L_A1_Ferry_Ship.VANI")]
+    [InlineData("R1_Green_ani06.VANI")]
+    [InlineData("R2_FireStone.VANI")]
     public void VaniMultipleReadWriteTest(string fileName)
     {
         string filePath = $"Shaiya/VAni/{fileName}";

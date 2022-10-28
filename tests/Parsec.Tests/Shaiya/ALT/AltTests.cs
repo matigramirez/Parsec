@@ -5,14 +5,14 @@ namespace Parsec.Tests.Shaiya.ALT;
 public class AltTests
 {
     [Theory]
-    [InlineData("demf_action.ALT")]
-    [InlineData("dewf_action.ALT")]
-    [InlineData("elmm_action.ALT")]
-    [InlineData("elmr_action.ALT")]
-    [InlineData("humf_action.ALT")]
-    [InlineData("humm_action.ALT")]
-    [InlineData("vimm_action.ALT")]
-    [InlineData("vimr_action.ALT")]
+    [InlineData("demf_action.alt")]
+    [InlineData("dewf_action.alt")]
+    [InlineData("elmm_action.alt")]
+    [InlineData("elmr_action.alt")]
+    [InlineData("humf_action.alt")]
+    [InlineData("humm_action.alt")]
+    [InlineData("vimm_action.alt")]
+    [InlineData("vimr_action.alt")]
     public void AltMultipleReadWriteTest(string fileName)
     {
         string filePath = $"Shaiya/ALT/{fileName}";
