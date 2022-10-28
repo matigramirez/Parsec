@@ -1,9 +1,9 @@
-﻿using Parsec.Attributes;
+﻿using System.Globalization;
+using CsvHelper;
+using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
 using Parsec.Shaiya.Core;
-using ServiceStack;
 
 namespace Parsec.Shaiya.SData;
 
@@ -24,10 +24,11 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
     [ShaiyaProperty]
     public List<TRecord> Records { get; set; } = new();
 
-    public void ExportCSV(string path)
+    public void ExportCsv(string outputPath)
     {
-        string csv = Records.ToCsv();
-        FileHelper.WriteFile(path, csv.GetBytes());
+        using var writer = new StreamWriter(outputPath);
+        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csvWriter.WriteRecords(Records);
     }
 
     public override void Read(params object[] options)
@@ -77,14 +78,17 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         return buffer;
     }
 
-    public static T ReadFromCSV<T>(string path) where T : BinarySData<TRecord>, new()
+    public static T ReadFromCsv<T>(string csvPath) where T : BinarySData<TRecord>, new()
     {
-        var records = File.ReadAllText(path).FromCsv<List<TRecord>>();
-        var columnNames = CsvHelper.ReadColumnNames(path);
-        var fields = columnNames.Select(c => new BinarySDataField(c.ToLower())).ToList();
+        using var reader = new StreamReader(csvPath);
+        using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
 
+        // Read headers and records
+        var records = csvReader.GetRecords<TRecord>().ToList();
+        var fields = csvReader.HeaderRecord?.Select(c => new BinarySDataField(c.ToLower())).ToList();
+
+        // Create the BinarySData instance with an empty header. The header is skipped entirely by the game so this isn't an issue.
         var binarySData = new T { Header = new byte[128], Fields = fields, Records = records };
-
         return binarySData;
     }
 }

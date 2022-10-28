@@ -70,6 +70,16 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
     }
 
     /// <summary>
+    /// Order: 2. Changed because of CSV.
+    /// </summary>
+    public byte Type { get; set; }
+
+    /// <summary>
+    /// Order: 3. Changed because of CSV.
+    /// </summary>
+    public byte TypeId { get; set; }
+
+    /// <summary>
     /// Order: 0. Changed because of CSV.
     /// </summary>
     public string Name { get; set; }
@@ -187,14 +197,4 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
         buffer.Add(Count);
         return buffer;
     }
-
-    /// <summary>
-    /// Order: 2. Changed because of CSV.
-    /// </summary>
-    public byte Type { get; set; }
-
-    /// <summary>
-    /// Order: 3. Changed because of CSV.
-    /// </summary>
-    public byte TypeId { get; set; }
 }
