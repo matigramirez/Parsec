@@ -24,14 +24,19 @@ public class MlxTests
     public void MlxMultipleReadWriteTest(string fileName)
     {
         string filePath = $"Shaiya/MLX/{fileName}";
+        string outputPath = $"Shaiya/MLX/output_{fileName}";
         string jsonPath = $"Shaiya/MLX/{fileName}.json";
         string newObjPath = $"Shaiya/MLX/new_{fileName}";
 
         var mlx = Reader.ReadFromFile<Parsec.Shaiya.MLX.MLX>(filePath);
+        mlx.Write(outputPath);
         mlx.ExportJson(jsonPath);
+
+        var outputMlx = Reader.ReadFromFile<Parsec.Shaiya.MLX.MLX>(outputPath);
         var mlxFromJson = Reader.ReadFromJson<Parsec.Shaiya.MLX.MLX>(jsonPath);
 
         // Check bytes
+        Assert.Equal(mlx.GetBytes(), outputMlx.GetBytes());
         Assert.Equal(mlx.GetBytes(), mlxFromJson.GetBytes());
 
         mlxFromJson.Write(newObjPath);
