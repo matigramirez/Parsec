@@ -15,9 +15,9 @@ public sealed class EffectSequence : IBinary
     public EffectSequence(SBinaryReader binaryReader)
     {
         Name = binaryReader.ReadString();
-        var repCount = binaryReader.Read<int>();
 
-        for (int i = 0; i < repCount; i++)
+        int recordCount = binaryReader.Read<int>();
+        for (int i = 0; i < recordCount; i++)
         {
             var record = new SequenceRecord(binaryReader);
             Records.Add(record);
