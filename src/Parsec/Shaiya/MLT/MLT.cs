@@ -32,23 +32,23 @@ public sealed class MLT : FileBase, IJsonReadable
     {
         Signature = _binaryReader.ReadString(3);
 
-        var obj3dcCount = _binaryReader.Read<int>();
+        int obj3dcCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < obj3dcCount; i++)
         {
-            var obj3dcName = _binaryReader.ReadString();
+            string obj3dcName = _binaryReader.ReadString();
             Obj3DCNames.Add(obj3dcName);
         }
 
-        var textureNameCount = _binaryReader.Read<int>();
+        int textureNameCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < textureNameCount; i++)
         {
-            var textureName = _binaryReader.ReadString();
+            string textureName = _binaryReader.ReadString();
             TextureNames.Add(textureName);
         }
 
-        var recordCount = _binaryReader.Read<int>();
+        int recordCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < recordCount; i++)
         {
@@ -63,14 +63,12 @@ public sealed class MLT : FileBase, IJsonReadable
         buffer.AddRange(Signature.GetBytes());
 
         buffer.AddRange(Obj3DCNames.Count.GetBytes());
-
-        foreach (var obj3dcName in Obj3DCNames)
-            obj3dcName.GetLengthPrefixedBytes();
+        foreach (string obj3dcName in Obj3DCNames)
+            buffer.AddRange(obj3dcName.GetLengthPrefixedBytes());
 
         buffer.AddRange(TextureNames.Count.GetBytes());
-
-        foreach (var textureName in TextureNames)
-            textureName.GetLengthPrefixedBytes();
+        foreach (string textureName in TextureNames)
+            buffer.AddRange(textureName.GetLengthPrefixedBytes());
 
         buffer.AddRange(Records.GetBytes());
         return buffer;
