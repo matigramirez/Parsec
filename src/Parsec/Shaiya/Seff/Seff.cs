@@ -29,7 +29,7 @@ public sealed class Seff : FileBase, IJsonReadable
         Unknown6 = _binaryReader.Read<short>();
         Unknown7 = _binaryReader.Read<short>();
 
-        var recordCount = _binaryReader.Read<int>();
+        int recordCount = _binaryReader.Read<int>();
 
         for (int i = 0; i < recordCount; i++)
         {

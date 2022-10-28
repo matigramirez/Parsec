@@ -16,17 +16,17 @@ public sealed class Record : IBinary
     {
         Id = binaryReader.Read<int>();
 
-        var effectCount = binaryReader.Read<int>();
+        int effectCount = binaryReader.Read<int>();
 
         for (int i = 0; i < effectCount; i++)
         {
-            var effect = new Effect(binaryReader, format);
+            var effect = new SeffEffect(binaryReader, format);
             Effects.Add(effect);
         }
     }
 
     public int Id { get; set; }
-    public List<Effect> Effects { get; } = new();
+    public List<SeffEffect> Effects { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
@@ -39,9 +39,8 @@ public sealed class Record : IBinary
 
         buffer.AddRange(Id.GetBytes());
         buffer.AddRange(Effects.Count.GetBytes());
-
-        foreach (var effectInfo in Effects)
-            buffer.AddRange(effectInfo.GetBytes(format));
+        foreach (var effect in Effects)
+            buffer.AddRange(effect.GetBytes(format));
 
         return buffer;
     }

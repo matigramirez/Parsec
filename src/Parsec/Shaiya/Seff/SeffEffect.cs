@@ -5,14 +5,14 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.Seff;
 
-public sealed class Effect
+public sealed class SeffEffect
 {
     [JsonConstructor]
-    public Effect()
+    public SeffEffect()
     {
     }
 
-    public Effect(SBinaryReader binaryReader, int format)
+    public SeffEffect(SBinaryReader binaryReader, int format)
     {
         Unknown1 = binaryReader.Read<int>();
         Unknown2 = binaryReader.Read<float>();
@@ -89,7 +89,7 @@ public sealed class Effect
         buffer.AddRange(Unknown5.GetBytes());
         buffer.AddRange(Unknown6.GetBytes());
 
-        buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.Unicode));
+        buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.Unicode, false));
 
         buffer.Add(Red);
         buffer.Add(Green);
