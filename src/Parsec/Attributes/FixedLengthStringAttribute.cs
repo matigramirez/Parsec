@@ -9,6 +9,8 @@ public class FixedLengthStringAttribute : Attribute
     public Encoding Encoding { get; set; } = Encoding.ASCII;
     public bool IncludeStringTerminator { get; set; }
 
+    public string Suffix { get; set; }
+
     public FixedLengthStringAttribute(int length)
     {
         Length = length;

@@ -328,15 +328,13 @@ public static class Binary
 
                     return buffer;
 
-                case SuffixedStringAttribute suffixedStringAttribute:
-                    propertyValue += suffixedStringAttribute.Suffix;
-                    break;
-
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                    return ((string)propertyValue).GetLengthPrefixedBytes(lengthPrefixedStringAttribute.IncludeStringTerminator);
+                    return ((string)propertyValue + lengthPrefixedStringAttribute.Suffix).GetLengthPrefixedBytes(
+                        lengthPrefixedStringAttribute.Encoding,
+                        lengthPrefixedStringAttribute.IncludeStringTerminator);
 
-                case FixedLengthStringAttribute:
-                    return ((string)propertyValue).GetBytes();
+                case FixedLengthStringAttribute fixedLengthStringAttribute:
+                    return ((string)propertyValue + fixedLengthStringAttribute.Suffix).GetBytes(fixedLengthStringAttribute.Encoding);
             }
         }
 

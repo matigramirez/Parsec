@@ -8,6 +8,8 @@ public class LengthPrefixedStringAttribute : Attribute
     public Encoding Encoding { get; set; } = Encoding.ASCII;
     public bool IncludeStringTerminator { get; set; }
 
+    public string Suffix { get; set; }
+
     public LengthPrefixedStringAttribute()
     {
     }
