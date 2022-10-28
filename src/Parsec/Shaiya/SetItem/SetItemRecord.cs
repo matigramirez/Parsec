@@ -19,7 +19,7 @@ public sealed class SetItemRecord : IBinary
 
         for (int i = 0; i < 13; i++)
         {
-            var item = new Item(binaryReader);
+            var item = new SetItemItem(binaryReader);
             Items.Add(item);
         }
 
@@ -32,7 +32,7 @@ public sealed class SetItemRecord : IBinary
 
     public short Index { get; set; }
     public string Name { get; set; }
-    public List<Item> Items { get; } = new();
+    public List<SetItemItem> Items { get; } = new();
     public List<string> Synergies { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -44,7 +44,7 @@ public sealed class SetItemRecord : IBinary
         foreach (var item in Items)
             buffer.AddRange(item.GetBytes());
 
-        foreach (var synergy in Synergies)
+        foreach (string synergy in Synergies)
             buffer.AddRange(synergy.GetLengthPrefixedBytes());
 
         return buffer;

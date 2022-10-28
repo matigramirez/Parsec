@@ -17,8 +17,8 @@ public sealed class Product
     public int Cost { get; set; }
 
     [ShaiyaProperty]
-    [FixedLengthList(typeof(Item), 24)]
-    public List<Item> Items { get; set; } = new();
+    [FixedLengthList(typeof(CashItem), 24)]
+    public List<CashItem> Items { get; set; } = new();
 
     [ShaiyaProperty]
     [LengthPrefixedString(false)]

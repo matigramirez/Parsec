@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel;
 using System.IO;
 using Parsec.Common;
-using Parsec.Shaiya.Item;
-using Parsec.Shaiya.SData;
 using Xunit;
 
-namespace Parsec.Tests.Shaiya;
+namespace Parsec.Tests.Shaiya.SData;
 
 public class SDataTests
 {
@@ -18,17 +16,17 @@ public class SDataTests
     {
         // Encrypt file buffer
         var decryptedFileBuffer = File.ReadAllBytes(DecryptedSDataFilePath);
-        var encryptedOutput = SData.Encrypt(decryptedFileBuffer);
+        var encryptedOutput = Parsec.Shaiya.SData.SData.Encrypt(decryptedFileBuffer);
 
-        Assert.False(SData.IsEncrypted(decryptedFileBuffer));
-        Assert.True(SData.IsEncrypted(encryptedOutput));
+        Assert.False(Parsec.Shaiya.SData.SData.IsEncrypted(decryptedFileBuffer));
+        Assert.True(Parsec.Shaiya.SData.SData.IsEncrypted(encryptedOutput));
 
         // Decrypt file buffer
         var encryptedFileBuffer = File.ReadAllBytes(EncryptedSDataFilePath);
-        var decryptedBuffer = SData.Decrypt(encryptedFileBuffer, true);
+        var decryptedBuffer = Parsec.Shaiya.SData.SData.Decrypt(encryptedFileBuffer, true);
 
-        Assert.True(SData.IsEncrypted(encryptedFileBuffer));
-        Assert.False(SData.IsEncrypted(decryptedBuffer));
+        Assert.True(Parsec.Shaiya.SData.SData.IsEncrypted(encryptedFileBuffer));
+        Assert.False(Parsec.Shaiya.SData.SData.IsEncrypted(decryptedBuffer));
     }
 
     [Fact]
@@ -37,17 +35,17 @@ public class SDataTests
     {
         // Encrypt file
         const string encryptedOutputPath = "Shaiya/SData/ItemEp6.encrypted.SData";
-        SData.EncryptFile(DecryptedSDataFilePath, encryptedOutputPath);
+        Parsec.Shaiya.SData.SData.EncryptFile(DecryptedSDataFilePath, encryptedOutputPath);
 
         var encryptedBuffer = File.ReadAllBytes(encryptedOutputPath);
-        Assert.True(SData.IsEncrypted(encryptedBuffer));
+        Assert.True(Parsec.Shaiya.SData.SData.IsEncrypted(encryptedBuffer));
 
         // Decrypt file
         const string decryptedOutputPath = "Shaiya/SData/ItemEp6.decrypted.SData";
-        SData.DecryptFile(EncryptedSDataFilePath, decryptedOutputPath);
+        Parsec.Shaiya.SData.SData.DecryptFile(EncryptedSDataFilePath, decryptedOutputPath);
 
         var decryptedBuffer = File.ReadAllBytes(decryptedOutputPath);
-        Assert.False(SData.IsEncrypted(decryptedBuffer));
+        Assert.False(Parsec.Shaiya.SData.SData.IsEncrypted(decryptedBuffer));
     }
 
     [Fact]
@@ -57,14 +55,14 @@ public class SDataTests
         const string encryptedOutputPath = "Shaiya/SData/ItemEp6.encrypted.SData";
         const string decryptedOutputPath = "Shaiya/SData/ItemEp6.decrypted.SData";
 
-        var item = Reader.ReadFromFile<Item>(EncryptedSDataFilePath, Episode.EP6);
+        var item = Reader.ReadFromFile<Parsec.Shaiya.Item.Item>(EncryptedSDataFilePath, Episode.EP6);
         item.WriteEncrypted(encryptedOutputPath, Episode.EP6);
         item.WriteDecrypted(decryptedOutputPath, Episode.EP6);
 
         var encryptedBuffer = File.ReadAllBytes(encryptedOutputPath);
         var decryptedBuffer = File.ReadAllBytes(decryptedOutputPath);
 
-        Assert.True(SData.IsEncrypted(encryptedBuffer));
-        Assert.False(SData.IsEncrypted(decryptedBuffer));
+        Assert.True(Parsec.Shaiya.SData.SData.IsEncrypted(encryptedBuffer));
+        Assert.False(Parsec.Shaiya.SData.SData.IsEncrypted(decryptedBuffer));
     }
 }

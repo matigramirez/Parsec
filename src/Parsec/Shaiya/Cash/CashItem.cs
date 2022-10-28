@@ -2,7 +2,7 @@ using Parsec.Attributes;
 
 namespace Parsec.Shaiya.Cash;
 
-public sealed class Item
+public sealed class CashItem
 {
     [ShaiyaProperty]
     public int ItemId { get; set; }

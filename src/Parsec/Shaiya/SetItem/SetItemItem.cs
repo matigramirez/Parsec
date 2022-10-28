@@ -5,14 +5,14 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SetItem;
 
-public sealed class Item : IBinary
+public sealed class SetItemItem : IBinary
 {
     [JsonConstructor]
-    public Item()
+    public SetItemItem()
     {
     }
 
-    public Item(SBinaryReader binaryReader)
+    public SetItemItem(SBinaryReader binaryReader)
     {
         Type = binaryReader.Read<short>();
         TypeId = binaryReader.Read<short>();
