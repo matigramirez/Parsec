@@ -15,6 +15,11 @@ public class ZonTests
 
         var zon = Reader.ReadFromFile<Parsec.Shaiya.Zon.Zon>(filePath);
 
+        // Since record descriptions use different encodings for the Description string, the Zon -> JSON -> Zon conversion
+        // will always modify the Description
+        foreach (var record in zon.Records)
+            record.Description = "TestDescription";
+
         zon.Write(outputPath);
         zon.ExportJson(jsonPath);
 
