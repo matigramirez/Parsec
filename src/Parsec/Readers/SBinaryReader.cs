@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 using Parsec.Extensions;
 
 namespace Parsec.Readers;
@@ -275,17 +274,11 @@ public sealed class SBinaryReader
     /// <summary>
     /// Resets the reading offset
     /// </summary>
-    public void ResetOffset() => SetOffset(0);
-
-    /// <summary>
-    /// Sets the reading offset
-    /// </summary>
-    /// <param name="offset">Offset value to set</param>
-    public void SetOffset(int offset) => Offset = offset;
+    public void ResetOffset() => Offset = 0;
 
     /// <summary>
     /// Sets the cursor to the current position + the specified number of bytes to skip
     /// </summary>
     /// <param name="count">Number of bytes to skip</param>
-    public void Skip(int count) => SetOffset(Offset + count);
+    public void Skip(int count) => Offset += count;
 }

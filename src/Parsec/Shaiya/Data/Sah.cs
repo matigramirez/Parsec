@@ -84,7 +84,7 @@ public sealed class Sah : FileBase, IJsonReadable
         FileCount = _binaryReader.Read<int>();
 
         // Index where data starts (after header - skip padding bytes)
-        _binaryReader.SetOffset(51);
+        _binaryReader.Skip(40);
 
         // Read root folder and all of its subfolders
         RootFolder = new SFolder(_binaryReader, null, FolderIndex, FileIndex, Crypto);
