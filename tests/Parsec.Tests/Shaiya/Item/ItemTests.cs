@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Parsec.Tests.Shaiya;
+namespace Parsec.Tests.Shaiya.Item;
 
 public class ItemTests
 {
