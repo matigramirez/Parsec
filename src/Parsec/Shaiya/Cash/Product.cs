@@ -21,17 +21,14 @@ public sealed class Product
     public List<CashItem> Items { get; set; } = new();
 
     [ShaiyaProperty]
-    [LengthPrefixedString(false)]
-    [SuffixedString("\0\0")]
+    [LengthPrefixedString(IncludeStringTerminator = false, Suffix = "\0\0")]
     public string ProductName { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString(false)]
-    [SuffixedString("\0\0")]
+    [LengthPrefixedString(IncludeStringTerminator = false, Suffix = "\0\0")]
     public string ProductCode { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString(false)]
-    [SuffixedString("\0\0")]
+    [LengthPrefixedString(IncludeStringTerminator = false, Suffix = "\0\0")]
     public string Description { get; set; }
 }
