@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.MLX;
 /// <summary>
 /// Represents a .MLX file, which is used as an index for 3DC-DDS combinations for each class/sex combination
 /// </summary>
-public class MLX : FileBase, IJsonReadable
+public sealed class MLX : FileBase, IJsonReadable
 {
     public List<MLXRecord> Records { get; } = new();
 
