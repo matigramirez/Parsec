@@ -80,17 +80,14 @@ public class DataTests
         var file1 = data.FileIndex.Values.FirstOrDefault();
         var file2 = data.FileIndex.Values.LastOrDefault();
 
-        if (file1 != null)
-        {
-            data.Extract(file1, extractionDirectory);
-            Assert.True(File.Exists($"{extractionDirectory}/{file1.Name}"));
-        }
+        if (file1 == null || file2 == null)
+            throw new XunitException("File not found in FileIndex");
 
-        if (file2 != null)
-        {
-            data.Extract(file2, extractionDirectory);
-            Assert.True(File.Exists($"{extractionDirectory}/{file2.Name}"));
-        }
+        data.Extract(file1, extractionDirectory);
+        Assert.True(File.Exists($"{extractionDirectory}/{file1.Name}"));
+
+        data.Extract(file2, extractionDirectory);
+        Assert.True(File.Exists($"{extractionDirectory}/{file2.Name}"));
     }
 
     [Fact]
