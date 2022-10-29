@@ -117,7 +117,7 @@ public static class Binary
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        throw new NotSupportedException();
                     }
 
                     // Create generic list
@@ -304,7 +304,7 @@ public static class Binary
                     else
                     {
                         // only int, short and byte lengths are expected
-                        throw new NotImplementedException();
+                        throw new NotSupportedException();
                     }
 
                     foreach (object item in items)
