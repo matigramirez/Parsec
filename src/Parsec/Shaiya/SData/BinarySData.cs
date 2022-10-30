@@ -24,13 +24,6 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
     [ShaiyaProperty]
     public List<TRecord> Records { get; set; } = new();
 
-    public void ExportCsv(string outputPath)
-    {
-        using var writer = new StreamWriter(outputPath);
-        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-        csvWriter.WriteRecords(Records);
-    }
-
     public override void Read(params object[] options)
     {
         Header = _binaryReader.ReadBytes(128);
@@ -90,5 +83,12 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         // Create the BinarySData instance with an empty header. The header is skipped entirely by the game so this isn't an issue.
         var binarySData = new T { Header = new byte[128], Fields = fields, Records = records };
         return binarySData;
+    }
+
+    public void ExportCsv(string outputPath)
+    {
+        using var writer = new StreamWriter(outputPath);
+        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csvWriter.WriteRecords(Records);
     }
 }
