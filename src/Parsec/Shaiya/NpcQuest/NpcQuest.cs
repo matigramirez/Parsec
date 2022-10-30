@@ -51,34 +51,22 @@ public class NpcQuest : SData.SData, IJsonReadable
     private void ReadMerchants()
     {
         int merchantCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < merchantCount; i++)
-        {
-            var merchant = new Merchant(_binaryReader, Episode);
-            Merchants.Add(merchant);
-        }
+            Merchants.Add(new Merchant(_binaryReader, Episode));
     }
 
     private void ReadGatekeepers()
     {
         int gateKeeperCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < gateKeeperCount; i++)
-        {
-            var gatekeeper = new GateKeeper(_binaryReader, Episode);
-            Gatekeepers.Add(gatekeeper);
-        }
+            Gatekeepers.Add(new GateKeeper(_binaryReader, Episode));
     }
 
-    private void ReadStandardNpcs(List<StandardNpc> npcList)
+    private void ReadStandardNpcs(ICollection<StandardNpc> npcList)
     {
-        int count = _binaryReader.Read<int>();
-
-        for (int i = 0; i < count; i++)
-        {
-            var npc = new StandardNpc(_binaryReader, Episode);
-            npcList.Add(npc);
-        }
+        int npcCount = _binaryReader.Read<int>();
+        for (int i = 0; i < npcCount; i++)
+            npcList.Add(new StandardNpc(_binaryReader, Episode));
     }
 
     private void ReadUnknownArray()
@@ -110,7 +98,6 @@ public class NpcQuest : SData.SData, IJsonReadable
     private void ReadQuests()
     {
         int questCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < questCount; i++)
         {
             var quest = new Quest(_binaryReader, Episode);
@@ -124,19 +111,19 @@ public class NpcQuest : SData.SData, IJsonReadable
             episode = Episode;
 
         var buffer = new List<byte>();
-        buffer.AddRange(Merchants.GetBytes());
-        buffer.AddRange(Gatekeepers.GetBytes());
-        buffer.AddRange(Blacksmiths.GetBytes());
-        buffer.AddRange(PvpManagers.GetBytes());
-        buffer.AddRange(GamblingHouses.GetBytes());
-        buffer.AddRange(Warehouses.GetBytes());
-        buffer.AddRange(NormalNpcs.GetBytes());
-        buffer.AddRange(Guards.GetBytes());
-        buffer.AddRange(Animals.GetBytes());
-        buffer.AddRange(Apprentices.GetBytes());
-        buffer.AddRange(GuildMasters.GetBytes());
-        buffer.AddRange(DeadNpcs.GetBytes());
-        buffer.AddRange(CombatCommanders.GetBytes());
+        buffer.AddRange(Merchants.GetBytes(true, episode));
+        buffer.AddRange(Gatekeepers.GetBytes(true, episode));
+        buffer.AddRange(Blacksmiths.GetBytes(true, episode));
+        buffer.AddRange(PvpManagers.GetBytes(true, episode));
+        buffer.AddRange(GamblingHouses.GetBytes(true, episode));
+        buffer.AddRange(Warehouses.GetBytes(true, episode));
+        buffer.AddRange(NormalNpcs.GetBytes(true, episode));
+        buffer.AddRange(Guards.GetBytes(true, episode));
+        buffer.AddRange(Animals.GetBytes(true, episode));
+        buffer.AddRange(Apprentices.GetBytes(true, episode));
+        buffer.AddRange(GuildMasters.GetBytes(true, episode));
+        buffer.AddRange(DeadNpcs.GetBytes(true, episode));
+        buffer.AddRange(CombatCommanders.GetBytes(true, episode));
         buffer.AddRange(UnknownArray);
         buffer.AddRange(Quests.GetBytes(true, episode));
         return buffer;

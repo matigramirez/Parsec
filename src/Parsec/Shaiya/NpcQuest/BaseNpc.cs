@@ -1,4 +1,5 @@
-﻿using Parsec.Common;
+﻿using System.Text;
+using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -7,7 +8,6 @@ namespace Parsec.Shaiya.NpcQuest;
 
 public abstract class BaseNpc : IBinary
 {
-    private readonly Episode _episode;
     public NpcType Type { get; set; }
     public short TypeId { get; set; }
     public int Model { get; set; }
@@ -20,15 +20,10 @@ public abstract class BaseNpc : IBinary
     public List<short> InQuestIds { get; } = new();
     public List<short> OutQuestIds { get; } = new();
 
-    public BaseNpc(Episode episode)
-    {
-        _episode = episode;
-    }
-
-    protected void ReadNpcBaseComplete(SBinaryReader binaryReader)
+    protected void ReadNpcBaseComplete(SBinaryReader binaryReader, Episode episode)
     {
         ReadBaseNpcFirstSegment(binaryReader);
-        ReadBaseNpcSecondSegment(binaryReader);
+        ReadBaseNpcSecondSegment(binaryReader, episode);
         ReadBaseNpcThirdSegment(binaryReader);
     }
 
@@ -44,74 +39,77 @@ public abstract class BaseNpc : IBinary
         buffer.AddRange(TypeId.GetBytes());
     }
 
-    protected void ReadBaseNpcSecondSegment(SBinaryReader binaryReader)
+    protected void ReadBaseNpcSecondSegment(SBinaryReader binaryReader, Episode episode)
     {
         Model = binaryReader.Read<int>();
         MoveDistance = binaryReader.Read<int>();
         MoveSpeed = binaryReader.Read<int>();
         Faction = (NpcFaction)binaryReader.Read<int>();
 
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
         {
-            Name = binaryReader.ReadString(false);
-            WelcomeMessage = binaryReader.ReadString(false);
+            Name = binaryReader.ReadString(Encoding.ASCII, false);
+            WelcomeMessage = binaryReader.ReadString(Encoding.ASCII, false);
         }
     }
 
-    protected void WriteBaseNpcSecondSegmentBytes(List<byte> buffer)
+    protected void WriteBaseNpcSecondSegmentBytes(List<byte> buffer, Episode episode)
     {
         buffer.AddRange(Model.GetBytes());
         buffer.AddRange(MoveDistance.GetBytes());
         buffer.AddRange(MoveSpeed.GetBytes());
         buffer.AddRange(((int)Faction).GetBytes());
 
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
         {
-            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
-            buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(false));
+            buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII, false));
+            buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(Encoding.ASCII, false));
         }
     }
 
     protected void ReadBaseNpcThirdSegment(SBinaryReader binaryReader)
     {
-        var inQuestQuantity = binaryReader.Read<int>();
+        int inQuestQuantity = binaryReader.Read<int>();
 
         for (int i = 0; i < inQuestQuantity; i++)
         {
-            var questId = binaryReader.Read<short>();
+            short questId = binaryReader.Read<short>();
             InQuestIds.Add(questId);
         }
 
-        var outQuestQuantity = binaryReader.Read<int>();
+        int outQuestQuantity = binaryReader.Read<int>();
 
         for (int i = 0; i < outQuestQuantity; i++)
         {
-            var questId = binaryReader.Read<short>();
+            short questId = binaryReader.Read<short>();
             OutQuestIds.Add(questId);
         }
     }
 
     protected void WriteBaseNpcThirdSegmentBytes(List<byte> buffer)
     {
-        buffer.AddRange(BitConverter.GetBytes(InQuestIds.Count));
+        buffer.AddRange(InQuestIds.Count.GetBytes());
 
-        foreach (var inQuestId in InQuestIds)
-            buffer.AddRange(BitConverter.GetBytes(inQuestId));
+        foreach (short inQuestId in InQuestIds)
+            buffer.AddRange(inQuestId.GetBytes());
 
-        buffer.AddRange(BitConverter.GetBytes(OutQuestIds.Count));
+        buffer.AddRange(OutQuestIds.Count.GetBytes());
 
-        foreach (var outQuestId in OutQuestIds)
-            buffer.AddRange(BitConverter.GetBytes(outQuestId));
+        foreach (short outQuestId in OutQuestIds)
+            buffer.AddRange(outQuestId.GetBytes());
     }
 
     public virtual IEnumerable<byte> GetBytes(params object[] options)
     {
+        var episode = Episode.EP5;
+
+        if (options.Length > 0)
+            episode = (Episode)options[0];
+
         var buffer = new List<byte>();
-
         WriteBaseNpcFirstSegmentBytes(buffer);
-        WriteBaseNpcSecondSegmentBytes(buffer);
+        WriteBaseNpcSecondSegmentBytes(buffer, episode);
         WriteBaseNpcThirdSegmentBytes(buffer);
-
         return buffer;
     }
 }

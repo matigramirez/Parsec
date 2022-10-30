@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -11,13 +12,13 @@ public class Merchant : BaseNpc, IBinary
 
     public List<MerchantItem> SaleItems { get; } = new();
 
-    public Merchant(SBinaryReader binaryReader, Episode episode) : base(episode)
+    public Merchant(SBinaryReader binaryReader, Episode episode)
     {
         ReadBaseNpcFirstSegment(binaryReader);
         MerchantType = (MerchantType)binaryReader.Read<byte>();
-        ReadBaseNpcSecondSegment(binaryReader);
+        ReadBaseNpcSecondSegment(binaryReader, episode);
 
-        var saleItemCount = binaryReader.Read<int>();
+        int saleItemCount = binaryReader.Read<int>();
 
         for (int i = 0; i < saleItemCount; i++)
         {
@@ -29,25 +30,23 @@ public class Merchant : BaseNpc, IBinary
     }
 
     [JsonConstructor]
-    public Merchant(Episode episode = Episode.EP5) : base(episode)
+    public Merchant()
     {
     }
 
     public override IEnumerable<byte> GetBytes(params object[] options)
     {
-        var buffer = new List<byte>();
+        var episode = Episode.EP5;
 
+        if (options.Length > 0)
+            episode = (Episode)options[0];
+
+        var buffer = new List<byte>();
         WriteBaseNpcFirstSegmentBytes(buffer);
         buffer.Add((byte)MerchantType);
-        WriteBaseNpcSecondSegmentBytes(buffer);
-
-        buffer.AddRange(BitConverter.GetBytes(SaleItems.Count));
-
-        foreach (var saleItem in SaleItems)
-            buffer.AddRange(saleItem.GetBytes());
-
+        WriteBaseNpcSecondSegmentBytes(buffer, episode);
+        buffer.AddRange(SaleItems.GetBytes());
         WriteBaseNpcThirdSegmentBytes(buffer);
-
         return buffer;
     }
 }
