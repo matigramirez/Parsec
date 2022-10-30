@@ -649,5 +649,8 @@
     <None Update="Shaiya\NpcQuest\NpcQuestEp8.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Shaiya\SetItem\SetItem.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
