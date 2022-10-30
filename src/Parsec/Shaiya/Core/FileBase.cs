@@ -104,7 +104,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
                 }
                 else if (versionPrefix.PrefixType.IsPrimitive)
                 {
-                    filePrefix = Binary.ReadPrimitive(_binaryReader, versionPrefix.PrefixType);
+                    filePrefix = ReflectionHelper.ReadPrimitive(_binaryReader, versionPrefix.PrefixType);
                 }
                 else
                 {
@@ -131,7 +131,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                 continue;
 
-            object value = Binary.ReadProperty(_binaryReader, type, this, property, Episode);
+            object value = ReflectionHelper.ReadProperty(_binaryReader, type, this, property, Episode);
 
             property.SetValue(this, Convert.ChangeType(value, property.PropertyType));
 
@@ -189,7 +189,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
                     }
                     else if (versionPrefix.PrefixType.IsPrimitive)
                     {
-                        buffer.AddRange(Binary.GetPrimitiveBytes(versionPrefix.PrefixType, versionPrefix.Prefix));
+                        buffer.AddRange(ReflectionHelper.GetPrimitiveBytes(versionPrefix.PrefixType, versionPrefix.Prefix));
                     }
                 }
             }
@@ -203,7 +203,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                 continue;
 
-            buffer.AddRange(Binary.GetPropertyBytes(type, this, property, Encoding, episode));
+            buffer.AddRange(ReflectionHelper.GetPropertyBytes(type, this, property, Encoding, episode));
         }
 
         return buffer;

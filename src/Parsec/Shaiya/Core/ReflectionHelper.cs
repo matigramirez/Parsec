@@ -8,7 +8,7 @@ using Parsec.Readers;
 
 namespace Parsec.Shaiya.Core;
 
-public static class Binary
+internal static class ReflectionHelper
 {
     public static object ReadProperty(
         SBinaryReader binaryReader,
