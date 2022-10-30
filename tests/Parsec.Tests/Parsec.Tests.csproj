@@ -631,7 +631,7 @@
     <None Update="Shaiya\SData\DBItemData.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shaiya\Item\ItemEP5.SData">
+    <None Update="Shaiya\Item\ItemEp5.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Shaiya\Monster\Monster.SData">
