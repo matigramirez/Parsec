@@ -90,16 +90,16 @@ public class DBItemDataRecord : IBinarySDataRecord
     public long Quality { get; set; }
 
     [ShaiyaProperty]
-    public long MinAttack { get; set; }
+    public long Effect1 { get; set; }
 
     [ShaiyaProperty]
-    public long PlusAttack { get; set; }
+    public long Effect2 { get; set; }
 
     [ShaiyaProperty]
-    public long Defense { get; set; }
+    public long Effect3 { get; set; }
 
     [ShaiyaProperty]
-    public long Resistance { get; set; }
+    public long Effect4 { get; set; }
 
     [ShaiyaProperty]
     public long ConstHp { get; set; }
