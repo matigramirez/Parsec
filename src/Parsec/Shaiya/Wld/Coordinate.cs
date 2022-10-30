@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// Coordinates to place a 3D model in the world
 /// </summary>
-public class Coordinate
+public sealed class Coordinate
 {
     /// <summary>
     /// Id of a 3D Model

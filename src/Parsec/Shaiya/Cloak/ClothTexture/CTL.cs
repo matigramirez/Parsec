@@ -5,17 +5,17 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Cloak.ClothTexture;
 
-public class CTL : FileBase, IJsonReadable
+public sealed class CTL : FileBase, IJsonReadable
 {
-    public List<Texture> Textures { get; } = new();
-
-    [JsonIgnore]
-    public override string Extension => "CTL";
-
     [JsonConstructor]
     public CTL()
     {
     }
+
+    public List<Texture> Textures { get; } = new();
+
+    [JsonIgnore]
+    public override string Extension => "CTL";
 
     public override void Read(params object[] options)
     {

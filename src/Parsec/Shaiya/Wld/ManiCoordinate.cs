@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// Coordinates to place a 3D object in the field. Used by 'MANI' entities only.
 /// </summary>
-public class ManiCoordinate
+public sealed class ManiCoordinate
 {
     /// <summary>
     /// Unknown field

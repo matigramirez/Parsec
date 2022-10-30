@@ -1,13 +1,17 @@
-﻿using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class Svmap : FileBase, IJsonReadable
+public sealed class Svmap : FileBase, IJsonReadable
 {
+    [JsonConstructor]
+    public Svmap()
+    {
+    }
+
     public int MapSize { get; set; }
     public List<byte> MapHeight { get; private set; } = new();
     public int CellSize { get; set; }
@@ -17,11 +21,6 @@ public class Svmap : FileBase, IJsonReadable
     public List<Portal> Portals { get; } = new();
     public List<Spawn> Spawns { get; } = new();
     public List<NamedArea> NamedAreas { get; } = new();
-
-    [JsonConstructor]
-    public Svmap()
-    {
-    }
 
     [JsonIgnore]
     public override string Extension => "svmap";
@@ -90,7 +89,6 @@ public class Svmap : FileBase, IJsonReadable
         buffer.AddRange(MapSize.GetBytes());
         buffer.AddRange(MapHeight);
         buffer.AddRange(CellSize.GetBytes());
-
         buffer.AddRange(Ladders.GetBytes());
         buffer.AddRange(MonsterAreas.GetBytes());
         buffer.AddRange(Npcs.GetBytes());

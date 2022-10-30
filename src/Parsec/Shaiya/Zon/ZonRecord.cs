@@ -6,8 +6,36 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Zon;
 
-public class ZonRecord : IBinary
+public sealed class ZonRecord : IBinary
 {
+    public ZonRecord(int format, SBinaryReader binaryReader)
+    {
+        Index = binaryReader.Read<byte>();
+        P1 = binaryReader.Read<byte>();
+
+        if (format > 2)
+            P2 = binaryReader.Read<byte>();
+
+        Coordinates1 = new Vector3(binaryReader);
+        Coordinates2 = new Vector3(binaryReader);
+
+        if (format > 2)
+        {
+            Coordinates3 = new Vector3(binaryReader);
+            Coordinates4 = new Vector3(binaryReader);
+            Unknown1 = binaryReader.Read<float>();
+            Unknown2 = binaryReader.Read<float>();
+        }
+
+        MapId = binaryReader.Read<short>();
+        Description = binaryReader.ReadString(false);
+    }
+
+    [JsonConstructor]
+    public ZonRecord()
+    {
+    }
+
     public byte Index { get; set; }
     public byte P1 { get; set; }
 
@@ -41,34 +69,6 @@ public class ZonRecord : IBinary
 
     public short MapId { get; set; }
     public string Description { get; set; }
-
-    public ZonRecord(int format, SBinaryReader binaryReader)
-    {
-        Index = binaryReader.Read<byte>();
-        P1 = binaryReader.Read<byte>();
-
-        if (format > 2)
-            P2 = binaryReader.Read<byte>();
-
-        Coordinates1 = new Vector3(binaryReader);
-        Coordinates2 = new Vector3(binaryReader);
-
-        if (format > 2)
-        {
-            Coordinates3 = new Vector3(binaryReader);
-            Coordinates4 = new Vector3(binaryReader);
-            Unknown1 = binaryReader.Read<float>();
-            Unknown2 = binaryReader.Read<float>();
-        }
-
-        MapId = binaryReader.Read<short>();
-        Description = binaryReader.ReadString(false);
-    }
-
-    [JsonConstructor]
-    public ZonRecord()
-    {
-    }
 
     /// <summary>
     /// Expects format (int) as an option

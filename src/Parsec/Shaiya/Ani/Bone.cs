@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.Ani;
 /// <summary>
 /// Class that represents the information for each bone present in the ani file
 /// </summary>
-public class Bone
+public sealed class Bone
 {
     /// <summary>
     /// The index of the bone which matches the .3DC bone

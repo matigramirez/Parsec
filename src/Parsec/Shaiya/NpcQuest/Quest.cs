@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
@@ -106,8 +106,6 @@ public class Quest : IBinary
     /// </summary>
     public List<QuestResult> Results { get; } = new();
 
-    public List<string> CompletionMessages { get; } = new();
-
     public string InitialDescription { get; set; }
     public string QuestWindowSummary { get; set; }
     public string ReminderInstructions { get; set; }
@@ -125,8 +123,8 @@ public class Quest : IBinary
         // In ep 8, messages are moved to separate translation files.
         if (episode < Episode.EP8)
         {
-            Name = binaryReader.ReadString();
-            Summary = binaryReader.ReadString();
+            Name = binaryReader.ReadString(Encoding.ASCII);
+            Summary = binaryReader.ReadString(Encoding.ASCII);
         }
 
         MinLevel = binaryReader.Read<ushort>();
@@ -188,8 +186,8 @@ public class Quest : IBinary
 
         for (int i = 0; i < 3; i++)
         {
-            var rewardItem = new QuestItem(binaryReader);
-            FarmItems.Add(rewardItem);
+            var farmItem = new QuestItem(binaryReader);
+            FarmItems.Add(farmItem);
         }
 
         PvpKillCount = binaryReader.Read<byte>();
@@ -212,15 +210,14 @@ public class Quest : IBinary
                         Results.Add(result);
                     }
 
-                    InitialDescription = binaryReader.ReadString(false);
-                    QuestWindowSummary = binaryReader.ReadString(false);
-                    ReminderInstructions = binaryReader.ReadString(false);
-                    AlternateResponse = binaryReader.ReadString(false);
+                    InitialDescription = binaryReader.ReadString(Encoding.ASCII, false);
+                    QuestWindowSummary = binaryReader.ReadString(Encoding.ASCII, false);
+                    ReminderInstructions = binaryReader.ReadString(Encoding.ASCII, false);
+                    AlternateResponse = binaryReader.ReadString(Encoding.ASCII, false);
 
                     for (int i = 0; i < 3; i++)
                     {
-                        string completionMessage = binaryReader.ReadString();
-                        CompletionMessages.Add(completionMessage);
+                        Results[i].CompletionMessage = binaryReader.ReadString(Encoding.ASCII, false);
                     }
 
                     break;
@@ -235,19 +232,16 @@ public class Quest : IBinary
 
                         // Episode 8 doesn't have messages, they're part of the translation files
                         if (episode < Episode.EP8)
-                        {
-                            string completionMessage = binaryReader.ReadString();
-                            CompletionMessages.Add(completionMessage);
-                        }
+                            result.CompletionMessage = binaryReader.ReadString(Encoding.ASCII, false);
                     }
 
                     // Episode 8 doesn't have messages, they're part of the translation files
                     if (episode < Episode.EP8)
                     {
-                        InitialDescription = binaryReader.ReadString(false);
-                        QuestWindowSummary = binaryReader.ReadString(false);
-                        ReminderInstructions = binaryReader.ReadString(false);
-                        AlternateResponse = binaryReader.ReadString(false);
+                        InitialDescription = binaryReader.ReadString(Encoding.ASCII, false);
+                        QuestWindowSummary = binaryReader.ReadString(Encoding.ASCII, false);
+                        ReminderInstructions = binaryReader.ReadString(Encoding.ASCII, false);
+                        AlternateResponse = binaryReader.ReadString(Encoding.ASCII, false);
                     }
 
                     break;
@@ -268,8 +262,8 @@ public class Quest : IBinary
 
         if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
         {
-            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
-            buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
+            buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII, false));
+            buffer.AddRange(Summary.GetLengthPrefixedBytes(Encoding.ASCII, false));
         }
 
         buffer.AddRange(MinLevel.GetBytes());
@@ -289,8 +283,10 @@ public class Quest : IBinary
         buffer.Add(byCG);
         buffer.Add(byOG);
         buffer.Add(byIG);
+
         buffer.AddRange(PreviousQuestId.GetBytes());
         buffer.AddRange(RequireParty.GetBytes());
+
         buffer.Add(PartyFighter);
         buffer.Add(PartyDefender);
         buffer.Add(PartyRanger);
@@ -310,13 +306,13 @@ public class Quest : IBinary
         buffer.Add(StartItemType);
         buffer.Add(StartItemId);
 
-        buffer.AddRange(RequiredItems.GetBytes());
+        buffer.AddRange(RequiredItems.Take(3).GetBytes(false));
 
         buffer.Add(EndType);
         buffer.Add(EndNpcType);
         buffer.AddRange(EndNpcId.GetBytes());
 
-        buffer.AddRange(FarmItems.GetBytes());
+        buffer.AddRange(FarmItems.Take(3).GetBytes(false));
 
         buffer.Add(PvpKillCount);
         buffer.AddRange(RequiredMobId1.GetBytes());
@@ -331,34 +327,34 @@ public class Quest : IBinary
         {
             case <= Episode.EP5:
                 {
-                    buffer.AddRange(Results.Take(3).GetBytes());
-
-                    buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
-                    buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
-                    buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
-                    buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
-
-                    foreach (string completionMessage in CompletionMessages.Take(3))
-                        buffer.AddRange(completionMessage.GetLengthPrefixedBytes());
+                    buffer.AddRange(Results.Take(3).GetBytes(false));
+                    buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                    buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                    buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                    buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                    foreach (var result in Results.Take(3))
+                        buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(Encoding.ASCII, false));
 
                     break;
                 }
             case >= Episode.EP6:
                 {
-                    for (int i = 0; i < 6; i++)
+                    foreach (var result in Results.Take(6))
                     {
-                        buffer.AddRange(Results[i].GetBytes());
+                        buffer.AddRange(result.GetBytes(episode));
 
                         if (episode < Episode.EP8)
-                            buffer.AddRange(CompletionMessages[i].GetLengthPrefixedBytes());
+                        {
+                            buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                        }
                     }
 
                     if (episode < Episode.EP8)
                     {
-                        buffer.AddRange(InitialDescription.GetLengthPrefixedBytes());
-                        buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes());
-                        buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes());
-                        buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes());
+                        buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                        buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                        buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                        buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(Encoding.ASCII, false));
                     }
 
                     break;

@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.DualLayerClothes;
 
-public class DBDualLayerClothesDataRecord : IBinarySDataRecord
+public sealed class DBDualLayerClothesDataRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
     public long Id { get; set; }

@@ -13,6 +13,6 @@ public enum NpcType
     Animal,
     Apprentice,
     GuildMaster,
-    DeadNPC,
+    DeadNpc,
     CombatCommander
 }

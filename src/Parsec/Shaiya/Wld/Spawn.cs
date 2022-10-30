@@ -5,7 +5,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// Represents a spawn area in the world
 /// </summary>
-public class Spawn
+public sealed class Spawn
 {
     /// <summary>
     /// Almost always 1

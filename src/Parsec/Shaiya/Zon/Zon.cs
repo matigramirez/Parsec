@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Zon;
 
-public class Zon : FileBase, IJsonReadable
+public sealed class Zon : FileBase, IJsonReadable
 {
     public int Format { get; set; }
     public List<ZonRecord> Records { get; } = new();
@@ -15,13 +15,9 @@ public class Zon : FileBase, IJsonReadable
     {
         Format = _binaryReader.Read<int>();
 
-        var recordCount = _binaryReader.Read<int>();
-
+        int recordCount = _binaryReader.Read<int>();
         for (int i = 0; i < recordCount; i++)
-        {
-            var record = new ZonRecord(Format, _binaryReader);
-            Records.Add(record);
-        }
+            Records.Add(new ZonRecord(Format, _binaryReader));
     }
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
@@ -30,7 +26,6 @@ public class Zon : FileBase, IJsonReadable
         buffer.AddRange(Format.GetBytes());
 
         buffer.AddRange(Records.Count.GetBytes());
-
         foreach (var record in Records)
             buffer.AddRange(record.GetBytes(Format));
 

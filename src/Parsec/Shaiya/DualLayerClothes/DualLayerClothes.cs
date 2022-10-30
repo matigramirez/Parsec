@@ -4,7 +4,7 @@ using Parsec.Common;
 namespace Parsec.Shaiya.DualLayerClothes;
 
 [DefaultVersion(Episode.EP6)]
-public class DualLayerClothes : SData.SData, IJsonReadable
+public sealed class DualLayerClothes : SData.SData, IJsonReadable
 {
     [ShaiyaProperty]
     [LengthPrefixedList(typeof(DualLayerClothesRecord))]

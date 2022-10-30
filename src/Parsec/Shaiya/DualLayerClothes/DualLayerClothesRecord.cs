@@ -2,7 +2,7 @@
 
 namespace Parsec.Shaiya.DualLayerClothes;
 
-public class DualLayerClothesRecord
+public sealed class DualLayerClothesRecord
 {
     [ShaiyaProperty]
     public short Index { get; set; }

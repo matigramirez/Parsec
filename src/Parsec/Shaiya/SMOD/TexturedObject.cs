@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.SMOD;
 /// <summary>
 /// A 3d mesh with a texture
 /// </summary>
-public class TexturedObject
+public sealed class TexturedObject
 {
     /// <summary>
     /// Name of the .tga texture file. Although they have the .tga extension, the client actually has .dds files, so they're very likely

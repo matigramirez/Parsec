@@ -2,7 +2,7 @@
 
 namespace Parsec.Shaiya.KillStatus;
 
-public class KillStatusBonus
+public sealed class KillStatusBonus
 {
     /// <summary>
     /// The type of bonus

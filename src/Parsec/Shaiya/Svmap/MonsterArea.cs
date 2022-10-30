@@ -9,11 +9,8 @@ namespace Parsec.Shaiya.Svmap;
 /// <summary>
 /// Represents an area with monsters inside
 /// </summary>
-public class MonsterArea : IBinary
+public sealed class MonsterArea : IBinary
 {
-    public BoundingBox Area { get; set; }
-    public List<Monster> Monsters { get; set; } = new();
-
     [JsonConstructor]
     public MonsterArea()
     {
@@ -32,6 +29,9 @@ public class MonsterArea : IBinary
             Monsters.Add(monster);
         }
     }
+
+    public BoundingBox Area { get; set; }
+    public List<Monster> Monsters { get; set; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

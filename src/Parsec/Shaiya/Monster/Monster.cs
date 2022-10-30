@@ -1,18 +1,13 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using CsvHelper;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
-using ServiceStack;
 
 namespace Parsec.Shaiya.Monster;
 
-public class Monster : SData.SData, ICsv
+public sealed class Monster : SData.SData, ICsv
 {
-    public List<MonsterRecord> Records { get; } = new();
-
-    public override string Extension => "SData";
-
     [JsonConstructor]
     public Monster()
     {
@@ -23,10 +18,20 @@ public class Monster : SData.SData, ICsv
         Records = records;
     }
 
+    public List<MonsterRecord> Records { get; } = new();
+
+    public override string Extension => "SData";
+
+    public void ExportCsv(string outputPath)
+    {
+        using var writer = new StreamWriter(outputPath);
+        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csvWriter.WriteRecords(Records);
+    }
+
     public override void Read(params object[] options)
     {
-        var recordCount = _binaryReader.Read<int>();
-
+        int recordCount = _binaryReader.Read<int>();
         for (int i = 0; i < recordCount; i++)
         {
             var record = new MonsterRecord(_binaryReader);
@@ -36,24 +41,20 @@ public class Monster : SData.SData, ICsv
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Records.GetBytes();
 
-    public void ExportCSV(string path)
-    {
-        var csv = Records.ToCsv();
-        FileHelper.WriteFile(path, csv.GetBytes());
-    }
-
     /// <summary>
     /// Reads the Monster.SData format from a csv file
     /// </summary>
-    /// <param name="path">csv file path</param>
+    /// <param name="csvPath">csv file path</param>
     /// <returns><see cref="Monster"/> instance</returns>
-    public static Monster ReadFromCSV(string path)
+    public static Monster ReadFromCsv(string csvPath)
     {
         // Read all monster definitions from csv file
-        var monsterRecords = File.ReadAllText(path).FromCsv<List<MonsterRecord>>();
+        using var reader = new StreamReader(csvPath);
+        using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
+        var records = csvReader.GetRecords<MonsterRecord>().ToList();
 
         // Create monster instance
-        var monster = new Monster(monsterRecords);
+        var monster = new Monster(records);
         return monster;
     }
 }

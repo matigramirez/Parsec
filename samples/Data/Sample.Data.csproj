@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Parsec\Parsec.csproj"/>
+    <ProjectReference Include="..\..\src\Parsec\Parsec.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Parsec.Common;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -7,7 +8,6 @@ namespace Parsec.Shaiya.NpcQuest;
 
 public class QuestResult : IBinary
 {
-    private readonly Episode _episode;
     public ushort NeedMobId { get; set; }
     public byte NeedMobCount { get; set; }
     public byte NeedItemId { get; set; }
@@ -27,11 +27,12 @@ public class QuestResult : IBinary
     public byte ItemType3 { get; set; }
     public byte ItemTypeId3 { get; set; }
     public byte ItemCount3 { get; set; }
-    public ushort NextQuest { get; set; }
+    public ushort NextQuestId { get; set; }
+
+    public string CompletionMessage { get; set; } = string.Empty;
 
     public QuestResult(SBinaryReader binaryReader, Episode episode)
     {
-        _episode = episode;
         NeedMobId = binaryReader.Read<ushort>();
         NeedMobCount = binaryReader.Read<byte>();
         NeedItemId = binaryReader.Read<byte>();
@@ -59,7 +60,7 @@ public class QuestResult : IBinary
             ItemCount3 = binaryReader.Read<byte>();
         }
 
-        NextQuest = binaryReader.Read<ushort>();
+        NextQuestId = binaryReader.Read<ushort>();
     }
 
     [JsonConstructor]
@@ -69,22 +70,26 @@ public class QuestResult : IBinary
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
-        var buffer = new List<byte>();
+        var episode = Episode.EP5;
 
-        buffer.AddRange(BitConverter.GetBytes(NeedMobId));
+        if (options.Length > 0)
+            episode = (Episode)options[0];
+
+        var buffer = new List<byte>();
+        buffer.AddRange(NeedMobId.GetBytes());
         buffer.Add(NeedMobCount);
         buffer.Add(NeedItemId);
         buffer.Add(NeedItemCount);
-        buffer.AddRange(BitConverter.GetBytes(NeedTime));
-        buffer.AddRange(BitConverter.GetBytes(NeedHG));
-        buffer.AddRange(BitConverter.GetBytes(NeedVG));
+        buffer.AddRange(NeedTime.GetBytes());
+        buffer.AddRange(NeedHG.GetBytes());
+        buffer.AddRange(NeedVG.GetBytes());
         buffer.Add(NeedOG);
-        buffer.AddRange(BitConverter.GetBytes(Exp));
-        buffer.AddRange(BitConverter.GetBytes(Money));
+        buffer.AddRange(Exp.GetBytes());
+        buffer.AddRange(Money.GetBytes());
         buffer.Add(ItemType1);
         buffer.Add(ItemTypeId1);
 
-        if (_episode > Episode.EP5)
+        if (episode > Episode.EP5)
         {
             buffer.Add(ItemCount1);
 
@@ -97,8 +102,7 @@ public class QuestResult : IBinary
             buffer.Add(ItemCount3);
         }
 
-        buffer.AddRange(BitConverter.GetBytes(NextQuest));
-
+        buffer.AddRange(NextQuestId.GetBytes());
         return buffer;
     }
 }

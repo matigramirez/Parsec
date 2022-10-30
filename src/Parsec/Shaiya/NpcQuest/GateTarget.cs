@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -9,7 +10,6 @@ namespace Parsec.Shaiya.NpcQuest;
 
 public class GateTarget : IBinary
 {
-    private readonly Episode _episode;
     public short MapId { get; set; }
     public Vector3 Position { get; set; }
     public string TargetName { get; set; }
@@ -21,12 +21,11 @@ public class GateTarget : IBinary
 
     public GateTarget(SBinaryReader binaryReader, Episode episode)
     {
-        _episode = episode;
         MapId = binaryReader.Read<short>();
         Position = new Vector3(binaryReader);
 
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
-            TargetName = binaryReader.ReadString(false);
+        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+            TargetName = binaryReader.ReadString(Encoding.ASCII, false);
 
         Cost = binaryReader.Read<int>();
     }
@@ -38,16 +37,19 @@ public class GateTarget : IBinary
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
-        var buffer = new List<byte>();
+        var episode = Episode.EP5;
 
+        if (options.Length > 0)
+            episode = (Episode)options[0];
+
+        var buffer = new List<byte>();
         buffer.AddRange(MapId.GetBytes());
         buffer.AddRange(Position.GetBytes());
 
-        if (_episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
-            buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
+        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+            buffer.AddRange(TargetName.GetLengthPrefixedBytes(Encoding.ASCII, false));
 
         buffer.AddRange(Cost.GetBytes());
-
         return buffer;
     }
 }

@@ -12,7 +12,7 @@ public enum WldType
     DUN
 }
 
-public class WLD : FileBase
+public sealed class WLD : FileBase
 {
     public WldType WldType => Type == "DUN" ? WldType.DUN : WldType.FLD;
 

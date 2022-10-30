@@ -5,11 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT;
 
-public class EffectTexture : IBinary
+public sealed class EffectTexture : IBinary
 {
-    public int Index { get; set; }
-    public string Name { get; set; }
-
     [JsonConstructor]
     public EffectTexture()
     {
@@ -20,6 +17,9 @@ public class EffectTexture : IBinary
         Index = index;
         Name = binaryReader.ReadString();
     }
+
+    public int Index { get; set; }
+    public string Name { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options) => Name.GetLengthPrefixedBytes();
 }

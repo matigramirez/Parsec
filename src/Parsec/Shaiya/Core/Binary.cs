@@ -1,4 +1,3 @@
-﻿using System.Linq;
 using System.Reflection;
 using System.Text;
 using Parsec.Attributes;
@@ -119,7 +118,7 @@ public static class Binary
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        throw new NotSupportedException();
                     }
 
                     // Create generic list
@@ -158,13 +157,13 @@ public static class Binary
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
                     string lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
-                                                                       !lengthPrefixedStringAttribute.IncludeStringTerminator);
+                        !lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                     return lengthPrefixedStr;
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
                     string fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
-                                                                    !fixedLengthStringAttribute.IncludeStringTerminator);
+                        !fixedLengthStringAttribute.IncludeStringTerminator);
 
                     return fixedLengthStr;
 
@@ -201,7 +200,8 @@ public static class Binary
 
     public static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
 
-    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Encoding encoding, Episode episode = Episode.Unknown)
+    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Encoding encoding,
+        Episode episode = Episode.Unknown)
     {
         var type = propertyInfo.PropertyType;
         var attributes = propertyInfo.GetCustomAttributes().ToList();
@@ -239,7 +239,7 @@ public static class Binary
                         return Array.Empty<byte>();
 
                     // multiple episode check
-                    if (ep <= shaiyaProperty.MinEpisode || ep >= shaiyaProperty.MaxEpisode)
+                    if (ep < shaiyaProperty.MinEpisode || ep > shaiyaProperty.MaxEpisode)
                         return Array.Empty<byte>();
 
                     break;
@@ -305,7 +305,7 @@ public static class Binary
                     else
                     {
                         // only int, short and byte lengths are expected
-                        throw new NotImplementedException();
+                        throw new NotSupportedException();
                     }
 
                     foreach (object item in items)
@@ -318,7 +318,8 @@ public static class Binary
                         {
                             foreach (var property in lengthPrefixedListAttribute.ItemType.GetProperties())
                             {
-                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !lengthPrefixedListAttribute.ItemType.IsPrimitive)
+                                if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) &&
+                                    !lengthPrefixedListAttribute.ItemType.IsPrimitive)
                                     continue;
 
                                 buffer.AddRange(GetPropertyBytes(genericItemType, item, property, encoding, episode));
@@ -328,15 +329,12 @@ public static class Binary
 
                     return buffer;
 
-                case SuffixedStringAttribute suffixedStringAttribute:
-                    propertyValue += suffixedStringAttribute.Suffix;
-                    break;
-
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                    return ((string)propertyValue).GetLengthPrefixedBytes(encoding, !lengthPrefixedStringAttribute.IncludeStringTerminator);
+                    return ((string)propertyValue + lengthPrefixedStringAttribute.Suffix).GetLengthPrefixedBytes(encoding,
+                        lengthPrefixedStringAttribute.IncludeStringTerminator);
 
-                case FixedLengthStringAttribute:
-                    return ((string)propertyValue).GetBytes();
+                case FixedLengthStringAttribute fixedLengthStringAttribute:
+                    return ((string)propertyValue + fixedLengthStringAttribute.Suffix).GetBytes(fixedLengthStringAttribute.Encoding);
             }
         }
 

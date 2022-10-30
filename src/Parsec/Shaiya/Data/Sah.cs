@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Cryptography;
@@ -9,8 +8,36 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Data;
 
 [DataContract]
-public class Sah : FileBase, IJsonReadable
+public sealed class Sah : FileBase, IJsonReadable
 {
+    /// <summary>
+    /// Dictionary of files that can be accessed by path
+    /// </summary>
+    public Dictionary<string, SFile> FileIndex = new(StringComparer.InvariantCultureIgnoreCase);
+
+    /// <summary>
+    /// Dictionary of folders that can be accessed by path
+    /// </summary>
+    public Dictionary<string, SFolder> FolderIndex = new(StringComparer.InvariantCultureIgnoreCase);
+
+    [JsonConstructor]
+    public Sah()
+    {
+    }
+
+    /// <summary>
+    /// Constructor used when creating a sah file from a directory
+    /// </summary>
+    /// <param name="path">Path where sah file will be saved</param>
+    /// <param name="rootFolder">Shaiya main Folder containing all the sah's data</param>
+    /// <param name="fileCount"></param>
+    public Sah(string path, SFolder rootFolder, int fileCount)
+    {
+        Path = path;
+        RootFolder = rootFolder;
+        FileCount = fileCount;
+    }
+
     /// <summary>
     /// SAH signature, normally "SAH" but it can be changed. Read as char[3].
     /// </summary>
@@ -39,37 +66,9 @@ public class Sah : FileBase, IJsonReadable
     public SFolder RootFolder { get; set; }
 
     /// <summary>
-    /// Dictionary of folders that can be accessed by path
-    /// </summary>
-    public Dictionary<string, SFolder> FolderIndex = new(StringComparer.InvariantCultureIgnoreCase);
-
-    /// <summary>
-    /// Dictionary of files that can be accessed by path
-    /// </summary>
-    public Dictionary<string, SFile> FileIndex = new(StringComparer.InvariantCultureIgnoreCase);
-
-    /// <summary>
     /// Defines how file and folder counts should be encrypted/decrypted.
     /// </summary>
     public SahCrypto Crypto { get; set; } = SahCrypto.Default;
-
-    [JsonConstructor]
-    public Sah()
-    {
-    }
-
-    /// <summary>
-    /// Constructor used when creating a sah file from a directory
-    /// </summary>
-    /// <param name="path">Path where sah file will be saved</param>
-    /// <param name="rootFolder">Shaiya main Folder containing all the sah's data</param>
-    /// <param name="fileCount"></param>
-    public Sah(string path, SFolder rootFolder, int fileCount)
-    {
-        Path = path;
-        RootFolder = rootFolder;
-        FileCount = fileCount;
-    }
 
     [JsonIgnore]
     public override string Extension => "sah";
@@ -85,7 +84,7 @@ public class Sah : FileBase, IJsonReadable
         FileCount = _binaryReader.Read<int>();
 
         // Index where data starts (after header - skip padding bytes)
-        _binaryReader.SetOffset(51);
+        _binaryReader.Skip(40);
 
         // Read root folder and all of its subfolders
         RootFolder = new SFolder(_binaryReader, null, FolderIndex, FileIndex, Crypto);

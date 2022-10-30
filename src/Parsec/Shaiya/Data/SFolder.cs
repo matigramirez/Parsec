@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Parsec.Cryptography;
 using Parsec.Extensions;
@@ -10,38 +8,8 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Data;
 
 [DataContract]
-public class SFolder : IBinary
+public sealed class SFolder : IBinary
 {
-    /// <summary>
-    /// The folder's name
-    /// </summary>
-    [DataMember]
-    public string Name { get; set; } = string.Empty;
-
-    /// <summary>
-    /// The relative path to the folder
-    /// </summary>
-    public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
-        ? Name
-        : Path.Combine(ParentFolder.RelativePath, Name);
-
-    /// <summary>
-    /// List of files the folder has
-    /// </summary>
-    [DataMember]
-    public List<SFile> Files { get; } = new();
-
-    /// <summary>
-    /// List of subfolders the file has
-    /// </summary>
-    [DataMember]
-    public List<SFolder> Subfolders { get; } = new();
-
-    /// <summary>
-    /// The folder's parent directory
-    /// </summary>
-    public SFolder ParentFolder { get; set; }
-
     [JsonConstructor]
     public SFolder()
     {
@@ -99,6 +67,46 @@ public class SFolder : IBinary
     }
 
     /// <summary>
+    /// The folder's name
+    /// </summary>
+    [DataMember]
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The relative path to the folder
+    /// </summary>
+    public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
+        ? Name
+        : Path.Combine(ParentFolder.RelativePath, Name);
+
+    /// <summary>
+    /// List of files the folder has
+    /// </summary>
+    [DataMember]
+    public List<SFile> Files { get; } = new();
+
+    /// <summary>
+    /// List of subfolders the file has
+    /// </summary>
+    [DataMember]
+    public List<SFolder> Subfolders { get; } = new();
+
+    /// <summary>
+    /// The folder's parent directory
+    /// </summary>
+    public SFolder ParentFolder { get; set; }
+
+    /// <inheritdoc />
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
+        buffer.AddRange(Name.GetLengthPrefixedBytes());
+        buffer.AddRange(Files.GetBytes());
+        buffer.AddRange(Subfolders.GetBytes());
+        return buffer;
+    }
+
+    /// <summary>
     /// Adds a <see cref="SFile"/> child to this folder
     /// </summary>
     /// <param name="file">The file instance</param>
@@ -147,14 +155,4 @@ public class SFolder : IBinary
     /// </summary>
     /// <param name="name">Subfolder name</param>
     public SFolder GetSubfolder(string name) => Subfolders.FirstOrDefault(sf => sf.Name == name);
-
-    /// <inheritdoc />
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(Name.GetLengthPrefixedBytes());
-        buffer.AddRange(Files.GetBytes());
-        buffer.AddRange(Subfolders.GetBytes());
-        return buffer;
-    }
 }

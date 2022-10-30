@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -55,55 +53,26 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     [JsonIgnore]
     public string FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(Path);
 
-    /// <summary>
-    /// Reads the shaiya file format from a file
-    /// </summary>
-    /// <param name="path">File path</param>
-    /// <param name="options">Array of reading options</param>
-    /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
+    /// <inheritdoc/>
+    public void ExportJson(string path, params string[] ignoredPropertyNames) =>
+        FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames)));
+
+    /// <inheritdoc/>
+    public virtual string JsonSerialize(FileBase obj, params string[] ignoredPropertyNames)
     {
-        var binaryReader = new SBinaryReader(path);
+        // Create settings with contract resolver to ignore certain properties
+        var settings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            DefaultValueHandling = DefaultValueHandling.Include,
+            StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
+            Formatting = Formatting.Indented
+        };
 
-        var instance = new T { Path = path, _binaryReader = binaryReader };
+        // Add enum to string converter
+        settings.Converters.Add(new StringEnumConverter());
 
-        if (instance is IEncryptable encryptableInstance)
-            encryptableInstance.DecryptBuffer();
-
-        // Parse the file
-        instance.Read(options);
-        return instance;
-    }
-
-    /// <summary>
-    /// Reads the shaiya file format from a buffer (byte array)
-    /// </summary>
-    /// <param name="name">File name</param>
-    /// <param name="buffer">File buffer</param>
-    /// <param name="options">Array of reading options</param>
-    /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    /// <returns>T instance</returns>
-    public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
-    {
-        var binaryReader = new SBinaryReader(buffer);
-
-        var instance = new T { Path = name, _binaryReader = binaryReader };
-
-        if (instance is IEncryptable encryptableInstance)
-            encryptableInstance.DecryptBuffer();
-
-        // Parse the file
-        instance.Read(options);
-        return instance;
-    }
-
-    public static T ReadFromData<T>(Data.Data data, SFile file, params object[] options) where T : FileBase, new()
-    {
-        if (!data.FileIndex.ContainsValue(file))
-            throw new FileNotFoundException("The provided SFile instance is not part of the Data");
-
-        return ReadFromBuffer<T>(file.Name, data.GetFileBuffer(file), options);
+        return JsonConvert.SerializeObject(obj, settings);
     }
 
     /// <inheritdoc/>
@@ -240,25 +209,54 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
         return buffer;
     }
 
-    /// <inheritdoc/>
-    public void ExportJson(string path, params string[] ignoredPropertyNames) =>
-        FileHelper.WriteFile(path, Encoding.GetBytes(JsonSerialize(this, ignoredPropertyNames)));
-
-    /// <inheritdoc/>
-    public virtual string JsonSerialize(FileBase obj, params string[] ignoredPropertyNames)
+    /// <summary>
+    /// Reads the shaiya file format from a file
+    /// </summary>
+    /// <param name="path">File path</param>
+    /// <param name="options">Array of reading options</param>
+    /// <typeparam name="T">Shaiya File Format Type</typeparam>
+    /// <returns>T instance</returns>
+    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
     {
-        // Create settings with contract resolver to ignore certain properties
-        var settings = new JsonSerializerSettings
-        {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DefaultValueHandling = DefaultValueHandling.Include,
-            StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
-            Formatting = Formatting.Indented
-        };
+        var binaryReader = new SBinaryReader(path);
 
-        // Add enum to string converter
-        settings.Converters.Add(new StringEnumConverter());
+        var instance = new T { Path = path, _binaryReader = binaryReader };
 
-        return JsonConvert.SerializeObject(obj, settings);
+        if (instance is IEncryptable encryptableInstance)
+            encryptableInstance.DecryptBuffer();
+
+        // Parse the file
+        instance.Read(options);
+        return instance;
+    }
+
+    /// <summary>
+    /// Reads the shaiya file format from a buffer (byte array)
+    /// </summary>
+    /// <param name="name">File name</param>
+    /// <param name="buffer">File buffer</param>
+    /// <param name="options">Array of reading options</param>
+    /// <typeparam name="T">Shaiya File Format Type</typeparam>
+    /// <returns>T instance</returns>
+    public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
+    {
+        var binaryReader = new SBinaryReader(buffer);
+
+        var instance = new T { Path = name, _binaryReader = binaryReader };
+
+        if (instance is IEncryptable encryptableInstance)
+            encryptableInstance.DecryptBuffer();
+
+        // Parse the file
+        instance.Read(options);
+        return instance;
+    }
+
+    public static T ReadFromData<T>(Data.Data data, SFile file, params object[] options) where T : FileBase, new()
+    {
+        if (!data.FileIndex.ContainsValue(file))
+            throw new FileNotFoundException("The provided SFile instance is not part of the Data");
+
+        return ReadFromBuffer<T>(file.Name, data.GetFileBuffer(file), options);
     }
 }

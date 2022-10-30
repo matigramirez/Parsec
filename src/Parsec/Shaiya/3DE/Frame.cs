@@ -5,18 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya._3DE;
 
-public class Frame : IBinary
+public sealed class Frame : IBinary
 {
-    /// <summary>
-    /// The frame's key.
-    /// </summary>
-    public int Keyframe { get; set; }
-
-    /// <summary>
-    /// The frame's vertex translations. There's one translation defined for each vertex.
-    /// </summary>
-    public List<VertexFrame> VertexFrames { get; } = new();
-
     [JsonConstructor]
     public Frame()
     {
@@ -32,6 +22,16 @@ public class Frame : IBinary
             VertexFrames.Add(translation);
         }
     }
+
+    /// <summary>
+    /// The frame's key.
+    /// </summary>
+    public int Keyframe { get; set; }
+
+    /// <summary>
+    /// The frame's vertex translations. There's one translation defined for each vertex.
+    /// </summary>
+    public List<VertexFrame> VertexFrames { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

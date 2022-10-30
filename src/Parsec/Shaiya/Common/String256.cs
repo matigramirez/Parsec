@@ -5,12 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common;
 
-public class String256 : IBinary
+public sealed class String256 : IBinary
 {
-    [ShaiyaProperty]
-    [FixedLengthString(256)]
-    public string Value { get; set; }
-
     public String256()
     {
     }
@@ -19,6 +15,10 @@ public class String256 : IBinary
     {
         Value = binaryReader.ReadString(256);
     }
+
+    [ShaiyaProperty]
+    [FixedLengthString(256)]
+    public string Value { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options) => Value.PadRight(256, '\0').GetBytes();
 }

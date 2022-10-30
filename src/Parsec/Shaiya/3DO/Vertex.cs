@@ -3,7 +3,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya._3DO;
 
-public class Vertex
+public sealed class Vertex
 {
     [ShaiyaProperty]
     public Vector3 Coordinates { get; set; }

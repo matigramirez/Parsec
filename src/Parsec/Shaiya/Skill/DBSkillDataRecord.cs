@@ -3,26 +3,23 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Skill;
 
-public class DBSkillDataRecord : IBinarySDataRecord
+public sealed class DBSkillDataRecord : IBinarySDataRecord
 {
     /// <summary>
     /// Id of skill.
     /// </summary>
-
     [ShaiyaProperty]
-    public long SkillId { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// Level of skill.
     /// </summary>
-
     [ShaiyaProperty]
     public long SkillLevel { get; set; }
 
     /// <summary>
     /// Skill icon.
     /// </summary>
-
     [ShaiyaProperty]
     public long Image { get; set; }
 
@@ -66,7 +63,7 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public UserFamily UserFamily { get; set; }
+    public long Country { get; set; }
 
     /// <summary>
     /// Indicates if skill can be used by fighter.
@@ -129,28 +126,28 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public TypeShow TypeShow { get; set; }
+    public long TypeShow { get; set; }
 
     /// <summary>
     /// Passive, physical, magic or shooting attack.
     /// </summary>
 
     [ShaiyaProperty]
-    public TypeAttack TypeAttack { get; set; }
+    public long TypeAttack { get; set; }
 
     /// <summary>
     /// Additional effect description.
     /// </summary>
 
     [ShaiyaProperty]
-    public TypeEffect TypeEffect { get; set; }
+    public long TypeEffect { get; set; }
 
     /// <summary>
     /// Type detail describes what skill does.
     /// </summary>
 
     [ShaiyaProperty]
-    public TypeDetail TypeDetail { get; set; }
+    public long Type { get; set; }
 
     /// <summary>
     /// Skill requires 1 Handed Sword.
@@ -262,7 +259,7 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public long NeedShield { get; set; }
+    public long Shield { get; set; }
 
     /// <summary>
     /// How many stamina points requires the skill.
@@ -304,14 +301,14 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public StateType StateType { get; set; }
+    public long StateType { get; set; }
 
     /// <summary>
     /// None or fire/wind/earth/water.
     /// </summary>
 
     [ShaiyaProperty]
-    public Element Element { get; set; }
+    public long AttribType { get; set; }
 
     /// <summary>
     /// ?
@@ -332,7 +329,7 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public SuccessType SuccessType { get; set; }
+    public long SuccessType { get; set; }
 
     /// <summary>
     /// Success chance in %.
@@ -346,7 +343,7 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public TargetType TargetType { get; set; }
+    public long TargetType { get; set; }
 
     /// <summary>
     /// Skill will be applied within X meters.
@@ -409,134 +406,134 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public DamageType DamageType { get; set; }
+    public long DamageType { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
 
     [ShaiyaProperty]
-    public long DamageHP { get; set; }
+    public long Damage1 { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
 
     [ShaiyaProperty]
-    public long DamageSP { get; set; }
+    public long Damage2 { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
 
     [ShaiyaProperty]
-    public long DamageMP { get; set; }
+    public long Damage3 { get; set; }
 
     /// <summary>
     /// Time damage type.
     /// </summary>
 
     [ShaiyaProperty]
-    public TimeDamageType TimeDamageType { get; set; }
+    public long TimeDamageType { get; set; }
 
     /// <summary>
     /// Either fixed hp or % hp damage made over time.
     /// </summary>
 
     [ShaiyaProperty]
-    public long TimeDamageHP { get; set; }
+    public long TimeDamage1 { get; set; }
 
     /// <summary>
     /// Either fixed sp or % sp damage made over time.
     /// </summary>
 
     [ShaiyaProperty]
-    public long TimeDamageSP { get; set; }
+    public long TimeDamage2 { get; set; }
 
     /// <summary>
     /// Either fixed mp or % mp damage made over time.
     /// </summary>
 
     [ShaiyaProperty]
-    public long TimeDamageMP { get; set; }
+    public long TimeDamage3 { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
 
     [ShaiyaProperty]
-    public long AddDamageHP { get; set; }
+    public long AddDamage1 { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
 
     [ShaiyaProperty]
-    public long AddDamageSP { get; set; }
+    public long AddDamage2 { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
 
     [ShaiyaProperty]
-    public long AddDamageMP { get; set; }
+    public long AddDamage3 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType1 { get; set; }
+    public long AbilityType1 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue1 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType2 { get; set; }
+    public long AbilityType2 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue2 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType3 { get; set; }
+    public long AbilityType3 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue3 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType4 { get; set; }
+    public long AbilityType4 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue4 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType5 { get; set; }
+    public long AbilityType5 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue5 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType6 { get; set; }
+    public long AbilityType6 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue6 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType7 { get; set; }
+    public long AbilityType7 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue7 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType8 { get; set; }
+    public long AbilityType8 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue8 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType9 { get; set; }
+    public long AbilityType9 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue9 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType10 { get; set; }
+    public long AbilityType10 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue10 { get; set; }
@@ -546,48 +543,45 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// </summary>
 
     [ShaiyaProperty]
-    public long HealHP { get; set; }
+    public long Heal1 { get; set; }
 
     /// <summary>
     /// How many stamina points can be healed.
     /// </summary>
 
     [ShaiyaProperty]
-    public long HealSP { get; set; }
+    public long Heal2 { get; set; }
 
     /// <summary>
     /// How many mana points can be healed.
     /// </summary>
 
     [ShaiyaProperty]
-    public long HealMP { get; set; }
+    public long Heal3 { get; set; }
 
     /// <summary>
     /// HP healed over time.
     /// </summary>
 
     [ShaiyaProperty]
-    public long TimeHealHP { get; set; }
+    public long TimeHeal1 { get; set; }
 
     /// <summary>
     /// SP healed over time.
     /// </summary>
-
     [ShaiyaProperty]
-    public long TimeHealSP { get; set; }
+    public long TimeHeal2 { get; set; }
 
     /// <summary>
     /// MP healed over time.
     /// </summary>
-
     [ShaiyaProperty]
-    public long TimeHealMP { get; set; }
+    public long TimeHeal3 { get; set; }
 
     /// <summary>
     /// For "Fleet Foot" it's value 2, which is block shoot attack for X %.
     /// For "Magic Veil" it's value 3, which is block X magic attacks.
     /// </summary>
-
     [ShaiyaProperty]
     public long DefenceType { get; set; }
 
@@ -595,42 +589,36 @@ public class DBSkillDataRecord : IBinarySDataRecord
     /// When <see cref="DefenceType"/> is 2, it's % of blocked shoot attacks.
     /// When <see cref="DefenceType"/> is 3, it's block X magic attacks.
     /// </summary>
-
     [ShaiyaProperty]
     public long DefenceValue { get; set; }
 
     /// <summary>
     /// % of hp, when this skill is activated.
     /// </summary>
-
     [ShaiyaProperty]
     public long LimitHP { get; set; }
 
     /// <summary>
     /// How long the skill should be kept.
     /// </summary>
-
     [ShaiyaProperty]
-    public Duration FixRange { get; set; }
+    public long FixRange { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-
     [ShaiyaProperty]
     public long ChangeType { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-
     [ShaiyaProperty]
     public long ChangeLevel { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-
     [ShaiyaProperty]
     public long TacticZoneBound { get; set; }
 }

@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
-using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.VAni;
 
-public class Vertex : IBinary
+public sealed class Vertex : IBinary
 {
-    public List<VertexFrame> Frames { get; } = new();
-
     [JsonConstructor]
     public Vertex()
     {
@@ -23,5 +20,13 @@ public class Vertex : IBinary
         }
     }
 
-    public IEnumerable<byte> GetBytes(params object[] options) => Frames.GetBytes();
+    public List<VertexFrame> Frames { get; } = new();
+
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
+        foreach (var frame in Frames)
+            buffer.AddRange(frame.GetBytes());
+        return buffer;
+    }
 }

@@ -5,10 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class Ladder : IBinary
+public sealed class Ladder : IBinary
 {
-    public Vector3 Position { get; set; }
-
     [JsonConstructor]
     public Ladder()
     {
@@ -18,6 +16,8 @@ public class Ladder : IBinary
     {
         Position = new Vector3(binaryReader);
     }
+
+    public Vector3 Position { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options) => Position.GetBytes();
 }

@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.NpcSkill;
 
-public class DBNpcSkillTextRecord : IBinarySDataRecord
+public sealed class DBNpcSkillTextRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
     public long Id { get; set; }
@@ -12,10 +12,10 @@ public class DBNpcSkillTextRecord : IBinarySDataRecord
     public long SkillLevel { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Name { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Text { get; set; }
 }

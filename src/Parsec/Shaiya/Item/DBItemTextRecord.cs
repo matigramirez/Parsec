@@ -3,7 +3,7 @@ using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Item;
 
-public class DBItemTextRecord : IBinarySDataRecord
+public sealed class DBItemTextRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
     public long ItemType { get; set; }
@@ -12,10 +12,10 @@ public class DBItemTextRecord : IBinarySDataRecord
     public long ItemTypeId { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string ItemName { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString]
+    [LengthPrefixedString(false)]
     public string Text { get; set; }
 }

@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿namespace Parsec.Shaiya.Data;
 
-namespace Parsec.Shaiya.Data;
-
-public class Saf
+public sealed class Saf
 {
+    public Saf(string path)
+    {
+        Path = path;
+    }
+
     /// <summary>
     /// Absolute path to the saf file
     /// </summary>
@@ -13,11 +16,6 @@ public class Saf
     /// Absolute path to the saf file linked to this saf
     /// </summary>
     public string SahPath => string.Concat(Path.Substring(0, Path.Length - 3), "sah");
-
-    public Saf(string path)
-    {
-        Path = path;
-    }
 
     /// <summary>
     /// Reads an array of bytes from the saf file

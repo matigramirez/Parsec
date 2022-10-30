@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MON;
 
-public class MON : FileBase, IJsonReadable
+public sealed class MON : FileBase, IJsonReadable
 {
     /// <summary>
     /// File signature. "MO2", "MO4". Read as char[3]
@@ -41,21 +41,15 @@ public class MON : FileBase, IJsonReadable
         }
     }
 
-    // TODO: This method needs attention because the MON format doesn't depend on the episode itself, sometimes MO2 and MO4 are mixed within the same client
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
-        var outputFormat = Format;
-
-        if (options.Length > 0)
-            outputFormat = (MONFormat)options[0];
-
         var buffer = new List<byte>();
-        buffer.AddRange(outputFormat.ToString().GetBytes());
+        buffer.AddRange(Format.ToString().GetBytes());
 
         buffer.AddRange(Records.Count.GetBytes());
 
         foreach (var record in Records)
-            buffer.AddRange(record.GetBytes(outputFormat));
+            buffer.AddRange(record.GetBytes(Format));
 
         return buffer;
     }

@@ -6,8 +6,21 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.VAni;
 
-public class VertexFrame : IBinary
+public sealed class VertexFrame : IBinary
 {
+    [JsonConstructor]
+    public VertexFrame()
+    {
+    }
+
+    public VertexFrame(SBinaryReader binaryReader)
+    {
+        Coordinates = new Vector3(binaryReader);
+        Normal = new Vector3(binaryReader);
+        BoneId = binaryReader.Read<int>();
+        UV = new Vector2(binaryReader);
+    }
+
     /// <summary>
     /// The vertex coordinates in the 3d space
     /// </summary>
@@ -27,19 +40,6 @@ public class VertexFrame : IBinary
     /// Texture mapping
     /// </summary>
     public Vector2 UV { get; set; }
-
-    [JsonConstructor]
-    public VertexFrame()
-    {
-    }
-
-    public VertexFrame(SBinaryReader binaryReader)
-    {
-        Coordinates = new Vector3(binaryReader);
-        Normal = new Vector3(binaryReader);
-        BoneId = binaryReader.Read<int>();
-        UV = new Vector2(binaryReader);
-    }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

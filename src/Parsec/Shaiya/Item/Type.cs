@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -7,12 +6,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Item;
 
-public class Type : IBinary
+public sealed class Type : IBinary
 {
-    public int Id { get; set; }
-    public int MaxTypeId { get; set; }
-    public List<IItemDefinition> ItemDefinitions { get; } = new();
-
     [JsonConstructor]
     public Type()
     {
@@ -48,6 +43,10 @@ public class Type : IBinary
             }
         }
     }
+
+    public int Id { get; set; }
+    public int MaxTypeId { get; set; }
+    public List<IItemDefinition> ItemDefinitions { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

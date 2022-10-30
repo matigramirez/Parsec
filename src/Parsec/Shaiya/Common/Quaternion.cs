@@ -165,7 +165,8 @@ public struct Quaternion : IEquatable<Quaternion>, IBinary
     /// <returns>The dot product of the Quaternions.</returns>
     public static float Dot(Quaternion quaternion1, Quaternion quaternion2)
     {
-        return quaternion1.X * quaternion2.X + quaternion1.Y * quaternion2.Y + quaternion1.Z * quaternion2.Z + quaternion1.W * quaternion2.W;
+        return quaternion1.X * quaternion2.X + quaternion1.Y * quaternion2.Y + quaternion1.Z * quaternion2.Z +
+               quaternion1.W * quaternion2.W;
     }
 
     /// <summary>
@@ -235,7 +236,8 @@ public struct Quaternion : IEquatable<Quaternion>, IBinary
 
         Quaternion r = new Quaternion();
 
-        float dot = quaternion1.X * quaternion2.X + quaternion1.Y * quaternion2.Y + quaternion1.Z * quaternion2.Z + quaternion1.W * quaternion2.W;
+        float dot = quaternion1.X * quaternion2.X + quaternion1.Y * quaternion2.Y + quaternion1.Z * quaternion2.Z +
+                    quaternion1.W * quaternion2.W;
 
         if (dot >= 0.0f)
         {

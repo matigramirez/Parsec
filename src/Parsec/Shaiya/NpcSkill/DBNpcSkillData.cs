@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.NpcSkill;
 
-public class DBNpcSkillData : BinarySData<DBNpcSkillDataRecord>
+public sealed class DBNpcSkillData : BinarySData<DBNpcSkillDataRecord>
 {
 }

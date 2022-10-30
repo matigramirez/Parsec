@@ -5,12 +5,98 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Item;
 
-public class ItemDefinitionEp6 : IBinary, IItemDefinition
+public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
 {
+    [JsonConstructor]
+    public ItemDefinitionEp6()
+    {
+    }
+
+    public ItemDefinitionEp6(SBinaryReader binaryReader)
+    {
+        Name = binaryReader.ReadString();
+        Description = binaryReader.ReadString();
+        Type = binaryReader.Read<byte>();
+        TypeId = binaryReader.Read<byte>();
+        Model = binaryReader.Read<byte>();
+        Icon = binaryReader.Read<byte>();
+        MinLevel = binaryReader.Read<short>();
+        Country = binaryReader.Read<byte>();
+        AttackFighter = binaryReader.Read<byte>();
+        DefenseFighter = binaryReader.Read<byte>();
+        PatrolRogue = binaryReader.Read<byte>();
+        ShootRogue = binaryReader.Read<byte>();
+        AttackMage = binaryReader.Read<byte>();
+        DefenseMage = binaryReader.Read<byte>();
+        Grow = binaryReader.Read<byte>();
+        Type2 = binaryReader.Read<byte>();
+        Type3 = binaryReader.Read<byte>();
+        ReqStr = binaryReader.Read<short>();
+        ReqDex = binaryReader.Read<short>();
+        ReqRec = binaryReader.Read<short>();
+        ReqInt = binaryReader.Read<short>();
+        ReqWis = binaryReader.Read<short>();
+        ReqLuc = binaryReader.Read<int>();
+        ReqVg = binaryReader.Read<short>();
+        ReqOg = binaryReader.Read<byte>();
+        ReqIg = binaryReader.Read<byte>();
+        Range = binaryReader.Read<short>();
+        AttackTime = binaryReader.Read<byte>();
+        Attrib = binaryReader.Read<byte>();
+        Special = binaryReader.Read<byte>();
+        Slot = binaryReader.Read<byte>();
+        Quality = binaryReader.Read<short>();
+        Attack = binaryReader.Read<short>();
+        AttackAdd = binaryReader.Read<short>();
+        Def = binaryReader.Read<short>();
+        Resist = binaryReader.Read<short>();
+        Str = binaryReader.Read<short>();
+        Dex = binaryReader.Read<short>();
+        Rec = binaryReader.Read<short>();
+        Int = binaryReader.Read<short>();
+        Wis = binaryReader.Read<short>();
+        Luc = binaryReader.Read<short>();
+        Hp = binaryReader.Read<short>();
+        Mp = binaryReader.Read<short>();
+        Sp = binaryReader.Read<short>();
+        Speed = binaryReader.Read<byte>();
+        Exp = binaryReader.Read<byte>();
+        BuyPrice = binaryReader.Read<int>();
+        SellPrice = binaryReader.Read<int>();
+        Grade = binaryReader.Read<short>();
+        Drop = binaryReader.Read<short>();
+        Server = binaryReader.Read<byte>();
+        Count = binaryReader.Read<byte>();
+
+        Duration = binaryReader.Read<int>();
+        ExtDuration = binaryReader.Read<byte>();
+        SecOption = binaryReader.Read<byte>();
+        OptionRate = binaryReader.Read<byte>();
+        BuyMethod = binaryReader.Read<byte>();
+        MaxLevel = binaryReader.Read<byte>();
+
+        Arg1 = binaryReader.Read<byte>();
+        Arg2 = binaryReader.Read<byte>();
+        Arg3 = binaryReader.Read<byte>();
+        Arg4 = binaryReader.Read<byte>();
+        Arg5 = binaryReader.Read<byte>();
+
+        Arg6 = binaryReader.Read<int>();
+        Arg7 = binaryReader.Read<int>();
+        Arg8 = binaryReader.Read<int>();
+        Arg9 = binaryReader.Read<int>();
+        Arg10 = binaryReader.Read<int>();
+        Arg11 = binaryReader.Read<int>();
+        Arg12 = binaryReader.Read<int>();
+        Arg13 = binaryReader.Read<int>();
+        Arg14 = binaryReader.Read<int>();
+    }
+
     /// <summary>
     /// Order: 2. Changed because of CSV.
     /// </summary>
     public byte Type { get; set; }
+
     /// <summary>
     /// Order: 3. Changed because of CSV.
     /// </summary>
@@ -98,91 +184,6 @@ public class ItemDefinitionEp6 : IBinary, IItemDefinition
     public int Arg12 { get; set; }
     public int Arg13 { get; set; }
     public int Arg14 { get; set; }
-
-    [JsonConstructor]
-    public ItemDefinitionEp6()
-    {
-    }
-
-    public ItemDefinitionEp6(SBinaryReader binaryReader)
-    {
-        Name = binaryReader.ReadString();
-        Description = binaryReader.ReadString();
-        Type = binaryReader.Read<byte>();
-        TypeId = binaryReader.Read<byte>();
-        Model = binaryReader.Read<byte>();
-        Icon = binaryReader.Read<byte>();
-        MinLevel = binaryReader.Read<short>();
-        Country = binaryReader.Read<byte>();
-        AttackFighter = binaryReader.Read<byte>();
-        DefenseFighter = binaryReader.Read<byte>();
-        PatrolRogue = binaryReader.Read<byte>();
-        ShootRogue = binaryReader.Read<byte>();
-        AttackMage = binaryReader.Read<byte>();
-        DefenseMage = binaryReader.Read<byte>();
-        Grow = binaryReader.Read<byte>();
-        Type2 = binaryReader.Read<byte>();
-        Type3 = binaryReader.Read<byte>();
-        ReqStr = binaryReader.Read<short>();
-        ReqDex = binaryReader.Read<short>();
-        ReqRec = binaryReader.Read<short>();
-        ReqInt = binaryReader.Read<short>();
-        ReqWis = binaryReader.Read<short>();
-        ReqLuc = binaryReader.Read<int>();
-        ReqVg = binaryReader.Read<short>();
-        ReqOg = binaryReader.Read<byte>();
-        ReqIg = binaryReader.Read<byte>();
-        Range = binaryReader.Read<short>();
-        AttackTime = binaryReader.Read<byte>();
-        Attrib = binaryReader.Read<byte>();
-        Special = binaryReader.Read<byte>();
-        Slot = binaryReader.Read<byte>();
-        Quality = binaryReader.Read<short>();
-        Attack = binaryReader.Read<short>();
-        AttackAdd = binaryReader.Read<short>();
-        Def = binaryReader.Read<short>();
-        Resist = binaryReader.Read<short>();
-        Str = binaryReader.Read<short>();
-        Dex = binaryReader.Read<short>();
-        Rec = binaryReader.Read<short>();
-        Int = binaryReader.Read<short>();
-        Wis = binaryReader.Read<short>();
-        Luc = binaryReader.Read<short>();
-        Hp = binaryReader.Read<short>();
-        Mp = binaryReader.Read<short>();
-        Sp = binaryReader.Read<short>();
-        Speed = binaryReader.Read<byte>();
-        Exp = binaryReader.Read<byte>();
-        BuyPrice = binaryReader.Read<int>();
-        SellPrice = binaryReader.Read<int>();
-        Grade = binaryReader.Read<short>();
-        Drop = binaryReader.Read<short>();
-        Server = binaryReader.Read<byte>();
-        Count = binaryReader.Read<byte>();
-
-        Duration = binaryReader.Read<int>();
-        ExtDuration = binaryReader.Read<byte>();
-        SecOption = binaryReader.Read<byte>();
-        OptionRate = binaryReader.Read<byte>();
-        BuyMethod = binaryReader.Read<byte>();
-        MaxLevel = binaryReader.Read<byte>();
-
-        Arg1 = binaryReader.Read<byte>();
-        Arg2 = binaryReader.Read<byte>();
-        Arg3 = binaryReader.Read<byte>();
-        Arg4 = binaryReader.Read<byte>();
-        Arg5 = binaryReader.Read<byte>();
-
-        Arg6 = binaryReader.Read<int>();
-        Arg7 = binaryReader.Read<int>();
-        Arg8 = binaryReader.Read<int>();
-        Arg9 = binaryReader.Read<int>();
-        Arg10 = binaryReader.Read<int>();
-        Arg11 = binaryReader.Read<int>();
-        Arg12 = binaryReader.Read<int>();
-        Arg13 = binaryReader.Read<int>();
-        Arg14 = binaryReader.Read<int>();
-    }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

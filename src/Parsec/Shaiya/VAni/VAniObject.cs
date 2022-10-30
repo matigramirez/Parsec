@@ -11,23 +11,8 @@ namespace Parsec.Shaiya.VAni;
 /// According to the game client, VAni files are called "SModelAnimation", but a better name for it
 /// would probably be "Environmental Model with Animation"
 /// </summary>
-public class VAniObject : IBinary
+public sealed class VAniObject : IBinary
 {
-    /// <summary>
-    /// Texture name of the .dds file
-    /// </summary>
-    public string TextureName { get; set; }
-
-    /// <summary>
-    /// List of the 3d object's faces (polygons - triangles)
-    /// </summary>
-    public List<Face> Faces { get; } = new();
-
-    /// <summary>
-    /// List of the 3d object's vertices
-    /// </summary>
-    public List<Vertex> Vertices { get; } = new();
-
     [JsonConstructor]
     public VAniObject()
     {
@@ -53,6 +38,21 @@ public class VAniObject : IBinary
             Vertices.Add(vertex);
         }
     }
+
+    /// <summary>
+    /// Texture name of the .dds file
+    /// </summary>
+    public string TextureName { get; set; }
+
+    /// <summary>
+    /// List of the 3d object's faces (polygons - triangles)
+    /// </summary>
+    public List<Face> Faces { get; } = new();
+
+    /// <summary>
+    /// List of the 3d object's vertices
+    /// </summary>
+    public List<Vertex> Vertices { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

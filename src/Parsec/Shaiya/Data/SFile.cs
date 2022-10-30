@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -8,8 +7,40 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Data;
 
 [DataContract]
-public class SFile : IBinary
+public sealed class SFile : IBinary
 {
+    [JsonConstructor]
+    public SFile()
+    {
+    }
+
+    public SFile(SFolder parentFolder)
+    {
+        ParentFolder = parentFolder;
+    }
+
+    public SFile(string name, long offset, int length)
+    {
+        Name = name;
+        Offset = offset;
+        Length = length;
+    }
+
+    public SFile(SBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
+    {
+        Name = binaryReader.ReadString();
+        Offset = binaryReader.Read<long>();
+        Length = binaryReader.Read<int>();
+        Version = binaryReader.Read<int>();
+
+        // Add file to the sah's file dictionary
+        if (!fileIndex.ContainsKey(RelativePath))
+            fileIndex.Add(RelativePath, this);
+        else
+            // Follow castor's _pv file name ending for duplicate files
+            fileIndex.Add(RelativePath + "_pv", this);
+    }
+
     /// <summary>
     /// The name of the file
     /// </summary>
@@ -45,38 +76,6 @@ public class SFile : IBinary
     /// The directory in which the file is
     /// </summary>
     public SFolder ParentFolder { get; set; }
-
-    [JsonConstructor]
-    public SFile()
-    {
-    }
-
-    public SFile(SFolder parentFolder)
-    {
-        ParentFolder = parentFolder;
-    }
-
-    public SFile(string name, long offset, int length)
-    {
-        Name = name;
-        Offset = offset;
-        Length = length;
-    }
-
-    public SFile(SBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
-    {
-        Name = binaryReader.ReadString();
-        Offset = binaryReader.Read<long>();
-        Length = binaryReader.Read<int>();
-        Version = binaryReader.Read<int>();
-
-        // Add file to the sah's file dictionary
-        if (!fileIndex.ContainsKey(RelativePath))
-            fileIndex.Add(RelativePath, this);
-        else
-            // Follow castor's _pv file name ending for duplicate files
-            fileIndex.Add(RelativePath + "_pv", this);
-    }
 
     /// <inheritdoc />
     public IEnumerable<byte> GetBytes(params object[] options)

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Parsec.Helpers;
+﻿using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Data;
 

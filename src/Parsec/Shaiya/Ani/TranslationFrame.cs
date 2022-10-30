@@ -3,7 +3,7 @@ using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Ani;
 
-public class TranslationFrame
+public sealed class TranslationFrame
 {
     [ShaiyaProperty]
     public int Keyframe { get; set; }

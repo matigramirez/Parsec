@@ -5,10 +5,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT;
 
-public class EffectSub4 : IBinary
+public sealed class EffectSub4 : IBinary
 {
-    public int Unknown { get; set; }
-
     [JsonConstructor]
     public EffectSub4()
     {
@@ -18,6 +16,8 @@ public class EffectSub4 : IBinary
     {
         Unknown = binaryReader.Read<int>();
     }
+
+    public int Unknown { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options) => Unknown.GetBytes();
 }

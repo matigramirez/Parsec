@@ -4,14 +4,14 @@
 /// Class that implements the methods needed to encrypt and decrypt files which use the KISA SEED encryption algorithm.
 /// For more information visit <a href="https://en.wikipedia.org/wiki/SEED">this link</a>.
 /// </summary>
-public static class SEED
+public static class Seed
 {
     private static uint GetSeed(uint val)
     {
-        return SEEDConstants.SS[0, (byte)val] ^
-               SEEDConstants.SS[1, (byte)(val >> 8)] ^
-               SEEDConstants.SS[2, (byte)(val >> 16)] ^
-               SEEDConstants.SS[3, (byte)(val >> 24)];
+        return SeedConstants.SS[0, (byte)val] ^
+               SeedConstants.SS[1, (byte)(val >> 8)] ^
+               SeedConstants.SS[2, (byte)(val >> 16)] ^
+               SeedConstants.SS[3, (byte)(val >> 24)];
     }
 
     public static uint ByteArrayToUInt32(byte[] array, uint offset)
@@ -36,11 +36,11 @@ public static class SEED
         return x1 | x2;
     }
 
-    public static uint EndiannessSwap(uint value)
+    public static void EndiannessSwap(ref uint value)
     {
         uint value1 = LeftRotation(value, 8) & 0x00ff00ff;
         uint value2 = LeftRotation(value, 24) & 0xff00ff00;
-        return value1 | value2;
+        value = value1 | value2;
     }
 
     private static void SeedRound(ref uint L0, ref uint L1, uint R0, uint R1, byte[] K, uint offset)
@@ -48,8 +48,8 @@ public static class SEED
         uint K0 = ByteArrayToUInt32(K, offset * 4 + 0);
         uint K1 = ByteArrayToUInt32(K, (offset + 1) * 4);
 
-        K0 = EndiannessSwap(K0);
-        K1 = EndiannessSwap(K1);
+        EndiannessSwap(ref K0);
+        EndiannessSwap(ref K1);
 
         uint T0 = R0 ^ K0;
         uint T1 = R1 ^ K1;
@@ -70,7 +70,7 @@ public static class SEED
         uint L1 = ByteArrayToUInt32(input, 4);
         uint R0 = ByteArrayToUInt32(input, 8);
         uint R1 = ByteArrayToUInt32(input, 12);
-        byte[] roundKey = SEEDConstants.Key;
+        byte[] roundKey = SeedConstants.Key;
 
         output = new byte[input.Length];
 
@@ -103,7 +103,7 @@ public static class SEED
         uint L1 = ByteArrayToUInt32(input, 4);
         uint R0 = ByteArrayToUInt32(input, 8);
         uint R1 = ByteArrayToUInt32(input, 12);
-        byte[] roundKey = SEEDConstants.Key;
+        byte[] roundKey = SeedConstants.Key;
 
         output = new byte[input.Length];
 

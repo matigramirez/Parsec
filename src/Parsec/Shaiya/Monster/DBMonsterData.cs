@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.Monster;
 
-public class DBMonsterData : BinarySData<DBMonsterDataRecord>
+public sealed class DBMonsterData : BinarySData<DBMonsterDataRecord>
 {
 }

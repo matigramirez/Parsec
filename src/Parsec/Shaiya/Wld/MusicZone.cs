@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// A rectangular area of the world in which music is played
 /// </summary>
-public class MusicZone
+public sealed class MusicZone
 {
     /// <summary>
     /// The rectangular area of the music zone

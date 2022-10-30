@@ -1,11 +1,13 @@
-﻿using Parsec.Attributes;
+﻿using System.Globalization;
+using CsvHelper;
+using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SData;
 
-public abstract class BinarySData<TRecord> : SData where TRecord : IBinarySDataRecord, new()
+public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinarySDataRecord, new()
 {
     /// <summary>
     /// 128-byte header unused by the game itself. It looks like a file signature + metadata
@@ -17,10 +19,10 @@ public abstract class BinarySData<TRecord> : SData where TRecord : IBinarySDataR
     /// Field names are defined before the data. They aren't really used but knowing which each field means is nice
     /// </summary>
     [ShaiyaProperty]
-    public List<BinarySDataField> Fields { get; } = new();
+    public List<BinarySDataField> Fields { get; set; } = new();
 
     [ShaiyaProperty]
-    public List<TRecord> Records { get; } = new();
+    public List<TRecord> Records { get; set; } = new();
 
     public override void Read(params object[] options)
     {
@@ -67,5 +69,26 @@ public abstract class BinarySData<TRecord> : SData where TRecord : IBinarySDataR
         }
 
         return buffer;
+    }
+
+    public static T ReadFromCsv<T>(string csvPath) where T : BinarySData<TRecord>, new()
+    {
+        using var reader = new StreamReader(csvPath);
+        using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+        // Read headers and records
+        var records = csvReader.GetRecords<TRecord>().ToList();
+        var fields = csvReader.HeaderRecord?.Select(c => new BinarySDataField(c.ToLower())).ToList();
+
+        // Create the BinarySData instance with an empty header. The header is skipped entirely by the game so this isn't an issue.
+        var binarySData = new T { Header = new byte[128], Fields = fields, Records = records };
+        return binarySData;
+    }
+
+    public void ExportCsv(string outputPath)
+    {
+        using var writer = new StreamWriter(outputPath);
+        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csvWriter.WriteRecords(Records);
     }
 }

@@ -1,13 +1,12 @@
 ﻿using Parsec.Attributes;
 using Parsec.Shaiya.SData;
-using Parsec.Shaiya.Skill;
 
 namespace Parsec.Shaiya.NpcSkill;
 
-public class DBNpcSkillDataRecord : IBinarySDataRecord
+public sealed class DBNpcSkillDataRecord : IBinarySDataRecord
 {
     [ShaiyaProperty]
-    public long SkillId { get; set; }
+    public long Id { get; set; }
 
     [ShaiyaProperty]
     public long SkillLevel { get; set; }
@@ -31,7 +30,7 @@ public class DBNpcSkillDataRecord : IBinarySDataRecord
     public long Level { get; set; }
 
     [ShaiyaProperty]
-    public UserFamily UserFamily { get; set; }
+    public long Country { get; set; }
 
     [ShaiyaProperty]
     public long AttackFighter { get; set; }
@@ -58,16 +57,16 @@ public class DBNpcSkillDataRecord : IBinarySDataRecord
     public long Point { get; set; }
 
     [ShaiyaProperty]
-    public TypeShow TypeShow { get; set; }
+    public long TypeShow { get; set; }
 
     [ShaiyaProperty]
-    public TypeAttack TypeAttack { get; set; }
+    public long TypeAttack { get; set; }
 
     [ShaiyaProperty]
-    public TypeEffect TypeEffect { get; set; }
+    public long TypeEffect { get; set; }
 
     [ShaiyaProperty]
-    public TypeDetail TypeDetail { get; set; }
+    public long Type { get; set; }
 
     [ShaiyaProperty]
     public long NeedWeapon1 { get; set; }
@@ -115,7 +114,7 @@ public class DBNpcSkillDataRecord : IBinarySDataRecord
     public long NeedWeapon15 { get; set; }
 
     [ShaiyaProperty]
-    public long NeedShield { get; set; }
+    public long Shield { get; set; }
 
     [ShaiyaProperty]
     public long SP { get; set; }
@@ -133,10 +132,10 @@ public class DBNpcSkillDataRecord : IBinarySDataRecord
     public long AttackRange { get; set; }
 
     [ShaiyaProperty]
-    public StateType StateType { get; set; }
+    public long StateType { get; set; }
 
     [ShaiyaProperty]
-    public Element Element { get; set; }
+    public long AttribType { get; set; }
 
     [ShaiyaProperty]
     public long Disable { get; set; }
@@ -145,13 +144,13 @@ public class DBNpcSkillDataRecord : IBinarySDataRecord
     public long PrevSkill { get; set; }
 
     [ShaiyaProperty]
-    public SuccessType SuccessType { get; set; }
+    public long SuccessType { get; set; }
 
     [ShaiyaProperty]
     public long SuccessValue { get; set; }
 
     [ShaiyaProperty]
-    public TargetType TargetType { get; set; }
+    public long TargetType { get; set; }
 
     [ShaiyaProperty]
     public long ApplyRange { get; set; }
@@ -178,115 +177,115 @@ public class DBNpcSkillDataRecord : IBinarySDataRecord
     public long Arrow { get; set; }
 
     [ShaiyaProperty]
-    public DamageType DamageType { get; set; }
+    public long DamageType { get; set; }
 
     [ShaiyaProperty]
-    public long DamageHP { get; set; }
+    public long Damage1 { get; set; }
 
     [ShaiyaProperty]
-    public long DamageSP { get; set; }
+    public long Damage2 { get; set; }
 
     [ShaiyaProperty]
-    public long DamageMP { get; set; }
+    public long Damage3 { get; set; }
 
     [ShaiyaProperty]
-    public TimeDamageType TimeDamageType { get; set; }
+    public long TimeDamageType { get; set; }
 
     [ShaiyaProperty]
-    public long TimeDamageHP { get; set; }
+    public long TimeDamage1 { get; set; }
 
     [ShaiyaProperty]
-    public long TimeDamageSP { get; set; }
+    public long TimeDamage2 { get; set; }
 
     [ShaiyaProperty]
-    public long TimeDamageMP { get; set; }
+    public long TimeDamage3 { get; set; }
 
     [ShaiyaProperty]
-    public long AddDamageHP { get; set; }
+    public long AddDamage1 { get; set; }
 
     [ShaiyaProperty]
-    public long AddDamageSP { get; set; }
+    public long AddDamage2 { get; set; }
 
     [ShaiyaProperty]
-    public long AddDamageMP { get; set; }
+    public long AddDamage3 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType1 { get; set; }
+    public long AbilityType1 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue1 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType2 { get; set; }
+    public long AbilityType2 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue2 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType3 { get; set; }
+    public long AbilityType3 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue3 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType4 { get; set; }
+    public long AbilityType4 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue4 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType5 { get; set; }
+    public long AbilityType5 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue5 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType6 { get; set; }
+    public long AbilityType6 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue6 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType7 { get; set; }
+    public long AbilityType7 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue7 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType8 { get; set; }
+    public long AbilityType8 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue8 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType9 { get; set; }
+    public long AbilityType9 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue9 { get; set; }
 
     [ShaiyaProperty]
-    public AbilityType AbilityType10 { get; set; }
+    public long AbilityType10 { get; set; }
 
     [ShaiyaProperty]
     public long AbilityValue10 { get; set; }
 
     [ShaiyaProperty]
-    public long HealHP { get; set; }
+    public long Heal1 { get; set; }
 
     [ShaiyaProperty]
-    public long HealSP { get; set; }
+    public long Heal2 { get; set; }
 
     [ShaiyaProperty]
-    public long HealMP { get; set; }
+    public long Heal3 { get; set; }
 
     [ShaiyaProperty]
-    public long TimeHealHP { get; set; }
+    public long TimeHeal1 { get; set; }
 
     [ShaiyaProperty]
-    public long TimeHealSP { get; set; }
+    public long TimeHeal2 { get; set; }
 
     [ShaiyaProperty]
-    public long TimeHealMP { get; set; }
+    public long TimeHeal3 { get; set; }
 
     [ShaiyaProperty]
     public long DefenceType { get; set; }
@@ -298,7 +297,7 @@ public class DBNpcSkillDataRecord : IBinarySDataRecord
     public long LimitHP { get; set; }
 
     [ShaiyaProperty]
-    public Duration FixRange { get; set; }
+    public long FixRange { get; set; }
 
     [ShaiyaProperty]
     public long ChangeType { get; set; }

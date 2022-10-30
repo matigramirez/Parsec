@@ -6,13 +6,8 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public class Spawn : IBinary
+public sealed class Spawn : IBinary
 {
-    public int Unknown1 { get; set; }
-    public FactionInt Faction { get; set; }
-    public int Unknown2 { get; set; }
-    public BoundingBox Area { get; set; }
-
     [JsonConstructor]
     public Spawn()
     {
@@ -25,6 +20,11 @@ public class Spawn : IBinary
         Unknown2 = binaryReader.Read<int>();
         Area = new BoundingBox(binaryReader);
     }
+
+    public int Unknown1 { get; set; }
+    public FactionInt Faction { get; set; }
+    public int Unknown2 { get; set; }
+    public BoundingBox Area { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

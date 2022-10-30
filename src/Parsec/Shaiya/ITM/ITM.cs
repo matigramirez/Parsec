@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.ITM;
 
-public class ITM : FileBase, IJsonReadable
+public sealed class ITM : FileBase, IJsonReadable
 {
     /// <summary>
     /// File Signature. Read as char[3]. "ITM" or "IT2"
@@ -41,7 +41,7 @@ public class ITM : FileBase, IJsonReadable
         {
             "ITM" => ITMFormat.ITM,
             "IT2" => ITMFormat.IT2,
-            _     => ITMFormat.Unknown
+            _ => ITMFormat.Unknown
         };
 
         var obj3doCount = _binaryReader.Read<int>();

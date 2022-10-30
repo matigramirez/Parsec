@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using Parsec.Helpers;
+﻿using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Data;
 
@@ -113,7 +111,7 @@ public static class DataBuilder
 
             var shaiyaFile = new SFile(folder)
             {
-                Name = file, Length = (int)fileStream.Length,
+                Name = file, Length = (int)fileStream.Length
                 //RelativePath = Path.Combine(folder.RelativePath, file)
             };
 

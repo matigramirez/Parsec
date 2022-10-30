@@ -2,6 +2,6 @@
 
 namespace Parsec.Shaiya.TransformModel;
 
-public class DBTransformWeaponModelData : BinarySData<DBTransformWeaponModelDataRecord>
+public sealed class DBTransformWeaponModelData : BinarySData<DBTransformWeaponModelDataRecord>
 {
 }

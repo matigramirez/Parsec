@@ -6,8 +6,20 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya._3DE;
 
-public class Vertex : IBinary
+public sealed class Vertex : IBinary
 {
+    [JsonConstructor]
+    public Vertex()
+    {
+    }
+
+    public Vertex(SBinaryReader binaryReader)
+    {
+        Coordinates = new Vector3(binaryReader);
+        BoneId = binaryReader.Read<int>();
+        UV = new Vector2(binaryReader);
+    }
+
     /// <summary>
     /// Vertex coordinates in the 3D space
     /// </summary>
@@ -22,18 +34,6 @@ public class Vertex : IBinary
     /// UV Texture mapping
     /// </summary>
     public Vector2 UV { get; set; }
-
-    [JsonConstructor]
-    public Vertex()
-    {
-    }
-
-    public Vertex(SBinaryReader binaryReader)
-    {
-        Coordinates = new Vector3(binaryReader);
-        BoneId = binaryReader.Read<int>();
-        UV = new Vector2(binaryReader);
-    }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

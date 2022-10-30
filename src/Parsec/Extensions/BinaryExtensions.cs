@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Extensions;
@@ -53,13 +52,9 @@ public static class BinaryExtensions
     {
         var buffer = new List<byte>();
 
-        var finalStr = includeStringTerminator ? str + '\0' : str;
-        var length = finalStr.Length;
+        string finalStr = includeStringTerminator ? str + '\0' : str;
 
-        if (encoding.Equals(Encoding.Unicode))
-            length *= 2;
-
-        buffer.AddRange(length.GetBytes());
+        buffer.AddRange(finalStr.Length.GetBytes());
         buffer.AddRange(finalStr.GetBytes(encoding));
 
         return buffer;

@@ -8,7 +8,7 @@ namespace Parsec.Shaiya.KillStatus;
 /// This file contains the bonuses each faction receives based on bless of the goddess values.
 /// </summary>
 [DefaultVersion(Episode.EP5)]
-public class KillStatus : SData.SData, IJsonReadable
+public sealed class KillStatus : SData.SData, IJsonReadable
 {
     [ShaiyaProperty]
     [LengthPrefixedList(typeof(KillStatusRecord))]

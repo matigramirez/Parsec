@@ -9,7 +9,7 @@ namespace Parsec.Shaiya._3DE;
 /// Class that represents the .3DE file structure.
 /// 3DE (3D Effect) files are textured meshes with vertex animations used for effects
 /// </summary>
-public class _3DE : FileBase, IJsonReadable
+public sealed class _3DE : FileBase, IJsonReadable
 {
     /// <summary>
     /// The mesh .dds texture
@@ -80,13 +80,11 @@ public class _3DE : FileBase, IJsonReadable
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
         var buffer = new List<byte>();
-
         buffer.AddRange(Texture.GetLengthPrefixedBytes());
         buffer.AddRange(Vertices.GetBytes());
         buffer.AddRange(Faces.GetBytes());
         buffer.AddRange(MaxKeyframe.GetBytes());
         buffer.AddRange(Frames.GetBytes());
-
         return buffer;
     }
 }

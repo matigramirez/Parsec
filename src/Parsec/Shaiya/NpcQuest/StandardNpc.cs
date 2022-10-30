@@ -6,13 +6,13 @@ namespace Parsec.Shaiya.NpcQuest;
 
 public class StandardNpc : BaseNpc
 {
-    public StandardNpc(SBinaryReader binaryReader, Episode episode) : base(episode)
+    public StandardNpc(SBinaryReader binaryReader, Episode episode)
     {
-        ReadNpcBaseComplete(binaryReader);
+        ReadNpcBaseComplete(binaryReader, episode);
     }
 
     [JsonConstructor]
-    public StandardNpc(Episode episode = Episode.EP5) : base(episode)
+    public StandardNpc()
     {
     }
 }
