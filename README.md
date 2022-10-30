@@ -7,7 +7,7 @@
 `Parsec` is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.0. Its goal is to
 make reading and manipulating the game's file formats easy.
 
-## Currently supported files/formats
+## Supported file formats
 
 - `data.sah/saf`
 - `NpcQuest.SData`
@@ -52,15 +52,13 @@ make reading and manipulating the game's file formats easy.
 - `DBTransformModelData.SData`
 - `DBTransformWeaponModelData.SData`
 
-Note: These file formats have been tested on Episodes 5, 6 & 8. Lower episodes might be slightly different and this library might not work for them,
-but since they're not mainstream, there aren't plans to support them.
+NOTE: These file formats have been tested on Episodes 5, 6 & 8. Lower episodes might be slightly different and this library might not work for them.
 
 ## Features
 
-- `data` extraction, patching and creation
+- `data` extraction, building and patching
 - `SData` encryption/decryption
-- Export and import most supported formats as `json` (you can modify files as json and convert them back to their
-  original format)
+- Export and import most supported formats as `JSON` (modify files as json and convert them back to their original format)
 
 ## Getting Started
 
@@ -85,7 +83,7 @@ var svmap = Reader.ReadFromFile<Svmap>("0.svmap");
 // Load data (sah and saf)
 var data = new Data("data.sah");
 
-// Find the file you want to read
+// Find the file you want to read in the FileIndex Dictionary
 if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
 {
   // Read and parse the file's content directly from the saf file
@@ -93,8 +91,8 @@ if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
 }
 ```
 
-NOTE: The FileIndex dictionary key is the file's relative path, for episodes below Episode 8, `world/2.svmap` should work just fine,
-but in Episode 8 the main folder was renamed to `data`, so the key in that case is `data/world/2.svmap`.
+NOTE: The `FileIndex` dictionary key is the file's relative path, for episodes below Episode 8, `world/2.svmap` should
+work just fine, but in Episode 8 the root folder was renamed to `data`, so the key in that case is `data/world/2.svmap`.
 
 ### Export
 
@@ -102,6 +100,9 @@ After modifying the file, you can save it in its original format by calling the 
 
 ```cs
 svmap.Write("0.modified.svmap");
+
+// NOTE: Some Episode 8 BinarySData files require you to pass the episode as a parameter
+itemEp8.Write("ItemEp8.SData", Episode.EP8);
 ```
 
 ### Export as JSON
@@ -112,7 +113,7 @@ Call the `ExportJson` method
 svmap.ExportJson("map0.json");
 ```
 
-### Import as JSON
+### Import from a JSON file
 
 `Parsec` supports importing a file as JSON, which can be later exported as its original format. The user must make sure
 that the JSON file is properly formatted to match the JSON standards and contain all the fields present in the chosen
@@ -122,7 +123,7 @@ format.
 var svmap = Reader.ReadFromJson<Svmap>("map0.json");
 ```
 
-It is advised to first read a file from its original format, export it as JSON, edit it, and importing it once again as
+It is advised to first read a file from its original format, export it as JSON, edit it, and import it once again as
 JSON, so that all the original fields are present in the JSON file.
 
 ## Samples
@@ -136,17 +137,17 @@ JSON, so that all the original fields are present in the JSON file.
 var data = new Data("data.sah");
 
 // Find the file you want to extract
-if (data.Sah.FileIndex.TryGetValue("world/2.svmap", out var file))
+if (data.FileIndex.TryGetValue("world/2.svmap", out var file))
 {
   // Extract the selected file
   data.Extract(file, "extracted");
 }
 ```
 
-#### Create data or patch from a directory
+#### Data/Patch building
 
 ```cs
-// Create patch data
+// Create data from directory
 var createdData = DataBuilder.CreateFromDirectory("input", "output");
 
 Console.WriteLine($"Data file count: {createdData.FileCount}");
@@ -159,7 +160,7 @@ Console.WriteLine($"Data file count: {createdData.FileCount}");
 var data = new Data("data.sah");
 var patchData = new Data("update.sah");
 
-// Patch
+// Patch data
 DataPatcher.Patch(data, patchData);
 ```
 
@@ -195,17 +196,20 @@ Console.WriteLine($"Named Area Count: {svmap.NamedAreas.Count}");
 svmap.ExportJson($"{svmap.FileName}.json", nameof(svmap.MapHeight));
 ```
 
-### `Item.SData`
+### Export as CSV
 
-The `Item.SData` format, represented by the `Item` class, can also be imported/exported as csv
+The `Item.SData` format, represented by the `Item` class, can also be imported/exported as csv. The same applies for
+the `Monster.SData` format, represented by the `Monster` class.
 
 ```cs
 // Export as csv
 var item = Reader.ReadFromFile<Item>("Item.SData");
-item.ExportCSV("Item.csv")
+item.ExportCsv("Item.csv")
 
 // Read from csv
-var item = Item.ReadFromCSV("Item.csv");
+var item = Item.ReadFromCsv("Item.csv");
 ```
+
+All of the Episode 8 `BinarySData` formats also support exporting and importing as `CSV`.
 
 More examples can be found in the [samples](https://github.com/matigramirez/Parsec/tree/main/samples) directory.
