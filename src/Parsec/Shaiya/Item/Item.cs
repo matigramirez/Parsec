@@ -6,7 +6,7 @@ using Parsec.Extensions;
 
 namespace Parsec.Shaiya.Item;
 
-public sealed class Item : SData.SData, IJsonReadable, ICsv
+public sealed class Item : SData.SData, ICsv
 {
     [JsonIgnore]
     public Dictionary<(byte type, byte typeId), IItemDefinition> ItemIndex = new();

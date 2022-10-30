@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.ITM;
 
-public sealed class ITM : FileBase, IJsonReadable
+public sealed class ITM : FileBase
 {
     /// <summary>
     /// File Signature. Read as char[3]. "ITM" or "IT2"
@@ -44,24 +44,21 @@ public sealed class ITM : FileBase, IJsonReadable
             _ => ITMFormat.Unknown
         };
 
-        var obj3doCount = _binaryReader.Read<int>();
-
+        int obj3doCount = _binaryReader.Read<int>();
         for (int i = 0; i < obj3doCount; i++)
         {
-            var obj3oName = _binaryReader.ReadString();
-            Obj3DONames.Add(obj3oName);
+            string obj3doName = _binaryReader.ReadString();
+            Obj3DONames.Add(obj3doName);
         }
 
-        var textureNameCount = _binaryReader.Read<int>();
-
+        int textureNameCount = _binaryReader.Read<int>();
         for (int i = 0; i < textureNameCount; i++)
         {
-            var textureName = _binaryReader.ReadString();
+            string textureName = _binaryReader.ReadString();
             TextureNames.Add(textureName);
         }
 
-        var recordCount = _binaryReader.Read<int>();
-
+        int recordCount = _binaryReader.Read<int>();
         for (int i = 0; i < recordCount; i++)
         {
             var record = new Record(Format, _binaryReader);
@@ -75,17 +72,14 @@ public sealed class ITM : FileBase, IJsonReadable
         buffer.AddRange(Signature.GetBytes());
 
         buffer.AddRange(Obj3DONames.Count.GetBytes());
-
-        foreach (var obj3doName in Obj3DONames)
+        foreach (string obj3doName in Obj3DONames)
             buffer.AddRange(obj3doName.GetLengthPrefixedBytes());
 
         buffer.AddRange(TextureNames.Count.GetBytes());
-
-        foreach (var textureName in TextureNames)
+        foreach (string textureName in TextureNames)
             buffer.AddRange(textureName.GetLengthPrefixedBytes());
 
         buffer.AddRange(Records.Count.GetBytes());
-
         foreach (var record in Records)
             buffer.AddRange(record.GetBytes(Format));
 

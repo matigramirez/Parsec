@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Wtr;
 
-public sealed class Wtr : FileBase, IJsonReadable
+public sealed class Wtr : FileBase
 {
     public float Unknown1 { get; set; }
     public int Unknown2 { get; set; }
@@ -23,12 +23,11 @@ public sealed class Wtr : FileBase, IJsonReadable
         Unknown2 = _binaryReader.Read<int>();
         Unknown3 = _binaryReader.Read<int>();
 
-        var textureCount = _binaryReader.Read<int>();
-
+        int textureCount = _binaryReader.Read<int>();
         for (int i = 0; i < textureCount; i++)
         {
             // Read 256-byte strings and trim the null characters
-            var texture = _binaryReader.ReadString(256).Trim('\0');
+            string texture = _binaryReader.ReadString(256).Trim('\0');
             Textures.Add(texture);
         }
     }
@@ -41,7 +40,7 @@ public sealed class Wtr : FileBase, IJsonReadable
         buffer.AddRange(Unknown3.GetBytes());
         buffer.AddRange(Textures.Count.GetBytes());
 
-        foreach (var texture in Textures)
+        foreach (string texture in Textures)
         {
             buffer.AddRange(texture.GetBytes());
 

@@ -9,7 +9,7 @@ namespace Parsec.Shaiya._3DE;
 /// Class that represents the .3DE file structure.
 /// 3DE (3D Effect) files are textured meshes with vertex animations used for effects
 /// </summary>
-public sealed class _3DE : FileBase, IJsonReadable
+public sealed class _3DE : FileBase
 {
     /// <summary>
     /// The mesh .dds texture
@@ -47,30 +47,18 @@ public sealed class _3DE : FileBase, IJsonReadable
         Texture = _binaryReader.ReadString();
 
         int vertexCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < vertexCount; i++)
-        {
-            var vertex = new Vertex(_binaryReader);
-            Vertices.Add(vertex);
-        }
+            Vertices.Add(new Vertex(_binaryReader));
 
         int faceCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < faceCount; i++)
-        {
-            var face = new Face(_binaryReader);
-            Faces.Add(face);
-        }
+            Faces.Add(new Face(_binaryReader));
 
         MaxKeyframe = _binaryReader.Read<int>();
 
         int frameCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < frameCount; i++)
-        {
-            var frame = new Frame(_binaryReader, vertexCount);
-            Frames.Add(frame);
-        }
+            Frames.Add(new Frame(_binaryReader, vertexCount));
     }
 
     /// <summary>

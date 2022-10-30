@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Seff;
 
-public sealed class Seff : FileBase, IJsonReadable
+public sealed class Seff : FileBase
 {
     public int Format { get; set; }
     public short Unknown2 { get; set; }
@@ -30,7 +30,6 @@ public sealed class Seff : FileBase, IJsonReadable
         Unknown7 = _binaryReader.Read<short>();
 
         int recordCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < recordCount; i++)
         {
             var record = new Record(_binaryReader, Format);
@@ -41,7 +40,6 @@ public sealed class Seff : FileBase, IJsonReadable
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
         var buffer = new List<byte>();
-
         buffer.AddRange(Format.GetBytes());
         buffer.AddRange(Unknown2.GetBytes());
         buffer.AddRange(Unknown3.GetBytes());
@@ -51,7 +49,6 @@ public sealed class Seff : FileBase, IJsonReadable
         buffer.AddRange(Unknown7.GetBytes());
 
         buffer.AddRange(Records.Count.GetBytes());
-
         foreach (var effect in Records)
             buffer.AddRange(effect.GetBytes(Format));
 

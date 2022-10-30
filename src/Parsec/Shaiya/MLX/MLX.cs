@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.MLX;
 /// <summary>
 /// Represents a .MLX file, which is used as an index for 3DC-DDS combinations for each class/sex combination
 /// </summary>
-public sealed class MLX : FileBase, IJsonReadable
+public sealed class MLX : FileBase
 {
     public List<MLXRecord> Records { get; } = new();
 
@@ -21,20 +21,16 @@ public sealed class MLX : FileBase, IJsonReadable
         if (_binaryReader.Buffer.Length == 0)
             return;
 
-        var signature = _binaryReader.ReadString(4);
+        string signature = _binaryReader.ReadString(4);
 
         if (signature == "MLX2")
             Format = MLXFormat.MLX2;
         else
             _binaryReader.ResetOffset();
 
-        var recordCount = _binaryReader.Read<int>();
-
+        int recordCount = _binaryReader.Read<int>();
         for (int i = 0; i < recordCount; i++)
-        {
-            var record = new MLXRecord(_binaryReader, Format);
-            Records.Add(record);
-        }
+            Records.Add(new MLXRecord(_binaryReader, Format));
     }
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)

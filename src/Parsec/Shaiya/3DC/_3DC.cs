@@ -13,7 +13,7 @@ namespace Parsec.Shaiya._3DC;
 [DefaultVersion(Episode.EP5)]
 [VersionPrefixed(typeof(int), 0, Episode.EP5)]
 [VersionPrefixed(typeof(int), 444, Episode.EP6)]
-public sealed class _3DC : FileBase, IJsonReadable
+public sealed class _3DC : FileBase
 {
     /// <summary>
     /// List of bones linked to this 3d model. Although a model might be linked to a few bones (for example boots models), the

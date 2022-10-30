@@ -1,6 +1,4 @@
-﻿using System.IO;
-using Newtonsoft.Json;
-using Parsec.Common;
+﻿using Newtonsoft.Json;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
 
@@ -15,7 +13,8 @@ public static class Reader
     /// <param name="options">Array of reading options</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new() => FileBase.ReadFromFile<T>(path, options);
+    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new() =>
+        FileBase.ReadFromFile<T>(path, options);
 
     /// <summary>
     /// Reads a shaiya file format from a buffer (byte array)
@@ -34,7 +33,7 @@ public static class Reader
     /// <param name="path">Path to json file</param>
     /// <typeparam name="T"><see cref="FileBase"/> type</typeparam>
     /// <returns><see cref="FileBase"/> instance</returns>
-    public static T ReadFromJson<T>(string path) where T : FileBase, IJsonReadable
+    public static T ReadFromJson<T>(string path) where T : FileBase
     {
         if (!FileHelper.FileExists(path))
             throw new FileNotFoundException($"File ${path} not found");

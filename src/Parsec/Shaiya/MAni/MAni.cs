@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.MAni;
 /// Represents a .mani file. Its used to define an animation for an SMOD object, that's where the extension comes
 /// from, given by "Mesh Animation"
 /// </summary>
-public sealed class MAni : FileBase, IJsonReadable
+public sealed class MAni : FileBase
 {
     /// <summary>
     /// Always 0x21 = 33

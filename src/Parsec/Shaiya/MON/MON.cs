@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MON;
 
-public sealed class MON : FileBase, IJsonReadable
+public sealed class MON : FileBase
 {
     /// <summary>
     /// File signature. "MO2", "MO4". Read as char[3]
@@ -32,8 +32,7 @@ public sealed class MON : FileBase, IJsonReadable
                 break;
         }
 
-        var recordCount = _binaryReader.Read<int>();
-
+        int recordCount = _binaryReader.Read<int>();
         for (int i = 0; i < recordCount; i++)
         {
             var record = new MONRecord(_binaryReader, Format);
@@ -47,7 +46,6 @@ public sealed class MON : FileBase, IJsonReadable
         buffer.AddRange(Format.ToString().GetBytes());
 
         buffer.AddRange(Records.Count.GetBytes());
-
         foreach (var record in Records)
             buffer.AddRange(record.GetBytes(Format));
 

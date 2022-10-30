@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.Ani;
 /// </summary>
 [DefaultVersion(Episode.EP5)]
 [VersionPrefixed(typeof(string), "ANI_V2", Episode.EP6, Episode.EP8)]
-public sealed class Ani : FileBase, IJsonReadable
+public sealed class Ani : FileBase
 {
     /// <summary>
     /// Starting keyframe. 0 for most animations

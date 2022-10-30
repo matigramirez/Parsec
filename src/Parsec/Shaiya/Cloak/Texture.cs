@@ -24,11 +24,11 @@ public sealed class Texture : IBinary
         _fixedLength = length;
         _padChar = padChar;
 
-        var stringBuffer = binaryReader.ReadBytes(_fixedLength);
+        byte[] stringBuffer = binaryReader.ReadBytes(_fixedLength);
         Name = Encoding.ASCII.GetString(stringBuffer.TakeWhile(b => b != '\0').ToArray());
     }
 
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = string.Empty;
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
@@ -42,11 +42,11 @@ public sealed class Texture : IBinary
 
         buffer.AddRange(Name.GetLengthPrefixedBytes());
 
-        var padLength = _fixedLength - Name.Length - 1;
+        int padLength = _fixedLength - Name.Length - 1;
 
         if (padLength > 0)
         {
-            var pad = "".PadRight(padLength, _padChar);
+            string pad = "".PadRight(padLength, _padChar);
             buffer.AddRange(pad.GetBytes());
         }
 

@@ -3,7 +3,7 @@ using Parsec.Extensions;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class NpcQuest : SData.SData, IJsonReadable
+public class NpcQuest : SData.SData
 {
     public List<Merchant> Merchants { get; } = new();
     public List<GateKeeper> Gatekeepers { get; } = new();
@@ -99,10 +99,7 @@ public class NpcQuest : SData.SData, IJsonReadable
     {
         int questCount = _binaryReader.Read<int>();
         for (int i = 0; i < questCount; i++)
-        {
-            var quest = new Quest(_binaryReader, Episode);
-            Quests.Add(quest);
-        }
+            Quests.Add(new Quest(_binaryReader, Episode));
     }
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)

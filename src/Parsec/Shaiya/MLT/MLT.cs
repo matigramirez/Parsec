@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.MLT;
 
-public sealed class MLT : FileBase, IJsonReadable
+public sealed class MLT : FileBase
 {
     /// <summary>
     /// File Signature. Read as char[3]
@@ -33,7 +33,6 @@ public sealed class MLT : FileBase, IJsonReadable
         Signature = _binaryReader.ReadString(3);
 
         int obj3dcCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < obj3dcCount; i++)
         {
             string obj3dcName = _binaryReader.ReadString();
@@ -41,7 +40,6 @@ public sealed class MLT : FileBase, IJsonReadable
         }
 
         int textureNameCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < textureNameCount; i++)
         {
             string textureName = _binaryReader.ReadString();
@@ -49,7 +47,6 @@ public sealed class MLT : FileBase, IJsonReadable
         }
 
         int recordCount = _binaryReader.Read<int>();
-
         for (int i = 0; i < recordCount; i++)
         {
             var record = new MLTRecord(_binaryReader);

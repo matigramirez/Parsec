@@ -1,9 +1,8 @@
 ﻿using Parsec.Attributes;
-using Parsec.Common;
 
 namespace Parsec.Shaiya.GuildHouse;
 
-public sealed class GuildHouse : SData.SData, IJsonReadable
+public sealed class GuildHouse : SData.SData
 {
     [ShaiyaProperty]
     public int Unknown { get; set; }

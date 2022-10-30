@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.VAni;
 
-public sealed class VAni : FileBase, IJsonReadable
+public sealed class VAni : FileBase
 {
     /// <summary>
     /// Coordinates of the center of the 3d object
@@ -48,15 +48,12 @@ public sealed class VAni : FileBase, IJsonReadable
         Center = new Vector3(_binaryReader);
         Orientation = _binaryReader.Read<float>();
         BoundingBox = new BoundingBox(_binaryReader);
-        var objectCount = _binaryReader.Read<int>();
+        int objectCount = _binaryReader.Read<int>();
         FrameCount = _binaryReader.Read<int>();
         Unknown1 = _binaryReader.Read<int>();
 
         for (int i = 0; i < objectCount; i++)
-        {
-            var obj = new VAniObject(_binaryReader, FrameCount);
-            Objects.Add(obj);
-        }
+            Objects.Add(new VAniObject(_binaryReader, FrameCount));
 
         BoundingBox2 = new BoundingBox(_binaryReader);
         Unknown2 = _binaryReader.Read<int>();

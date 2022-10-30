@@ -12,7 +12,7 @@ namespace Parsec.Shaiya.SMOD;
 /// Collision objects are also included in this format in a separate list of texture-less objects.
 /// </summary>
 [DefaultVersion(Episode.EP5)]
-public sealed class SMOD : FileBase, IJsonReadable
+public sealed class SMOD : FileBase
 {
     /// <summary>
     /// The center of the SMOD object as a whole (center of all objects)

@@ -8,7 +8,7 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Data;
 
 [DataContract]
-public sealed class Sah : FileBase, IJsonReadable
+public sealed class Sah : FileBase
 {
     /// <summary>
     /// Dictionary of files that can be accessed by path
@@ -131,7 +131,7 @@ public sealed class Sah : FileBase, IJsonReadable
         var currentFolder = RootFolder;
 
         //  Iterate recursively through subfolders creating the missing one/
-        foreach (var folderName in pathFolders)
+        foreach (string folderName in pathFolders)
             if (!currentFolder.HasSubfolder(folderName))
             {
                 // Create new folder if it doesn't exist
@@ -171,7 +171,6 @@ public sealed class Sah : FileBase, IJsonReadable
     {
         // Create byte list which will have the sah's data
         var buffer = new List<byte>();
-
         buffer.AddRange(Signature.GetBytes());
         buffer.AddRange(Version.GetBytes());
         buffer.AddRange(FileCount.GetBytes());
@@ -180,7 +179,6 @@ public sealed class Sah : FileBase, IJsonReadable
         buffer.AddRange(RootFolder.GetBytes());
         // Write last 8 empty bytes
         buffer.AddRange(new byte[8]);
-
         return buffer;
     }
 }

@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.EFT;
 
-public sealed class EFT : FileBase, IJsonReadable
+public sealed class EFT : FileBase
 {
     [JsonIgnore]
     public EFTFormat Format { get; set; }
@@ -32,31 +32,19 @@ public sealed class EFT : FileBase, IJsonReadable
 
         int effectObjectCount = _binaryReader.Read<int>();
         for (int i = 0; i < effectObjectCount; i++)
-        {
-            var effectObject = new EffectObject(_binaryReader, i);
-            Objects.Add(effectObject);
-        }
+            Objects.Add(new EffectObject(_binaryReader, i));
 
         int textureCount = _binaryReader.Read<int>();
         for (int i = 0; i < textureCount; i++)
-        {
-            var texture = new EffectTexture(_binaryReader, i);
-            Textures.Add(texture);
-        }
+            Textures.Add(new EffectTexture(_binaryReader, i));
 
         int effectCount = _binaryReader.Read<int>();
         for (int i = 0; i < effectCount; i++)
-        {
-            var effect = new Effect(_binaryReader, Format, i);
-            Effects.Add(effect);
-        }
+            Effects.Add(new Effect(_binaryReader, Format, i));
 
         int sequenceCount = _binaryReader.Read<int>();
         for (int i = 0; i < sequenceCount; i++)
-        {
-            var sequence = new EffectSequence(_binaryReader);
-            EffectSequences.Add(sequence);
-        }
+            EffectSequences.Add(new EffectSequence(_binaryReader));
     }
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)

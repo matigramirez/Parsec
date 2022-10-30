@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
-public sealed class Svmap : FileBase, IJsonReadable
+public sealed class Svmap : FileBase
 {
     [JsonConstructor]
     public Svmap()
@@ -28,59 +28,33 @@ public sealed class Svmap : FileBase, IJsonReadable
     public override void Read(params object[] options)
     {
         MapSize = _binaryReader.Read<int>();
-
-        var mapHeightCount = MapSize * MapSize / 8;
+        int mapHeightCount = MapSize * MapSize / 8;
         MapHeight = _binaryReader.ReadBytes(mapHeightCount).ToList();
-
         CellSize = _binaryReader.Read<int>();
 
-        var ladderCount = _binaryReader.Read<int>();
-
+        int ladderCount = _binaryReader.Read<int>();
         for (int i = 0; i < ladderCount; i++)
-        {
-            var ladder = new Ladder(_binaryReader);
-            Ladders.Add(ladder);
-        }
+            Ladders.Add(new Ladder(_binaryReader));
 
-        var monsterAreaCount = _binaryReader.Read<int>();
-
+        int monsterAreaCount = _binaryReader.Read<int>();
         for (int i = 0; i < monsterAreaCount; i++)
-        {
-            var monsterArea = new MonsterArea(_binaryReader);
-            MonsterAreas.Add(monsterArea);
-        }
+            MonsterAreas.Add(new MonsterArea(_binaryReader));
 
-        var npcCount = _binaryReader.Read<int>();
-
+        int npcCount = _binaryReader.Read<int>();
         for (int i = 0; i < npcCount; i++)
-        {
-            var npc = new Npc(_binaryReader);
-            Npcs.Add(npc);
-        }
+            Npcs.Add(new Npc(_binaryReader));
 
-        var portalCount = _binaryReader.Read<int>();
-
+        int portalCount = _binaryReader.Read<int>();
         for (int i = 0; i < portalCount; i++)
-        {
-            var portal = new Portal(_binaryReader);
-            Portals.Add(portal);
-        }
+            Portals.Add(new Portal(_binaryReader));
 
-        var spawnCount = _binaryReader.Read<int>();
-
+        int spawnCount = _binaryReader.Read<int>();
         for (int i = 0; i < spawnCount; i++)
-        {
-            var spawn = new Spawn(_binaryReader);
-            Spawns.Add(spawn);
-        }
+            Spawns.Add(new Spawn(_binaryReader));
 
-        var namedAreaCount = _binaryReader.Read<int>();
-
+        int namedAreaCount = _binaryReader.Read<int>();
         for (int i = 0; i < namedAreaCount; i++)
-        {
-            var namedArea = new NamedArea(_binaryReader);
-            NamedAreas.Add(namedArea);
-        }
+            NamedAreas.Add(new NamedArea(_binaryReader));
     }
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)

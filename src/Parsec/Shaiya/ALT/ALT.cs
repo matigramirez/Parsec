@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.ALT;
 /// This class has custom implementations of the <see cref="Read"/> and <see cref="GetBytes"/> methods because its subclass <see cref="Animation"/>
 /// has a serialization anti-pattern.
 /// </summary>
-public sealed class ALT : FileBase, IJsonReadable
+public sealed class ALT : FileBase
 {
     public string Signature { get; set; }
     public List<Animation> Animations { get; } = new();
@@ -20,9 +20,8 @@ public sealed class ALT : FileBase, IJsonReadable
     {
         Signature = _binaryReader.ReadString(3);
 
-        var animationCount = _binaryReader.Read<int>();
-
-        for (var i = 0; i < animationCount; i++)
+        int animationCount = _binaryReader.Read<int>();
+        for (int i = 0; i < animationCount; i++)
         {
             var animation = new Animation(_binaryReader);
             Animations.Add(animation);

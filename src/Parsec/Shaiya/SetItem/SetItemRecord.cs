@@ -25,7 +25,7 @@ public sealed class SetItemRecord : IBinary
 
         for (int i = 0; i < 13; i++)
         {
-            var synergy = binaryReader.ReadString();
+            string synergy = binaryReader.ReadString();
             Synergies.Add(synergy);
         }
     }
