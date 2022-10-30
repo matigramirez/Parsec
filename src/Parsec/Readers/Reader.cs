@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
@@ -44,6 +43,7 @@ public static class Reader
     /// Reads a shaiya file format from a json file
     /// </summary>
     /// <param name="path">Path to json file</param>
+    /// <param name="encoding">String encoding</param>
     /// <typeparam name="T"><see cref="FileBase"/> type</typeparam>
     /// <returns><see cref="FileBase"/> instance</returns>
     public static T ReadFromJson<T>(string path, Encoding encoding) where T : FileBase, IJsonReadable
