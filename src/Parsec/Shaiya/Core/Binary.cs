@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+using System.Reflection;
+using System.Text;
 using Parsec.Attributes;
 using Parsec.Attributes.Wld;
 using Parsec.Common;
@@ -199,7 +200,7 @@ public static class Binary
 
     public static object ReadPrimitive(SBinaryReader binaryReader, Type type) => binaryReader.Read(type);
 
-    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo,
+    public static IEnumerable<byte> GetPropertyBytes(Type parentType, object obj, PropertyInfo propertyInfo, Encoding encoding,
         Episode episode = Episode.Unknown)
     {
         var type = propertyInfo.PropertyType;
@@ -272,7 +273,7 @@ public static class Binary
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)) && !fixedLengthListAttribute.ItemType.IsPrimitive)
                                     continue;
 
-                                buf.AddRange(GetPropertyBytes(genericArgumentType, item, property, episode));
+                                buf.AddRange(GetPropertyBytes(genericArgumentType, item, property, encoding, episode));
                             }
                         }
                     }
@@ -321,7 +322,7 @@ public static class Binary
                                     !lengthPrefixedListAttribute.ItemType.IsPrimitive)
                                     continue;
 
-                                buffer.AddRange(GetPropertyBytes(genericItemType, item, property, episode));
+                                buffer.AddRange(GetPropertyBytes(genericItemType, item, property, encoding, episode));
                             }
                         }
                     }
@@ -329,8 +330,7 @@ public static class Binary
                     return buffer;
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                    return ((string)propertyValue + lengthPrefixedStringAttribute.Suffix).GetLengthPrefixedBytes(
-                        lengthPrefixedStringAttribute.Encoding,
+                    return ((string)propertyValue + lengthPrefixedStringAttribute.Suffix).GetLengthPrefixedBytes(encoding,
                         lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
