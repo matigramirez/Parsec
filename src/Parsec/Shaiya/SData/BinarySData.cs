@@ -63,7 +63,7 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         {
             foreach (var property in recordType.GetProperties())
             {
-                var propertyBytes = Binary.GetPropertyBytes(recordType, record, property);
+                var propertyBytes = Binary.GetPropertyBytes(recordType, record, property, Encoding, episode);
                 buffer.AddRange(propertyBytes);
             }
         }

@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Helpers;
@@ -36,6 +36,18 @@ public static class Reader
     /// <returns><see cref="FileBase"/> instance</returns>
     public static T ReadFromJson<T>(string path) where T : FileBase, IJsonReadable
     {
+        return ReadFromJson<T>(path, Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Reads a shaiya file format from a json file
+    /// </summary>
+    /// <param name="path">Path to json file</param>
+    /// <param name="encoding">String encoding</param>
+    /// <typeparam name="T"><see cref="FileBase"/> type</typeparam>
+    /// <returns><see cref="FileBase"/> instance</returns>
+    public static T ReadFromJson<T>(string path, Encoding encoding) where T : FileBase, IJsonReadable
+    {
         if (!FileHelper.FileExists(path))
             throw new FileNotFoundException($"File ${path} not found");
 
@@ -43,7 +55,7 @@ public static class Reader
             throw new FileLoadException("The provided file to deserialize must be a valid json file");
 
         // Read json file content
-        string jsonContent = File.ReadAllText(path);
+        string jsonContent = File.ReadAllText(path, encoding);
 
         // Deserialize into FileBase
         var deserializedObject = JsonConvert.DeserializeObject<T>(jsonContent);
@@ -53,6 +65,9 @@ public static class Reader
 
         if (deserializedObject == null)
             return null;
+
+        // Set encoding
+        deserializedObject.Encoding = encoding;
 
         // Add proper Path to deserialized object
         string objectExtension = deserializedObject.Extension;

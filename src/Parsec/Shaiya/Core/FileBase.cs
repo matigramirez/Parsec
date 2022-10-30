@@ -38,6 +38,9 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
     public Episode Episode { get; set; } = Episode.Unknown;
 
+    [JsonIgnore]
+    public Encoding Encoding { get; set; } = Encoding.UTF8;
+
     /// <summary>
     /// Plain file name
     /// </summary>
@@ -200,7 +203,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                 continue;
 
-            buffer.AddRange(Binary.GetPropertyBytes(type, this, property, episode));
+            buffer.AddRange(Binary.GetPropertyBytes(type, this, property, Encoding, episode));
         }
 
         return buffer;
