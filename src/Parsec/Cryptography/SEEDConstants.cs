@@ -5,7 +5,7 @@
 /// </summary>
 public static class SeedConstants
 {
-    public static uint[,] SS =
+    public static readonly uint[,] SS =
     {
         {
             0x2989a1a8, 0x05858184, 0x16c6d2d4, 0x13c3d3d0, 0x14445054, 0x1d0d111c, 0x2c8ca0ac, 0x25052124, 0x1d4d515c, 0x03434340,

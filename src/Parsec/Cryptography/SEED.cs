@@ -36,11 +36,11 @@ public static class Seed
         return x1 | x2;
     }
 
-    public static uint EndiannessSwap(uint value)
+    public static void EndiannessSwap(ref uint value)
     {
         uint value1 = LeftRotation(value, 8) & 0x00ff00ff;
         uint value2 = LeftRotation(value, 24) & 0xff00ff00;
-        return value1 | value2;
+        value = value1 | value2;
     }
 
     private static void SeedRound(ref uint L0, ref uint L1, uint R0, uint R1, byte[] K, uint offset)
@@ -48,8 +48,8 @@ public static class Seed
         uint K0 = ByteArrayToUInt32(K, offset * 4 + 0);
         uint K1 = ByteArrayToUInt32(K, (offset + 1) * 4);
 
-        K0 = EndiannessSwap(K0);
-        K1 = EndiannessSwap(K1);
+        EndiannessSwap(ref K0);
+        EndiannessSwap(ref K1);
 
         uint T0 = R0 ^ K0;
         uint T1 = R1 ^ K1;

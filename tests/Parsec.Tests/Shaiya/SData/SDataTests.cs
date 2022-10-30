@@ -46,6 +46,8 @@ public class SDataTests
 
         var decryptedBuffer = File.ReadAllBytes(decryptedOutputPath);
         Assert.False(Parsec.Shaiya.SData.SData.IsEncrypted(decryptedBuffer));
+
+        Assert.Equal(FileHash.Checksum(EncryptedSDataFilePath), FileHash.Checksum(encryptedOutputPath));
     }
 
     [Fact]
