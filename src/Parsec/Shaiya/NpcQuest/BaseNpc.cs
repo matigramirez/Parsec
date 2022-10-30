@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -48,8 +47,8 @@ public abstract class BaseNpc : IBinary
 
         if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
         {
-            Name = binaryReader.ReadString(Encoding.ASCII, false);
-            WelcomeMessage = binaryReader.ReadString(Encoding.ASCII, false);
+            Name = binaryReader.ReadString(false);
+            WelcomeMessage = binaryReader.ReadString(false);
         }
     }
 
@@ -62,8 +61,8 @@ public abstract class BaseNpc : IBinary
 
         if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
         {
-            buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII, false));
-            buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(Encoding.ASCII, false));
+            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
+            buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(false));
         }
     }
 

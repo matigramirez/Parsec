@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -25,7 +24,7 @@ public class GateTarget : IBinary
         Position = new Vector3(binaryReader);
 
         if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
-            TargetName = binaryReader.ReadString(Encoding.ASCII, false);
+            TargetName = binaryReader.ReadString(false);
 
         Cost = binaryReader.Read<int>();
     }
@@ -47,7 +46,7 @@ public class GateTarget : IBinary
         buffer.AddRange(Position.GetBytes());
 
         if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
-            buffer.AddRange(TargetName.GetLengthPrefixedBytes(Encoding.ASCII, false));
+            buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
 
         buffer.AddRange(Cost.GetBytes());
         return buffer;

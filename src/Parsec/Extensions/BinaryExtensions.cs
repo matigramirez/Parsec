@@ -64,12 +64,12 @@ public static class BinaryExtensions
     /// Serializes a string prefixed by its length (int32) using ASCII encoding
     /// </summary>
     public static IEnumerable<byte> GetLengthPrefixedBytes(this string str, bool includeStringTerminator = true) =>
-        GetLengthPrefixedBytes(str, Encoding.UTF8, includeStringTerminator);
+        GetLengthPrefixedBytes(str, Encoding.ASCII, includeStringTerminator);
 
     /// <summary>
-    /// Serializes the string into a byte array with UTF8 encoding. It doesn't include a string terminator.
+    /// Serializes the string into a byte array with ASCII encoding. It doesn't include a string terminator.
     /// </summary>
-    public static IEnumerable<byte> GetBytes(this string str) => GetBytes(str, Encoding.UTF8);
+    public static IEnumerable<byte> GetBytes(this string str) => GetBytes(str, Encoding.ASCII);
 
     /// <summary>
     /// Serializes the string into a byte array with the provided encoding. It doesn't include a string terminator.

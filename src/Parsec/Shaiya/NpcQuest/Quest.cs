@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -123,8 +122,8 @@ public class Quest : IBinary
         // In ep 8, messages are moved to separate translation files.
         if (episode < Episode.EP8)
         {
-            Name = binaryReader.ReadString(Encoding.ASCII);
-            Summary = binaryReader.ReadString(Encoding.ASCII);
+            Name = binaryReader.ReadString();
+            Summary = binaryReader.ReadString();
         }
 
         MinLevel = binaryReader.Read<ushort>();
@@ -210,14 +209,14 @@ public class Quest : IBinary
                         Results.Add(result);
                     }
 
-                    InitialDescription = binaryReader.ReadString(Encoding.ASCII, false);
-                    QuestWindowSummary = binaryReader.ReadString(Encoding.ASCII, false);
-                    ReminderInstructions = binaryReader.ReadString(Encoding.ASCII, false);
-                    AlternateResponse = binaryReader.ReadString(Encoding.ASCII, false);
+                    InitialDescription = binaryReader.ReadString(false);
+                    QuestWindowSummary = binaryReader.ReadString(false);
+                    ReminderInstructions = binaryReader.ReadString(false);
+                    AlternateResponse = binaryReader.ReadString(false);
 
                     for (int i = 0; i < 3; i++)
                     {
-                        Results[i].CompletionMessage = binaryReader.ReadString(Encoding.ASCII, false);
+                        Results[i].CompletionMessage = binaryReader.ReadString(false);
                     }
 
                     break;
@@ -232,16 +231,16 @@ public class Quest : IBinary
 
                         // Episode 8 doesn't have messages, they're part of the translation files
                         if (episode < Episode.EP8)
-                            result.CompletionMessage = binaryReader.ReadString(Encoding.ASCII, false);
+                            result.CompletionMessage = binaryReader.ReadString(false);
                     }
 
                     // Episode 8 doesn't have messages, they're part of the translation files
                     if (episode < Episode.EP8)
                     {
-                        InitialDescription = binaryReader.ReadString(Encoding.ASCII, false);
-                        QuestWindowSummary = binaryReader.ReadString(Encoding.ASCII, false);
-                        ReminderInstructions = binaryReader.ReadString(Encoding.ASCII, false);
-                        AlternateResponse = binaryReader.ReadString(Encoding.ASCII, false);
+                        InitialDescription = binaryReader.ReadString(false);
+                        QuestWindowSummary = binaryReader.ReadString(false);
+                        ReminderInstructions = binaryReader.ReadString(false);
+                        AlternateResponse = binaryReader.ReadString(false);
                     }
 
                     break;
@@ -262,8 +261,8 @@ public class Quest : IBinary
 
         if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
         {
-            buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII, false));
-            buffer.AddRange(Summary.GetLengthPrefixedBytes(Encoding.ASCII, false));
+            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
+            buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
         }
 
         buffer.AddRange(MinLevel.GetBytes());
@@ -328,12 +327,12 @@ public class Quest : IBinary
             case <= Episode.EP5:
                 {
                     buffer.AddRange(Results.Take(3).GetBytes(false));
-                    buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(Encoding.ASCII, false));
-                    buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(Encoding.ASCII, false));
-                    buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(Encoding.ASCII, false));
-                    buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                    buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(false));
+                    buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(false));
+                    buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(false));
+                    buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(false));
                     foreach (var result in Results.Take(3))
-                        buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                        buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(false));
 
                     break;
                 }
@@ -345,16 +344,16 @@ public class Quest : IBinary
 
                         if (episode < Episode.EP8)
                         {
-                            buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                            buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(false));
                         }
                     }
 
                     if (episode < Episode.EP8)
                     {
-                        buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(Encoding.ASCII, false));
-                        buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(Encoding.ASCII, false));
-                        buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(Encoding.ASCII, false));
-                        buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(Encoding.ASCII, false));
+                        buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(false));
+                        buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(false));
+                        buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(false));
+                        buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(false));
                     }
 
                     break;

@@ -260,16 +260,16 @@ public sealed class SBinaryReader
     }
 
     /// <summary>
-    /// Reads length-fixed string with UTF8 encoding
+    /// Reads length-fixed string with ASCII encoding
     /// </summary>
     /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
-    public string ReadString(bool removeStringTerminator = true) => ReadString(Encoding.UTF8, removeStringTerminator);
+    public string ReadString(bool removeStringTerminator = true) => ReadString(Encoding.ASCII, removeStringTerminator);
 
     /// <summary>
-    /// Reads length-fixed string with UTF8 encoding
+    /// Reads length-fixed string with ASCII encoding
     /// </summary>
     /// <param name="length">The string's length</param>
-    public string ReadString(int length) => ReadString(Encoding.UTF8, length);
+    public string ReadString(int length) => ReadString(Encoding.ASCII, length);
 
     /// <summary>
     /// Resets the reading offset

@@ -39,7 +39,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     public Episode Episode { get; set; } = Episode.Unknown;
 
     [JsonIgnore]
-    public Encoding Encoding { get; set; } = Encoding.UTF8;
+    public Encoding Encoding { get; set; } = Encoding.ASCII;
 
     /// <summary>
     /// Plain file name

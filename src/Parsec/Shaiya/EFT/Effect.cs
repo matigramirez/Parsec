@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
@@ -85,7 +84,7 @@ namespace Parsec.Shaiya.EFT
         public Effect(SBinaryReader binaryReader, EFTFormat format, int index)
         {
             Index = index;
-            Name = binaryReader.ReadString(Encoding.ASCII);
+            Name = binaryReader.ReadString();
 
             Unknown1 = binaryReader.Read<int>();
             Unknown2 = binaryReader.Read<int>();

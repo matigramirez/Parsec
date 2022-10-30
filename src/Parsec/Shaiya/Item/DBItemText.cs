@@ -1,8 +1,7 @@
-﻿using Parsec.Common;
-using Parsec.Shaiya.SData;
+﻿using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Item;
 
-public sealed class DBItemText : BinarySData<DBItemTextRecord>, IJsonReadable
+public sealed class DBItemText : BinarySData<DBItemTextRecord>
 {
 }

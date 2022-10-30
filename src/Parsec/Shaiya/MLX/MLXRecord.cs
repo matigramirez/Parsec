@@ -15,7 +15,7 @@ public sealed class MLXRecord : IBinary
 
     public MLXRecord(SBinaryReader binaryReader, MLXFormat format)
     {
-        var stringEncoding = format == MLXFormat.MLX2 ? Encoding.Unicode : Encoding.UTF8;
+        var stringEncoding = format == MLXFormat.MLX2 ? Encoding.Unicode : Encoding.ASCII;
 
         Id = binaryReader.Read<int>();
         Name = binaryReader.ReadString(stringEncoding);
@@ -67,7 +67,7 @@ public sealed class MLXRecord : IBinary
         if (options.Length > 0)
             version = (MLXFormat)options[0];
 
-        var stringEncoding = version == MLXFormat.MLX2 ? Encoding.Unicode : Encoding.UTF8;
+        var stringEncoding = version == MLXFormat.MLX2 ? Encoding.Unicode : Encoding.ASCII;
 
         var buffer = new List<byte>();
         buffer.AddRange(Id.GetBytes());
