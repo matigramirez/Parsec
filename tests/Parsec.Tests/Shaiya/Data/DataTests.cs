@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using Parsec.Shaiya.Data;
-using Xunit;
 using Xunit.Sdk;
 
 namespace Parsec.Tests.Shaiya.Data;

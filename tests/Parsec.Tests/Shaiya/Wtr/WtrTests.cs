@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.Wtr;
+﻿namespace Parsec.Tests.Shaiya.Wtr;
 
 public class WtrTests
 {

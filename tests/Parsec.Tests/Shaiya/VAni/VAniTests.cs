@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.VAni;
+﻿namespace Parsec.Tests.Shaiya.VAni;
 
 public class VAniTests
 {

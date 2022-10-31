@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.Cash;
+﻿namespace Parsec.Tests.Shaiya.Cash;
 
 public class CashTests
 {

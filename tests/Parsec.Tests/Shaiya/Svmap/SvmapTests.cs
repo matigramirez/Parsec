@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.Svmap;
+﻿namespace Parsec.Tests.Shaiya.Svmap;
 
 public class SvmapTests
 {

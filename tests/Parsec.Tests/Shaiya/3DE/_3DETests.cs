@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya._3DE;
+﻿namespace Parsec.Tests.Shaiya._3DE;
 
 public class _3DETests
 {

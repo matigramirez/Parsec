@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.Ani;
+﻿namespace Parsec.Tests.Shaiya.Ani;
 
 public class AniTests
 {

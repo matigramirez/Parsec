@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using Parsec.Shaiya.Data;
-using Xunit;
 
 namespace Parsec.Tests.Shaiya;
 

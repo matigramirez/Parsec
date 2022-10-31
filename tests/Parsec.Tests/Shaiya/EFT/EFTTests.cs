@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.EFT;
+﻿namespace Parsec.Tests.Shaiya.EFT;
 
 public class EftTests
 {

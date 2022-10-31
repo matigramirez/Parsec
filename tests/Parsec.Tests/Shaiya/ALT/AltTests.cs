@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.ALT;
+﻿namespace Parsec.Tests.Shaiya.ALT;
 
 public class AltTests
 {

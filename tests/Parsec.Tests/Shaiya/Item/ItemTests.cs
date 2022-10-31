@@ -1,5 +1,4 @@
 ﻿using Parsec.Common;
-using Xunit;
 
 namespace Parsec.Tests.Shaiya.Item;
 

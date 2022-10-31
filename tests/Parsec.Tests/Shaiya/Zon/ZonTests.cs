@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.Zon;
+﻿namespace Parsec.Tests.Shaiya.Zon;
 
 public class ZonTests
 {
