@@ -652,5 +652,17 @@
     <None Update="Shaiya\SetItem\SetItem.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Shaiya\Skill\DBSkillData.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\Skill\DBSkillText_USA.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\NpcSkill\DBNpcSkillData.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\NpcSkill\DBNpcSkillText_USA.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
