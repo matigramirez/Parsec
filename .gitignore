@@ -351,3 +351,8 @@ MigrationBackup/
 
 # JetBrains folder
 .idea/
+
+# Godot
+.import/
+.mono/
+*.import
