@@ -53,10 +53,10 @@ public sealed class WLD : FileBase
     #endregion
 
     /// <summary>
-    /// "inner layout", ".wtr" (water) for a field, ".dg" for a dungeon
+    /// Fixed length string, length = 256. "inner layout", ".wtr" (water) for a field, ".dg" for a dungeon
     /// </summary>
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string InnerLayout { get; set; }
 
     /// <summary>
@@ -144,11 +144,11 @@ public sealed class WLD : FileBase
     public List<String256> MAniNames { get; set; } = new();
 
     [ShaiyaProperty]
-    [LengthPrefixedList(typeof(Coordinate))]
-    public List<Coordinate> MAniCoordinates { get; set; } = new();
+    [LengthPrefixedList(typeof(ManiCoordinate))]
+    public List<ManiCoordinate> MAniCoordinates { get; set; } = new();
 
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string EffectName { get; set; }
 
     /// <summary>
@@ -227,17 +227,17 @@ public sealed class WLD : FileBase
 
     [ShaiyaProperty]
     [ConditionalProperty(nameof(WldType), WldType.FLD)]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string SkyName { get; set; }
 
     [ShaiyaProperty]
     [ConditionalProperty(nameof(WldType), WldType.FLD)]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string CloudsName1 { get; set; }
 
     [ShaiyaProperty]
     [ConditionalProperty(nameof(WldType), WldType.FLD)]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string CloudsName2 { get; set; }
 
     #endregion

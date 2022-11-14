@@ -5,6 +5,7 @@ using Parsec.Attributes.Wld;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
+using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Core;
 
@@ -48,8 +49,7 @@ internal static class ReflectionHelper
                     object conditioningPropertyValue = conditioningPropertyType?.GetValue(parentInstance);
 
                     if (!conditionalPropertyAttribute.ConditioningPropertyValue.Equals(conditioningPropertyValue))
-                        return null;
-
+                        return GetDefault(type);
                     break;
 
                 case FixedLengthListAttribute fixedLengthListAttribute:
@@ -162,6 +162,9 @@ internal static class ReflectionHelper
                     return lengthPrefixedStr;
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
+                    if (fixedLengthStringAttribute.IsString256)
+                        return new String256(binaryReader).Value;
+
                     string fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
                         !fixedLengthStringAttribute.IncludeStringTerminator);
 
@@ -334,6 +337,8 @@ internal static class ReflectionHelper
                         lengthPrefixedStringAttribute.IncludeStringTerminator);
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
+                    if (fixedLengthStringAttribute.IsString256)
+                        return ((string)propertyValue).PadRight(256, '\0').GetBytes(fixedLengthStringAttribute.Encoding);
                     return ((string)propertyValue + fixedLengthStringAttribute.Suffix).GetBytes(fixedLengthStringAttribute.Encoding);
             }
         }
@@ -382,5 +387,15 @@ internal static class ReflectionHelper
             return ((float)value).GetBytes();
 
         throw new ArgumentException();
+    }
+
+    private static object GetDefault(Type type)
+    {
+        if (type.IsValueType)
+        {
+            return Activator.CreateInstance(type);
+        }
+
+        return null;
     }
 }

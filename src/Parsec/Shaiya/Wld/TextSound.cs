@@ -8,7 +8,7 @@ public sealed class TextSound
     /// .tga texture file
     /// </summary>
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string TextureName { get; set; }
 
     [ShaiyaProperty]
@@ -18,6 +18,6 @@ public sealed class TextSound
     /// .wav sound file
     /// </summary>
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string SoundName { get; set; }
 }

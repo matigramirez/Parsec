@@ -32,14 +32,14 @@ public sealed class NamedArea
     /// If Mode is 2, this field defines the bmp file for the area's name
     /// </summary>
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string Text1 { get; set; }
 
     /// <summary>
     /// Comment or file name (unlocalized - Korean)
     /// </summary>
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string Text2 { get; set; }
 
     /// <summary>

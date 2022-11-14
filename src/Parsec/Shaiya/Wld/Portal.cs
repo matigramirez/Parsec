@@ -24,14 +24,14 @@ public sealed class Portal
     /// 256-byte non-localized string, usually korean characters
     /// </summary>
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string Text1 { get; set; }
 
     /// <summary>
     /// 256-byte non-localized string, usually empty
     /// </summary>
     [ShaiyaProperty]
-    [FixedLengthString(256)]
+    [FixedLengthString(isString256: true)]
     public string Text2 { get; set; }
 
     /// <summary>

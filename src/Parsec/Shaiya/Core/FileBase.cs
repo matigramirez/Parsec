@@ -71,7 +71,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
         // Add enum to string converter
         settings.Converters.Add(new StringEnumConverter());
-
         return JsonConvert.SerializeObject(obj, settings);
     }
 
@@ -97,7 +96,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             foreach (var versionPrefix in versionPrefixes)
             {
                 object filePrefix;
-
                 if (versionPrefix.PrefixType == typeof(string))
                 {
                     filePrefix = _binaryReader.ReadString(((string)versionPrefix.Prefix).Length);
@@ -132,14 +130,12 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
                 continue;
 
             object value = ReflectionHelper.ReadProperty(_binaryReader, type, this, property, Episode);
-
             property.SetValue(this, Convert.ChangeType(value, property.PropertyType));
 
             // Set episode based on property
             if (property.IsDefined(typeof(EpisodeDefinerAttribute)))
             {
                 var definerAttributes = property.GetCustomAttributes<EpisodeDefinerAttribute>();
-
                 foreach (var definer in definerAttributes)
                 {
                     if (value.Equals(definer.Value))
@@ -158,7 +154,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     public virtual IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
         var buffer = new List<byte>();
-
         var type = GetType();
 
         // If episode wasn't explicitly set, use former episode
@@ -173,7 +168,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
         // Add version prefix if present (eg. "ANI_V2", "MO2", "MO4", etc)
         bool isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
-
         if (isVersionPrefixed)
         {
             var versionPrefixes = type.GetCustomAttributes<VersionPrefixedAttribute>();
@@ -197,7 +191,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
         // Get bytes for all properties
         var properties = GetType().GetProperties();
-
         foreach (var property in properties)
         {
             if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
@@ -219,7 +212,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
     {
         var binaryReader = new SBinaryReader(path);
-
         var instance = new T { Path = path, _binaryReader = binaryReader };
 
         if (instance is IEncryptable encryptableInstance)
@@ -241,7 +233,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
     {
         var binaryReader = new SBinaryReader(buffer);
-
         var instance = new T { Path = name, _binaryReader = binaryReader };
 
         if (instance is IEncryptable encryptableInstance)
