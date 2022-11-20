@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Parsec.Cryptography;
 using Parsec.Shaiya.Data;
 
 namespace Parsec.Tests.Shaiya;
@@ -36,6 +37,23 @@ public class SahTests
         newFolder.AddFile(newFile1);
         Assert.True(newFolder.HasFile($"{fileName}_pv"));
         Assert.Throws<Exception>(() => newFolder.AddSubfolder(newSubfolder));
+    }
+
+    [Fact]
+    public void SahEncryptionTest()
+    {
+        var crypto = SahCrypto.WithFileCountXorKey(0x55);
+        var sah = Reader.ReadFromFile<Sah>("Shaiya/Data/sample.enc0x55.sah", crypto);
+        sah.Write("Shaiya/Data/sample.new.enc0x55.sah");
+        var cs1 = FileHash.Checksum("Shaiya/Data/sample.enc0x55.sah");
+        var cs2 = FileHash.Checksum("Shaiya/Data/sample.new.enc0x55.sah");
+        Assert.Equal(cs1, cs2);
+
+        sah.ResetEncryption();
+        sah.Write("Shaiya/Data/sample.new.sah");
+        var cs3 = FileHash.Checksum("Shaiya/Data/sample.sah");
+        var cs4 = FileHash.Checksum("Shaiya/Data/sample.new.sah");
+        Assert.Equal(cs3, cs4);
     }
 
     [Fact]

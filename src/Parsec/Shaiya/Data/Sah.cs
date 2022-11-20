@@ -68,7 +68,9 @@ public sealed class Sah : FileBase
     /// <summary>
     /// Defines how file and folder counts should be encrypted/decrypted.
     /// </summary>
-    public SahCrypto Crypto { get; set; } = SahCrypto.Default;
+    public SahCrypto Crypto { get; set; }
+
+    public void ResetEncryption() => Crypto = null;
 
     [JsonIgnore]
     public override string Extension => "sah";
@@ -176,7 +178,7 @@ public sealed class Sah : FileBase
         buffer.AddRange(FileCount.GetBytes());
         // Write padding
         buffer.AddRange(new byte[40]);
-        buffer.AddRange(RootFolder.GetBytes());
+        buffer.AddRange(RootFolder.GetBytes(Crypto));
         // Write last 8 empty bytes
         buffer.AddRange(new byte[8]);
         return buffer;

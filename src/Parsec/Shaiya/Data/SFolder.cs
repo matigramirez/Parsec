@@ -29,13 +29,10 @@ public sealed class SFolder : IBinary
     )
     {
         ParentFolder = parentFolder;
-
         Name = binaryReader.ReadString();
-
         folderIndex.Add(RelativePath, this);
 
-        var fileCount = binaryReader.Read<int>();
-
+        int fileCount = binaryReader.Read<int>();
         // Decrypt value
         if (crypto != null)
             fileCount = crypto.DecryptFileCount(fileCount);
@@ -47,8 +44,7 @@ public sealed class SFolder : IBinary
             AddFile(file);
         }
 
-        var subfolderCount = binaryReader.Read<int>();
-
+        int subfolderCount = binaryReader.Read<int>();
         // Decrypt value
         if (crypto != null)
             subfolderCount = crypto.DecryptFolderCount(subfolderCount);
@@ -99,10 +95,29 @@ public sealed class SFolder : IBinary
     /// <inheritdoc />
     public IEnumerable<byte> GetBytes(params object[] options)
     {
+        var crypto = SahCrypto.Default;
+        if (options.Length > 0)
+            crypto = (SahCrypto)options[0];
+
         var buffer = new List<byte>();
         buffer.AddRange(Name.GetLengthPrefixedBytes());
-        buffer.AddRange(Files.GetBytes());
-        buffer.AddRange(Subfolders.GetBytes());
+
+        int fileCount = Files.Count;
+        if (crypto != null)
+            fileCount = crypto.EncryptFileCount(Files.Count);
+
+        buffer.AddRange(fileCount.GetBytes());
+        foreach (var file in Files)
+            buffer.AddRange(file.GetBytes());
+
+        int subfolderCount = Subfolders.Count;
+        if (crypto != null)
+            subfolderCount = crypto.EncryptFolderCount(subfolderCount);
+
+        buffer.AddRange(subfolderCount.GetBytes());
+        foreach (var subfolder in Subfolders)
+            buffer.AddRange(subfolder.GetBytes(crypto));
+
         return buffer;
     }
 
