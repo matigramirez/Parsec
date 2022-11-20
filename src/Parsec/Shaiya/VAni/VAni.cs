@@ -13,9 +13,9 @@ public sealed class VAni : FileBase
     public Vector3 Center { get; set; }
 
     /// <summary>
-    /// Rotation on the Y-Axis in radians
+    /// The distance between the vertices of the <see cref="BoundingBox"/> and the <see cref="Center"/> of the VAni object. Used for game calculations.
     /// </summary>
-    public float Orientation { get; set; }
+    public float DistanceToCenter { get; set; }
 
     /// <summary>
     /// Rectangular bounding box
@@ -46,7 +46,7 @@ public sealed class VAni : FileBase
     public override void Read(params object[] options)
     {
         Center = new Vector3(_binaryReader);
-        Orientation = _binaryReader.Read<float>();
+        DistanceToCenter = _binaryReader.Read<float>();
         BoundingBox = new BoundingBox(_binaryReader);
         int objectCount = _binaryReader.Read<int>();
         FrameCount = _binaryReader.Read<int>();
@@ -63,7 +63,7 @@ public sealed class VAni : FileBase
     {
         var buffer = new List<byte>();
         buffer.AddRange(Center.GetBytes());
-        buffer.AddRange(Orientation.GetBytes());
+        buffer.AddRange(DistanceToCenter.GetBytes());
         buffer.AddRange(BoundingBox.GetBytes());
         buffer.AddRange(Objects.Count.GetBytes());
         buffer.AddRange(FrameCount.GetBytes());

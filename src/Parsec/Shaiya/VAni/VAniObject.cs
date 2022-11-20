@@ -22,21 +22,13 @@ public sealed class VAniObject : IBinary
     {
         TextureName = binaryReader.ReadString();
 
-        var faceCount = binaryReader.Read<int>();
-
+        int faceCount = binaryReader.Read<int>();
         for (int i = 0; i < faceCount; i++)
-        {
-            var face = new Face(binaryReader);
-            Faces.Add(face);
-        }
+            Faces.Add(new Face(binaryReader));
 
-        var vertexCount = binaryReader.Read<int>();
-
+        int vertexCount = binaryReader.Read<int>();
         for (int i = 0; i < vertexCount; i++)
-        {
-            var vertex = new Vertex(binaryReader, frameCount);
-            Vertices.Add(vertex);
-        }
+            Vertices.Add(new Vertex(binaryReader, frameCount));
     }
 
     /// <summary>
