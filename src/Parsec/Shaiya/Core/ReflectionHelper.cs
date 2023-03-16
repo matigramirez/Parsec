@@ -246,15 +246,18 @@ internal static class ReflectionHelper
                     if (shaiyaProperty.MinEpisode == Episode.Unknown && shaiyaProperty.MaxEpisode == Episode.Unknown)
                         break;
 
-                    // single episode check
-                    if (shaiyaProperty.MaxEpisode == Episode.Unknown && ep != shaiyaProperty.MinEpisode)
-                        return Array.Empty<byte>();
+                    // single episode checks
+                    if (shaiyaProperty.MaxEpisode == Episode.Unknown && ep >= shaiyaProperty.MinEpisode)
+                        break;
+
+                    if (shaiyaProperty.MinEpisode == Episode.Unknown && ep <= shaiyaProperty.MaxEpisode)
+                        break;
 
                     // multiple episode check
-                    if (ep < shaiyaProperty.MinEpisode || ep > shaiyaProperty.MaxEpisode)
-                        return Array.Empty<byte>();
+                    if (ep >= shaiyaProperty.MinEpisode && ep <= shaiyaProperty.MaxEpisode)
+                        break;
 
-                    break;
+                    return Array.Empty<byte>();
 
                 case ConditionalPropertyAttribute conditionalPropertyAttribute:
                     var conditioningPropertyType = parentType.GetProperty(conditionalPropertyAttribute.ConditioningPropertyName);
