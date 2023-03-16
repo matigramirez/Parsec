@@ -50,15 +50,15 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
         AttackAdd = binaryReader.Read<short>();
         Def = binaryReader.Read<short>();
         Resist = binaryReader.Read<short>();
+        Hp = binaryReader.Read<short>();
+        Sp = binaryReader.Read<short>();
+        Mp = binaryReader.Read<short>();
         Str = binaryReader.Read<short>();
         Dex = binaryReader.Read<short>();
         Rec = binaryReader.Read<short>();
         Int = binaryReader.Read<short>();
         Wis = binaryReader.Read<short>();
         Luc = binaryReader.Read<short>();
-        Hp = binaryReader.Read<short>();
-        Sp = binaryReader.Read<short>();
-        Mp = binaryReader.Read<short>();
         Speed = binaryReader.Read<byte>();
         Exp = binaryReader.Read<byte>();
         BuyPrice = binaryReader.Read<int>();
@@ -121,15 +121,15 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
     public short AttackAdd { get; set; }
     public short Def { get; set; }
     public short Resist { get; set; }
+    public short Hp { get; set; }
+    public short Sp { get; set; }
+    public short Mp { get; set; }
     public short Str { get; set; }
     public short Dex { get; set; }
     public short Rec { get; set; }
     public short Int { get; set; }
     public short Wis { get; set; }
     public short Luc { get; set; }
-    public short Hp { get; set; }
-    public short Sp { get; set; }
-    public short Mp { get; set; }
     public byte Speed { get; set; }
     public byte Exp { get; set; }
     public int BuyPrice { get; set; }
@@ -178,15 +178,15 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
         buffer.AddRange(AttackAdd.GetBytes());
         buffer.AddRange(Def.GetBytes());
         buffer.AddRange(Resist.GetBytes());
+        buffer.AddRange(Hp.GetBytes());
+        buffer.AddRange(Sp.GetBytes());
+        buffer.AddRange(Mp.GetBytes());
         buffer.AddRange(Str.GetBytes());
         buffer.AddRange(Dex.GetBytes());
         buffer.AddRange(Rec.GetBytes());
         buffer.AddRange(Int.GetBytes());
         buffer.AddRange(Wis.GetBytes());
         buffer.AddRange(Luc.GetBytes());
-        buffer.AddRange(Hp.GetBytes());
-        buffer.AddRange(Sp.GetBytes());
-        buffer.AddRange(Mp.GetBytes());
         buffer.Add(Speed);
         buffer.Add(Exp);
         buffer.AddRange(BuyPrice.GetBytes());
