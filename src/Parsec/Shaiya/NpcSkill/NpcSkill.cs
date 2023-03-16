@@ -2,11 +2,12 @@
 using CsvHelper;
 using Parsec.Attributes;
 using Parsec.Common;
+using Parsec.Shaiya.Skill;
 
-namespace Parsec.Shaiya.Skill;
+namespace Parsec.Shaiya.NpcSkill;
 
 [DefaultVersion(Episode.EP5)]
-public sealed class Skill : SData.SData
+public sealed class NpcSkill : SData.SData
 {
     [ShaiyaProperty]
     [LengthPrefixedList(typeof(SkillRecord))]
@@ -23,20 +24,20 @@ public sealed class Skill : SData.SData
     }
 
     /// <summary>
-    /// Reads the Skill.SData format from a csv file
+    /// Reads the NpcSkill.SData format from a csv file
     /// </summary>
     /// <param name="csvPath">csv file path</param>
     /// <param name="episode">File episode</param>
     /// <returns><see cref="Skill"/> instance</returns>
-    public static Skill ReadFromCsv(string csvPath, Episode episode)
+    public static NpcSkill ReadFromCsv(string csvPath, Episode episode)
     {
         // Read all skill definitions from csv file
         using var reader = new StreamReader(csvPath);
         using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csvReader.GetRecords<SkillRecord>().ToList();
 
-        // Create skill instance
-        var skill = new Skill { Episode = episode, Records = records };
-        return skill;
+        // Create npcSkill instance
+        var npcSkill = new NpcSkill { Episode = episode, Records = records };
+        return npcSkill;
     }
 }

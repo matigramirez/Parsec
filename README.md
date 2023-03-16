@@ -20,6 +20,7 @@ make reading and manipulating the game's file formats easy.
 - `Monster.SData`
 - `Item.SData`
 - `Skill.SData`
+- `NpcSkill.SData`
 - `svmap`
 - `ANI`
 - `3DC`

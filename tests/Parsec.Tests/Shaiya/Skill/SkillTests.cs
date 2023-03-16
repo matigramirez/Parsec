@@ -17,7 +17,7 @@ public class SkillTests
         string csvPath = $"Shaiya/Skill/{fileName}.SData.csv";
 
         var skill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(filePath, episode);
-        skill.WriteEncrypted(outputPath, episode);
+        skill.Write(outputPath, episode);
         skill.ExportJson(jsonPath);
         skill.ExportCsv(csvPath);
 

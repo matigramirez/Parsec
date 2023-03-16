@@ -3,6 +3,9 @@ using Parsec.Common;
 
 namespace Parsec.Shaiya.Skill;
 
+/// <summary>
+/// Class that represents a record for the Skill.SData and NpcSkill.SData formats
+/// </summary>
 public sealed class SkillRecord
 {
     [ShaiyaProperty]

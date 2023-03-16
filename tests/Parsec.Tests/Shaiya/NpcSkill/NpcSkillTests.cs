@@ -1,10 +1,36 @@
 ﻿using System.Linq;
+using Parsec.Common;
 using Parsec.Shaiya.NpcSkill;
 
 namespace Parsec.Tests.Shaiya.NpcSkill;
 
 public class NpcSkillTests
 {
+    [Theory]
+    [InlineData("NpcSkillEp5", Episode.EP5)]
+    [InlineData("NpcSkillEp6", Episode.EP6)]
+    public void NpcSkillTest(string fileName, Episode episode)
+    {
+        string filePath = $"Shaiya/NpcSkill/{fileName}.SData";
+        string outputPath = $"Shaiya/NpcSkill/output_{fileName}.SData";
+        string jsonPath = $"Shaiya/NpcSkill/{fileName}.SData.json";
+        string csvPath = $"Shaiya/NpcSkill/{fileName}.SData.csv";
+
+        var npcSkill = Reader.ReadFromFile<Parsec.Shaiya.NpcSkill.NpcSkill>(filePath, episode);
+        npcSkill.Write(outputPath, episode);
+        npcSkill.ExportJson(jsonPath);
+        npcSkill.ExportCsv(csvPath);
+
+        var outputSkill = Reader.ReadFromFile<Parsec.Shaiya.NpcSkill.NpcSkill>(outputPath, episode);
+        var jsonSkill = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcSkill.NpcSkill>(jsonPath);
+        var csvSkill = Parsec.Shaiya.NpcSkill.NpcSkill.ReadFromCsv(csvPath, episode);
+
+        var expected = npcSkill.GetBytes().ToList();
+        Assert.Equal(expected, outputSkill.GetBytes());
+        Assert.Equal(expected, jsonSkill.GetBytes());
+        Assert.Equal(expected, csvSkill.GetBytes());
+    }
+
     [Fact]
     public void DbSkillTest()
     {
