@@ -36,13 +36,16 @@ internal static class ReflectionHelper
                     if (shaiyaPropertyAttribute.MinEpisode == Episode.Unknown && shaiyaPropertyAttribute.MaxEpisode == Episode.Unknown)
                         break;
 
-                    if (shaiyaPropertyAttribute.MaxEpisode == Episode.Unknown && episode != shaiyaPropertyAttribute.MinEpisode)
-                        return null;
+                    if (shaiyaPropertyAttribute.MaxEpisode == Episode.Unknown && episode >= shaiyaPropertyAttribute.MinEpisode)
+                        break;
 
-                    if (episode < shaiyaPropertyAttribute.MinEpisode || episode > shaiyaPropertyAttribute.MaxEpisode)
-                        return null;
+                    if (shaiyaPropertyAttribute.MinEpisode == Episode.Unknown && episode < shaiyaPropertyAttribute.MaxEpisode)
+                        break;
 
-                    break;
+                    if (episode >= shaiyaPropertyAttribute.MinEpisode && episode <= shaiyaPropertyAttribute.MaxEpisode)
+                        break;
+
+                    return null;
 
                 case ConditionalPropertyAttribute conditionalPropertyAttribute:
                     var conditioningPropertyType = parentType.GetProperty(conditionalPropertyAttribute.ConditioningPropertyName);
@@ -120,6 +123,12 @@ internal static class ReflectionHelper
                     {
                         throw new NotSupportedException();
                     }
+
+                    // Apply multiplier
+                    var multiplierAttribute = attributes.FirstOrDefault(x =>
+                        x is ListLengthMultiplierAttribute multiplierAttribute && multiplierAttribute.Episode == episode);
+                    if (multiplierAttribute is ListLengthMultiplierAttribute mAttr)
+                        length *= mAttr.Multiplier;
 
                     // Create generic list
                     var listType = typeof(List<>);
@@ -285,12 +294,17 @@ internal static class ReflectionHelper
 
                 case LengthPrefixedListAttribute lengthPrefixedListAttribute:
                     var lengthType = lengthPrefixedListAttribute.LengthType;
-
                     var items = propertyValue as IEnumerable;
                     int itemCount = items.Cast<object>().Count();
 
-                    var genericItemType = type.GetGenericArguments().First();
+                    // Restore length if it had been multiplied previously
+                    var multiplierAttribute = attributes.FirstOrDefault(x =>
+                        x is ListLengthMultiplierAttribute multiplierAttribute && multiplierAttribute.Episode == episode);
+                    if (multiplierAttribute is ListLengthMultiplierAttribute mAttr)
+                        itemCount /= mAttr.Multiplier;
 
+
+                    var genericItemType = type.GetGenericArguments().First();
                     var buffer = new List<byte>();
 
                     if (lengthType == typeof(int))
