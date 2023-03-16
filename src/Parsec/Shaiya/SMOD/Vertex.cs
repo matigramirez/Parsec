@@ -21,7 +21,7 @@ public sealed class Vertex
     public Vector3 Normal { get; set; }
 
     /// <summary>
-    /// SMOD's don't have bones, that's why this value is always -1.
+    /// SMODs don't have bones, that's why this value is always -1.
     /// </summary>
     [ShaiyaProperty]
     public int BoneId { get; set; } = -1;
