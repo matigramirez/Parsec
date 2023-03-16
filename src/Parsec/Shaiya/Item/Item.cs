@@ -86,17 +86,16 @@ public sealed class Item : SData.SData, ICsv
     /// Reads the Item.SData format from a csv file
     /// </summary>
     /// <param name="csvPath">csv file path</param>
-    /// <param name="format">The Item.SData format</param>
+    /// <param name="episode">The Item.SData format</param>
     /// <returns><see cref="Item"/> instance</returns>
-    public static Item ReadFromCsv(string csvPath, Episode format)
+    public static Item ReadFromCsv(string csvPath, Episode episode)
     {
         // Create Item.SData instance
-        var item = new Item();
-
+        var item = new Item { Episode = episode };
         var itemDefinitions = new List<IItemDefinition>();
 
         // Read all item definitions from csv file
-        switch (format)
+        switch (episode)
         {
             case Episode.EP4:
             case Episode.EP5:
