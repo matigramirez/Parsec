@@ -11,7 +11,7 @@ public sealed class EFT : FileBase
     public EFTFormat Format { get; set; }
 
     public List<EffectObject> Objects { get; } = new();
-    public List<EffectTexture> Textures { get; } = new();
+    public List<EFTTexture> Textures { get; } = new();
     public List<Effect> Effects { get; } = new();
     public List<EffectSequence> EffectSequences { get; } = new();
 
@@ -36,7 +36,7 @@ public sealed class EFT : FileBase
 
         int textureCount = _binaryReader.Read<int>();
         for (int i = 0; i < textureCount; i++)
-            Textures.Add(new EffectTexture(_binaryReader, i));
+            Textures.Add(new EFTTexture(_binaryReader, i));
 
         int effectCount = _binaryReader.Read<int>();
         for (int i = 0; i < effectCount; i++)

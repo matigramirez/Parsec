@@ -19,7 +19,7 @@ namespace Parsec.Shaiya.EFT
         public int Unknown4 { get; set; }
         public int Unknown5 { get; set; }
         public int Unknown6 { get; set; }
-        public int TextureId { get; set; }
+        public int Unknown7 { get; set; }
         public int Unknown8 { get; set; }
         public int Object3DEId { get; set; }
         public int Unknown10 { get; set; }
@@ -66,7 +66,7 @@ namespace Parsec.Shaiya.EFT
         public float Unknown28 { get; set; }
 
         public List<Rotation> Rotations { get; } = new();
-        public List<EffectSub2> EffectSub2 { get; } = new();
+        public List<OpacityFrame> OpacityFrames { get; } = new();
         public List<EffectSub3> EffectSub3 { get; } = new();
 
         public int Unknown29 { get; set; }
@@ -74,7 +74,7 @@ namespace Parsec.Shaiya.EFT
         public int Unknown31 { get; set; }
         public int Unknown32 { get; set; }
 
-        public List<EffectSub4> EffectSub4 { get; } = new();
+        public List<EffectTexture> Textures { get; } = new();
 
         [JsonConstructor]
         public Effect()
@@ -92,7 +92,7 @@ namespace Parsec.Shaiya.EFT
             Unknown4 = binaryReader.Read<int>();
             Unknown5 = binaryReader.Read<int>();
             Unknown6 = binaryReader.Read<int>();
-            TextureId = binaryReader.Read<int>();
+            Unknown7 = binaryReader.Read<int>();
             Unknown8 = binaryReader.Read<int>();
             Object3DEId = binaryReader.Read<int>();
             Unknown10 = binaryReader.Read<int>();
@@ -140,8 +140,8 @@ namespace Parsec.Shaiya.EFT
             int sceneSub2Count = binaryReader.Read<int>();
             for (int i = 0; i < sceneSub2Count; i++)
             {
-                var sub2 = new EffectSub2(binaryReader);
-                EffectSub2.Add(sub2);
+                var frame = new OpacityFrame(binaryReader);
+                OpacityFrames.Add(frame);
             }
 
             int sceneSub3Count = binaryReader.Read<int>();
@@ -159,8 +159,8 @@ namespace Parsec.Shaiya.EFT
             int sceneSub4Count = binaryReader.Read<int>();
             for (int i = 0; i < sceneSub4Count; i++)
             {
-                var sub4 = new EffectSub4(binaryReader);
-                EffectSub4.Add(sub4);
+                var texture = new EffectTexture(binaryReader);
+                Textures.Add(texture);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Parsec.Shaiya.EFT
             buffer.AddRange(Unknown4.GetBytes());
             buffer.AddRange(Unknown5.GetBytes());
             buffer.AddRange(Unknown6.GetBytes());
-            buffer.AddRange(TextureId.GetBytes());
+            buffer.AddRange(Unknown7.GetBytes());
             buffer.AddRange(Unknown8.GetBytes());
             buffer.AddRange(Object3DEId.GetBytes());
             buffer.AddRange(Unknown10.GetBytes());
@@ -217,13 +217,13 @@ namespace Parsec.Shaiya.EFT
             }
 
             buffer.AddRange(Rotations.GetBytes());
-            buffer.AddRange(EffectSub2.GetBytes());
+            buffer.AddRange(OpacityFrames.GetBytes());
             buffer.AddRange(EffectSub3.GetBytes());
             buffer.AddRange(Unknown29.GetBytes());
             buffer.AddRange(Unknown30.GetBytes());
             buffer.AddRange(Unknown31.GetBytes());
             buffer.AddRange(Unknown32.GetBytes());
-            buffer.AddRange(EffectSub4.GetBytes());
+            buffer.AddRange(Textures.GetBytes());
             return buffer;
         }
     }

@@ -12,14 +12,12 @@ public sealed class EffectTexture : IBinary
     {
     }
 
-    public EffectTexture(SBinaryReader binaryReader, int index)
+    public EffectTexture(SBinaryReader binaryReader)
     {
-        Index = index;
-        Name = binaryReader.ReadString();
+        TextureId = binaryReader.Read<int>();
     }
 
-    public int Index { get; set; }
-    public string Name { get; set; }
+    public int TextureId { get; set; }
 
-    public IEnumerable<byte> GetBytes(params object[] options) => Name.GetLengthPrefixedBytes();
+    public IEnumerable<byte> GetBytes(params object[] options) => TextureId.GetBytes();
 }
