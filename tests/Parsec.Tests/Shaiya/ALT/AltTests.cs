@@ -19,7 +19,7 @@ public class AltTests
 
         var alt = Reader.ReadFromFile<Parsec.Shaiya.ALT.ALT>(filePath);
         alt.ExportJson(jsonPath);
-        var altFromJson = Reader.ReadFromJson<Parsec.Shaiya.ALT.ALT>(jsonPath);
+        var altFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.ALT.ALT>(jsonPath);
 
         // Check bytes
         Assert.Equal(alt.GetBytes(), altFromJson.GetBytes());

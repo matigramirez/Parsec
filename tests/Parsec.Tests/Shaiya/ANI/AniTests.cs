@@ -28,7 +28,7 @@ public class AniTests
 
         var ani = Reader.ReadFromFile<Parsec.Shaiya.Ani.Ani>(filePath);
         ani.ExportJson(jsonPath);
-        var aniFromJson = Reader.ReadFromJson<Parsec.Shaiya.Ani.Ani>(jsonPath);
+        var aniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Ani.Ani>(jsonPath);
 
         // Check bytes
         Assert.Equal(ani.GetBytes(), aniFromJson.GetBytes());

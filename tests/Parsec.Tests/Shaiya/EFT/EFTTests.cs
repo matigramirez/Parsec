@@ -17,7 +17,7 @@ public class EftTests
         // Export to json
         const string jsonPath = "Shaiya/EFT/Monster.EFT.json";
         eft.ExportJson(jsonPath);
-        var eftFromJson = Reader.ReadFromJson<Parsec.Shaiya.EFT.EFT>(jsonPath);
+        var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.EFT.EFT>(jsonPath);
 
         // Check fields
         Assert.Equal(eft.Objects.Count, eftFromJson.Objects.Count);
@@ -65,7 +65,7 @@ public class EftTests
         eft.ExportJson(jsonPath);
 
         var outputEft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(outputPath);
-        var eftFromJson = Reader.ReadFromJson<Parsec.Shaiya.EFT.EFT>(jsonPath);
+        var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.EFT.EFT>(jsonPath);
 
         // Check bytes
         Assert.Equal(eft.GetBytes(), outputEft.GetBytes());

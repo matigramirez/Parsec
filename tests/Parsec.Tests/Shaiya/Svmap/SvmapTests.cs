@@ -21,7 +21,7 @@ public class SvmapTests
 
         var smod = Reader.ReadFromFile<Parsec.Shaiya.Svmap.Svmap>(filePath);
         smod.ExportJson(jsonPath);
-        var smodFromJson = Reader.ReadFromJson<Parsec.Shaiya.Svmap.Svmap>(jsonPath);
+        var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Svmap.Svmap>(jsonPath);
 
         // Check bytes
         Assert.Equal(smod.GetBytes(), smodFromJson.GetBytes());

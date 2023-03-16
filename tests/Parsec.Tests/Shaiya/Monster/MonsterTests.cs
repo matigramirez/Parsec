@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.Monster;
+﻿namespace Parsec.Tests.Shaiya.Monster;
 
 public class MonsterTests
 {

@@ -26,7 +26,7 @@ internal static class Program
         // Step 3: Modify the json file in any text editor
 
         // Step 4: Read svmap from the modified JSON file
-        Svmap svmapFromJson = Reader.ReadFromJson<Svmap>("2.svmap.json");
+        Svmap svmapFromJson = Reader.ReadFromJsonFile<Svmap>("2.svmap.json");
 
         // Step 5: Write the edited instance as .svmap
         svmapFromJson.Write("2.edited.svmap");

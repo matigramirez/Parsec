@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.MON;
+﻿namespace Parsec.Tests.Shaiya.MON;
 
 public class MonTests
 {
@@ -25,7 +23,7 @@ public class MonTests
         mon.ExportJson(jsonPath);
 
         var outputMon = Reader.ReadFromFile<Parsec.Shaiya.MON.MON>(outputPath);
-        var monFromJson = Reader.ReadFromJson<Parsec.Shaiya.MON.MON>(jsonPath);
+        var monFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MON.MON>(jsonPath);
 
         // Check bytes
         Assert.Equal(mon.GetBytes(), outputMon.GetBytes());

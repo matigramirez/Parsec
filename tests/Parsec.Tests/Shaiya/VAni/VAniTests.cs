@@ -20,7 +20,7 @@ public class VAniTests
 
         var vani = Reader.ReadFromFile<Parsec.Shaiya.VAni.VAni>(filePath);
         vani.ExportJson(jsonPath);
-        var vaniFromJson = Reader.ReadFromJson<Parsec.Shaiya.VAni.VAni>(jsonPath);
+        var vaniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.VAni.VAni>(jsonPath);
 
         // Check bytes
         Assert.Equal(vani.GetBytes(), vaniFromJson.GetBytes());

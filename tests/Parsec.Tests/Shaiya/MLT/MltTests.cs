@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.MLT;
+﻿namespace Parsec.Tests.Shaiya.MLT;
 
 public class MltTests
 {
@@ -30,7 +28,7 @@ public class MltTests
         mlt.ExportJson(jsonPath);
 
         var outputMlt = Reader.ReadFromFile<Parsec.Shaiya.MLT.MLT>(outputPath);
-        var mltFromJson = Reader.ReadFromJson<Parsec.Shaiya.MLT.MLT>(jsonPath);
+        var mltFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MLT.MLT>(jsonPath);
 
         // Check bytes
         Assert.Equal(mlt.GetBytes(), outputMlt.GetBytes());

@@ -86,6 +86,10 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
             Episode = defaultEpisodeAttribute.Episode;
         }
 
+        // Set episode from options
+        if (options.Length > 0 && options[0] is Episode episode)
+            Episode = episode;
+
         // Check if version prefix could be present (eg. "ANI_V2", "MO2", "MO4", etc)
         bool isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
 
@@ -209,10 +213,25 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// <param name="options">Array of reading options</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
+    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new() =>
+        (T)ReadFromFile(path, typeof(T), options);
+
+    /// <summary>
+    /// Reads the shaiya file format from a file
+    /// </summary>
+    /// <param name="path">File path</param>
+    /// <param name="type">FileBase child type to be read</param>
+    /// <param name="options">Array of reading options</param>
+    /// <returns>FileBase instance</returns>
+    public static FileBase ReadFromFile(string path, Type type, params object[] options)
     {
+        if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
+            throw new ArgumentException("Type must be a child of FileBase");
+
         var binaryReader = new SBinaryReader(path);
-        var instance = new T { Path = path, _binaryReader = binaryReader };
+        var instance = (FileBase)Activator.CreateInstance(type);
+        instance.Path = path;
+        instance._binaryReader = binaryReader;
 
         if (instance is IEncryptable encryptableInstance)
             encryptableInstance.DecryptBuffer();
@@ -230,10 +249,25 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// <param name="options">Array of reading options</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
+    public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new() =>
+        (T)ReadFromBuffer(name, buffer, typeof(T), options);
+
+    /// <summary>
+    /// Reads the shaiya file format from a buffer (byte array)
+    /// </summary>
+    /// <param name="name">File name</param>
+    /// <param name="buffer">File buffer</param>
+    /// <param name="type">FileBase child type to be read</param>
+    /// <param name="options">Array of reading options</param>
+    /// <returns>FileBase instance</returns>
+    public static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, params object[] options)
     {
-        var binaryReader = new SBinaryReader(buffer);
-        var instance = new T { Path = name, _binaryReader = binaryReader };
+        if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
+            throw new ArgumentException("Type must be a child of FileBase");
+
+        var instance = (FileBase)Activator.CreateInstance(type);
+        instance.Path = name;
+        instance._binaryReader = new SBinaryReader(buffer);
 
         if (instance is IEncryptable encryptableInstance)
             encryptableInstance.DecryptBuffer();
@@ -243,11 +277,29 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
         return instance;
     }
 
-    public static T ReadFromData<T>(Data.Data data, SFile file, params object[] options) where T : FileBase, new()
+    /// <summary>
+    /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
+    /// </summary>
+    /// <param name="data"><see cref="Data"/> instance</param>
+    /// <param name="file"><see cref="SFile"/> instance</param>
+    /// <param name="options">Array of reading options</param>
+    /// <returns>FileBase instance</returns>
+    public static T ReadFromData<T>(Data.Data data, SFile file, params object[] options) where T : FileBase, new() =>
+        (T)ReadFromData(data, file, typeof(T), options);
+
+    /// <summary>
+    /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
+    /// </summary>
+    /// <param name="data"><see cref="Data"/> instance</param>
+    /// <param name="file"><see cref="SFile"/> instance</param>
+    /// <param name="type">FileBase child type to be read</param>
+    /// <param name="options">Array of reading options</param>
+    /// <returns>FileBase instance</returns>
+    public static FileBase ReadFromData(Data.Data data, SFile file, Type type, params object[] options)
     {
         if (!data.FileIndex.ContainsValue(file))
             throw new FileNotFoundException("The provided SFile instance is not part of the Data");
 
-        return ReadFromBuffer<T>(file.Name, data.GetFileBuffer(file), options);
+        return ReadFromBuffer(file.Name, data.GetFileBuffer(file), type, options);
     }
 }

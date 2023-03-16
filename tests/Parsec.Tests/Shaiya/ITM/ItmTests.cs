@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.ITM;
+﻿namespace Parsec.Tests.Shaiya.ITM;
 
 public class ItmTests
 {
@@ -20,7 +18,7 @@ public class ItmTests
 
         var itm = Reader.ReadFromFile<Parsec.Shaiya.ITM.ITM>(filePath);
         itm.ExportJson(jsonPath);
-        var itmFromJson = Reader.ReadFromJson<Parsec.Shaiya.ITM.ITM>(jsonPath);
+        var itmFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.ITM.ITM>(jsonPath);
 
         // Check bytes
         Assert.Equal(itm.GetBytes(), itmFromJson.GetBytes());

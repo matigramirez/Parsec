@@ -1,5 +1,5 @@
-﻿using Parsec.Common;
-using Xunit;
+﻿using System.Linq;
+using Parsec.Common;
 
 namespace Parsec.Tests.Shaiya.NpcQuest;
 
@@ -16,10 +16,11 @@ public class NpcQuestTests
         npcQuest.ExportJson(jsonPath);
 
         var outputNpcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(outputPath, Episode.EP5);
-        var jsonNpcQuest = Reader.ReadFromJson<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
+        var jsonNpcQuest = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
 
-        Assert.Equal(npcQuest.GetBytes(), outputNpcQuest.GetBytes());
-        Assert.Equal(npcQuest.GetBytes(), jsonNpcQuest.GetBytes());
+        var expected = npcQuest.GetBytes().ToList();
+        Assert.Equal(expected, outputNpcQuest.GetBytes());
+        Assert.Equal(expected, jsonNpcQuest.GetBytes());
     }
 
     [Fact]
@@ -33,10 +34,11 @@ public class NpcQuestTests
         npcQuest.ExportJson(jsonPath);
 
         var outputNpcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(outputPath, Episode.EP6);
-        var jsonNpcQuest = Reader.ReadFromJson<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
+        var jsonNpcQuest = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
 
-        Assert.Equal(npcQuest.GetBytes(), outputNpcQuest.GetBytes());
-        Assert.Equal(npcQuest.GetBytes(), jsonNpcQuest.GetBytes());
+        var expected = npcQuest.GetBytes().ToList();
+        Assert.Equal(expected, outputNpcQuest.GetBytes());
+        Assert.Equal(expected, jsonNpcQuest.GetBytes());
     }
 
     [Fact]
@@ -50,9 +52,10 @@ public class NpcQuestTests
         npcQuest.ExportJson(jsonPath);
 
         var outputNpcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(outputPath, Episode.EP8);
-        var jsonNpcQuest = Reader.ReadFromJson<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
+        var jsonNpcQuest = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
 
-        Assert.Equal(npcQuest.GetBytes(), outputNpcQuest.GetBytes());
-        Assert.Equal(npcQuest.GetBytes(), jsonNpcQuest.GetBytes());
+        var expected = npcQuest.GetBytes().ToList();
+        Assert.Equal(expected, outputNpcQuest.GetBytes());
+        Assert.Equal(expected, jsonNpcQuest.GetBytes());
     }
 }

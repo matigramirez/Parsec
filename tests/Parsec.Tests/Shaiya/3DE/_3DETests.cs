@@ -17,7 +17,7 @@ public class _3DETests
         // Export to json
         const string jsonPath = "Shaiya/3DE/waterfall04.3DE.json";
         obj.ExportJson(jsonPath);
-        var objFromJson = Reader.ReadFromJson<Parsec.Shaiya._3DE._3DE>(jsonPath);
+        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DE._3DE>(jsonPath);
 
         // Check fields
         Assert.Equal(obj.Vertices.Count, objFromJson.Vertices.Count);
@@ -61,7 +61,7 @@ public class _3DETests
 
         var obj = Reader.ReadFromFile<Parsec.Shaiya._3DE._3DE>(filePath);
         obj.ExportJson(jsonPath);
-        var objFromJson = Reader.ReadFromJson<Parsec.Shaiya._3DE._3DE>(jsonPath);
+        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DE._3DE>(jsonPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());

@@ -18,7 +18,7 @@ public class _3DOTests
         // Export to json
         const string jsonPath = "Shaiya/3DO/F_34_a002.3DO.json";
         obj.ExportJson(jsonPath);
-        var objFromJson = Reader.ReadFromJson<Parsec.Shaiya._3DO._3DO>(jsonPath);
+        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DO._3DO>(jsonPath);
 
         // Check fields
         Assert.Equal(obj.Vertices.Count, objFromJson.Vertices.Count);
@@ -58,7 +58,7 @@ public class _3DOTests
 
         var obj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(filePath);
         obj.ExportJson(jsonPath);
-        var objFromJson = Reader.ReadFromJson<Parsec.Shaiya._3DO._3DO>(jsonPath);
+        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DO._3DO>(jsonPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());

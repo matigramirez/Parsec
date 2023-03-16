@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.Seff;
+﻿namespace Parsec.Tests.Shaiya.Seff;
 
 public class SeffTests
 {
@@ -22,7 +20,7 @@ public class SeffTests
         seff.ExportJson(jsonPath);
 
         var outputSeff = Reader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(outputPath);
-        var seffFromJson = Reader.ReadFromJson<Parsec.Shaiya.Seff.Seff>(jsonPath);
+        var seffFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Seff.Seff>(jsonPath);
 
         // Check bytes
         Assert.Equal(seff.GetBytes(), outputSeff.GetBytes());

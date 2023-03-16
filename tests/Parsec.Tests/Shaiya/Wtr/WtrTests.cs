@@ -17,7 +17,7 @@ public class WtrTests
 
         var wtr = Reader.ReadFromFile<Parsec.Shaiya.Wtr.Wtr>(filePath);
         wtr.ExportJson(jsonPath);
-        var wtrFromJson = Reader.ReadFromJson<Parsec.Shaiya.Wtr.Wtr>(jsonPath);
+        var wtrFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Wtr.Wtr>(jsonPath);
 
         // Check bytes
         Assert.Equal(wtr.GetBytes(), wtrFromJson.GetBytes());

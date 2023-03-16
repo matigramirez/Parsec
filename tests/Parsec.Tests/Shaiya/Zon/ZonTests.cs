@@ -22,7 +22,7 @@ public class ZonTests
         zon.ExportJson(jsonPath);
 
         var outputZon = Reader.ReadFromFile<Parsec.Shaiya.Zon.Zon>(outputPath);
-        var zonFromJson = Reader.ReadFromJson<Parsec.Shaiya.Zon.Zon>(jsonPath);
+        var zonFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Zon.Zon>(jsonPath);
 
         // Check bytes
         Assert.Equal(zon.GetBytes(), outputZon.GetBytes());

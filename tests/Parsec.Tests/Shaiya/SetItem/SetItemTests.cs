@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.SetItem;
+﻿namespace Parsec.Tests.Shaiya.SetItem;
 
 public class SetItemTests
 {
@@ -18,7 +16,7 @@ public class SetItemTests
         setItem.ExportJson(jsonPath);
 
         var outputSetItem = Reader.ReadFromFile<Parsec.Shaiya.SetItem.SetItem>(outputPath);
-        var setItemFromJson = Reader.ReadFromJson<Parsec.Shaiya.SetItem.SetItem>(jsonPath);
+        var setItemFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SetItem.SetItem>(jsonPath);
 
         // Check bytes
         Assert.Equal(setItem.GetBytes(), outputSetItem.GetBytes());

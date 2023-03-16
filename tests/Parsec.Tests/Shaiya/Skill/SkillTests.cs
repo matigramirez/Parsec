@@ -19,7 +19,7 @@ public class SkillTests
         dbSkill.ExportCsv(csvPath);
 
         var outputDbSkill = Reader.ReadFromFile<DBSkillData>(outputPath);
-        var jsonDbSkill = Reader.ReadFromJson<DBSkillData>(jsonPath);
+        var jsonDbSkill = Reader.ReadFromJsonFile<DBSkillData>(jsonPath);
         var csvSkill = DBSkillData.ReadFromCsv<DBSkillData>(csvPath);
 
         var expected = dbSkill.GetBytes().ToList();
@@ -43,7 +43,7 @@ public class SkillTests
         skillText.ExportCsv(csvPath);
 
         var outputSkillText = Reader.ReadFromFile<DBSkillText>(outputPath);
-        var jsonSkillText = Reader.ReadFromJson<DBSkillText>(jsonPath);
+        var jsonSkillText = Reader.ReadFromJsonFile<DBSkillText>(jsonPath);
         var csvSkillText = DBSkillText.ReadFromCsv<DBSkillText>(csvPath);
 
         var expected = skillText.GetBytes().ToList();

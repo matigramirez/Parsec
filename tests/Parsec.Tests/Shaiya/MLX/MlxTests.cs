@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.MLX;
+﻿namespace Parsec.Tests.Shaiya.MLX;
 
 public class MlxTests
 {
@@ -33,7 +31,7 @@ public class MlxTests
         mlx.ExportJson(jsonPath);
 
         var outputMlx = Reader.ReadFromFile<Parsec.Shaiya.MLX.MLX>(outputPath);
-        var mlxFromJson = Reader.ReadFromJson<Parsec.Shaiya.MLX.MLX>(jsonPath);
+        var mlxFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MLX.MLX>(jsonPath);
 
         // Check bytes
         Assert.Equal(mlx.GetBytes(), outputMlx.GetBytes());

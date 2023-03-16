@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.SMOD;
+﻿namespace Parsec.Tests.Shaiya.SMOD;
 
 public class SmodTests
 {
@@ -17,7 +15,7 @@ public class SmodTests
         // Export to json
         const string jsonPath = "Shaiya/SMOD/a2_Elf_House_01.SMOD.json";
         smod.ExportJson(jsonPath);
-        var smodFromJson = Reader.ReadFromJson<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
+        var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
 
         // Check fields
         Assert.Equal(smod.CollisionObjects.Count, smodFromJson.CollisionObjects.Count);
@@ -58,7 +56,7 @@ public class SmodTests
 
         var smod = Reader.ReadFromFile<Parsec.Shaiya.SMOD.SMOD>(filePath);
         smod.ExportJson(jsonPath);
-        var smodFromJson = Reader.ReadFromJson<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
+        var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
 
         // Check bytes
         Assert.Equal(smod.GetBytes(), smodFromJson.GetBytes());

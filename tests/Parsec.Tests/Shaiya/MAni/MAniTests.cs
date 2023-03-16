@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Parsec.Tests.Shaiya.MAni;
+﻿namespace Parsec.Tests.Shaiya.MAni;
 
 public class MAniTests
 {
@@ -24,7 +22,7 @@ public class MAniTests
 
         var mani = Reader.ReadFromFile<Parsec.Shaiya.MAni.MAni>(filePath);
         mani.ExportJson(jsonPath);
-        var maniFromJson = Reader.ReadFromJson<Parsec.Shaiya.MAni.MAni>(jsonPath);
+        var maniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MAni.MAni>(jsonPath);
 
         // Check bytes
         Assert.Equal(mani.GetBytes(), maniFromJson.GetBytes());

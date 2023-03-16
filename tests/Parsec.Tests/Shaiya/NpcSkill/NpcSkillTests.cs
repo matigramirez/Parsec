@@ -19,7 +19,7 @@ public class NpcSkillTests
         npcSkill.ExportCsv(csvPath);
 
         var outputNpcSkill = Reader.ReadFromFile<DBNpcSkillData>(outputPath);
-        var jsonNpcSkill = Reader.ReadFromJson<DBNpcSkillData>(jsonPath);
+        var jsonNpcSkill = Reader.ReadFromJsonFile<DBNpcSkillData>(jsonPath);
         var csvNpcSkill = DBNpcSkillData.ReadFromCsv<DBNpcSkillData>(csvPath);
 
         var expected = npcSkill.GetBytes().ToList();
@@ -43,7 +43,7 @@ public class NpcSkillTests
         npcSkillText.ExportCsv(csvPath);
 
         var outputNpcSkillText = Reader.ReadFromFile<DBNpcSkillText>(outputPath);
-        var jsonNpcSkillText = Reader.ReadFromJson<DBNpcSkillText>(jsonPath);
+        var jsonNpcSkillText = Reader.ReadFromJsonFile<DBNpcSkillText>(jsonPath);
         var csvNpcSkillText = DBNpcSkillText.ReadFromCsv<DBNpcSkillText>(csvPath);
 
         var expected = npcSkillText.GetBytes().ToList();
