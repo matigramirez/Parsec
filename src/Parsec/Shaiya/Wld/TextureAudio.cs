@@ -2,7 +2,7 @@
 
 namespace Parsec.Shaiya.WLD;
 
-public sealed class TextSound
+public sealed class TextureAudio
 {
     /// <summary>
     /// .tga texture file

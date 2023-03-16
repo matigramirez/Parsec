@@ -47,8 +47,8 @@ public sealed class WLD : FileBase
 
     [ShaiyaProperty]
     [ConditionalProperty(nameof(WldType), WldType.FLD)]
-    [LengthPrefixedList(typeof(TextSound))]
-    public List<TextSound> TextSounds { get; set; }
+    [LengthPrefixedList(typeof(TextureAudio))]
+    public List<TextureAudio> TextureAudio { get; set; }
 
     #endregion
 
@@ -205,6 +205,7 @@ public sealed class WLD : FileBase
     public List<MusicSpot> BackgroundMusicSpots { get; set; } = new();
 
     [ShaiyaProperty]
+    // TODO: This might actually be a count that's usually 0
     public int Unknown4 { get; set; }
 
     [ShaiyaProperty]
@@ -252,10 +253,14 @@ public sealed class WLD : FileBase
     public Vector3 Point3 { get; set; }
 
     [ShaiyaProperty]
+    // TODO: This might actually be a count that's usually 0
     public float Unknown5 { get; set; }
 
     [ShaiyaProperty]
+    // TODO: This might actually be a count that's usually 0
     public float Unknown6 { get; set; }
+
+    // This structure is incomplete, there's a bunch of unknown fields missing
 
     [JsonIgnore]
     public override string Extension => "wld";

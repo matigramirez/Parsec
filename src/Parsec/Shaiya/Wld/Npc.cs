@@ -18,6 +18,6 @@ public sealed class Npc
     public float Orientation { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedList(typeof(Vector3))]
-    public List<Vector3> PatrolCoordinates { get; } = new();
+    [LengthPrefixedList(typeof(PatrolCoordinate))]
+    public List<PatrolCoordinate> PatrolCoordinates { get; set; } = new();
 }
