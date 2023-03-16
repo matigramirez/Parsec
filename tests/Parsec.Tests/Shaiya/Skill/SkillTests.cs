@@ -1,10 +1,36 @@
 ﻿using System.Linq;
+using Parsec.Common;
 using Parsec.Shaiya.Skill;
 
 namespace Parsec.Tests.Shaiya.Skill;
 
 public class SkillTests
 {
+    [Theory]
+    [InlineData("SkillEp5", Episode.EP5)]
+    [InlineData("SkillEp6", Episode.EP6)]
+    public void SkillTest(string fileName, Episode episode)
+    {
+        string filePath = $"Shaiya/Skill/{fileName}.SData";
+        string outputPath = $"Shaiya/Skill/output_{fileName}.SData";
+        string jsonPath = $"Shaiya/Skill/{fileName}.SData.json";
+        string csvPath = $"Shaiya/Skill/{fileName}.SData.csv";
+
+        var skill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(filePath, episode);
+        skill.WriteEncrypted(outputPath, episode);
+        skill.ExportJson(jsonPath);
+        skill.ExportCsv(csvPath);
+
+        var outputSkill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(outputPath, episode);
+        var jsonSkill = Reader.ReadFromJsonFile<Parsec.Shaiya.Skill.Skill>(jsonPath);
+        var csvSkill = Parsec.Shaiya.Skill.Skill.ReadFromCsv(csvPath, episode);
+
+        var expected = skill.GetBytes().ToList();
+        Assert.Equal(expected, outputSkill.GetBytes());
+        Assert.Equal(expected, jsonSkill.GetBytes());
+        Assert.Equal(expected, csvSkill.GetBytes());
+    }
+
     [Fact]
     public void DbSkillTest()
     {

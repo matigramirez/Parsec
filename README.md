@@ -19,6 +19,7 @@ make reading and manipulating the game's file formats easy.
 - `GuildHouse.SData`
 - `Monster.SData`
 - `Item.SData`
+- `Skill.SData`
 - `svmap`
 - `ANI`
 - `3DC`
@@ -53,7 +54,8 @@ make reading and manipulating the game's file formats easy.
 - `DBTransformModelData.SData`
 - `DBTransformWeaponModelData.SData`
 
-NOTE: These file formats have been tested on Episodes 5, 6 & 8. Lower episodes might be slightly different and this library might not work for them.
+NOTE: These file formats have been tested on Episodes 5, 6 & 8. Other episodes might differ slightly and this library
+might not work with them.
 
 ## Features
 
