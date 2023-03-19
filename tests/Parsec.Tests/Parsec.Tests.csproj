@@ -682,5 +682,8 @@
     <None Update="Shaiya\NpcSkill\NpcSkillEp5.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Shaiya\GuildHouse\GuildHouse.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
