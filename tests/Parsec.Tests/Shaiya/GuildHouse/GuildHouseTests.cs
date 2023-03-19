@@ -10,15 +10,15 @@ public class GuildHouseTests
         const string filePath = "Shaiya/GuildHouse/GuildHouse.SData";
         const string outputPath = "Shaiya/GuildHouse/GuildHouse.output.SData";
         const string jsonPath = "Shaiya/GuildHouse/GuildHouse.SData.json";
-        var npcQuest = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(filePath);
-        npcQuest.Write(outputPath);
-        npcQuest.ExportJson(jsonPath);
+        var guildHouse = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(filePath);
+        guildHouse.Write(outputPath);
+        guildHouse.ExportJson(jsonPath);
 
-        var outputNpcQuest = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(outputPath);
-        var jsonNpcQuest = Reader.ReadFromJsonFile<Parsec.Shaiya.GuildHouse.GuildHouse>(jsonPath);
+        var outputGuildHouse = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(outputPath);
+        var jsonGuildHouse = Reader.ReadFromJsonFile<Parsec.Shaiya.GuildHouse.GuildHouse>(jsonPath);
 
-        var expected = npcQuest.GetBytes().ToList();
-        Assert.Equal(expected, outputNpcQuest.GetBytes());
-        Assert.Equal(expected, jsonNpcQuest.GetBytes());
+        var expected = guildHouse.GetBytes().ToList();
+        Assert.Equal(expected, outputGuildHouse.GetBytes());
+        Assert.Equal(expected, jsonGuildHouse.GetBytes());
     }
 }
