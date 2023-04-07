@@ -20,7 +20,7 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
         TypeId = binaryReader.Read<byte>();
         Model = binaryReader.Read<byte>();
         Icon = binaryReader.Read<byte>();
-        MinLevel = binaryReader.Read<short>();
+        MinLevel = binaryReader.Read<ushort>();
         Country = binaryReader.Read<byte>();
         AttackFighter = binaryReader.Read<byte>();
         DefenseFighter = binaryReader.Read<byte>();
@@ -31,13 +31,13 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
         Grow = binaryReader.Read<byte>();
         Type2 = binaryReader.Read<byte>();
         Type3 = binaryReader.Read<byte>();
-        ReqStr = binaryReader.Read<short>();
-        ReqDex = binaryReader.Read<short>();
-        ReqRec = binaryReader.Read<short>();
-        ReqInt = binaryReader.Read<short>();
-        ReqWis = binaryReader.Read<short>();
-        ReqLuc = binaryReader.Read<short>();
-        ReqVg = binaryReader.Read<short>();
+        ReqStr = binaryReader.Read<ushort>();
+        ReqDex = binaryReader.Read<ushort>();
+        ReqRec = binaryReader.Read<ushort>();
+        ReqInt = binaryReader.Read<ushort>();
+        ReqWis = binaryReader.Read<ushort>();
+        ReqLuc = binaryReader.Read<ushort>();
+        ReqVg = binaryReader.Read<ushort>();
         ReqOg = binaryReader.Read<byte>();
         ReqIg = binaryReader.Read<byte>();
         Range = binaryReader.Read<byte>();
@@ -45,26 +45,26 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
         Attrib = binaryReader.Read<byte>();
         Special = binaryReader.Read<byte>();
         Slot = binaryReader.Read<byte>();
-        Quality = binaryReader.Read<short>();
-        Attack = binaryReader.Read<short>();
-        AttackAdd = binaryReader.Read<short>();
-        Def = binaryReader.Read<short>();
-        Resist = binaryReader.Read<short>();
-        Hp = binaryReader.Read<short>();
-        Sp = binaryReader.Read<short>();
-        Mp = binaryReader.Read<short>();
-        Str = binaryReader.Read<short>();
-        Dex = binaryReader.Read<short>();
-        Rec = binaryReader.Read<short>();
-        Int = binaryReader.Read<short>();
-        Wis = binaryReader.Read<short>();
-        Luc = binaryReader.Read<short>();
+        Quality = binaryReader.Read<ushort>();
+        Attack = binaryReader.Read<ushort>();
+        AttackAdd = binaryReader.Read<ushort>();
+        Def = binaryReader.Read<ushort>();
+        Resist = binaryReader.Read<ushort>();
+        Hp = binaryReader.Read<ushort>();
+        Sp = binaryReader.Read<ushort>();
+        Mp = binaryReader.Read<ushort>();
+        Str = binaryReader.Read<ushort>();
+        Dex = binaryReader.Read<ushort>();
+        Rec = binaryReader.Read<ushort>();
+        Int = binaryReader.Read<ushort>();
+        Wis = binaryReader.Read<ushort>();
+        Luc = binaryReader.Read<ushort>();
         Speed = binaryReader.Read<byte>();
         Exp = binaryReader.Read<byte>();
-        BuyPrice = binaryReader.Read<int>();
-        SellPrice = binaryReader.Read<int>();
-        Grade = binaryReader.Read<short>();
-        Drop = binaryReader.Read<short>();
+        BuyPrice = binaryReader.Read<uint>();
+        SellPrice = binaryReader.Read<uint>();
+        Grade = binaryReader.Read<ushort>();
+        Drop = binaryReader.Read<ushort>();
         Server = binaryReader.Read<byte>();
         Count = binaryReader.Read<byte>();
     }
@@ -91,7 +91,7 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
 
     public byte Model { get; set; }
     public byte Icon { get; set; }
-    public short MinLevel { get; set; }
+    public ushort MinLevel { get; set; }
     public byte Country { get; set; }
     public byte AttackFighter { get; set; }
     public byte DefenseFighter { get; set; }
@@ -102,13 +102,13 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
     public byte Grow { get; set; }
     public byte Type2 { get; set; }
     public byte Type3 { get; set; }
-    public short ReqStr { get; set; }
-    public short ReqDex { get; set; }
-    public short ReqRec { get; set; }
-    public short ReqInt { get; set; }
-    public short ReqWis { get; set; }
-    public short ReqLuc { get; set; }
-    public short ReqVg { get; set; }
+    public ushort ReqStr { get; set; }
+    public ushort ReqDex { get; set; }
+    public ushort ReqRec { get; set; }
+    public ushort ReqInt { get; set; }
+    public ushort ReqWis { get; set; }
+    public ushort ReqLuc { get; set; }
+    public ushort ReqVg { get; set; }
     public byte ReqOg { get; set; }
     public byte ReqIg { get; set; }
     public byte Range { get; set; }
@@ -116,26 +116,26 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
     public byte Attrib { get; set; }
     public byte Special { get; set; }
     public byte Slot { get; set; }
-    public short Quality { get; set; }
-    public short Attack { get; set; }
-    public short AttackAdd { get; set; }
-    public short Def { get; set; }
-    public short Resist { get; set; }
-    public short Hp { get; set; }
-    public short Sp { get; set; }
-    public short Mp { get; set; }
-    public short Str { get; set; }
-    public short Dex { get; set; }
-    public short Rec { get; set; }
-    public short Int { get; set; }
-    public short Wis { get; set; }
-    public short Luc { get; set; }
+    public ushort Quality { get; set; }
+    public ushort Attack { get; set; }
+    public ushort AttackAdd { get; set; }
+    public ushort Def { get; set; }
+    public ushort Resist { get; set; }
+    public ushort Hp { get; set; }
+    public ushort Sp { get; set; }
+    public ushort Mp { get; set; }
+    public ushort Str { get; set; }
+    public ushort Dex { get; set; }
+    public ushort Rec { get; set; }
+    public ushort Int { get; set; }
+    public ushort Wis { get; set; }
+    public ushort Luc { get; set; }
     public byte Speed { get; set; }
     public byte Exp { get; set; }
-    public int BuyPrice { get; set; }
-    public int SellPrice { get; set; }
-    public short Grade { get; set; }
-    public short Drop { get; set; }
+    public uint BuyPrice { get; set; }
+    public uint SellPrice { get; set; }
+    public ushort Grade { get; set; }
+    public ushort Drop { get; set; }
     public byte Server { get; set; }
     public byte Count { get; set; }
 
