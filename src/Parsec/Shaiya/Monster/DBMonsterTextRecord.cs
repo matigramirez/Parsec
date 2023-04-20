@@ -1,4 +1,4 @@
-﻿using Parsec.Attributes;
+using Parsec.Attributes;
 using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Monster;
@@ -9,6 +9,6 @@ public sealed class DBMonsterTextRecord : IBinarySDataRecord
     public long Id { get; set; }
 
     [ShaiyaProperty]
-    [LengthPrefixedString(false)]
+    [LengthPrefixedString(true)]
     public string Name { get; set; }
 }
