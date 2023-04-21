@@ -1,5 +1,5 @@
-﻿using System.Numerics;
 using Parsec.Attributes;
+using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.WLD;
 
