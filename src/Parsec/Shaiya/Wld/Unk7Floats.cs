@@ -22,7 +22,7 @@ public struct Unk7Floats : IBinary
     public Vector3 Unk2 { get; set; }
 
     /// <summary>
-    /// Point used as reference for the rectangle
+    /// Unknown float
     /// </summary>
     [ShaiyaProperty]
     public float Unk { get; set; }
