@@ -52,8 +52,8 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
         Def = binaryReader.Read<ushort>();
         Resist = binaryReader.Read<ushort>();
         Hp = binaryReader.Read<ushort>();
-        Mp = binaryReader.Read<ushort>();
         Sp = binaryReader.Read<ushort>();
+        Mp = binaryReader.Read<ushort>();
         Str = binaryReader.Read<ushort>();
         Dex = binaryReader.Read<ushort>();
         Rec = binaryReader.Read<ushort>();
