@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
+using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Seff;
 
@@ -14,63 +15,60 @@ public sealed class SeffEffect
 
     public SeffEffect(SBinaryReader binaryReader, int format)
     {
-        Unknown1 = binaryReader.Read<int>();
-        Unknown2 = binaryReader.Read<float>();
-        Unknown3 = binaryReader.Read<int>();
-        Unknown4 = binaryReader.Read<int>();
-        Unknown5 = binaryReader.Read<int>();
+        ParticleCount = binaryReader.Read<uint>();
+        ParticleVelocity = binaryReader.Read<float>();
+        TextureBlendMode = binaryReader.Read<uint>();
+        StartPositionMultiplier = binaryReader.Read<uint>();
+        ParticleLifetime = binaryReader.Read<uint>();
         Unknown6 = binaryReader.Read<float>();
-
-        Name = binaryReader.ReadString(Encoding.Unicode);
-
+        TextureFileName = binaryReader.ReadString(Encoding.Unicode);
         Red = binaryReader.Read<byte>();
         Green = binaryReader.Read<byte>();
         Blue = binaryReader.Read<byte>();
-
-        Unknown7 = binaryReader.Read<float>();
-        Unknown8 = binaryReader.Read<float>();
-        Unknown9 = binaryReader.Read<float>();
+        ParticleStartPosition = new Vector3(binaryReader);
         Unknown10 = binaryReader.Read<float>();
-        Unknown11 = binaryReader.Read<float>();
-
-        UnkByte4 = binaryReader.Read<byte>();
+        ParticleStartSize = binaryReader.Read<float>();
+        IsVisible = binaryReader.Read<bool>();
 
         Unknown12 = binaryReader.Read<float>();
 
         if (format > 2)
-            Unknown13 = binaryReader.Read<float>();
+            RotateWithStretchMultiplier = binaryReader.Read<float>();
 
         if (format > 3)
-            Unknown14 = binaryReader.Read<float>();
+            VelocityMultiplier = binaryReader.Read<float>();
 
         if (format > 5)
             Unknown15 = binaryReader.Read<uint>();
     }
 
-    public int Unknown1 { get; set; }
-    public float Unknown2 { get; set; }
-    public int Unknown3 { get; set; }
-    public int Unknown4 { get; set; }
-    public int Unknown5 { get; set; }
+    public uint ParticleCount { get; set; }
+    public float ParticleVelocity { get; set; }
+    /// <summary>
+    /// Supported values are 0-3. 0 appears to be Normal. To-do: enumeration.
+    /// https://en.wikipedia.org/wiki/Blend_modes
+    /// </summary>
+    public uint TextureBlendMode { get; set; }
+    /// <summary>
+    /// Supported values are 0-9.
+    /// </summary>
+    public uint StartPositionMultiplier { get; set; }
+    /// <summary>
+    /// Milliseconds
+    /// </summary>
+    public uint ParticleLifetime { get; set; }
     public float Unknown6 { get; set; }
-
-    public string Name { get; set; }
-
+    public string TextureFileName { get; set; }
     public byte Red { get; set; }
     public byte Green { get; set; }
     public byte Blue { get; set; }
-
-    public float Unknown7 { get; set; }
-    public float Unknown8 { get; set; }
-    public float Unknown9 { get; set; }
+    public Vector3 ParticleStartPosition { get; set; }
     public float Unknown10 { get; set; }
-    public float Unknown11 { get; set; }
-
-    public byte UnkByte4 { get; set; }
-
+    public float ParticleStartSize { get; set; }
+    public bool IsVisible { get; set; }
     public float Unknown12 { get; set; }
-    public float Unknown13 { get; set; }
-    public float Unknown14 { get; set; }
+    public float RotateWithStretchMultiplier { get; set; }
+    public float VelocityMultiplier { get; set; }
     public uint Unknown15 { get; set; }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -82,34 +80,32 @@ public sealed class SeffEffect
 
         var buffer = new List<byte>();
 
-        buffer.AddRange(Unknown1.GetBytes());
-        buffer.AddRange(Unknown2.GetBytes());
-        buffer.AddRange(Unknown3.GetBytes());
-        buffer.AddRange(Unknown4.GetBytes());
-        buffer.AddRange(Unknown5.GetBytes());
+        buffer.AddRange(ParticleCount.GetBytes());
+        buffer.AddRange(ParticleVelocity.GetBytes());
+        buffer.AddRange(TextureBlendMode.GetBytes());
+        buffer.AddRange(StartPositionMultiplier.GetBytes());
+        buffer.AddRange(ParticleLifetime.GetBytes());
         buffer.AddRange(Unknown6.GetBytes());
 
-        buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.Unicode, false));
+        buffer.AddRange(TextureFileName.GetLengthPrefixedBytes(Encoding.Unicode, false));
 
         buffer.Add(Red);
         buffer.Add(Green);
         buffer.Add(Blue);
 
-        buffer.AddRange(Unknown7.GetBytes());
-        buffer.AddRange(Unknown8.GetBytes());
-        buffer.AddRange(Unknown9.GetBytes());
+        buffer.AddRange(ParticleStartPosition.GetBytes());
         buffer.AddRange(Unknown10.GetBytes());
-        buffer.AddRange(Unknown11.GetBytes());
+        buffer.AddRange(ParticleStartSize.GetBytes());
 
-        buffer.Add(UnkByte4);
+        buffer.Add(Convert.ToByte(IsVisible));
 
         buffer.AddRange(Unknown12.GetBytes());
 
         if (format > 2)
-            buffer.AddRange(Unknown13.GetBytes());
+            buffer.AddRange(RotateWithStretchMultiplier.GetBytes());
 
         if (format > 3)
-            buffer.AddRange(Unknown14.GetBytes());
+            buffer.AddRange(VelocityMultiplier.GetBytes());
 
         if (format > 5)
             buffer.AddRange(Unknown15.GetBytes());
