@@ -25,6 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Shaiya\Data\test_no_saf.sah">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\Data\test_no_sah.saf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\Data\test_file_ext.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Shaiya\EFT\Monster.EFT">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

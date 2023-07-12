@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Parsec.Shaiya.Data;
@@ -8,6 +9,11 @@ namespace Parsec.Tests.Shaiya.Data;
 
 public class DataTests
 {
+    internal static void DataReadingTestHelper(string path)
+    {
+        _ = new Parsec.Shaiya.Data.Data(path);
+    }
+
     [Fact]
     [Description("Tests opening and reading the data file")]
     public void DataReadingTest()
@@ -17,6 +23,11 @@ public class DataTests
 
         Assert.Equal(dataFromSah.FileIndex.Count, dataFromSaf.FileIndex.Count);
         Assert.Equal(dataFromSah.FolderIndex.Count, dataFromSaf.FolderIndex.Count);
+
+        Assert.Throws<FileNotFoundException>(() => DataReadingTestHelper("Shaiya/Data/does_not_exist.ext"));
+        Assert.Throws<FileNotFoundException>(() => DataReadingTestHelper("Shaiya/Data/test_no_saf.sah"));
+        Assert.Throws<FileNotFoundException>(() => DataReadingTestHelper("Shaiya/Data/test_no_sah.saf"));
+        Assert.Throws<ArgumentException>(() => DataReadingTestHelper("Shaiya/Data/test_file_ext.txt"));
     }
 
     [Fact]
@@ -130,5 +141,15 @@ public class DataTests
 
         foreach (var fileName in fileList)
             Assert.True(!data.FileIndex.ContainsKey(fileName));
+    }
+
+    [Fact]
+    [Description("Tests reading a file buffer from the saf file")]
+    public void DataGetFileBufferTest()
+    {
+        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah");
+        var file = data.RootFolder.GetFile("cl.tga");
+        var buffer = data.GetFileBuffer(file);
+        Assert.Equal(buffer.Length, file.Length);
     }
 }
