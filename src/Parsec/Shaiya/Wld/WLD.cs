@@ -205,8 +205,8 @@ public sealed class WLD : FileBase
     public List<MusicSpot> BackgroundMusicSpots { get; set; } = new();
 
     [ShaiyaProperty]
-    // TODO: This might actually be a count that's usually 0
-    public int Unknown4 { get; set; }
+    [LengthPrefixedList(typeof(Unk7Floats))]
+    public List<Unk7Floats> Unknown4 { get; set; } = new();
 
     [ShaiyaProperty]
     [LengthPrefixedList(typeof(Portal))]

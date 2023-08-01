@@ -263,7 +263,7 @@ internal static class ReflectionHelper
                     var conditioningPropertyType = parentType.GetProperty(conditionalPropertyAttribute.ConditioningPropertyName);
                     object conditioningPropertyValue = conditioningPropertyType?.GetValue(obj);
 
-                    if (conditionalPropertyAttribute.ConditioningPropertyValue != conditioningPropertyValue)
+                    if (!conditionalPropertyAttribute.ConditioningPropertyValue.Equals(conditioningPropertyValue))
                         return Array.Empty<byte>();
 
                     break;
@@ -356,7 +356,8 @@ internal static class ReflectionHelper
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
                     if (fixedLengthStringAttribute.IsString256)
                         return ((string)propertyValue).PadRight(256, '\0').GetBytes(fixedLengthStringAttribute.Encoding);
-                    return ((string)propertyValue + fixedLengthStringAttribute.Suffix).GetBytes(fixedLengthStringAttribute.Encoding);
+                    return ((string)propertyValue + fixedLengthStringAttribute.Suffix)
+                        .PadRight(fixedLengthStringAttribute.Length, '\0').GetBytes(fixedLengthStringAttribute.Encoding);
             }
         }
 
@@ -402,6 +403,9 @@ internal static class ReflectionHelper
 
         if (type == typeof(float))
             return ((float)value).GetBytes();
+
+        if (type == typeof(byte[]))
+            return (byte[])value;
 
         throw new ArgumentException();
     }
