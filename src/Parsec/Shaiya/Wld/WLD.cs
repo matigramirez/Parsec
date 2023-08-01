@@ -249,21 +249,15 @@ public sealed class WLD : FileBase
         for (int i = 0; i < namedAreaCount; i++)
             NamedAreas.Add(new NamedArea(_binaryReader));
 
-        // NOTE: The npc count is wrong in most of the FLD type wld files and there isn't really a pattern to know when they're wrong.
-        // To solve this issue, I'm validating each npc and "rolling back" the reading offset when an invalid npc is found
+        // NOTE: The npc count is the real npc count + the patrol coordinates count
         int npcCount = _binaryReader.Read<int>();
 
-        for (int i = 0; i < npcCount; i++)
+        while (npcCount > 0)
         {
             var npc = new WldNpc(_binaryReader);
-
-            if (npc.IsInvalid)
-            {
-                _binaryReader.Skip(-npc.Size);
-                break;
-            }
-
             Npcs.Add(npc);
+            npcCount -= npc.PatrolCoordinates.Count;
+            npcCount--;
         }
 
         if (WldType == WldType.FLD)
@@ -332,7 +326,12 @@ public sealed class WLD : FileBase
         buffer.AddRange(Portals.GetBytes());
         buffer.AddRange(Spawns.GetBytes());
         buffer.AddRange(NamedAreas.GetBytes());
-        buffer.AddRange(Npcs.GetBytes());
+
+        int npcCount = Npcs.Count + Npcs.Sum(npc => npc.PatrolCoordinates.Count);
+        buffer.AddRange(npcCount.GetBytes());
+
+        foreach (var npc in Npcs)
+            buffer.AddRange(npc.GetBytes());
 
         if (WldType == WldType.FLD)
         {
