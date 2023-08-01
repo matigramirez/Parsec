@@ -22,6 +22,7 @@ make reading and manipulating the game's file formats easy.
 - `Skill.SData`
 - `NpcSkill.SData`
 - `svmap`
+- `WLD`
 - `ANI`
 - `3DC`
 - `3DO`

@@ -1,5 +1,7 @@
-﻿using Parsec.Attributes;
+﻿using Parsec.Extensions;
+using Parsec.Readers;
 using Parsec.Shaiya.Common;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.WLD;
 
@@ -12,18 +14,16 @@ public enum NamedAreaMode
 /// <summary>
 /// Represents a NamedArea in the world
 /// </summary>
-public sealed class NamedArea
+public sealed class NamedArea : IBinary
 {
     /// <summary>
     /// The BoundingBox where this Named Area applies
     /// </summary>
-    [ShaiyaProperty]
     public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
     /// TODO: Check that "DistanceToCenter" fits this field
     /// </summary>
-    [ShaiyaProperty]
     public float DistanceToCenter { get; set; }
 
     /// <summary>
@@ -31,26 +31,42 @@ public sealed class NamedArea
     /// If Mode is 0, it reads the caption from world_index.txt
     /// If Mode is 2, this field defines the bmp file for the area's name
     /// </summary>
-    [ShaiyaProperty]
-    [FixedLengthString(isString256: true)]
-    public string Text1 { get; set; }
+    public String256 Text1 { get; set; }
 
     /// <summary>
     /// Comment or file name (unlocalized - Korean)
     /// </summary>
-    [ShaiyaProperty]
-    [FixedLengthString(isString256: true)]
-    public string Text2 { get; set; }
+    public String256 Text2 { get; set; }
 
     /// <summary>
     /// Defines the mode for <see cref="Text1"/>
     /// </summary>
-    [ShaiyaProperty]
     public NamedAreaMode Mode { get; set; }
 
     /// <summary>
     /// Almost always 0
     /// </summary>
-    [ShaiyaProperty]
     public int Unknown { get; set; }
+
+    public NamedArea(SBinaryReader binaryReader)
+    {
+        BoundingBox = new BoundingBox(binaryReader);
+        DistanceToCenter = binaryReader.Read<float>();
+        Text1 = new String256(binaryReader);
+        Text2 = new String256(binaryReader);
+        Mode = (NamedAreaMode)binaryReader.Read<int>();
+        Unknown = binaryReader.Read<int>();
+    }
+
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var buffer = new List<byte>();
+        buffer.AddRange(BoundingBox.GetBytes());
+        buffer.AddRange(DistanceToCenter.GetBytes());
+        buffer.AddRange(Text1.GetBytes());
+        buffer.AddRange(Text2.GetBytes());
+        buffer.AddRange(((int)Mode).GetBytes());
+        buffer.AddRange(Unknown.GetBytes());
+        return buffer;
+    }
 }

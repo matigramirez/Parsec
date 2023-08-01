@@ -69,12 +69,19 @@ public static class BinaryExtensions
     /// <summary>
     /// Serializes the string into a byte array with ASCII encoding. It doesn't include a string terminator.
     /// </summary>
-    public static IEnumerable<byte> GetBytes(this string str) => GetBytes(str, Encoding.ASCII);
+    public static IEnumerable<byte> GetBytes(this string str, bool includeStringTerminator = false) =>
+        GetBytes(str, Encoding.ASCII, includeStringTerminator);
 
     /// <summary>
     /// Serializes the string into a byte array with the provided encoding. It doesn't include a string terminator.
     /// </summary>
-    public static IEnumerable<byte> GetBytes(this string str, Encoding encoding) => encoding.GetBytes(str);
+    public static IEnumerable<byte> GetBytes(this string str, Encoding encoding, bool includeStringTerminator = false)
+    {
+        var buffer = new List<byte>();
+        string finalStr = includeStringTerminator ? str + '\0' : str;
+        buffer.AddRange(encoding.GetBytes(finalStr));
+        return buffer;
+    }
 
     /// <summary>
     /// Serializes a list of items into a byte array
