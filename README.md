@@ -69,7 +69,7 @@ might not work with them.
 
 ### Prerequisites
 
-- `.NET 6 SDK (recommended)` or any .NET version that can run on top of `.NET Standard 2.0`
+- `.NET 7 SDK (recommended)` or any .NET version that supports `.NET Standard 2.0`
 
 ## Documentation
 
