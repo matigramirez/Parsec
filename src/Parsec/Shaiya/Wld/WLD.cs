@@ -7,12 +7,6 @@ using Parsec.Shaiya.Wld;
 
 namespace Parsec.Shaiya.WLD;
 
-public enum WldType
-{
-    FLD,
-    DUN
-}
-
 public sealed class WLD : FileBase
 {
     public WldType WldType => Type == "DUN" ? WldType.DUN : WldType.FLD;
@@ -36,7 +30,7 @@ public sealed class WLD : FileBase
     /// </summary>
     public byte[] TextureMap { get; set; }
 
-    public List<TextureAudio> TextureAudio { get; set; } = new();
+    public List<Texture> Textures { get; set; } = new();
 
     #endregion
 
@@ -137,7 +131,7 @@ public sealed class WLD : FileBase
 
     public List<MusicSpot> BackgroundMusicSpots { get; set; } = new();
 
-    public List<WldSub1> UnknownBoundingBoxes { get; set; } = new();
+    public List<WldUnknownBox> UnknownBoundingBoxes { get; set; } = new();
 
     public List<Portal> Portals { get; set; } = new();
 
@@ -185,10 +179,9 @@ public sealed class WLD : FileBase
             Heightmap = _binaryReader.ReadBytes(mappingSize * 2);
             TextureMap = _binaryReader.ReadBytes(mappingSize);
 
-            int textureAudioCount = _binaryReader.Read<int>();
-
-            for (int i = 0; i < textureAudioCount; i++)
-                TextureAudio.Add(new TextureAudio(_binaryReader));
+            int textureCount = _binaryReader.Read<int>();
+            for (int i = 0; i < textureCount; i++)
+                Textures.Add(new Texture(_binaryReader));
         }
 
         InnerLayout = new String256(_binaryReader);
@@ -235,7 +228,7 @@ public sealed class WLD : FileBase
 
         int unknownBoundingBoxesCount = _binaryReader.Read<int>();
         for (int i = 0; i < unknownBoundingBoxesCount; i++)
-            UnknownBoundingBoxes.Add(new WldSub1(_binaryReader));
+            UnknownBoundingBoxes.Add(new WldUnknownBox(_binaryReader));
 
         int portalCount = _binaryReader.Read<int>();
         for (int i = 0; i < portalCount; i++)
@@ -249,7 +242,7 @@ public sealed class WLD : FileBase
         for (int i = 0; i < namedAreaCount; i++)
             NamedAreas.Add(new NamedArea(_binaryReader));
 
-        // NOTE: The npc count is the real npc count + the patrol coordinates count
+        // NOTE: npcCount is the real npc count + the patrol coordinates count
         int npcCount = _binaryReader.Read<int>();
 
         while (npcCount > 0)
@@ -275,6 +268,22 @@ public sealed class WLD : FileBase
         Unknown6 = _binaryReader.Read<float>();
     }
 
+    private void ReadNames(ICollection<String256> namesList)
+    {
+        int namesCount = _binaryReader.Read<int>();
+        for (int i = 0; i < namesCount; i++)
+            namesList.Add(new String256(_binaryReader));
+    }
+
+    private void ReadNamesAndCoordinates(ICollection<String256> namesList, ICollection<WldCoordinate> coordinatesList)
+    {
+        ReadNames(namesList);
+
+        int coordinatesCount = _binaryReader.Read<int>();
+        for (int i = 0; i < coordinatesCount; i++)
+            coordinatesList.Add(new WldCoordinate(_binaryReader));
+    }
+
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
         var buffer = new List<byte>();
@@ -286,7 +295,7 @@ public sealed class WLD : FileBase
             buffer.AddRange(MapSize.GetBytes());
             buffer.AddRange(Heightmap);
             buffer.AddRange(TextureMap);
-            buffer.AddRange(TextureAudio.GetBytes());
+            buffer.AddRange(Textures.GetBytes());
         }
 
         buffer.AddRange(InnerLayout.GetBytes());
@@ -348,23 +357,5 @@ public sealed class WLD : FileBase
         buffer.AddRange(Unknown6.GetBytes());
 
         return buffer;
-    }
-
-    private void ReadNames(ICollection<String256> namesList)
-    {
-        int namesCount = _binaryReader.Read<int>();
-        for (int i = 0; i < namesCount; i++)
-            namesList.Add(new String256(_binaryReader));
-    }
-
-    private void ReadNamesAndCoordinates(ICollection<String256> namesList, ICollection<WldCoordinate> coordinatesList)
-    {
-        int namesCount = _binaryReader.Read<int>();
-        for (int i = 0; i < namesCount; i++)
-            namesList.Add(new String256(_binaryReader));
-
-        int coordinatesCount = _binaryReader.Read<int>();
-        for (int i = 0; i < coordinatesCount; i++)
-            coordinatesList.Add(new WldCoordinate(_binaryReader));
     }
 }

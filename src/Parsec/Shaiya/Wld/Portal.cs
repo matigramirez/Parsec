@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -16,9 +17,9 @@ public sealed class Portal : IBinary
     public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
-    /// TODO: Check that "DistanceToCenter" fits this field
+    /// BoundingBox Radius
     /// </summary>
-    public float DistanceToCenter { get; set; }
+    public float Radius { get; set; }
 
     /// <summary>
     /// 256-byte non-localized string, usually korean characters
@@ -50,10 +51,15 @@ public sealed class Portal : IBinary
     /// </summary>
     public Vector3 Position { get; set; }
 
+    [JsonConstructor]
+    public Portal()
+    {
+    }
+
     public Portal(SBinaryReader binaryReader)
     {
         BoundingBox = new BoundingBox(binaryReader);
-        DistanceToCenter = binaryReader.Read<float>();
+        Radius = binaryReader.Read<float>();
         Text1 = new String256(binaryReader);
         Text2 = new String256(binaryReader);
         MapId = binaryReader.Read<byte>();
@@ -66,7 +72,7 @@ public sealed class Portal : IBinary
     {
         var buffer = new List<byte>();
         buffer.AddRange(BoundingBox.GetBytes());
-        buffer.AddRange(DistanceToCenter.GetBytes());
+        buffer.AddRange(Radius.GetBytes());
         buffer.AddRange(Text1.GetBytes());
         buffer.AddRange(Text2.GetBytes());
         buffer.Add(MapId);

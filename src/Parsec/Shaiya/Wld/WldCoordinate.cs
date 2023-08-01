@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -21,21 +22,26 @@ public sealed class WldCoordinate : IBinary
     public Vector3 Position { get; set; }
 
     /// <summary>
-    /// Rotation vector
+    /// Rotation about the up vector
     /// </summary>
-    public Vector3 Rotation { get; set; }
+    public Vector3 RotationUp { get; set; }
 
     /// <summary>
-    /// Scale vector - almost always (0, 1, 0)
+    /// Rotation about the forward vector
     /// </summary>
-    public Vector3 Scale { get; set; }
+    public Vector3 RotationForward { get; set; }
+
+    [JsonConstructor]
+    public WldCoordinate()
+    {
+    }
 
     public WldCoordinate(SBinaryReader binaryReader)
     {
         Id = binaryReader.Read<int>();
         Position = new Vector3(binaryReader);
-        Rotation = new Vector3(binaryReader);
-        Scale = new Vector3(binaryReader);
+        RotationUp = new Vector3(binaryReader);
+        RotationForward = new Vector3(binaryReader);
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -43,8 +49,8 @@ public sealed class WldCoordinate : IBinary
         var buffer = new List<byte>();
         buffer.AddRange(Id.GetBytes());
         buffer.AddRange(Position.GetBytes());
-        buffer.AddRange(Rotation.GetBytes());
-        buffer.AddRange(Scale.GetBytes());
+        buffer.AddRange(RotationUp.GetBytes());
+        buffer.AddRange(RotationForward.GetBytes());
         return buffer;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -22,9 +23,9 @@ public sealed class NamedArea : IBinary
     public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
-    /// TODO: Check that "DistanceToCenter" fits this field
+    /// BoundingBox Radius
     /// </summary>
-    public float DistanceToCenter { get; set; }
+    public float Radius { get; set; }
 
     /// <summary>
     /// Multipurpose, its value depends on <see cref="Mode"/>
@@ -48,10 +49,15 @@ public sealed class NamedArea : IBinary
     /// </summary>
     public int Unknown { get; set; }
 
+    [JsonConstructor]
+    public NamedArea()
+    {
+    }
+
     public NamedArea(SBinaryReader binaryReader)
     {
         BoundingBox = new BoundingBox(binaryReader);
-        DistanceToCenter = binaryReader.Read<float>();
+        Radius = binaryReader.Read<float>();
         Text1 = new String256(binaryReader);
         Text2 = new String256(binaryReader);
         Mode = (NamedAreaMode)binaryReader.Read<int>();
@@ -62,7 +68,7 @@ public sealed class NamedArea : IBinary
     {
         var buffer = new List<byte>();
         buffer.AddRange(BoundingBox.GetBytes());
-        buffer.AddRange(DistanceToCenter.GetBytes());
+        buffer.AddRange(Radius.GetBytes());
         buffer.AddRange(Text1.GetBytes());
         buffer.AddRange(Text2.GetBytes());
         buffer.AddRange(((int)Mode).GetBytes());

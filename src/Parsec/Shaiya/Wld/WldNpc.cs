@@ -18,6 +18,11 @@ public sealed class WldNpc : IBinary
 
     public List<PatrolCoordinate> PatrolCoordinates { get; set; } = new();
 
+    [JsonConstructor]
+    public WldNpc()
+    {
+    }
+
     public WldNpc(SBinaryReader binaryReader)
     {
         Type = binaryReader.Read<int>();

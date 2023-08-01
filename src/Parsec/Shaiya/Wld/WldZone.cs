@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -8,7 +9,13 @@ namespace Parsec.Shaiya.WLD;
 public sealed class WldZone : IBinary
 {
     public BoundingBox BoundingBox { get; set; }
+
     public List<int> Identifiers { get; set; } = new();
+
+    [JsonConstructor]
+    public WldZone()
+    {
+    }
 
     public WldZone(SBinaryReader binaryReader)
     {

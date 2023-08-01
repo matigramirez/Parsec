@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -16,9 +17,9 @@ public sealed class MusicZone : IBinary
     public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
-    /// TODO: Check that "DistanceToCenter" fits this field
+    /// BoundingBox Radius
     /// </summary>
-    public float DistanceToCenter { get; set; }
+    public float Radius { get; set; }
 
     /// <summary>
     /// Id of the wav file (from the linked name list of files)
@@ -30,10 +31,15 @@ public sealed class MusicZone : IBinary
     /// </summary>
     public int Unknown { get; set; }
 
+    [JsonConstructor]
+    public MusicZone()
+    {
+    }
+
     public MusicZone(SBinaryReader binaryReader)
     {
         BoundingBox = new BoundingBox(binaryReader);
-        DistanceToCenter = binaryReader.Read<float>();
+        Radius = binaryReader.Read<float>();
         Id = binaryReader.Read<int>();
         Unknown = binaryReader.Read<int>();
     }
@@ -42,7 +48,7 @@ public sealed class MusicZone : IBinary
     {
         var buffer = new List<byte>();
         buffer.AddRange(BoundingBox.GetBytes());
-        buffer.AddRange(DistanceToCenter.GetBytes());
+        buffer.AddRange(Radius.GetBytes());
         buffer.AddRange(Id.GetBytes());
         buffer.AddRange(Unknown.GetBytes());
         return buffer;

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -7,6 +8,11 @@ namespace Parsec.Shaiya.WLD;
 public sealed class PatrolCoordinate : IBinary
 {
     public Vector3 Position { get; set; }
+
+    [JsonConstructor]
+    public PatrolCoordinate()
+    {
+    }
 
     public PatrolCoordinate(SBinaryReader binaryReader)
     {

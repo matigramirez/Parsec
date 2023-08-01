@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -24,6 +25,11 @@ public sealed class MusicSpot : IBinary
     /// The radius of the circle
     /// </summary>
     public float Radius { get; set; }
+
+    [JsonConstructor]
+    public MusicSpot()
+    {
+    }
 
     public MusicSpot(SBinaryReader binaryReader)
     {

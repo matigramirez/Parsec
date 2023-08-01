@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -18,12 +19,12 @@ public sealed class Spawn : IBinary
     /// <summary>
     /// The spawn area
     /// </summary>
-    public BoundingBox Area { get; set; }
+    public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
-    /// TODO: Check that "DistanceToCenter" fits this field
+    /// BoundingBox Radius
     /// </summary>
-    public float DistanceToCenter { get; set; }
+    public float Radius { get; set; }
 
     /// <summary>
     /// Faction which uses this spawn area
@@ -35,11 +36,16 @@ public sealed class Spawn : IBinary
     /// </summary>
     public int Unknown3 { get; set; }
 
+    [JsonConstructor]
+    public Spawn()
+    {
+    }
+
     public Spawn(SBinaryReader binaryReader)
     {
         Unknown1 = binaryReader.Read<int>();
-        Area = new BoundingBox(binaryReader);
-        DistanceToCenter = binaryReader.Read<float>();
+        BoundingBox = new BoundingBox(binaryReader);
+        Radius = binaryReader.Read<float>();
         Faction = (FactionInt)binaryReader.Read<int>();
         Unknown3 = binaryReader.Read<int>();
     }
@@ -48,8 +54,8 @@ public sealed class Spawn : IBinary
     {
         var buffer = new List<byte>();
         buffer.AddRange(Unknown1.GetBytes());
-        buffer.AddRange(Area.GetBytes());
-        buffer.AddRange(DistanceToCenter.GetBytes());
+        buffer.AddRange(BoundingBox.GetBytes());
+        buffer.AddRange(Radius.GetBytes());
         buffer.AddRange(((int)Faction).GetBytes());
         buffer.AddRange(Unknown1.GetBytes());
         return buffer;

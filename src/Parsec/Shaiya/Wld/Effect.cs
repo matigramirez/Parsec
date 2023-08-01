@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -29,6 +30,11 @@ public sealed class Effect : IBinary
     /// Identifier of the effect from the linked .eft file
     /// </summary>
     public int Id { get; set; }
+
+    [JsonConstructor]
+    public Effect()
+    {
+    }
 
     public Effect(SBinaryReader binaryReader)
     {
