@@ -22,14 +22,14 @@ public sealed class WldCoordinate : IBinary
     public Vector3 Position { get; set; }
 
     /// <summary>
-    /// Rotation about the up vector
-    /// </summary>
-    public Vector3 RotationUp { get; set; }
-
-    /// <summary>
     /// Rotation about the forward vector
     /// </summary>
     public Vector3 RotationForward { get; set; }
+
+    /// <summary>
+    /// Rotation about the up vector
+    /// </summary>
+    public Vector3 RotationUp { get; set; }
 
     [JsonConstructor]
     public WldCoordinate()
@@ -40,8 +40,8 @@ public sealed class WldCoordinate : IBinary
     {
         Id = binaryReader.Read<int>();
         Position = new Vector3(binaryReader);
-        RotationUp = new Vector3(binaryReader);
         RotationForward = new Vector3(binaryReader);
+        RotationUp = new Vector3(binaryReader);
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -49,8 +49,8 @@ public sealed class WldCoordinate : IBinary
         var buffer = new List<byte>();
         buffer.AddRange(Id.GetBytes());
         buffer.AddRange(Position.GetBytes());
-        buffer.AddRange(RotationUp.GetBytes());
         buffer.AddRange(RotationForward.GetBytes());
+        buffer.AddRange(RotationUp.GetBytes());
         return buffer;
     }
 }

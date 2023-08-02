@@ -13,7 +13,10 @@ public sealed class Texture : IBinary
     /// </summary>
     public String256 TextureName { get; set; }
 
-    public float Unknown { get; set; }
+    /// <summary>
+    /// Texture tile size
+    /// </summary>
+    public float TileSize { get; set; }
 
     /// <summary>
     /// .wav sound file
@@ -28,7 +31,7 @@ public sealed class Texture : IBinary
     public Texture(SBinaryReader binaryReader)
     {
         TextureName = new String256(binaryReader);
-        Unknown = binaryReader.Read<float>();
+        TileSize = binaryReader.Read<float>();
         SoundName = new String256(binaryReader);
     }
 
@@ -36,7 +39,7 @@ public sealed class Texture : IBinary
     {
         var buffer = new List<byte>();
         buffer.AddRange(TextureName.GetBytes());
-        buffer.AddRange(Unknown.GetBytes());
+        buffer.AddRange(TileSize.GetBytes());
         buffer.AddRange(SoundName.GetBytes());
         return buffer;
     }
