@@ -36,4 +36,6 @@ public sealed class String256 : IBinary
     public IEnumerable<byte> GetBytes(params object[] options) => Value.PadRight(256, '\0').GetBytes();
 
     public override string ToString() => Value;
+
+    public static implicit operator string(String256 string256) => string256.ToString();
 }
