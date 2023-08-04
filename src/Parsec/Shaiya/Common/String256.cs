@@ -12,6 +12,11 @@ public sealed class String256 : IBinary
     {
     }
 
+    public String256(string str)
+    {
+        Value = str;
+    }
+
     public String256(SBinaryReader binaryReader)
     {
         byte[] unparsedBytes = binaryReader.ReadBytes(256);
@@ -38,4 +43,6 @@ public sealed class String256 : IBinary
     public override string ToString() => Value;
 
     public static implicit operator string(String256 string256) => string256.ToString();
+
+    public static implicit operator String256(string str) => new(str);
 }
