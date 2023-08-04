@@ -9,9 +9,7 @@ namespace Parsec.Shaiya.WLD;
 
 public sealed class WLD : FileBase
 {
-    public WldType WldType => Type == "DUN" ? WldType.DUN : WldType.FLD;
-
-    public string Type { get; set; }
+    public WldType Type { get; set; } = WldType.FLD;
 
     #region FLD Only fields
 
@@ -37,7 +35,7 @@ public sealed class WLD : FileBase
     /// <summary>
     /// Fixed length string, length = 256. "inner layout", ".wtr" (water) for a field, ".dg" for a dungeon
     /// </summary>
-    public String256 InnerLayout { get; set; }
+    public String256 InnerLayout { get; set; } = string.Empty;
 
     /// <summary>
     /// Files from Entity/Building
@@ -95,7 +93,7 @@ public sealed class WLD : FileBase
 
     public List<ManiCoordinate> MAniCoordinates { get; set; } = new();
 
-    public String256 EffectName { get; set; }
+    public String256 EffectName { get; set; } = string.Empty;
 
     /// <summary>
     /// Files from Effect/
@@ -143,11 +141,11 @@ public sealed class WLD : FileBase
 
     #region FLD Only fields
 
-    public String256 SkyName { get; set; }
+    public String256 SkyName { get; set; } = string.Empty;
 
-    public String256 CloudsName1 { get; set; }
+    public String256 CloudsName1 { get; set; } = string.Empty;
 
-    public String256 CloudsName2 { get; set; }
+    public String256 CloudsName2 { get; set; } = string.Empty;
 
     #endregion
 
@@ -168,10 +166,14 @@ public sealed class WLD : FileBase
 
     public override void Read(params object[] options)
     {
-        Type = _binaryReader.ReadString(4).Trim('\0');
+        string typeStr = _binaryReader.ReadString(4).Trim('\0');
+
+        if (typeStr == "DUN")
+            Type = WldType.DUN;
+
 
         // FLD only fields
-        if (WldType == WldType.FLD)
+        if (Type == WldType.FLD)
         {
             MapSize = _binaryReader.Read<uint>();
 
@@ -253,7 +255,7 @@ public sealed class WLD : FileBase
             npcCount--;
         }
 
-        if (WldType == WldType.FLD)
+        if (Type == WldType.FLD)
         {
             SkyName = new String256(_binaryReader);
             CloudsName1 = new String256(_binaryReader);
@@ -287,10 +289,10 @@ public sealed class WLD : FileBase
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
         var buffer = new List<byte>();
-        buffer.AddRange(Type.GetBytes(true));
+        buffer.AddRange(Type == WldType.FLD ? "FLD".GetBytes(true) : "DUN".GetBytes(true));
 
         // FLD only fields
-        if (WldType == WldType.FLD)
+        if (Type == WldType.FLD)
         {
             buffer.AddRange(MapSize.GetBytes());
             buffer.AddRange(Heightmap);
@@ -342,7 +344,7 @@ public sealed class WLD : FileBase
         foreach (var npc in Npcs)
             buffer.AddRange(npc.GetBytes());
 
-        if (WldType == WldType.FLD)
+        if (Type == WldType.FLD)
         {
             buffer.AddRange(SkyName.GetBytes());
             buffer.AddRange(CloudsName1.GetBytes());
