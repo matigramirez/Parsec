@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using Newtonsoft.Json;
+using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
 
@@ -18,6 +19,13 @@ public struct Vector2 : IBinary
     /// 2nd (second) element of the vector
     /// </summary>
     public float Y { get; set; }
+
+    [JsonConstructor]
+    public Vector2(float x, float y)
+    {
+        X = x;
+        Y = y;
+    }
 
     public Vector2(SBinaryReader binaryReader)
     {
