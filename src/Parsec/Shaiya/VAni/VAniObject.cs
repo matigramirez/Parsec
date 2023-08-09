@@ -11,6 +11,21 @@ namespace Parsec.Shaiya.VAni;
 /// </summary>
 public sealed class VAniObject : IBinary
 {
+    /// <summary>
+    /// Texture name of the .dds file
+    /// </summary>
+    public string TextureName { get; set; }
+
+    /// <summary>
+    /// List of the 3d object's faces (polygons - triangles)
+    /// </summary>
+    public List<Face> Faces { get; } = new();
+
+    /// <summary>
+    /// List of the 3d object's vertices
+    /// </summary>
+    public List<VaniVertex> Vertices { get; } = new();
+
     [JsonConstructor]
     public VAniObject()
     {
@@ -41,27 +56,25 @@ public sealed class VAniObject : IBinary
         }
     }
 
-    /// <summary>
-    /// Texture name of the .dds file
-    /// </summary>
-    public string TextureName { get; set; }
-
-    /// <summary>
-    /// List of the 3d object's faces (polygons - triangles)
-    /// </summary>
-    public List<Face> Faces { get; } = new();
-
-    /// <summary>
-    /// List of the 3d object's vertices
-    /// </summary>
-    public List<VaniVertex> Vertices { get; } = new();
-
     public IEnumerable<byte> GetBytes(params object[] options)
     {
+        int frameCount = 0;
+        if (options[0] is int frameCountOption)
+            frameCount = frameCountOption;
+
         var buffer = new List<byte>();
         buffer.AddRange(TextureName.GetLengthPrefixedBytes());
         buffer.AddRange(Faces.GetBytes());
-        buffer.AddRange(Vertices.GetBytes());
+        buffer.AddRange(Vertices.Count.GetBytes());
+
+        for (int frame = 0; frame < frameCount; frame++)
+        {
+            foreach (var vertex in Vertices)
+            {
+                buffer.AddRange(vertex.Frames[frame].GetBytes());
+            }
+        }
+
         return buffer;
     }
 }

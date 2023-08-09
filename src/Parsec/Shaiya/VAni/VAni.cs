@@ -70,7 +70,7 @@ public sealed class VAni : FileBase
         buffer.AddRange(Unknown1.GetBytes());
 
         foreach (var obj in Objects)
-            buffer.AddRange(obj.GetBytes());
+            buffer.AddRange(obj.GetBytes(FrameCount));
 
         buffer.AddRange(BoundingBox2.GetBytes());
         buffer.AddRange(Unknown2.GetBytes());
