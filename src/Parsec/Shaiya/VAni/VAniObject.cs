@@ -7,9 +7,7 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.VAni;
 
 /// <summary>
-/// Represents a .VANI file.
-/// According to the game client, VAni files are called "SModelAnimation", but a better name for it
-/// would probably be "Environmental Model with Animation"
+/// Represents a .VANI file (Vertex ANImation)
 /// </summary>
 public sealed class VAniObject : IBinary
 {
@@ -28,7 +26,19 @@ public sealed class VAniObject : IBinary
 
         int vertexCount = binaryReader.Read<int>();
         for (int i = 0; i < vertexCount; i++)
-            Vertices.Add(new Vertex(binaryReader, frameCount));
+        {
+            var vertex = new VaniVertex();
+            Vertices.Add(vertex);
+        }
+
+        for (int frame = 0; frame < frameCount; frame++)
+        {
+            foreach (var vertex in Vertices)
+            {
+                var vertexFrame = new VaniVertexFrame(binaryReader);
+                vertex.Frames.Add(vertexFrame);
+            }
+        }
     }
 
     /// <summary>
@@ -44,7 +54,7 @@ public sealed class VAniObject : IBinary
     /// <summary>
     /// List of the 3d object's vertices
     /// </summary>
-    public List<Vertex> Vertices { get; } = new();
+    public List<VaniVertex> Vertices { get; } = new();
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

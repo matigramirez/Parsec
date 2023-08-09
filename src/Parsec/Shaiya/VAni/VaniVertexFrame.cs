@@ -6,14 +6,14 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.VAni;
 
-public sealed class VertexFrame : IBinary
+public sealed class VaniVertexFrame : IBinary
 {
     [JsonConstructor]
-    public VertexFrame()
+    public VaniVertexFrame()
     {
     }
 
-    public VertexFrame(SBinaryReader binaryReader)
+    public VaniVertexFrame(SBinaryReader binaryReader)
     {
         Coordinates = new Vector3(binaryReader);
         Normal = new Vector3(binaryReader);
