@@ -48,4 +48,8 @@ public struct Vector3 : IBinary
         buffer.AddRange(Z.GetBytes());
         return buffer;
     }
+
+    public static Vector3 operator +(Vector3 vec1, Vector3 vec2) => new(vec1.X + vec2.X, vec1.Y + vec2.Y, vec1.Z + vec2.Z);
+
+    public static Vector3 operator -(Vector3 vec1, Vector3 vec2) => new(vec1.X - vec2.X, vec1.Y - vec2.Y, vec1.Z - vec2.Z);
 }
