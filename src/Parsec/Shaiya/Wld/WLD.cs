@@ -21,14 +21,16 @@ public sealed class WLD : FileBase
     /// <summary>
     /// Map used for Y coordinate calculation based on X and Z
     /// </summary>
+    [JsonIgnore]
     public byte[] Heightmap { get; set; }
 
     /// <summary>
     /// Map used for texture usage based on X and Z
     /// </summary>
+    [JsonIgnore]
     public byte[] TextureMap { get; set; }
 
-    public List<Texture> Textures { get; set; } = new();
+    public List<WldTexture> Textures { get; set; } = new();
 
     #endregion
 
@@ -91,14 +93,14 @@ public sealed class WLD : FileBase
     /// </summary>
     public List<String256> MAniNames { get; set; } = new();
 
-    public List<ManiCoordinate> MAniCoordinates { get; set; } = new();
+    public List<WldManiCoordinate> MAniCoordinates { get; set; } = new();
 
     public String256 EffectName { get; set; } = string.Empty;
 
     /// <summary>
     /// Files from Effect/
     /// </summary>
-    public List<Effect> Effects { get; set; } = new();
+    public List<WldEffect> Effects { get; set; } = new();
 
     public int Unknown1 { get; set; }
 
@@ -118,7 +120,7 @@ public sealed class WLD : FileBase
     /// </summary>
     public List<String256> MusicNames { get; set; } = new();
 
-    public List<MusicZone> MusicZones { get; set; } = new();
+    public List<WldMusicZone> MusicZones { get; set; } = new();
 
     /// <summary>
     /// Files from Sound/Music
@@ -127,15 +129,15 @@ public sealed class WLD : FileBase
 
     public List<WldZone> Zones { get; set; } = new();
 
-    public List<MusicSpot> BackgroundMusicSpots { get; set; } = new();
+    public List<WldMusicSpot> BackgroundMusicSpots { get; set; } = new();
 
     public List<WldUnknownBox> UnknownBoundingBoxes { get; set; } = new();
 
-    public List<Portal> Portals { get; set; } = new();
+    public List<WldPortal> Portals { get; set; } = new();
 
-    public List<Spawn> Spawns { get; set; } = new();
+    public List<WldSpawn> Spawns { get; set; } = new();
 
-    public List<NamedArea> NamedAreas { get; set; } = new();
+    public List<WldNamedArea> NamedAreas { get; set; } = new();
 
     public List<WldNpc> Npcs { get; set; } = new();
 
@@ -183,7 +185,7 @@ public sealed class WLD : FileBase
 
             int textureCount = _binaryReader.Read<int>();
             for (int i = 0; i < textureCount; i++)
-                Textures.Add(new Texture(_binaryReader));
+                Textures.Add(new WldTexture(_binaryReader));
         }
 
         InnerLayout = new String256(_binaryReader);
@@ -199,13 +201,13 @@ public sealed class WLD : FileBase
 
         int maniCoordinatesCount = _binaryReader.Read<int>();
         for (int i = 0; i < maniCoordinatesCount; i++)
-            MAniCoordinates.Add(new ManiCoordinate(_binaryReader));
+            MAniCoordinates.Add(new WldManiCoordinate(_binaryReader));
 
         EffectName = new String256(_binaryReader);
 
         int effectCount = _binaryReader.Read<int>();
         for (int i = 0; i < effectCount; i++)
-            Effects.Add(new Effect(_binaryReader));
+            Effects.Add(new WldEffect(_binaryReader));
 
         Unknown1 = _binaryReader.Read<int>();
         Unknown2 = _binaryReader.Read<int>();
@@ -216,7 +218,7 @@ public sealed class WLD : FileBase
 
         int musicZoneCount = _binaryReader.Read<int>();
         for (int i = 0; i < musicZoneCount; i++)
-            MusicZones.Add(new MusicZone(_binaryReader));
+            MusicZones.Add(new WldMusicZone(_binaryReader));
 
         ReadNames(BackgroundSoundNames);
 
@@ -226,7 +228,7 @@ public sealed class WLD : FileBase
 
         int backgroundMusicSpotCount = _binaryReader.Read<int>();
         for (int i = 0; i < backgroundMusicSpotCount; i++)
-            BackgroundMusicSpots.Add(new MusicSpot(_binaryReader));
+            BackgroundMusicSpots.Add(new WldMusicSpot(_binaryReader));
 
         int unknownBoundingBoxesCount = _binaryReader.Read<int>();
         for (int i = 0; i < unknownBoundingBoxesCount; i++)
@@ -234,15 +236,15 @@ public sealed class WLD : FileBase
 
         int portalCount = _binaryReader.Read<int>();
         for (int i = 0; i < portalCount; i++)
-            Portals.Add(new Portal(_binaryReader));
+            Portals.Add(new WldPortal(_binaryReader));
 
         int spawnCount = _binaryReader.Read<int>();
         for (int i = 0; i < spawnCount; i++)
-            Spawns.Add(new Spawn(_binaryReader));
+            Spawns.Add(new WldSpawn(_binaryReader));
 
         int namedAreaCount = _binaryReader.Read<int>();
         for (int i = 0; i < namedAreaCount; i++)
-            NamedAreas.Add(new NamedArea(_binaryReader));
+            NamedAreas.Add(new WldNamedArea(_binaryReader));
 
         // NOTE: npcCount is the real npc count + the patrol coordinates count
         int npcCount = _binaryReader.Read<int>();

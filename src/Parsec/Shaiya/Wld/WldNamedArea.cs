@@ -6,13 +6,19 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.WLD;
 
+public enum NamedAreaMode
+{
+    WorldIndexTxt = 0,
+    BmpFile = 2
+}
+
 /// <summary>
-/// Represents a Portal in the world
+/// Represents a NamedArea in the world
 /// </summary>
-public sealed class Portal : IBinary
+public sealed class WldNamedArea : IBinary
 {
     /// <summary>
-    /// The area of the portal
+    /// The BoundingBox where this Named Area applies
     /// </summary>
     public BoundingBox BoundingBox { get; set; }
 
@@ -22,50 +28,40 @@ public sealed class Portal : IBinary
     public float Radius { get; set; }
 
     /// <summary>
-    /// 256-byte non-localized string, usually korean characters
+    /// Multipurpose, its value depends on <see cref="Mode"/>
+    /// If Mode is 0, it reads the caption from world_index.txt
+    /// If Mode is 2, this field defines the bmp file for the area's name
     /// </summary>
     public String256 Text1 { get; set; }
 
     /// <summary>
-    /// 256-byte non-localized string, usually empty
+    /// Comment or file name (unlocalized - Korean)
     /// </summary>
     public String256 Text2 { get; set; }
 
     /// <summary>
-    /// The destination mapId
+    /// Defines the mode for <see cref="Text1"/>
     /// </summary>
-    public byte MapId { get; set; }
+    public NamedAreaMode Mode { get; set; }
 
     /// <summary>
-    /// The faction which can use the portal
+    /// Almost always 0
     /// </summary>
-    public FactionShort Faction { get; set; }
-
-    /// <summary>
-    /// Almost always 0L
-    /// </summary>
-    public byte Unknown { get; set; }
-
-    /// <summary>
-    /// The destination position
-    /// </summary>
-    public Vector3 Position { get; set; }
+    public int Unknown { get; set; }
 
     [JsonConstructor]
-    public Portal()
+    public WldNamedArea()
     {
     }
 
-    public Portal(SBinaryReader binaryReader)
+    public WldNamedArea(SBinaryReader binaryReader)
     {
         BoundingBox = new BoundingBox(binaryReader);
         Radius = binaryReader.Read<float>();
         Text1 = new String256(binaryReader);
         Text2 = new String256(binaryReader);
-        MapId = binaryReader.Read<byte>();
-        Faction = (FactionShort)binaryReader.Read<short>();
-        Unknown = binaryReader.Read<byte>();
-        Position = new Vector3(binaryReader);
+        Mode = (NamedAreaMode)binaryReader.Read<int>();
+        Unknown = binaryReader.Read<int>();
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -75,10 +71,8 @@ public sealed class Portal : IBinary
         buffer.AddRange(Radius.GetBytes());
         buffer.AddRange(Text1.GetBytes());
         buffer.AddRange(Text2.GetBytes());
-        buffer.Add(MapId);
-        buffer.AddRange(((short)Faction).GetBytes());
-        buffer.Add(Unknown);
-        buffer.AddRange(Position.GetBytes());
+        buffer.AddRange(((int)Mode).GetBytes());
+        buffer.AddRange(Unknown.GetBytes());
         return buffer;
     }
 }

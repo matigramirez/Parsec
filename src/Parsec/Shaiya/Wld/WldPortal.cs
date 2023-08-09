@@ -6,19 +6,13 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.WLD;
 
-public enum NamedAreaMode
-{
-    WorldIndexTxt = 0,
-    BmpFile = 2
-}
-
 /// <summary>
-/// Represents a NamedArea in the world
+/// Represents a Portal in the world
 /// </summary>
-public sealed class NamedArea : IBinary
+public sealed class WldPortal : IBinary
 {
     /// <summary>
-    /// The BoundingBox where this Named Area applies
+    /// The area of the portal
     /// </summary>
     public BoundingBox BoundingBox { get; set; }
 
@@ -28,40 +22,50 @@ public sealed class NamedArea : IBinary
     public float Radius { get; set; }
 
     /// <summary>
-    /// Multipurpose, its value depends on <see cref="Mode"/>
-    /// If Mode is 0, it reads the caption from world_index.txt
-    /// If Mode is 2, this field defines the bmp file for the area's name
+    /// 256-byte non-localized string, usually korean characters
     /// </summary>
     public String256 Text1 { get; set; }
 
     /// <summary>
-    /// Comment or file name (unlocalized - Korean)
+    /// 256-byte non-localized string, usually empty
     /// </summary>
     public String256 Text2 { get; set; }
 
     /// <summary>
-    /// Defines the mode for <see cref="Text1"/>
+    /// The destination mapId
     /// </summary>
-    public NamedAreaMode Mode { get; set; }
+    public byte MapId { get; set; }
 
     /// <summary>
-    /// Almost always 0
+    /// The faction which can use the portal
     /// </summary>
-    public int Unknown { get; set; }
+    public FactionShort Faction { get; set; }
+
+    /// <summary>
+    /// Almost always 0L
+    /// </summary>
+    public byte Unknown { get; set; }
+
+    /// <summary>
+    /// The destination position
+    /// </summary>
+    public Vector3 DestinationPosition { get; set; }
 
     [JsonConstructor]
-    public NamedArea()
+    public WldPortal()
     {
     }
 
-    public NamedArea(SBinaryReader binaryReader)
+    public WldPortal(SBinaryReader binaryReader)
     {
         BoundingBox = new BoundingBox(binaryReader);
         Radius = binaryReader.Read<float>();
         Text1 = new String256(binaryReader);
         Text2 = new String256(binaryReader);
-        Mode = (NamedAreaMode)binaryReader.Read<int>();
-        Unknown = binaryReader.Read<int>();
+        MapId = binaryReader.Read<byte>();
+        Faction = (FactionShort)binaryReader.Read<short>();
+        Unknown = binaryReader.Read<byte>();
+        DestinationPosition = new Vector3(binaryReader);
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -71,8 +75,10 @@ public sealed class NamedArea : IBinary
         buffer.AddRange(Radius.GetBytes());
         buffer.AddRange(Text1.GetBytes());
         buffer.AddRange(Text2.GetBytes());
-        buffer.AddRange(((int)Mode).GetBytes());
-        buffer.AddRange(Unknown.GetBytes());
+        buffer.Add(MapId);
+        buffer.AddRange(((short)Faction).GetBytes());
+        buffer.Add(Unknown);
+        buffer.AddRange(DestinationPosition.GetBytes());
         return buffer;
     }
 }

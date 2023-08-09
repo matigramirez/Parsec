@@ -5,16 +5,16 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.WLD;
 
-public sealed class PatrolCoordinate : IBinary
+public sealed class WldNpcPatrolCoordinate : IBinary
 {
     public Vector3 Position { get; set; }
 
     [JsonConstructor]
-    public PatrolCoordinate()
+    public WldNpcPatrolCoordinate()
     {
     }
 
-    public PatrolCoordinate(SBinaryReader binaryReader)
+    public WldNpcPatrolCoordinate(SBinaryReader binaryReader)
     {
         Position = new Vector3(binaryReader);
     }

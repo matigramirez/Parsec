@@ -16,7 +16,7 @@ public sealed class WldNpc : IBinary
 
     public float Orientation { get; set; }
 
-    public List<PatrolCoordinate> PatrolCoordinates { get; set; } = new();
+    public List<WldNpcPatrolCoordinate> PatrolCoordinates { get; set; } = new();
 
     [JsonConstructor]
     public WldNpc()
@@ -32,7 +32,7 @@ public sealed class WldNpc : IBinary
 
         int patrolCoordinatesCount = binaryReader.Read<int>();
         for (int i = 0; i < patrolCoordinatesCount; i++)
-            PatrolCoordinates.Add(new PatrolCoordinate(binaryReader));
+            PatrolCoordinates.Add(new WldNpcPatrolCoordinate(binaryReader));
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)

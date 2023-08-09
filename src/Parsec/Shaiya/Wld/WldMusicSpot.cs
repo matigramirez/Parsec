@@ -9,7 +9,7 @@ namespace Parsec.Shaiya.WLD;
 /// <summary>
 /// A circular area of the world in which music is played
 /// </summary>
-public sealed class MusicSpot : IBinary
+public sealed class WldMusicSpot : IBinary
 {
     /// <summary>
     /// Id of the wav file (from the linked name list of files)
@@ -27,11 +27,11 @@ public sealed class MusicSpot : IBinary
     public float Radius { get; set; }
 
     [JsonConstructor]
-    public MusicSpot()
+    public WldMusicSpot()
     {
     }
 
-    public MusicSpot(SBinaryReader binaryReader)
+    public WldMusicSpot(SBinaryReader binaryReader)
     {
         Id = binaryReader.Read<int>();
         Center = new Vector3(binaryReader);

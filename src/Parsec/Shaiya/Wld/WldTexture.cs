@@ -6,7 +6,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.WLD;
 
-public sealed class Texture : IBinary
+public sealed class WldTexture : IBinary
 {
     /// <summary>
     /// .tga texture file
@@ -21,18 +21,18 @@ public sealed class Texture : IBinary
     /// <summary>
     /// .wav sound file
     /// </summary>
-    public String256 SoundName { get; set; }
+    public String256 WalkSound { get; set; }
 
     [JsonConstructor]
-    public Texture()
+    public WldTexture()
     {
     }
 
-    public Texture(SBinaryReader binaryReader)
+    public WldTexture(SBinaryReader binaryReader)
     {
         TextureName = new String256(binaryReader);
         TileSize = binaryReader.Read<float>();
-        SoundName = new String256(binaryReader);
+        WalkSound = new String256(binaryReader);
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -40,7 +40,7 @@ public sealed class Texture : IBinary
         var buffer = new List<byte>();
         buffer.AddRange(TextureName.GetBytes());
         buffer.AddRange(TileSize.GetBytes());
-        buffer.AddRange(SoundName.GetBytes());
+        buffer.AddRange(WalkSound.GetBytes());
         return buffer;
     }
 }

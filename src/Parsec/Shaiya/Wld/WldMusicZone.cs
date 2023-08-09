@@ -7,17 +7,12 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.WLD;
 
 /// <summary>
-/// Represents a spawn area in the world
+/// A rectangular area of the world in which music is played
 /// </summary>
-public sealed class Spawn : IBinary
+public sealed class WldMusicZone : IBinary
 {
     /// <summary>
-    /// Almost always 1
-    /// </summary>
-    public int Unknown1 { get; set; }
-
-    /// <summary>
-    /// The spawn area
+    /// The rectangular area of the music zone
     /// </summary>
     public BoundingBox BoundingBox { get; set; }
 
@@ -27,37 +22,35 @@ public sealed class Spawn : IBinary
     public float Radius { get; set; }
 
     /// <summary>
-    /// Faction which uses this spawn area
+    /// Id of the wav file (from the linked name list of files)
     /// </summary>
-    public FactionInt Faction { get; set; }
+    public int Id { get; set; }
 
     /// <summary>
-    /// Almost always 0
+    /// Usually 0L
     /// </summary>
-    public int Unknown3 { get; set; }
+    public int Unknown { get; set; }
 
     [JsonConstructor]
-    public Spawn()
+    public WldMusicZone()
     {
     }
 
-    public Spawn(SBinaryReader binaryReader)
+    public WldMusicZone(SBinaryReader binaryReader)
     {
-        Unknown1 = binaryReader.Read<int>();
         BoundingBox = new BoundingBox(binaryReader);
         Radius = binaryReader.Read<float>();
-        Faction = (FactionInt)binaryReader.Read<int>();
-        Unknown3 = binaryReader.Read<int>();
+        Id = binaryReader.Read<int>();
+        Unknown = binaryReader.Read<int>();
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
         var buffer = new List<byte>();
-        buffer.AddRange(Unknown1.GetBytes());
         buffer.AddRange(BoundingBox.GetBytes());
         buffer.AddRange(Radius.GetBytes());
-        buffer.AddRange(((int)Faction).GetBytes());
-        buffer.AddRange(Unknown1.GetBytes());
+        buffer.AddRange(Id.GetBytes());
+        buffer.AddRange(Unknown.GetBytes());
         return buffer;
     }
 }
