@@ -12,9 +12,9 @@ namespace Parsec.Shaiya.WLD;
 public sealed class WldManiCoordinate : IBinary
 {
     /// <summary>
-    /// Unknown field
+    /// Id of the building that should be animated using this MAni file
     /// </summary>
-    public int Unknown { get; set; }
+    public int WorldBuildingId { get; set; }
 
     /// <summary>
     /// Id of a 3D Model
@@ -43,7 +43,7 @@ public sealed class WldManiCoordinate : IBinary
 
     public WldManiCoordinate(SBinaryReader binaryReader)
     {
-        Unknown = binaryReader.Read<int>();
+        WorldBuildingId = binaryReader.Read<int>();
         Id = binaryReader.Read<int>();
         Position = new Vector3(binaryReader);
         RotationUp = new Vector3(binaryReader);
@@ -53,7 +53,7 @@ public sealed class WldManiCoordinate : IBinary
     public IEnumerable<byte> GetBytes(params object[] options)
     {
         var buffer = new List<byte>();
-        buffer.AddRange(Unknown.GetBytes());
+        buffer.AddRange(WorldBuildingId.GetBytes());
         buffer.AddRange(Id.GetBytes());
         buffer.AddRange(Position.GetBytes());
         buffer.AddRange(RotationUp.GetBytes());
