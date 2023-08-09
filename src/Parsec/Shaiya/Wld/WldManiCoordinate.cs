@@ -46,8 +46,8 @@ public sealed class WldManiCoordinate : IBinary
         WorldBuildingId = binaryReader.Read<int>();
         Id = binaryReader.Read<int>();
         Position = new Vector3(binaryReader);
-        RotationUp = new Vector3(binaryReader);
         RotationForward = new Vector3(binaryReader);
+        RotationUp = new Vector3(binaryReader);
     }
 
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -56,8 +56,8 @@ public sealed class WldManiCoordinate : IBinary
         buffer.AddRange(WorldBuildingId.GetBytes());
         buffer.AddRange(Id.GetBytes());
         buffer.AddRange(Position.GetBytes());
-        buffer.AddRange(RotationUp.GetBytes());
         buffer.AddRange(RotationForward.GetBytes());
+        buffer.AddRange(RotationUp.GetBytes());
         return buffer;
     }
 }
