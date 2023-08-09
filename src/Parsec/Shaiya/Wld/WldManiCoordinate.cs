@@ -27,14 +27,14 @@ public sealed class WldManiCoordinate : IBinary
     public Vector3 Position { get; set; }
 
     /// <summary>
-    /// Rotation about the up vector
-    /// </summary>
-    public Vector3 RotationUp { get; set; }
-
-    /// <summary>
     /// Rotation about the forward vector
     /// </summary>
     public Vector3 RotationForward { get; set; }
+
+    /// <summary>
+    /// Rotation about the up vector
+    /// </summary>
+    public Vector3 RotationUp { get; set; }
 
     [JsonConstructor]
     public WldManiCoordinate()
