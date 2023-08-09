@@ -21,13 +21,11 @@ public sealed class WLD : FileBase
     /// <summary>
     /// Map used for Y coordinate calculation based on X and Z
     /// </summary>
-    [JsonIgnore]
     public byte[] Heightmap { get; set; }
 
     /// <summary>
     /// Map used for texture usage based on X and Z
     /// </summary>
-    [JsonIgnore]
     public byte[] TextureMap { get; set; }
 
     public List<WldTexture> Textures { get; set; } = new();
