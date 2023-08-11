@@ -16,7 +16,7 @@ public sealed class WLD : FileBase
     /// <summary>
     /// Map Size, must be a power of 2 (1024 or 2048)
     /// </summary>
-    public uint MapSize { get; set; }
+    public int MapSize { get; set; }
 
     /// <summary>
     /// Map used for Y coordinate calculation based on X and Z
@@ -107,7 +107,7 @@ public sealed class WLD : FileBase
     public int Unknown3 { get; set; }
 
     /// <summary>
-    /// Files from Entity/Objects
+    /// Files from Entity/Object
     /// </summary>
     public List<String256> ObjectNames { get; set; } = new();
 
@@ -175,7 +175,7 @@ public sealed class WLD : FileBase
         // FLD only fields
         if (Type == WldType.FLD)
         {
-            MapSize = _binaryReader.Read<uint>();
+            MapSize = _binaryReader.Read<int>();
 
             int mappingSize = (int)Math.Pow(MapSize / 2f + 1, 2);
             Heightmap = _binaryReader.ReadBytes(mappingSize * 2);
