@@ -34,6 +34,14 @@ public struct BoundingBox : IBinary
         UpperLimit = new Vector3(binaryReader);
     }
 
+    public float GetRadius()
+    {
+        var x = UpperLimit.X - LowerLimit.X;
+        var y = UpperLimit.Y - LowerLimit.Y;
+        var z = UpperLimit.Z - LowerLimit.Z;
+        return (float)Math.Sqrt(x * x + y * y + z * z) / 2f;
+    }
+
     /// <inheritdoc />
     public IEnumerable<byte> GetBytes(params object[] options)
     {
