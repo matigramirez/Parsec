@@ -24,12 +24,12 @@ public sealed class WldPortal : IBinary
     /// <summary>
     /// 256-byte non-localized string, usually korean characters
     /// </summary>
-    public String256 Text1 { get; set; }
+    public String256 Text1 { get; set; } = string.Empty;
 
     /// <summary>
     /// 256-byte non-localized string, usually empty
     /// </summary>
-    public String256 Text2 { get; set; }
+    public String256 Text2 { get; set; } = string.Empty;
 
     /// <summary>
     /// The destination mapId

@@ -123,11 +123,11 @@ public sealed class WLD : FileBase
     /// <summary>
     /// Files from Sound/Music
     /// </summary>
-    public List<String256> BackgroundSoundNames { get; set; } = new();
+    public List<String256> SoundEffectNames { get; set; } = new();
 
     public List<WldZone> Zones { get; set; } = new();
 
-    public List<WldMusicSpot> BackgroundMusicSpots { get; set; } = new();
+    public List<WldSoundEffect> SoundEffects { get; set; } = new();
 
     public List<WldUnknownBox> UnknownBoundingBoxes { get; set; } = new();
 
@@ -218,7 +218,7 @@ public sealed class WLD : FileBase
         for (int i = 0; i < musicZoneCount; i++)
             MusicZones.Add(new WldMusicZone(_binaryReader));
 
-        ReadNames(BackgroundSoundNames);
+        ReadNames(SoundEffectNames);
 
         int zoneCount = _binaryReader.Read<int>();
         for (int i = 0; i < zoneCount; i++)
@@ -226,7 +226,7 @@ public sealed class WLD : FileBase
 
         int backgroundMusicSpotCount = _binaryReader.Read<int>();
         for (int i = 0; i < backgroundMusicSpotCount; i++)
-            BackgroundMusicSpots.Add(new WldMusicSpot(_binaryReader));
+            SoundEffects.Add(new WldSoundEffect(_binaryReader));
 
         int unknownBoundingBoxesCount = _binaryReader.Read<int>();
         for (int i = 0; i < unknownBoundingBoxesCount; i++)
@@ -330,9 +330,9 @@ public sealed class WLD : FileBase
         buffer.AddRange(MusicNames.GetBytes());
 
         buffer.AddRange(MusicZones.GetBytes());
-        buffer.AddRange(BackgroundSoundNames.GetBytes());
+        buffer.AddRange(SoundEffectNames.GetBytes());
         buffer.AddRange(Zones.GetBytes());
-        buffer.AddRange(BackgroundMusicSpots.GetBytes());
+        buffer.AddRange(SoundEffects.GetBytes());
         buffer.AddRange(UnknownBoundingBoxes.GetBytes());
         buffer.AddRange(Portals.GetBytes());
         buffer.AddRange(Spawns.GetBytes());
