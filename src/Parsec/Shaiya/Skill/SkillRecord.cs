@@ -23,31 +23,40 @@ public sealed class SkillRecord
     public byte SkillLevel { get; set; }
 
     /// <summary>
-    /// Id of skill.
+    /// Skill icon.
     /// </summary>
     [ShaiyaProperty]
-    public short Id { get; set; }
+    public ushort Icon { get; set; }
 
     /// <summary>
     /// Skill animation.
     /// </summary>
     [ShaiyaProperty]
-    public byte Animation { get; set; }
+    public ushort Animation { get; set; }
 
     /// <summary>
-    /// Skill icon.
+    /// Skill Effect
     /// </summary>
-    [ShaiyaProperty]
-    public int Icon { get; set; }
-
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte Effect { get; set; }
+
+    /// <summary>
+    /// Used for toggleable skills like "Frenzied Force", "Dungeon Map Scroll", etc.
+    /// </summary>
+    [ShaiyaProperty]
+    public byte ToggleType { get; set; }
+
+    /// <summary>
+    /// Skill Sound
+    /// </summary>
+    [ShaiyaProperty]
+    public ushort Sound { get; set; }
 
     /// <summary>
     /// Character required level.
     /// </summary>
     [ShaiyaProperty]
-    public short RequiredLevel { get; set; }
+    public ushort RequiredLevel { get; set; }
 
     /// <summary>
     /// Which faction and profession can use this skill.
@@ -125,7 +134,7 @@ public sealed class SkillRecord
     /// Type detail describes what skill does.
     /// </summary>
     [ShaiyaProperty]
-    public short TypeDetail { get; set; }
+    public ushort TypeDetail { get; set; }
 
     /// <summary>
     /// Skill requires 1 Handed Sword.
@@ -227,13 +236,13 @@ public sealed class SkillRecord
     /// How many stamina points requires the skill.
     /// </summary>
     [ShaiyaProperty]
-    public short SP { get; set; }
+    public ushort SP { get; set; }
 
     /// <summary>
     /// How many mana points requires the skill.
     /// </summary>
     [ShaiyaProperty]
-    public short MP { get; set; }
+    public ushort MP { get; set; }
 
     /// <summary>
     /// Cast time.
@@ -245,7 +254,7 @@ public sealed class SkillRecord
     /// Time after which skill can be used again.
     /// </summary>
     [ShaiyaProperty]
-    public short ResetTime { get; set; }
+    public ushort ResetTime { get; set; }
 
     /// <summary>
     /// How many meters are needed in order to use the skill.
@@ -269,13 +278,13 @@ public sealed class SkillRecord
     /// ?
     /// </summary>
     [ShaiyaProperty]
-    public short Disable { get; set; }
+    public ushort Disable { get; set; }
 
     /// <summary>
     /// Skill, that must be used before the skill.
     /// </summary>
     [ShaiyaProperty]
-    public short PrevSkill { get; set; }
+    public ushort PrevSkill { get; set; }
 
     /// <summary>
     /// SuccessType is always 0 for passive skills and 1 for other.
@@ -311,7 +320,7 @@ public sealed class SkillRecord
     /// Time for example for buffs. This time shows how long the skill will be applied.
     /// </summary>
     [ShaiyaProperty]
-    public short KeepTime { get; set; }
+    public ushort KeepTime { get; set; }
 
     /// <summary>
     /// Only for passive skills; Weapon type to which passive skill speed modificator can be applied.
@@ -341,7 +350,7 @@ public sealed class SkillRecord
     /// ?
     /// </summary>
     [ShaiyaProperty]
-    public short Arrow { get; set; }
+    public ushort Arrow { get; set; }
 
     /// <summary>
     /// Damage type.
@@ -353,19 +362,19 @@ public sealed class SkillRecord
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
     [ShaiyaProperty]
-    public short DamageHP { get; set; }
+    public ushort DamageHP { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
     [ShaiyaProperty]
-    public short DamageSP { get; set; }
+    public ushort DamageSP { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
     [ShaiyaProperty]
-    public short DamageMP { get; set; }
+    public ushort DamageMP { get; set; }
 
     /// <summary>
     /// Time damage type.
@@ -377,133 +386,133 @@ public sealed class SkillRecord
     /// Either fixed hp or % hp damage made over time.
     /// </summary>
     [ShaiyaProperty]
-    public short TimeDamageHP { get; set; }
+    public ushort TimeDamageHP { get; set; }
 
     /// <summary>
     /// Either fixed sp or % sp damage made over time.
     /// </summary>
     [ShaiyaProperty]
-    public short TimeDamageSP { get; set; }
+    public ushort TimeDamageSP { get; set; }
 
     /// <summary>
     /// Either fixed mp or % mp damage made over time.
     /// </summary>
     [ShaiyaProperty]
-    public short TimeDamageMP { get; set; }
+    public ushort TimeDamageMP { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
     [ShaiyaProperty]
-    public short AddDamageHP { get; set; }
+    public ushort AddDamageHP { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
     [ShaiyaProperty]
-    public short AddDamageSP { get; set; }
+    public ushort AddDamageSP { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
     [ShaiyaProperty]
-    public short AddDamageMP { get; set; }
+    public ushort AddDamageMP { get; set; }
 
     [ShaiyaProperty]
     public byte AbilityType1 { get; set; }
 
     [ShaiyaProperty]
-    public short AbilityValue1 { get; set; }
+    public ushort AbilityValue1 { get; set; }
 
     [ShaiyaProperty]
     public byte AbilityType2 { get; set; }
 
     [ShaiyaProperty]
-    public short AbilityValue2 { get; set; }
+    public ushort AbilityValue2 { get; set; }
 
     [ShaiyaProperty]
     public byte AbilityType3 { get; set; }
 
     [ShaiyaProperty]
-    public short AbilityValue3 { get; set; }
+    public ushort AbilityValue3 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType4 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
-    public short AbilityValue4 { get; set; }
+    public ushort AbilityValue4 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType5 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
-    public short AbilityValue5 { get; set; }
+    public ushort AbilityValue5 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType6 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
-    public short AbilityValue6 { get; set; }
+    public ushort AbilityValue6 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType7 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
-    public short AbilityValue7 { get; set; }
+    public ushort AbilityValue7 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType8 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
-    public short AbilityValue8 { get; set; }
+    public ushort AbilityValue8 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType9 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
-    public short AbilityValue9 { get; set; }
+    public ushort AbilityValue9 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType10 { get; set; }
 
     [ShaiyaProperty(MinEpisode = Episode.EP6)]
-    public short AbilityValue10 { get; set; }
+    public ushort AbilityValue10 { get; set; }
 
     /// <summary>
     /// How many health points can be healed.
     /// </summary>
     [ShaiyaProperty]
-    public short HealHP { get; set; }
+    public ushort HealHP { get; set; }
 
     /// <summary>
     /// How many stamina points can be healed.
     /// </summary>
     [ShaiyaProperty]
-    public short HealSP { get; set; }
+    public ushort HealSP { get; set; }
 
     /// <summary>
     /// How many mana points can be healed.
     /// </summary>
     [ShaiyaProperty]
-    public short HealMP { get; set; }
+    public ushort HealMP { get; set; }
 
     /// <summary>
     /// HP healed over time.
     /// </summary>
     [ShaiyaProperty]
-    public short TimeHealHP { get; set; }
+    public ushort TimeHealHP { get; set; }
 
     /// <summary>
     /// SP healed over time.
     /// </summary>
     [ShaiyaProperty]
-    public short TimeHealSP { get; set; }
+    public ushort TimeHealSP { get; set; }
 
     /// <summary>
     /// MP healed over time.
     /// </summary>
     [ShaiyaProperty]
-    public short TimeHealMP { get; set; }
+    public ushort TimeHealMP { get; set; }
 
     /// <summary>
     /// For "Fleet Foot" it's value 2, which is block shoot attack for X %.
@@ -535,11 +544,11 @@ public sealed class SkillRecord
     /// ?
     /// </summary>
     [ShaiyaProperty]
-    public short ChangeType { get; set; }
+    public ushort ChangeType { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
     [ShaiyaProperty]
-    public short ChangeLevel { get; set; }
+    public ushort ChangeLevel { get; set; }
 }
