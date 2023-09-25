@@ -79,6 +79,26 @@ public class Data
     public Dictionary<string, SFile> FileIndex => Sah.FileIndex;
 
     /// <summary>
+    /// Gets a data folder from the FolderIndex
+    /// </summary>
+    /// <param name="path">Folder path</param>
+    public SFolder GetFolder(string path)
+    {
+        FolderIndex.TryGetValue(path, out var folder);
+        return folder;
+    }
+
+    /// <summary>
+    /// Gets a data file from the FileIndex
+    /// </summary>
+    /// <param name="path">File path</param>
+    public SFile GetFile(string path)
+    {
+        FileIndex.TryGetValue(path, out var file);
+        return file;
+    }
+
+    /// <summary>
     /// Extracts the whole data file
     /// </summary>
     /// <param name="extractionDirectory">Extraction directory path</param>
