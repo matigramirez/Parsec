@@ -65,7 +65,7 @@ public sealed class MAni : FileBase
 
     public override string Extension => "mani";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Version = _binaryReader.Read<int>();
         Unknown1 = _binaryReader.Read<int>();

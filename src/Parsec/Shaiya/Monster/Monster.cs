@@ -29,7 +29,7 @@ public sealed class Monster : SData.SData, ICsv
         csvWriter.WriteRecords(Records);
     }
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         int recordCount = _binaryReader.Read<int>();
         for (int i = 0; i < recordCount; i++)

@@ -1,5 +1,4 @@
-﻿using Parsec.Cryptography;
-using Parsec.Helpers;
+﻿using Parsec.Helpers;
 
 namespace Parsec.Shaiya.Data;
 
@@ -11,7 +10,7 @@ public class Data
         Saf = saf;
     }
 
-    public Data(string path, SahCrypto crypto = null)
+    public Data(string path)
     {
         if (!FileHelper.FileExists(path))
             throw new FileNotFoundException($"Data file not found at {path}");
@@ -20,7 +19,7 @@ public class Data
         {
             case ".sah":
                 {
-                    Sah = Reader.ReadFromFile<Sah>(path, crypto);
+                    Sah = Reader.ReadFromFile<Sah>(path);
 
                     if (!FileHelper.FileExists(Sah.SafPath))
                         throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
@@ -35,7 +34,7 @@ public class Data
                     if (!FileHelper.FileExists(Saf.SahPath))
                         throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
 
-                    Sah = Reader.ReadFromFile<Sah>(Saf.SahPath, crypto);
+                    Sah = Reader.ReadFromFile<Sah>(Saf.SahPath);
 
                     break;
                 }
@@ -57,7 +56,7 @@ public class Data
     /// <summary>
     /// The data's root folder from the sah index
     /// </summary>
-    public SFolder RootFolder => Sah.RootFolder;
+    public SDirectory RootDirectory => Sah.RootDirectory;
 
     /// <summary>
     /// The data's file count
@@ -71,7 +70,7 @@ public class Data
     /// <summary>
     /// Dictionary of folders that can be accessed by path
     /// </summary>
-    public Dictionary<string, SFolder> FolderIndex => Sah.FolderIndex;
+    public Dictionary<string, SDirectory> DirectoryIndex => Sah.DirectoryIndex;
 
     /// <summary>
     /// Dictionary of files that can be accessed by path
@@ -82,9 +81,9 @@ public class Data
     /// Gets a data folder from the FolderIndex
     /// </summary>
     /// <param name="path">Folder path</param>
-    public SFolder GetFolder(string path)
+    public SDirectory GetFolder(string path)
     {
-        FolderIndex.TryGetValue(path, out var folder);
+        DirectoryIndex.TryGetValue(path, out var folder);
         return folder;
     }
 
@@ -102,29 +101,29 @@ public class Data
     /// Extracts the whole data file
     /// </summary>
     /// <param name="extractionDirectory">Extraction directory path</param>
-    public void ExtractAll(string extractionDirectory) => Extract(Sah.RootFolder, extractionDirectory);
+    public void ExtractAll(string extractionDirectory) => Extract(Sah.RootDirectory, extractionDirectory);
 
     /// <summary>
     /// Extracts a shaiya folder from the saf file. If the folder to be extracted is the root folder,
     /// then the folder's content gets extracted in the provided extraction directory and if it's not,
     /// a child directory will be created inside the provided extraction directory
     /// </summary>
-    /// <param name="folder">The <see cref="SFolder"/> instance to extract</param>
+    /// <param name="directory">The <see cref="SDirectory"/> instance to extract</param>
     /// <param name="extractionDirectory">Extraction directory path</param>
-    public void Extract(SFolder folder, string extractionDirectory)
+    public void Extract(SDirectory directory, string extractionDirectory)
     {
         string extractionPath = extractionDirectory;
 
-        if (folder != Sah.RootFolder)
-            extractionPath = Path.Combine(extractionDirectory, folder.RelativePath);
+        if (directory != Sah.RootDirectory)
+            extractionPath = Path.Combine(extractionDirectory, directory.RelativePath);
 
         if (!FileHelper.CreateDirectory(extractionPath))
             return;
 
-        foreach (var file in folder.Files)
+        foreach (var file in directory.Files)
             Extract(file, extractionPath);
 
-        foreach (var subfolder in folder.Subfolders)
+        foreach (var subfolder in directory.Directories)
             Extract(subfolder, extractionDirectory);
     }
 
@@ -156,7 +155,7 @@ public class Data
             return;
 
         Sah.FileCount--;
-        file.ParentFolder.Files.Remove(file);
+        file.ParentDirectory.Files.Remove(file);
         FileIndex.Remove(path);
 
         Saf.ClearBytes(file.Offset, file.Length);

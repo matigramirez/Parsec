@@ -11,7 +11,7 @@ public sealed class Zon : FileBase
 
     public override string Extension => "zon";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Format = _binaryReader.Read<int>();
 

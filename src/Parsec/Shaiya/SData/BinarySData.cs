@@ -24,7 +24,7 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
     [ShaiyaProperty]
     public List<TRecord> Records { get; set; } = new();
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Header = _binaryReader.ReadBytes(128);
         int fieldCount = _binaryReader.Read<int>();

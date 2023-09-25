@@ -21,16 +21,8 @@ public class NpcQuest : SData.SData
     public byte[] UnknownArray { get; set; }
     public List<Quest> Quests { get; } = new();
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
-        Episode = Episode.EP5;
-
-        if (options.Length > 0)
-        {
-            object format = options[0];
-            Episode = (Episode)format;
-        }
-
         ReadMerchants();
         ReadGatekeepers();
         ReadStandardNpcs(Blacksmiths);

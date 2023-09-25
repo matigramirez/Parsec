@@ -9,23 +9,16 @@ public sealed class Skill : SData.SData, ICsv
 {
     public List<SkillRecord> Records { get; set; } = new();
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
-        var episode = Episode.EP5;
-
-        if (options.Length > 0)
-        {
-            episode = (Episode)options[0];
-        }
-
         var skillCount = _binaryReader.Read<int>();
-        var recordCountPerSkill = GetRecordCountPerSkill(episode);
+        var recordCountPerSkill = GetRecordCountPerSkill(Episode);
 
         for (int skillId = 0; skillId < skillCount; skillId++)
         {
             for (int i = 0; i < recordCountPerSkill; i++)
             {
-                var record = new SkillRecord(_binaryReader, episode, skillId);
+                var record = new SkillRecord(_binaryReader, Episode, skillId);
                 Records.Add(record);
             }
         }

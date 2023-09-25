@@ -15,7 +15,7 @@ public sealed class MLX : FileBase
 
     public MLXFormat Format { get; set; } = MLXFormat.MLX1;
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         // For some reason, sometimes MLX files are empty
         if (_binaryReader.Length == 0)

@@ -43,7 +43,7 @@ public sealed class VAni : FileBase
 
     public override string Extension => "VANI";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Center = new Vector3(_binaryReader);
         DistanceToCenter = _binaryReader.Read<float>();

@@ -18,7 +18,7 @@ public sealed class Wtr : FileBase
 
     public override string Extension => "wtr";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Unknown1 = _binaryReader.Read<float>();
         Unknown2 = _binaryReader.Read<uint>();

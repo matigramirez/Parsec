@@ -28,7 +28,7 @@ public sealed class MLT : FileBase
 
     public override string Extension => "MLT";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Signature = _binaryReader.ReadString(3);
 

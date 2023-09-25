@@ -17,7 +17,7 @@ public sealed class MON : FileBase
 
     public override string Extension => "MON";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Signature = _binaryReader.ReadString(3);
 

@@ -17,7 +17,7 @@ public class DataTests
         var dataFromSaf = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.saf");
 
         Assert.Equal(dataFromSah.FileIndex.Count, dataFromSaf.FileIndex.Count);
-        Assert.Equal(dataFromSah.FolderIndex.Count, dataFromSaf.FolderIndex.Count);
+        Assert.Equal(dataFromSah.DirectoryIndex.Count, dataFromSaf.DirectoryIndex.Count);
     }
 
     [Fact]
@@ -50,8 +50,8 @@ public class DataTests
         var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah");
         const string extractionDirectory = "Shaiya/Data/single_folder_extraction";
 
-        var folder1 = data.RootFolder.Subfolders.FirstOrDefault();
-        var folder2 = data.RootFolder.Subfolders.LastOrDefault();
+        var folder1 = data.RootDirectory.Directories.FirstOrDefault();
+        var folder2 = data.RootDirectory.Directories.LastOrDefault();
 
         if (folder1 == null || folder2 == null)
             throw new XunitException("Folder not found in RootFolder");

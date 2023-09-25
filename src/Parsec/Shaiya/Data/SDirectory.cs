@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Parsec.Cryptography;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -8,43 +7,39 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Data;
 
 [DataContract]
-public sealed class SFolder : IBinary
+public sealed class SDirectory : IBinary
 {
     [JsonConstructor]
-    public SFolder()
+    public SDirectory()
     {
     }
 
-    public SFolder(SFolder parentFolder)
+    public SDirectory(SDirectory parentDirectory)
     {
-        ParentFolder = parentFolder;
+        ParentDirectory = parentDirectory;
     }
 
-    public SFolder(
+    public SDirectory(
         SBinaryReader binaryReader,
-        SFolder parentFolder,
-        Dictionary<string, SFolder> folderIndex,
-        Dictionary<string, SFile> fileIndex,
-        SahCrypto crypto = null
+        SDirectory parentDirectory,
+        Dictionary<string, SDirectory> directoryIndex,
+        Dictionary<string, SFile> fileIndex
     )
     {
-        ParentFolder = parentFolder;
+        ParentDirectory = parentDirectory;
         Name = binaryReader.ReadString();
 
         // Make root folder's name empty and store its real name, this is done to avoid confusion when retrieving files and folders
         // from episodes where the root folder's name isn't empty ("data" in episode 8)
-        if (parentFolder == null)
+        if (parentDirectory == null)
         {
             RealName = Name;
             Name = string.Empty;
         }
 
-        folderIndex.Add(RelativePath, this);
+        directoryIndex.Add(RelativePath, this);
 
         int fileCount = binaryReader.Read<int>();
-        // Decrypt value
-        if (crypto != null)
-            fileCount = crypto.DecryptFileCount(fileCount);
 
         // Read all files in this folder
         for (int i = 0; i < fileCount; i++)
@@ -54,19 +49,16 @@ public sealed class SFolder : IBinary
         }
 
         int subfolderCount = binaryReader.Read<int>();
-        // Decrypt value
-        if (crypto != null)
-            subfolderCount = crypto.DecryptFolderCount(subfolderCount);
 
         // Recursively read subfolders data
         for (int i = 0; i < subfolderCount; i++)
         {
-            var subfolder = new SFolder(binaryReader, this, folderIndex, fileIndex, crypto);
-            AddSubfolder(subfolder);
+            var subfolder = new SDirectory(binaryReader, this, directoryIndex, fileIndex);
+            AddDirectory(subfolder);
         }
     }
 
-    public SFolder(string name, SFolder parentFolder) : this(parentFolder)
+    public SDirectory(string name, SDirectory parentDirectory) : this(parentDirectory)
     {
         Name = name;
     }
@@ -82,9 +74,9 @@ public sealed class SFolder : IBinary
     /// <summary>
     /// The relative path to the folder
     /// </summary>
-    public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
+    public string RelativePath => ParentDirectory == null || string.IsNullOrEmpty(ParentDirectory.Name)
         ? Name
-        : Path.Combine(ParentFolder.RelativePath, Name);
+        : Path.Combine(ParentDirectory.RelativePath, Name);
 
     /// <summary>
     /// List of files the folder has
@@ -96,40 +88,20 @@ public sealed class SFolder : IBinary
     /// List of subfolders the file has
     /// </summary>
     [DataMember]
-    public List<SFolder> Subfolders { get; } = new();
+    public List<SDirectory> Directories { get; } = new();
 
     /// <summary>
     /// The folder's parent directory
     /// </summary>
-    public SFolder ParentFolder { get; set; }
+    public SDirectory ParentDirectory { get; set; }
 
     /// <inheritdoc />
     public IEnumerable<byte> GetBytes(params object[] options)
     {
-        var crypto = SahCrypto.Default;
-        if (options.Length > 0)
-            crypto = (SahCrypto)options[0];
-
         var buffer = new List<byte>();
-
-        buffer.AddRange(ParentFolder == null ? RealName.GetLengthPrefixedBytes() : Name.GetLengthPrefixedBytes());
-
-        int fileCount = Files.Count;
-        if (crypto != null)
-            fileCount = crypto.EncryptFileCount(Files.Count);
-
-        buffer.AddRange(fileCount.GetBytes());
-        foreach (var file in Files)
-            buffer.AddRange(file.GetBytes());
-
-        int subfolderCount = Subfolders.Count;
-        if (crypto != null)
-            subfolderCount = crypto.EncryptFolderCount(subfolderCount);
-
-        buffer.AddRange(subfolderCount.GetBytes());
-        foreach (var subfolder in Subfolders)
-            buffer.AddRange(subfolder.GetBytes(crypto));
-
+        buffer.AddRange(ParentDirectory == null ? RealName.GetLengthPrefixedBytes() : Name.GetLengthPrefixedBytes());
+        buffer.AddRange(Files.GetBytes());
+        buffer.AddRange(Directories.GetBytes());
         return buffer;
     }
 
@@ -141,22 +113,22 @@ public sealed class SFolder : IBinary
     public void AddFile(SFile file)
     {
         if (HasFile(file.Name))
-            file.Name += "_pv";
+            throw new Exception($"File {file.Name} already exists in folder {Name}");
 
         Files.Add(file);
     }
 
     /// <summary>
-    /// Adds a <see cref="SFolder"/> child to this folder
+    /// Adds a <see cref="SDirectory"/> child to this directory
     /// </summary>
-    /// <param name="subfolder">The subfolder instance</param>
-    /// <exception cref="Exception">When subfolder with the same name already existed</exception>
-    public void AddSubfolder(SFolder subfolder)
+    /// <param name="childDirectory">The subdirectory instance</param>
+    /// <exception cref="Exception">When subdirectory with the same name already existed</exception>
+    public void AddDirectory(SDirectory childDirectory)
     {
-        if (HasSubfolder(subfolder.Name))
-            throw new Exception($"Folder {subfolder.Name} already exists in {Name}");
+        if (HasSubfolder(childDirectory.Name))
+            throw new Exception($"Subdirectory {childDirectory.Name} already exists in directory {Name}");
 
-        Subfolders.Add(subfolder);
+        Directories.Add(childDirectory);
     }
 
     /// <summary>
@@ -169,7 +141,7 @@ public sealed class SFolder : IBinary
     /// Checks if a folder contains a subfolder with a specified name
     /// </summary>
     /// <param name="name">Subfolder name to check</param>
-    public bool HasSubfolder(string name) => Subfolders.Any(sf => sf.Name == name);
+    public bool HasSubfolder(string name) => Directories.Any(sf => sf.Name == name);
 
     /// <summary>
     /// Gets a folder's file
@@ -181,5 +153,5 @@ public sealed class SFolder : IBinary
     /// Gets a folder's subfolder
     /// </summary>
     /// <param name="name">Subfolder name</param>
-    public SFolder GetSubfolder(string name) => Subfolders.FirstOrDefault(sf => sf.Name == name);
+    public SDirectory GetSubfolder(string name) => Directories.FirstOrDefault(sf => sf.Name == name);
 }

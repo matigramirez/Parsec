@@ -33,7 +33,7 @@ public sealed class ITM : FileBase
     [JsonIgnore]
     public override string Extension => "ITM";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Signature = _binaryReader.ReadString(3);
 

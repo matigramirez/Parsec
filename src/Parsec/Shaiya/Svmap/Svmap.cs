@@ -25,7 +25,7 @@ public sealed class Svmap : FileBase
     [JsonIgnore]
     public override string Extension => "svmap";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         MapSize = _binaryReader.Read<int>();
         int mapHeightCount = MapSize * MapSize / 8;

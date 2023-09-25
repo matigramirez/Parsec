@@ -48,7 +48,7 @@ public sealed class SMOD : FileBase
     public List<CollisionObject> CollisionObjects { get; set; } = new();
 
     /// <inheritdoc />
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Center = new Vector3(_binaryReader);
         DistanceToCenter = _binaryReader.Read<float>();

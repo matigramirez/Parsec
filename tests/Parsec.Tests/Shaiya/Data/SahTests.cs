@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using Parsec.Cryptography;
 using Parsec.Shaiya.Data;
 
 namespace Parsec.Tests.Shaiya;
@@ -33,35 +32,34 @@ public class SahTests
         var newSubfolder = sah.AddFolder($"{folderName}/sub");
         Assert.True(newFolder.HasSubfolder("sub"));
 
-        // Try to add the file and subfolder again
-        newFolder.AddFile(newFile1);
-        Assert.True(newFolder.HasFile($"{fileName}_pv"));
-        Assert.Throws<Exception>(() => newFolder.AddSubfolder(newSubfolder));
+        // Try to re-add file and folder
+        Assert.Throws<Exception>(() => newFolder.AddFile(newFile1));
+        Assert.Throws<Exception>(() => newFolder.AddDirectory(newSubfolder));
     }
 
-    [Fact]
-    public void SahEncryptionTest()
-    {
-        var crypto = SahCrypto.WithFileCountXorKey(0x55);
-        var sah = Reader.ReadFromFile<Sah>("Shaiya/Data/sample.enc0x55.sah", crypto);
-        sah.Write("Shaiya/Data/sample.new.enc0x55.sah");
-        var cs1 = FileHash.Checksum("Shaiya/Data/sample.enc0x55.sah");
-        var cs2 = FileHash.Checksum("Shaiya/Data/sample.new.enc0x55.sah");
-        Assert.Equal(cs1, cs2);
-
-        sah.ResetEncryption();
-        sah.Write("Shaiya/Data/sample.new.sah");
-        var cs3 = FileHash.Checksum("Shaiya/Data/sample.sah");
-        var cs4 = FileHash.Checksum("Shaiya/Data/sample.new.sah");
-        Assert.Equal(cs3, cs4);
-    }
+    // [Fact]
+    // public void SahEncryptionTest()
+    // {
+    //     var crypto = SahCrypto.WithFileCountXorKey(0x55);
+    //     var sah = Reader.ReadFromFile<Sah>("Shaiya/Data/sample.enc0x55.sah", crypto);
+    //     sah.Write("Shaiya/Data/sample.new.enc0x55.sah");
+    //     var cs1 = FileHash.Checksum("Shaiya/Data/sample.enc0x55.sah");
+    //     var cs2 = FileHash.Checksum("Shaiya/Data/sample.new.enc0x55.sah");
+    //     Assert.Equal(cs1, cs2);
+    //
+    //     sah.ResetEncryption();
+    //     sah.Write("Shaiya/Data/sample.new.sah");
+    //     var cs3 = FileHash.Checksum("Shaiya/Data/sample.sah");
+    //     var cs4 = FileHash.Checksum("Shaiya/Data/sample.new.sah");
+    //     Assert.Equal(cs3, cs4);
+    // }
 
     [Fact]
     [Description("Test that checks if the Sah subclasses can be instanciated with an empty constructor for json deserialization")]
     public void SahJsonCreationTest()
     {
         var sah = new Sah();
-        var folder = new SFolder();
+        var folder = new SDirectory();
         var file = new SFile();
 
         Assert.NotNull(sah);

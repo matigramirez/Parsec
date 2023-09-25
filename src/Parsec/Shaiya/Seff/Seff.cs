@@ -14,7 +14,7 @@ public sealed class Seff : FileBase
     [JsonIgnore]
     public override string Extension => "seff";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Format = _binaryReader.Read<int>();
         TimeStamp.Year = _binaryReader.Read<short>();

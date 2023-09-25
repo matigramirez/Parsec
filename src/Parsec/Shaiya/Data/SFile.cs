@@ -14,9 +14,9 @@ public sealed class SFile : IBinary
     {
     }
 
-    public SFile(SFolder parentFolder)
+    public SFile(SDirectory parentDirectory)
     {
-        ParentFolder = parentFolder;
+        ParentDirectory = parentDirectory;
     }
 
     public SFile(string name, long offset, int length)
@@ -26,7 +26,7 @@ public sealed class SFile : IBinary
         Length = length;
     }
 
-    public SFile(SBinaryReader binaryReader, SFolder folder, Dictionary<string, SFile> fileIndex) : this(folder)
+    public SFile(SBinaryReader binaryReader, SDirectory directory, Dictionary<string, SFile> fileIndex) : this(directory)
     {
         Name = binaryReader.ReadString();
         Offset = binaryReader.Read<long>();
@@ -64,14 +64,14 @@ public sealed class SFile : IBinary
     /// <summary>
     /// The relative path to the file
     /// </summary>
-    public string RelativePath => ParentFolder == null || string.IsNullOrEmpty(ParentFolder.Name)
+    public string RelativePath => ParentDirectory == null || string.IsNullOrEmpty(ParentDirectory.Name)
         ? Name
-        : Path.Combine(ParentFolder.RelativePath, Name);
+        : Path.Combine(ParentDirectory.RelativePath, Name);
 
     /// <summary>
     /// The directory in which the file is
     /// </summary>
-    public SFolder ParentFolder { get; set; }
+    public SDirectory ParentDirectory { get; set; }
 
     /// <inheritdoc />
     public IEnumerable<byte> GetBytes(params object[] options)

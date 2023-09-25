@@ -16,7 +16,7 @@ public sealed class GuildHouse : SData.SData
     public List<GuildHouseNpc> Npcs { get; set; } = new();
 
     /// <inheritdoc />
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Unknown = _binaryReader.Read<int>();
         HousePrice = _binaryReader.Read<int>();

@@ -71,7 +71,7 @@ public class DataPatcher : IDisposable
                 var offset = AppendFile(patchFile);
                 patchFile.Offset = offset;
 
-                var folder = targetData.Sah.EnsureFolderExists(patchFile.ParentFolder.RelativePath);
+                var folder = targetData.Sah.EnsureFolderExists(patchFile.ParentDirectory.RelativePath);
                 folder.AddFile(patchFile);
 
                 targetData.FileCount++;

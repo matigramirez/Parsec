@@ -164,7 +164,7 @@ public sealed class WLD : FileBase
     [JsonIgnore]
     public override string Extension => "wld";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         string typeStr = _binaryReader.ReadString(4).Trim('\0');
 

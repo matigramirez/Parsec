@@ -18,7 +18,7 @@ public sealed class EFT : FileBase
     [JsonIgnore]
     public override string Extension => "EFT";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         string signature = _binaryReader.ReadString(3);
 

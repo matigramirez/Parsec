@@ -7,8 +7,7 @@ public interface IFileBase
     /// <summary>
     /// Reads and parses the file
     /// </summary>
-    /// <param name="options">Reading options</param>
-    void Read(params object[] options);
+    void Read();
 
     /// <summary>
     /// Writes the file to its original format

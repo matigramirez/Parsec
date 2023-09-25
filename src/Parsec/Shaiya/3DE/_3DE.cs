@@ -42,7 +42,7 @@ public sealed class _3DE : FileBase
     /// Reads the .3DE file from the file buffer. This format requires a manually defined Read method because of its "complexity" when
     /// dealing with the vertex translation frames.
     /// </summary>
-    public override void Read(params object[] options)
+    public override void Read()
     {
         Texture = _binaryReader.ReadString();
 

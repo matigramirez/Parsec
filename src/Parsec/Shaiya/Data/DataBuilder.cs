@@ -42,7 +42,7 @@ public static class DataBuilder
 
             _safWriter = new BinaryWriter(File.OpenWrite(safPath));
 
-            var rootFolder = new SFolder(null);
+            var rootFolder = new SDirectory(null);
             ReadFolderFromDirectory(rootFolder, inputFolderPath);
 
             var sah = new Sah(inputFolderPath, rootFolder, _fileCount);
@@ -63,19 +63,19 @@ public static class DataBuilder
     }
 
     /// <summary>
-    /// Reads a folder's content and assigns it to a <see cref="SFolder"/> instance
+    /// Reads a folder's content and assigns it to a <see cref="SDirectory"/> instance
     /// </summary>
-    /// <param name="folder">The <see cref="SFolder"/> instance</param>
+    /// <param name="directory">The <see cref="SDirectory"/> instance</param>
     /// <param name="directoryPath">Directory path</param>
-    private static void ReadFolderFromDirectory(SFolder folder, string directoryPath)
+    private static void ReadFolderFromDirectory(SDirectory directory, string directoryPath)
     {
-        ReadFilesFromDirectory(folder, directoryPath);
+        ReadFilesFromDirectory(directory, directoryPath);
         var subfolders = Directory.GetDirectories(directoryPath).Select(sf => new DirectoryInfo(sf).Name);
 
         foreach (var subfolder in subfolders)
         {
-            var shaiyaFolder = new SFolder(folder) { Name = subfolder, ParentFolder = folder };
-            folder.AddSubfolder(shaiyaFolder);
+            var shaiyaFolder = new SDirectory(directory) { Name = subfolder, ParentDirectory = directory };
+            directory.AddDirectory(shaiyaFolder);
             ReadFolderFromDirectory(shaiyaFolder, Path.Combine(directoryPath, subfolder));
         }
     }
@@ -83,9 +83,9 @@ public static class DataBuilder
     /// <summary>
     /// Reads the files inside a directory and adds them to a ShaiyaFolder instance
     /// </summary>
-    /// <param name="folder">The shaiya folder instance</param>
+    /// <param name="directory">The shaiya folder instance</param>
     /// <param name="directoryPath">Directory path</param>
-    private static void ReadFilesFromDirectory(SFolder folder, string directoryPath)
+    private static void ReadFilesFromDirectory(SDirectory directory, string directoryPath)
     {
         var files = Directory.GetFiles(directoryPath).Select(Path.GetFileName);
 
@@ -95,10 +95,10 @@ public static class DataBuilder
 
             var fileStream = File.OpenRead(filePath);
 
-            var shaiyaFile = new SFile(folder) { Name = file, Length = (int)fileStream.Length };
+            var shaiyaFile = new SFile(directory) { Name = file, Length = (int)fileStream.Length };
 
             WriteFile(shaiyaFile);
-            folder.AddFile(shaiyaFile);
+            directory.AddFile(shaiyaFile);
 
             _fileCount++;
         }

@@ -1,5 +1,6 @@
 using System.Text;
 using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
 using Parsec.Shaiya.Core;
@@ -13,50 +14,50 @@ public static class Reader
     /// Reads a shaiya file format from a file
     /// </summary>
     /// <param name="path">File path</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new() =>
-        FileBase.ReadFromFile<T>(path, options);
+    public static T ReadFromFile<T>(string path, Episode episode = Episode.EP5) where T : FileBase, new() =>
+        FileBase.ReadFromFile<T>(path, episode);
 
     /// <summary>
     /// Reads a shaiya file format from a file
     /// </summary>
     /// <param name="path">File path</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    public static Task<T> ReadFromFileAsync<T>(string path, params object[] options) where T : FileBase, new() =>
-        Task.FromResult(ReadFromFile<T>(path, options));
+    public static Task<T> ReadFromFileAsync<T>(string path, Episode episode = Episode.EP5) where T : FileBase, new() =>
+        Task.FromResult(ReadFromFile<T>(path, episode));
 
     /// <summary>
     /// Reads the shaiya file format from a file
     /// </summary>
     /// <param name="path">File path</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromFile(string path, Type type, params object[] options) =>
-        FileBase.ReadFromFile(path, type, options);
+    public static FileBase ReadFromFile(string path, Type type, Episode episode = Episode.EP5) =>
+        FileBase.ReadFromFile(path, type, episode);
 
     /// <summary>
     /// Reads the shaiya file format from a file
     /// </summary>
     /// <param name="path">File path</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="options">Array of reading options</param>
-    public static Task<FileBase> ReadFromFileAsync(string path, Type type, params object[] options) =>
-        Task.FromResult(ReadFromFile(path, type, options));
+    /// <param name="episode">File episode</param>
+    public static Task<FileBase> ReadFromFileAsync(string path, Type type, Episode episode = Episode.EP5) =>
+        Task.FromResult(ReadFromFile(path, type, episode));
 
     /// <summary>
     /// Reads a shaiya file format from a buffer (byte array)
     /// </summary>
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new() =>
-        FileBase.ReadFromBuffer<T>(name, buffer, options);
+    public static T ReadFromBuffer<T>(string name, byte[] buffer, Episode episode = Episode.EP5) where T : FileBase, new() =>
+        FileBase.ReadFromBuffer<T>(name, buffer, episode);
 
 
     /// <summary>
@@ -64,10 +65,10 @@ public static class Reader
     /// </summary>
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    public static Task<T> ReadFromBufferAsync<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new() =>
-        Task.FromResult(ReadFromBuffer<T>(name, buffer, options));
+    public static Task<T> ReadFromBufferAsync<T>(string name, byte[] buffer, Episode episode = Episode.EP5) where T : FileBase, new() =>
+        Task.FromResult(ReadFromBuffer<T>(name, buffer, episode));
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array)
@@ -75,9 +76,9 @@ public static class Reader
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, params object[] options) =>
+    public static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, Episode episode = Episode.EP5) =>
         FileBase.ReadFromBuffer(name, buffer, type);
 
     /// <summary>
@@ -86,8 +87,8 @@ public static class Reader
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="options">Array of reading options</param>
-    public static Task<FileBase> ReadFromBufferAsync(string name, byte[] buffer, Type type, params object[] options) =>
+    /// <param name="episode">File episode</param>
+    public static Task<FileBase> ReadFromBufferAsync(string name, byte[] buffer, Type type, Episode episode = Episode.EP5) =>
         Task.FromResult(ReadFromBuffer(name, buffer, type));
 
     /// <summary>
@@ -219,19 +220,19 @@ public static class Reader
     /// </summary>
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <returns>FileBase instance</returns>
-    public static T ReadFromData<T>(Data data, SFile file, params object[] options) where T : FileBase, new() =>
-        FileBase.ReadFromData<T>(data, file, options);
+    public static T ReadFromData<T>(Data data, SFile file, Episode episode = Episode.EP5) where T : FileBase, new() =>
+        FileBase.ReadFromData<T>(data, file, episode);
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
     /// </summary>
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
-    /// <param name="options">Array of reading options</param>
-    public static Task<T> ReadFromDataAsync<T>(Data data, SFile file, params object[] options) where T : FileBase, new() =>
-        Task.FromResult(ReadFromData<T>(data, file, options));
+    /// <param name="episode">File episode</param>
+    public static Task<T> ReadFromDataAsync<T>(Data data, SFile file, Episode episode = Episode.EP5) where T : FileBase, new() =>
+        Task.FromResult(ReadFromData<T>(data, file, episode));
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
@@ -239,10 +240,10 @@ public static class Reader
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="options">Array of reading options</param>
+    /// <param name="episode">File episode</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromData(Data data, SFile file, Type type, params object[] options) =>
-        FileBase.ReadFromData(data, file, type, options);
+    public static FileBase ReadFromData(Data data, SFile file, Type type, Episode episode = Episode.EP5) =>
+        FileBase.ReadFromData(data, file, type, episode);
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
@@ -250,7 +251,7 @@ public static class Reader
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="options">Array of reading options</param>
-    public static Task<FileBase> ReadFromDataAsync(Data data, SFile file, Type type, params object[] options) =>
-        Task.FromResult(ReadFromData(data, file, type, options));
+    /// <param name="episode">File episode</param>
+    public static Task<FileBase> ReadFromDataAsync(Data data, SFile file, Type type, Episode episode = Episode.EP5) =>
+        Task.FromResult(ReadFromData(data, file, type, episode));
 }

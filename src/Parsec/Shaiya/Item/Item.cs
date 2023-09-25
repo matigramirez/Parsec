@@ -44,13 +44,8 @@ public sealed class Item : SData.SData, ICsv
         }
     }
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
-        Episode = Episode.EP5;
-
-        if (options.Length > 0)
-            Episode = (Episode)options[0];
-
         MaxType = _binaryReader.Read<int>();
         for (int i = 0; i < MaxType; i++)
         {

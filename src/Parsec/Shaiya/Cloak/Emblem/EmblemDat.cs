@@ -17,7 +17,7 @@ public sealed class EmblemDat : FileBase
     [JsonIgnore]
     public override string Extension => "dat";
 
-    public override void Read(params object[] options)
+    public override void Read()
     {
         int textureCount = _binaryReader.Read<int>();
         for (int i = 0; i < textureCount; i++)
