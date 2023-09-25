@@ -15,7 +15,7 @@ internal class Program
         Item item = Reader.ReadFromFile<Item>("ItemEP6.SData", Episode.EP6);
 
         // or.. export it as csv
-        item.ExportCsv("Item.csv");
+        item.WriteCsv("Item.csv");
 
         // Modify the csv file
 
@@ -23,6 +23,6 @@ internal class Program
         Item itemFromCsv = Item.ReadFromCsv("Item.csv", Episode.EP6);
 
         // Save the modified file encrypted
-        itemFromCsv.WriteEncrypted("Item.Encrypted.SData", Episode.EP6);
+        itemFromCsv.WriteEncrypted("Item.Encrypted.SData");
     }
 }

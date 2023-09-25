@@ -21,7 +21,7 @@ internal static class Program
         }
 
         // Step 2: Export svmap as JSON
-        svmap.ExportJson("2.svmap.json");
+        svmap.WriteJson("2.svmap.json");
 
         // Step 3: Modify the json file in any text editor
 
