@@ -30,6 +30,15 @@ public sealed class SFolder : IBinary
     {
         ParentFolder = parentFolder;
         Name = binaryReader.ReadString();
+
+        // Make root folder's name empty and store its real name, this is done to avoid confusion when retrieving files and folders
+        // from episodes where the root folder's name isn't empty ("data" in episode 8)
+        if (parentFolder == null)
+        {
+            RealName = Name;
+            Name = string.Empty;
+        }
+
         folderIndex.Add(RelativePath, this);
 
         int fileCount = binaryReader.Read<int>();
@@ -68,6 +77,8 @@ public sealed class SFolder : IBinary
     [DataMember]
     public string Name { get; set; } = string.Empty;
 
+    public string RealName { get; set; } = string.Empty;
+
     /// <summary>
     /// The relative path to the folder
     /// </summary>
@@ -100,7 +111,8 @@ public sealed class SFolder : IBinary
             crypto = (SahCrypto)options[0];
 
         var buffer = new List<byte>();
-        buffer.AddRange(Name.GetLengthPrefixedBytes());
+
+        buffer.AddRange(ParentFolder == null ? RealName.GetLengthPrefixedBytes() : Name.GetLengthPrefixedBytes());
 
         int fileCount = Files.Count;
         if (crypto != null)
