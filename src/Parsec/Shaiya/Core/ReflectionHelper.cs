@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Text;
 using Parsec.Attributes;
-using Parsec.Attributes.Wld;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Readers;
@@ -178,18 +177,6 @@ internal static class ReflectionHelper
                         !fixedLengthStringAttribute.IncludeStringTerminator);
 
                     return fixedLengthStr;
-
-                case HeightmapAttribute heightMapAttribute:
-                    var mapSizeProperty = parentType.GetProperty(heightMapAttribute.PropertyName);
-                    int mapSize = (int)mapSizeProperty.GetValue(parentInstance);
-                    int heightMapSize = heightMapAttribute.CalculateLengthFromMapSize(mapSize);
-                    return binaryReader.ReadBytes(heightMapSize);
-
-                case TextureMapAttribute textureMapAttribute:
-                    var mapSizePropertyInfo = parentType.GetProperty(textureMapAttribute.PropertyName);
-                    int currentMapSize = (int)mapSizePropertyInfo.GetValue(parentInstance);
-                    int textureMapSize = textureMapAttribute.CalculateLengthFromMapSize(currentMapSize);
-                    return binaryReader.ReadBytes(textureMapSize);
             }
         }
 
