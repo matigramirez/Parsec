@@ -33,12 +33,8 @@ public sealed class SFile : IBinary
         Length = binaryReader.Read<int>();
         Version = binaryReader.Read<int>();
 
-        // Add file to the sah's file dictionary
         if (!fileIndex.ContainsKey(RelativePath))
             fileIndex.Add(RelativePath, this);
-        else
-            // Follow castor's _pv file name ending for duplicate files
-            fileIndex.Add(RelativePath + "_pv", this);
     }
 
     /// <summary>
