@@ -18,8 +18,8 @@ public class SkillTests
 
         var skill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(filePath, episode);
         skill.Write(outputPath, episode);
-        skill.ExportJson(jsonPath);
-        skill.ExportCsv(csvPath);
+        skill.WriteJson(jsonPath);
+        skill.WriteCsv(csvPath);
 
         var outputSkill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(outputPath, episode);
         var jsonSkill = Reader.ReadFromJsonFile<Parsec.Shaiya.Skill.Skill>(jsonPath);
@@ -41,8 +41,8 @@ public class SkillTests
 
         var dbSkill = Reader.ReadFromFile<DBSkillData>(filePath);
         dbSkill.Write(outputPath);
-        dbSkill.ExportJson(jsonPath);
-        dbSkill.ExportCsv(csvPath);
+        dbSkill.WriteJson(jsonPath);
+        dbSkill.WriteCsv(csvPath);
 
         var outputDbSkill = Reader.ReadFromFile<DBSkillData>(outputPath);
         var jsonDbSkill = Reader.ReadFromJsonFile<DBSkillData>(jsonPath);
@@ -65,8 +65,8 @@ public class SkillTests
 
         var skillText = Reader.ReadFromFile<DBSkillText>(filePath);
         skillText.Write(outputPath);
-        skillText.ExportJson(jsonPath);
-        skillText.ExportCsv(csvPath);
+        skillText.WriteJson(jsonPath);
+        skillText.WriteCsv(csvPath);
 
         var outputSkillText = Reader.ReadFromFile<DBSkillText>(outputPath);
         var jsonSkillText = Reader.ReadFromJsonFile<DBSkillText>(jsonPath);

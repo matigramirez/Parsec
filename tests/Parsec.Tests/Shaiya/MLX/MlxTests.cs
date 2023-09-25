@@ -28,7 +28,7 @@ public class MlxTests
 
         var mlx = Reader.ReadFromFile<Parsec.Shaiya.MLX.MLX>(filePath);
         mlx.Write(outputPath);
-        mlx.ExportJson(jsonPath);
+        mlx.WriteJson(jsonPath);
 
         var outputMlx = Reader.ReadFromFile<Parsec.Shaiya.MLX.MLX>(outputPath);
         var mlxFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MLX.MLX>(jsonPath);

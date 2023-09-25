@@ -17,7 +17,7 @@ public class _3DOTests
 
         // Export to json
         const string jsonPath = "Shaiya/3DO/F_34_a002.3DO.json";
-        obj.ExportJson(jsonPath);
+        obj.WriteJson(jsonPath);
         var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DO._3DO>(jsonPath);
 
         // Check fields
@@ -57,7 +57,7 @@ public class _3DOTests
         string newObjPath = $"Shaiya/3DO/new_{fileName}";
 
         var obj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(filePath);
-        obj.ExportJson(jsonPath);
+        obj.WriteJson(jsonPath);
         var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DO._3DO>(jsonPath);
 
         // Check bytes

@@ -20,7 +20,7 @@ public class MonTests
         var mon = Reader.ReadFromFile<Parsec.Shaiya.MON.MON>(filePath);
 
         mon.Write(outputPath);
-        mon.ExportJson(jsonPath);
+        mon.WriteJson(jsonPath);
 
         var outputMon = Reader.ReadFromFile<Parsec.Shaiya.MON.MON>(outputPath);
         var monFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MON.MON>(jsonPath);

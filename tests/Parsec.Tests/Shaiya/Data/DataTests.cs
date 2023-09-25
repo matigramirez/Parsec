@@ -103,8 +103,11 @@ public class DataTests
 
         var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys).ToList();
 
-        // Apply patch
-        DataPatcher.Patch(data, patch, patch2);
+        using var dataPatcher = new DataPatcher();
+
+        // Apply patches
+        dataPatcher.Patch(data, patch);
+        dataPatcher.Patch(data, patch2);
 
         // Get files that were added to the data and weren't present before
         var newFiles = patchFiles.Except(initialFiles).ToList();

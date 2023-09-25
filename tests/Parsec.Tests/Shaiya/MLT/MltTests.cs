@@ -25,7 +25,7 @@ public class MltTests
 
         var mlt = Reader.ReadFromFile<Parsec.Shaiya.MLT.MLT>(filePath);
         mlt.Write(outputPath);
-        mlt.ExportJson(jsonPath);
+        mlt.WriteJson(jsonPath);
 
         var outputMlt = Reader.ReadFromFile<Parsec.Shaiya.MLT.MLT>(outputPath);
         var mltFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MLT.MLT>(jsonPath);

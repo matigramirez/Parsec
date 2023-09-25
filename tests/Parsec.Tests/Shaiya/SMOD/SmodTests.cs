@@ -14,7 +14,7 @@ public class SmodTests
 
         // Export to json
         const string jsonPath = "Shaiya/SMOD/a2_Elf_House_01.SMOD.json";
-        smod.ExportJson(jsonPath);
+        smod.WriteJson(jsonPath);
         var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
 
         // Check fields
@@ -55,7 +55,7 @@ public class SmodTests
         string newObjPath = $"Shaiya/SMOD/new_{fileName}";
 
         var smod = Reader.ReadFromFile<Parsec.Shaiya.SMOD.SMOD>(filePath);
-        smod.ExportJson(jsonPath);
+        smod.WriteJson(jsonPath);
         var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
 
         // Check bytes

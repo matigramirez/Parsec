@@ -17,7 +17,7 @@ public class SeffTests
 
         var seff = Reader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(filePath);
         seff.Write(outputPath);
-        seff.ExportJson(jsonPath);
+        seff.WriteJson(jsonPath);
 
         var outputSeff = Reader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(outputPath);
         var seffFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Seff.Seff>(jsonPath);

@@ -13,7 +13,7 @@ public class SetItemTests
         Parsec.Shaiya.SData.SData.DecryptFile(filePath, filePath);
         var setItem = Reader.ReadFromFile<Parsec.Shaiya.SetItem.SetItem>(filePath);
         setItem.Write(outputPath);
-        setItem.ExportJson(jsonPath);
+        setItem.WriteJson(jsonPath);
 
         var outputSetItem = Reader.ReadFromFile<Parsec.Shaiya.SetItem.SetItem>(outputPath);
         var setItemFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SetItem.SetItem>(jsonPath);

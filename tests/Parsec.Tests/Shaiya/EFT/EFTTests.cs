@@ -16,7 +16,7 @@ public class EftTests
 
         // Export to json
         const string jsonPath = "Shaiya/EFT/Monster.EFT.json";
-        eft.ExportJson(jsonPath);
+        eft.WriteJson(jsonPath);
         var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.EFT.EFT>(jsonPath);
 
         // Check fields
@@ -62,7 +62,7 @@ public class EftTests
 
         var eft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(filePath);
         eft.Write(outputPath);
-        eft.ExportJson(jsonPath);
+        eft.WriteJson(jsonPath);
 
         var outputEft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(outputPath);
         var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.EFT.EFT>(jsonPath);

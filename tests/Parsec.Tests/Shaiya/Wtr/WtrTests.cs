@@ -16,7 +16,7 @@ public class WtrTests
         string newObjPath = $"Shaiya/Wtr/new_{fileName}";
 
         var wtr = Reader.ReadFromFile<Parsec.Shaiya.Wtr.Wtr>(filePath);
-        wtr.ExportJson(jsonPath);
+        wtr.WriteJson(jsonPath);
         var wtrFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Wtr.Wtr>(jsonPath);
 
         // Check bytes

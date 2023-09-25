@@ -19,7 +19,7 @@ public class ZonTests
             record.Description = "TestDescription";
 
         zon.Write(outputPath);
-        zon.ExportJson(jsonPath);
+        zon.WriteJson(jsonPath);
 
         var outputZon = Reader.ReadFromFile<Parsec.Shaiya.Zon.Zon>(outputPath);
         var zonFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Zon.Zon>(jsonPath);

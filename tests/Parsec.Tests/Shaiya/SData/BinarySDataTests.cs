@@ -1,5 +1,4 @@
 ﻿using Parsec.Shaiya.Item;
-using Xunit;
 
 namespace Parsec.Tests.Shaiya.SData;
 
@@ -18,7 +17,7 @@ public class BinarySDataTests
         var itemData = Reader.ReadFromFile<DBItemData>(filePath);
         // Clear header so that only the field names and data are checked
         itemData.Header = new byte[128];
-        itemData.ExportCsv(csvPath);
+        itemData.WriteCsv(csvPath);
         itemData.WriteEncrypted(encryptedOutputPath);
         itemData.WriteDecrypted(decryptedOutputPath);
 

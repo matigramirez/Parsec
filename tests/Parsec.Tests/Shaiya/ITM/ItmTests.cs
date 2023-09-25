@@ -17,7 +17,7 @@ public class ItmTests
         string newObjPath = $"Shaiya/ITM/new_{fileName}";
 
         var itm = Reader.ReadFromFile<Parsec.Shaiya.ITM.ITM>(filePath);
-        itm.ExportJson(jsonPath);
+        itm.WriteJson(jsonPath);
         var itmFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.ITM.ITM>(jsonPath);
 
         // Check bytes

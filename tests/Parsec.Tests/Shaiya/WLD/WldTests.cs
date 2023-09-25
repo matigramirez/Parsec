@@ -18,7 +18,7 @@ public class WldTests
 
         var wld = Reader.ReadFromFile<Parsec.Shaiya.WLD.WLD>(filePath);
         wld.Write(outputPath);
-        wld.ExportJson(jsonPath);
+        wld.WriteJson(jsonPath);
 
         var outputWld = Reader.ReadFromFile<Parsec.Shaiya.WLD.WLD>(outputPath);
         var wldFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.WLD.WLD>(jsonPath);

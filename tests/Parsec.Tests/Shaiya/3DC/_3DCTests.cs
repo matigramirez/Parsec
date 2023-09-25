@@ -18,7 +18,7 @@ public class _3DCTests
 
         // Export to json
         const string jsonPath = "Shaiya/3DC/Mob_Fox_01.3DC.json";
-        obj.ExportJson(jsonPath);
+        obj.WriteJson(jsonPath);
         var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DC._3DC>(jsonPath);
 
         // Check fields
@@ -57,7 +57,7 @@ public class _3DCTests
 
         // Export to json
         const string jsonPath = "Shaiya/3DC/pet_maddog.3DC.json";
-        obj.ExportJson(jsonPath);
+        obj.WriteJson(jsonPath);
         var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DC._3DC>(jsonPath);
 
         // Check fields
@@ -103,7 +103,7 @@ public class _3DCTests
 
         var obj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(filePath);
 
-        obj.ExportJson(jsonPath);
+        obj.WriteJson(jsonPath);
         var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DC._3DC>(jsonPath);
 
         // Check bytes

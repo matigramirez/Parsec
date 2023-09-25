@@ -18,8 +18,8 @@ public class NpcSkillTests
 
         var npcSkill = Reader.ReadFromFile<Parsec.Shaiya.NpcSkill.NpcSkill>(filePath, episode);
         npcSkill.Write(outputPath, episode);
-        npcSkill.ExportJson(jsonPath);
-        npcSkill.ExportCsv(csvPath);
+        npcSkill.WriteJson(jsonPath);
+        npcSkill.WriteCsv(csvPath);
 
         var outputSkill = Reader.ReadFromFile<Parsec.Shaiya.NpcSkill.NpcSkill>(outputPath, episode);
         var jsonSkill = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcSkill.NpcSkill>(jsonPath);
@@ -41,8 +41,8 @@ public class NpcSkillTests
 
         var npcSkill = Reader.ReadFromFile<DBNpcSkillData>(filePath);
         npcSkill.Write(outputPath);
-        npcSkill.ExportJson(jsonPath);
-        npcSkill.ExportCsv(csvPath);
+        npcSkill.WriteJson(jsonPath);
+        npcSkill.WriteCsv(csvPath);
 
         var outputNpcSkill = Reader.ReadFromFile<DBNpcSkillData>(outputPath);
         var jsonNpcSkill = Reader.ReadFromJsonFile<DBNpcSkillData>(jsonPath);
@@ -65,8 +65,8 @@ public class NpcSkillTests
 
         var npcSkillText = Reader.ReadFromFile<DBNpcSkillText>(filePath);
         npcSkillText.Write(outputPath);
-        npcSkillText.ExportJson(jsonPath);
-        npcSkillText.ExportCsv(csvPath);
+        npcSkillText.WriteJson(jsonPath);
+        npcSkillText.WriteCsv(csvPath);
 
         var outputNpcSkillText = Reader.ReadFromFile<DBNpcSkillText>(outputPath);
         var jsonNpcSkillText = Reader.ReadFromJsonFile<DBNpcSkillText>(jsonPath);

@@ -12,7 +12,7 @@ public class GuildHouseTests
         const string jsonPath = "Shaiya/GuildHouse/GuildHouse.SData.json";
         var guildHouse = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(filePath);
         guildHouse.Write(outputPath);
-        guildHouse.ExportJson(jsonPath);
+        guildHouse.WriteJson(jsonPath);
 
         var outputGuildHouse = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(outputPath);
         var jsonGuildHouse = Reader.ReadFromJsonFile<Parsec.Shaiya.GuildHouse.GuildHouse>(jsonPath);

@@ -18,7 +18,7 @@ public class AltTests
         string newObjPath = $"Shaiya/ALT/new_{fileName}";
 
         var alt = Reader.ReadFromFile<Parsec.Shaiya.ALT.ALT>(filePath);
-        alt.ExportJson(jsonPath);
+        alt.WriteJson(jsonPath);
         var altFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.ALT.ALT>(jsonPath);
 
         // Check bytes

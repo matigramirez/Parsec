@@ -9,7 +9,7 @@ public class MonsterTests
         const string csvPath = "Shaiya/Monster/Monster.SData.csv";
 
         var monster = Reader.ReadFromFile<Parsec.Shaiya.Monster.Monster>(filePath);
-        monster.ExportCsv(csvPath);
+        monster.WriteCsv(csvPath);
         var monsterFromCsv = Parsec.Shaiya.Monster.Monster.ReadFromCsv(csvPath);
         Assert.Equal(monster.GetBytes(), monsterFromCsv.GetBytes());
     }

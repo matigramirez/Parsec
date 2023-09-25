@@ -13,7 +13,7 @@ public class NpcQuestTests
         const string jsonPath = "Shaiya/NpcQuest/NpcQuestEp5.SData.json";
         var npcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(filePath, Episode.EP5);
         npcQuest.Write(outputPath, Episode.EP5);
-        npcQuest.ExportJson(jsonPath);
+        npcQuest.WriteJson(jsonPath);
 
         var outputNpcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(outputPath, Episode.EP5);
         var jsonNpcQuest = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
@@ -31,7 +31,7 @@ public class NpcQuestTests
         const string jsonPath = "Shaiya/NpcQuest/NpcQuestEp6.SData.json";
         var npcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(filePath, Episode.EP6);
         npcQuest.Write(outputPath, Episode.EP6);
-        npcQuest.ExportJson(jsonPath);
+        npcQuest.WriteJson(jsonPath);
 
         var outputNpcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(outputPath, Episode.EP6);
         var jsonNpcQuest = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);
@@ -49,7 +49,7 @@ public class NpcQuestTests
         const string jsonPath = "Shaiya/NpcQuest/NpcQuestEp8.SData.json";
         var npcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(filePath, Episode.EP8);
         npcQuest.Write(outputPath, Episode.EP8);
-        npcQuest.ExportJson(jsonPath);
+        npcQuest.WriteJson(jsonPath);
 
         var outputNpcQuest = Reader.ReadFromFile<Parsec.Shaiya.NpcQuest.NpcQuest>(outputPath, Episode.EP8);
         var jsonNpcQuest = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcQuest.NpcQuest>(jsonPath);

@@ -19,7 +19,7 @@ public class VAniTests
         string newObjPath = $"Shaiya/VAni/new_{fileName}";
 
         var vani = Reader.ReadFromFile<Parsec.Shaiya.VAni.VAni>(filePath);
-        vani.ExportJson(jsonPath);
+        vani.WriteJson(jsonPath);
         var vaniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.VAni.VAni>(jsonPath);
 
         // Check bytes

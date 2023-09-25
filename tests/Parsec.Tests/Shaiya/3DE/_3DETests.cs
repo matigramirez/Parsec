@@ -16,7 +16,7 @@ public class _3DETests
 
         // Export to json
         const string jsonPath = "Shaiya/3DE/waterfall04.3DE.json";
-        obj.ExportJson(jsonPath);
+        obj.WriteJson(jsonPath);
         var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DE._3DE>(jsonPath);
 
         // Check fields
@@ -60,7 +60,7 @@ public class _3DETests
         string newObjPath = $"Shaiya/3DE/new_{fileName}";
 
         var obj = Reader.ReadFromFile<Parsec.Shaiya._3DE._3DE>(filePath);
-        obj.ExportJson(jsonPath);
+        obj.WriteJson(jsonPath);
         var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DE._3DE>(jsonPath);
 
         // Check bytes

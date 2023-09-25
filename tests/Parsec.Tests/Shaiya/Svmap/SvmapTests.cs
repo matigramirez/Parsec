@@ -20,7 +20,7 @@ public class SvmapTests
         string newObjPath = $"Shaiya/Svmap/new_{fileName}";
 
         var smod = Reader.ReadFromFile<Parsec.Shaiya.Svmap.Svmap>(filePath);
-        smod.ExportJson(jsonPath);
+        smod.WriteJson(jsonPath);
         var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Svmap.Svmap>(jsonPath);
 
         // Check bytes

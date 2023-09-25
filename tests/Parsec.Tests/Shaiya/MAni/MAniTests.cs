@@ -21,7 +21,7 @@ public class MAniTests
         string newObjPath = $"Shaiya/MAni/new_{fileName}";
 
         var mani = Reader.ReadFromFile<Parsec.Shaiya.MAni.MAni>(filePath);
-        mani.ExportJson(jsonPath);
+        mani.WriteJson(jsonPath);
         var maniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MAni.MAni>(jsonPath);
 
         // Check bytes

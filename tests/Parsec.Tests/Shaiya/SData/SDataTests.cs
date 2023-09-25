@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.IO;
 using Parsec.Common;
-using Xunit;
 
 namespace Parsec.Tests.Shaiya.SData;
 
@@ -58,8 +57,8 @@ public class SDataTests
         const string decryptedOutputPath = "Shaiya/SData/ItemEp6.decrypted.SData";
 
         var item = Reader.ReadFromFile<Parsec.Shaiya.Item.Item>(EncryptedSDataFilePath, Episode.EP6);
-        item.WriteEncrypted(encryptedOutputPath, Episode.EP6);
-        item.WriteDecrypted(decryptedOutputPath, Episode.EP6);
+        item.WriteEncrypted(encryptedOutputPath);
+        item.WriteDecrypted(decryptedOutputPath);
 
         var encryptedBuffer = File.ReadAllBytes(encryptedOutputPath);
         var decryptedBuffer = File.ReadAllBytes(decryptedOutputPath);

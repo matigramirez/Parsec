@@ -27,7 +27,7 @@ public class AniTests
         string newObjPath = $"Shaiya/ANI/new_{fileName}";
 
         var ani = Reader.ReadFromFile<Parsec.Shaiya.Ani.Ani>(filePath);
-        ani.ExportJson(jsonPath);
+        ani.WriteJson(jsonPath);
         var aniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Ani.Ani>(jsonPath);
 
         // Check bytes
