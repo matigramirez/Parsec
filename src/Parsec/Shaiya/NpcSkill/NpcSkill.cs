@@ -7,7 +7,7 @@ using Parsec.Shaiya.Skill;
 namespace Parsec.Shaiya.NpcSkill;
 
 [DefaultVersion(Episode.EP5)]
-public sealed class NpcSkill : SData.SData
+public sealed class NpcSkill : SData.SData, ICsv
 {
     [ShaiyaProperty]
     [LengthPrefixedList(typeof(SkillRecord))]
@@ -16,7 +16,7 @@ public sealed class NpcSkill : SData.SData
     [ListLengthMultiplier(Episode.EP6, 15)]
     public List<SkillRecord> Records { get; set; } = new();
 
-    public void ExportCsv(string outputPath)
+    public void WriteCsv(string outputPath)
     {
         using var writer = new StreamWriter(outputPath);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);

@@ -85,7 +85,7 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         return binarySData;
     }
 
-    public void ExportCsv(string outputPath)
+    public void WriteCsv(string outputPath)
     {
         using var writer = new StreamWriter(outputPath);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);

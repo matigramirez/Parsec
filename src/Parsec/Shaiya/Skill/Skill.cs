@@ -5,7 +5,7 @@ using Parsec.Extensions;
 
 namespace Parsec.Shaiya.Skill;
 
-public sealed class Skill : SData.SData
+public sealed class Skill : SData.SData, ICsv
 {
     public List<SkillRecord> Records { get; set; } = new();
 
@@ -61,7 +61,7 @@ public sealed class Skill : SData.SData
         };
     }
 
-    public void ExportCsv(string outputPath)
+    public void WriteCsv(string outputPath)
     {
         using var writer = new StreamWriter(outputPath);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);

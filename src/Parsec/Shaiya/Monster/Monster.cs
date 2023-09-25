@@ -22,7 +22,7 @@ public sealed class Monster : SData.SData, ICsv
 
     public override string Extension => "SData";
 
-    public void ExportCsv(string outputPath)
+    public void WriteCsv(string outputPath)
     {
         using var writer = new StreamWriter(outputPath);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);

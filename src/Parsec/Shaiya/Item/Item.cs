@@ -15,7 +15,7 @@ public sealed class Item : SData.SData, ICsv
     public List<Type> Types { get; } = new();
 
     /// <inheritdoc />
-    public void ExportCsv(string outputPath)
+    public void WriteCsv(string outputPath)
     {
         switch (Episode)
         {

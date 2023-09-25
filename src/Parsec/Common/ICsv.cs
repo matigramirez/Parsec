@@ -6,5 +6,5 @@ public interface ICsv
     /// Exports the file in csv format
     /// </summary>
     /// <param name="outputPath">Export file path</param>
-    void ExportCsv(string outputPath);
+    void WriteCsv(string outputPath);
 }
