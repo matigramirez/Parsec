@@ -44,7 +44,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     public string FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(Path);
 
     /// <inheritdoc/>
-    public void ExportJson(string path, params string[] ignoredPropertyNames) =>
+    public void WriteJson(string path, params string[] ignoredPropertyNames) =>
         FileHelper.WriteFile(path, JsonSerialize(this, ignoredPropertyNames));
 
     /// <inheritdoc/>
