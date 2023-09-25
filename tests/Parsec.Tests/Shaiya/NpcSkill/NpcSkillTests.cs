@@ -16,14 +16,14 @@ public class NpcSkillTests
         string jsonPath = $"Shaiya/NpcSkill/{fileName}.SData.json";
         string csvPath = $"Shaiya/NpcSkill/{fileName}.SData.csv";
 
-        var npcSkill = Reader.ReadFromFile<Parsec.Shaiya.NpcSkill.NpcSkill>(filePath, episode);
+        var npcSkill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(filePath, episode);
         npcSkill.Write(outputPath, episode);
         npcSkill.WriteJson(jsonPath);
         npcSkill.WriteCsv(csvPath);
 
-        var outputSkill = Reader.ReadFromFile<Parsec.Shaiya.NpcSkill.NpcSkill>(outputPath, episode);
-        var jsonSkill = Reader.ReadFromJsonFile<Parsec.Shaiya.NpcSkill.NpcSkill>(jsonPath);
-        var csvSkill = Parsec.Shaiya.NpcSkill.NpcSkill.ReadFromCsv(csvPath, episode);
+        var outputSkill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(outputPath, episode);
+        var jsonSkill = Reader.ReadFromJsonFile<Parsec.Shaiya.Skill.Skill>(jsonPath);
+        var csvSkill = Parsec.Shaiya.Skill.Skill.ReadFromCsv(csvPath, episode);
 
         var expected = npcSkill.GetBytes().ToList();
         Assert.Equal(expected, outputSkill.GetBytes());
