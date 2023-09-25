@@ -703,5 +703,8 @@
     <None Update="Shaiya\WLD\4.wld">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Shaiya\KillStatus\KillStatus.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
