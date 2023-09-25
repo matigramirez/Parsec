@@ -3,5 +3,6 @@
 public interface IItemDefinition
 {
     public byte Type { get; set; }
+
     public byte TypeId { get; set; }
 }

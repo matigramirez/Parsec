@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using CsvHelper;
 using Parsec.Attributes;
 using Parsec.Common;
@@ -71,9 +72,10 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         return buffer;
     }
 
-    public static T ReadFromCsv<T>(string csvPath) where T : BinarySData<TRecord>, new()
+    public static T ReadFromCsv<T>(string csvPath, Encoding encoding = null) where T : BinarySData<TRecord>, new()
     {
-        using var reader = new StreamReader(csvPath);
+        encoding ??= Encoding.ASCII;
+        using var reader = new StreamReader(csvPath, encoding);
         using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
 
         // Read headers and records
@@ -81,13 +83,14 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         var fields = csvReader.HeaderRecord?.Select(c => new BinarySDataField(c.ToLower())).ToList();
 
         // Create the BinarySData instance with an empty header. The header is skipped entirely by the game so this isn't an issue.
-        var binarySData = new T { Header = new byte[128], Fields = fields, Records = records };
+        var binarySData = new T { Header = new byte[128], Fields = fields, Records = records, Encoding = encoding };
         return binarySData;
     }
 
-    public void WriteCsv(string outputPath)
+    public void WriteCsv(string outputPath, Encoding encoding = null)
     {
-        using var writer = new StreamWriter(outputPath);
+        encoding ??= Encoding.ASCII;
+        using var writer = new StreamWriter(outputPath, false, encoding);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
         csvWriter.WriteRecords(Records);
     }

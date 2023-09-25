@@ -81,8 +81,15 @@ might not work with them.
 #### From a standalone file
 
 ```cs
-// Read file
+// Read file with default episode (EP5) and encoding (ASCII)
 var svmap = Reader.ReadFromFile<Svmap>("0.svmap");
+
+// Read file with a specific episode and default encoding
+var svmap = Reader.ReadFromFile<Svmap>("0.svmap", Episode.Ep6);
+
+// Read file with a specific episode and a specific encoding
+var windows1252Encoding = CodePagesEncodingProvider.Instance.GetEncoding(1252);
+var svmap = Reader.ReadFromFile<Svmap>("0.svmap", Episode.Ep6, windows1252Encoding);
 ```
 
 #### From data.saf
@@ -122,14 +129,28 @@ All of the Episode 8 `BinarySData` formats have `CSV` support.
 var item = Item.ReadFromCsv("Item.csv");
 ```
 
+### Encoding
+
+When reading files, the default encoding is `ASCII`. If you want to read a file with a different encoding, you can
+specify it as a parameter when calling the ReadFromFile/Json/Csv methods.
+
 ### Writing
 
 #### Writing a standalone file
 
-After modifying the file, you can save it in its original format by calling the `Write` method
+After modifying the file, you can save it in its original format by calling the `Write` method. If you specified
+the episode and encoding when reading the file, you don't need to specify them again when writing it.
 
 ```cs
+// Write file with previously defined episode and encoding (defined when reading the file)
 svmap.Write("0_modified.svmap");
+
+// Write file with a specific episode and default encoding
+svmap.Write("0_modified.svmap", Episode.Ep6);
+
+// Write file with a specific episode and a specific encoding
+var windows1252Encoding = CodePagesEncodingProvider.Instance.GetEncoding(1252);
+svmap.Write("0_modified.svmap", Episode.Ep6, windows1252Encoding);
 ```
 
 #### Writing as JSON
@@ -149,6 +170,11 @@ All of the Episode 8 `BinarySData` formats have `CSV` support.
 // Write as csv
 item.WriteCsv("Item.csv")
 ```
+
+### Encoding
+
+When writing files, the default encoding is `ASCII`. If you want to write a file with a different encoding, you can
+specify it as a parameter when calling the `Write`, `WriteJson` and `WriteCsv` methods.
 
 ```cs
 

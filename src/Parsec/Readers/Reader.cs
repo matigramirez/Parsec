@@ -15,19 +15,22 @@ public static class Reader
     /// </summary>
     /// <param name="path">File path</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, Episode episode = Episode.EP5) where T : FileBase, new() =>
-        FileBase.ReadFromFile<T>(path, episode);
+    public static T ReadFromFile<T>(string path, Episode episode = Episode.EP5, Encoding encoding = null) where T : FileBase, new() =>
+        FileBase.ReadFromFile<T>(path, episode, encoding);
 
     /// <summary>
     /// Reads a shaiya file format from a file
     /// </summary>
     /// <param name="path">File path</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    public static Task<T> ReadFromFileAsync<T>(string path, Episode episode = Episode.EP5) where T : FileBase, new() =>
-        Task.FromResult(ReadFromFile<T>(path, episode));
+    public static Task<T> ReadFromFileAsync<T>(string path, Episode episode = Episode.EP5, Encoding encoding = null)
+        where T : FileBase, new() =>
+        Task.FromResult(ReadFromFile<T>(path, episode, encoding));
 
     /// <summary>
     /// Reads the shaiya file format from a file
@@ -35,9 +38,10 @@ public static class Reader
     /// <param name="path">File path</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromFile(string path, Type type, Episode episode = Episode.EP5) =>
-        FileBase.ReadFromFile(path, type, episode);
+    public static FileBase ReadFromFile(string path, Type type, Episode episode = Episode.EP5, Encoding encoding = null) =>
+        FileBase.ReadFromFile(path, type, episode, encoding);
 
     /// <summary>
     /// Reads the shaiya file format from a file
@@ -45,8 +49,9 @@ public static class Reader
     /// <param name="path">File path</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
-    public static Task<FileBase> ReadFromFileAsync(string path, Type type, Episode episode = Episode.EP5) =>
-        Task.FromResult(ReadFromFile(path, type, episode));
+    /// <param name="encoding">File encoding</param>
+    public static Task<FileBase> ReadFromFileAsync(string path, Type type, Episode episode = Episode.EP5, Encoding encoding = null) =>
+        Task.FromResult(ReadFromFile(path, type, episode, encoding));
 
     /// <summary>
     /// Reads a shaiya file format from a buffer (byte array)
@@ -54,10 +59,12 @@ public static class Reader
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromBuffer<T>(string name, byte[] buffer, Episode episode = Episode.EP5) where T : FileBase, new() =>
-        FileBase.ReadFromBuffer<T>(name, buffer, episode);
+    public static T ReadFromBuffer<T>(string name, byte[] buffer, Episode episode = Episode.EP5, Encoding encoding = null)
+        where T : FileBase, new() =>
+        FileBase.ReadFromBuffer<T>(name, buffer, episode, encoding);
 
 
     /// <summary>
@@ -66,8 +73,10 @@ public static class Reader
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    public static Task<T> ReadFromBufferAsync<T>(string name, byte[] buffer, Episode episode = Episode.EP5) where T : FileBase, new() =>
+    public static Task<T> ReadFromBufferAsync<T>(string name, byte[] buffer, Episode episode = Episode.EP5, Encoding encoding = null)
+        where T : FileBase, new() =>
         Task.FromResult(ReadFromBuffer<T>(name, buffer, episode));
 
     /// <summary>
@@ -77,9 +86,10 @@ public static class Reader
     /// <param name="buffer">File buffer</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, Episode episode = Episode.EP5) =>
-        FileBase.ReadFromBuffer(name, buffer, type);
+    public static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, Episode episode = Episode.EP5, Encoding encoding = null) =>
+        FileBase.ReadFromBuffer(name, buffer, type, episode, encoding);
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array)
@@ -88,8 +98,10 @@ public static class Reader
     /// <param name="buffer">File buffer</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
-    public static Task<FileBase> ReadFromBufferAsync(string name, byte[] buffer, Type type, Episode episode = Episode.EP5) =>
-        Task.FromResult(ReadFromBuffer(name, buffer, type));
+    /// <param name="encoding">File encoding</param>
+    public static Task<FileBase> ReadFromBufferAsync(string name, byte[] buffer, Type type, Episode episode = Episode.EP5,
+        Encoding encoding = null) =>
+        Task.FromResult(ReadFromBuffer(name, buffer, type, episode, encoding));
 
     /// <summary>
     /// Reads a shaiya file format from a json file
@@ -128,14 +140,11 @@ public static class Reader
         if (Path.GetExtension(path) != ".json")
             throw new FileLoadException("The provided file to deserialize must be a valid json file");
 
-        // Set default encoding
         encoding ??= Encoding.ASCII;
 
-        // Read json file content
         string jsonContent = File.ReadAllText(path, encoding);
-        // Deserialize into FileBase
         var deserializedObject = (FileBase)JsonConvert.DeserializeObject(jsonContent, type);
-        // Get file name without the ".json" extension
+
         string fileNameWithoutJsonExtension = Path.GetFileNameWithoutExtension(path);
 
         if (deserializedObject == null)
@@ -192,10 +201,8 @@ public static class Reader
         if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
             throw new ArgumentException("Type must be a child of FileBase");
 
-        // Set default encoding
         encoding ??= Encoding.ASCII;
 
-        // Deserialize into FileBase
         var deserializedObject = (FileBase)JsonConvert.DeserializeObject(jsonText, type);
         if (deserializedObject == null)
             return null;
@@ -221,9 +228,11 @@ public static class Reader
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static T ReadFromData<T>(Data data, SFile file, Episode episode = Episode.EP5) where T : FileBase, new() =>
-        FileBase.ReadFromData<T>(data, file, episode);
+    public static T ReadFromData<T>(Data data, SFile file, Episode episode = Episode.EP5, Encoding encoding = null)
+        where T : FileBase, new() =>
+        FileBase.ReadFromData<T>(data, file, episode, encoding);
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
@@ -231,8 +240,10 @@ public static class Reader
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="episode">File episode</param>
-    public static Task<T> ReadFromDataAsync<T>(Data data, SFile file, Episode episode = Episode.EP5) where T : FileBase, new() =>
-        Task.FromResult(ReadFromData<T>(data, file, episode));
+    /// <param name="encoding">File encoding</param>
+    public static Task<T> ReadFromDataAsync<T>(Data data, SFile file, Episode episode = Episode.EP5, Encoding encoding = null)
+        where T : FileBase, new() =>
+        Task.FromResult(ReadFromData<T>(data, file, episode, encoding));
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
@@ -241,9 +252,10 @@ public static class Reader
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
+    /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromData(Data data, SFile file, Type type, Episode episode = Episode.EP5) =>
-        FileBase.ReadFromData(data, file, type, episode);
+    public static FileBase ReadFromData(Data data, SFile file, Type type, Episode episode = Episode.EP5, Encoding encoding = null) =>
+        FileBase.ReadFromData(data, file, type, episode, encoding);
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
@@ -252,6 +264,8 @@ public static class Reader
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
-    public static Task<FileBase> ReadFromDataAsync(Data data, SFile file, Type type, Episode episode = Episode.EP5) =>
-        Task.FromResult(ReadFromData(data, file, type, episode));
+    /// <param name="encoding">File encoding</param>
+    public static Task<FileBase> ReadFromDataAsync(Data data, SFile file, Type type, Episode episode = Episode.EP5,
+        Encoding encoding = null) =>
+        Task.FromResult(ReadFromData(data, file, type, episode, encoding));
 }

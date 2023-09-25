@@ -15,9 +15,11 @@ internal static class ReflectionHelper
         Type parentType,
         object parentInstance,
         PropertyInfo propertyInfo,
-        Episode episode = Episode.Unknown
+        Episode episode = Episode.Unknown,
+        Encoding encoding = null
     )
     {
+        encoding ??= Encoding.ASCII;
         var type = propertyInfo.PropertyType;
 
         var attributes = propertyInfo.GetCustomAttributes().ToList();
@@ -79,7 +81,7 @@ internal static class ReflectionHelper
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                                     continue;
 
-                                object propertyValue = ReadProperty(binaryReader, genericArgumentType, item, property, episode);
+                                object propertyValue = ReadProperty(binaryReader, genericArgumentType, item, property, episode, encoding);
                                 property.SetValue(item, propertyValue);
                             }
                         }
@@ -153,7 +155,7 @@ internal static class ReflectionHelper
                                 if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
                                     continue;
 
-                                object propertyValue = ReadProperty(binaryReader, genericItemType, item, property, episode);
+                                object propertyValue = ReadProperty(binaryReader, genericItemType, item, property, episode, encoding);
                                 property.SetValue(item, propertyValue);
                             }
                         }
@@ -164,16 +166,14 @@ internal static class ReflectionHelper
                     return list;
 
                 case LengthPrefixedStringAttribute lengthPrefixedStringAttribute:
-                    string lengthPrefixedStr = binaryReader.ReadString(lengthPrefixedStringAttribute.Encoding,
-                        !lengthPrefixedStringAttribute.IncludeStringTerminator);
-
+                    string lengthPrefixedStr = binaryReader.ReadString(encoding, !lengthPrefixedStringAttribute.IncludeStringTerminator);
                     return lengthPrefixedStr;
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
                     if (fixedLengthStringAttribute.IsString256)
                         return new String256(binaryReader).Value;
 
-                    string fixedLengthStr = binaryReader.ReadString(fixedLengthStringAttribute.Encoding, fixedLengthStringAttribute.Length,
+                    string fixedLengthStr = binaryReader.ReadString(encoding, fixedLengthStringAttribute.Length,
                         !fixedLengthStringAttribute.IncludeStringTerminator);
 
                     return fixedLengthStr;
@@ -342,9 +342,9 @@ internal static class ReflectionHelper
 
                 case FixedLengthStringAttribute fixedLengthStringAttribute:
                     if (fixedLengthStringAttribute.IsString256)
-                        return ((string)propertyValue).PadRight(256, '\0').GetBytes(fixedLengthStringAttribute.Encoding);
+                        return ((string)propertyValue).PadRight(256, '\0').GetBytes(encoding);
                     return ((string)propertyValue + fixedLengthStringAttribute.Suffix)
-                        .PadRight(fixedLengthStringAttribute.Length, '\0').GetBytes(fixedLengthStringAttribute.Encoding);
+                        .PadRight(fixedLengthStringAttribute.Length, '\0').GetBytes(encoding);
             }
         }
 

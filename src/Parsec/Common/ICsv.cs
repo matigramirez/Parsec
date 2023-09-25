@@ -1,4 +1,6 @@
-﻿namespace Parsec.Common;
+﻿using System.Text;
+
+namespace Parsec.Common;
 
 public interface ICsv
 {
@@ -6,5 +8,6 @@ public interface ICsv
     /// Exports the file in csv format
     /// </summary>
     /// <param name="outputPath">Export file path</param>
-    void WriteCsv(string outputPath);
+    /// <param name="encoding">File encoding</param>
+    void WriteCsv(string outputPath, Encoding encoding = null);
 }

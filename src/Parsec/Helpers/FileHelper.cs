@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using Parsec.Readers;
+﻿using System.Text;
 
 namespace Parsec.Helpers;
 
@@ -17,9 +15,12 @@ public static class FileHelper
     /// </summary>
     /// <param name="path">File path</param>
     /// <param name="content">The file content</param>
+    /// <param name="encoding">File encoding</param>
     /// <param name="backupIfExists">Makes a backup of the file if it already existed</param>
-    public static bool WriteFile(string path, string content, bool backupIfExists = false)
+    public static bool WriteFile(string path, string content, Encoding encoding = null, bool backupIfExists = false)
     {
+        encoding ??= Encoding.ASCII;
+
         if (backupIfExists && FileExists(path))
         {
             DeleteFile($"{path}.bak");
@@ -36,7 +37,7 @@ public static class FileHelper
 
         try
         {
-            File.WriteAllText(path, content);
+            File.WriteAllText(path, content, encoding);
             return true;
         }
         catch

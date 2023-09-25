@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -12,9 +13,9 @@ public sealed class MonsterRecord : IBinary
     {
     }
 
-    public MonsterRecord(SBinaryReader binaryReader)
+    public MonsterRecord(SBinaryReader binaryReader, Encoding encoding)
     {
-        MobName = binaryReader.ReadString();
+        MobName = binaryReader.ReadString(encoding);
         ModelId = binaryReader.Read<short>();
         Level = binaryReader.Read<short>();
         AI = binaryReader.Read<byte>();

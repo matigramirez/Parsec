@@ -53,10 +53,8 @@ public static class BinaryExtensions
         var buffer = new List<byte>();
 
         string finalStr = includeStringTerminator ? str + '\0' : str;
-
         buffer.AddRange(finalStr.Length.GetBytes());
         buffer.AddRange(finalStr.GetBytes(encoding));
-
         return buffer;
     }
 

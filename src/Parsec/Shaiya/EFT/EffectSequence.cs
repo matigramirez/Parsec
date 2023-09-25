@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -14,7 +15,7 @@ public sealed class EffectSequence : IBinary
 
     public EffectSequence(SBinaryReader binaryReader)
     {
-        Name = binaryReader.ReadString();
+        Name = binaryReader.ReadString(Encoding.ASCII);
 
         int recordCount = binaryReader.Read<int>();
         for (int i = 0; i < recordCount; i++)
@@ -30,7 +31,7 @@ public sealed class EffectSequence : IBinary
     public IEnumerable<byte> GetBytes(params object[] options)
     {
         var buffer = new List<byte>();
-        buffer.AddRange(Name.GetLengthPrefixedBytes());
+        buffer.AddRange(Name.GetLengthPrefixedBytes(Encoding.ASCII));
         buffer.AddRange(Records.GetBytes());
         return buffer;
     }

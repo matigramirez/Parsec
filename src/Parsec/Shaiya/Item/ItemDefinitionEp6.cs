@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 using Parsec.Extensions;
 using Parsec.Readers;
 using Parsec.Shaiya.Core;
@@ -12,10 +13,10 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
     {
     }
 
-    public ItemDefinitionEp6(SBinaryReader binaryReader)
+    public ItemDefinitionEp6(SBinaryReader binaryReader, Encoding encoding)
     {
-        Name = binaryReader.ReadString();
-        Description = binaryReader.ReadString();
+        Name = binaryReader.ReadString(encoding);
+        Description = binaryReader.ReadString(encoding);
         Type = binaryReader.Read<byte>();
         TypeId = binaryReader.Read<byte>();
         Model = binaryReader.Read<byte>();
@@ -189,9 +190,16 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {
+        var encoding = Encoding.ASCII;
+
+        if (options.Length > 0 && options[0] is Encoding stringEncoding)
+        {
+            encoding = stringEncoding;
+        }
+
         var buffer = new List<byte>();
-        buffer.AddRange(Name.GetLengthPrefixedBytes());
-        buffer.AddRange(Description.GetLengthPrefixedBytes());
+        buffer.AddRange(Name.GetLengthPrefixedBytes(encoding));
+        buffer.AddRange(Description.GetLengthPrefixedBytes(encoding));
         buffer.Add(Type);
         buffer.Add(TypeId);
         buffer.Add(Model);

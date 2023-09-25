@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using CsvHelper;
 using Newtonsoft.Json;
 using Parsec.Common;
@@ -11,58 +12,28 @@ public sealed class Item : SData.SData, ICsv
     [JsonIgnore]
     public Dictionary<(byte type, byte typeId), IItemDefinition> ItemIndex = new();
 
-    public int MaxType { get; set; }
-    public List<Type> Types { get; } = new();
+    public int MaxItemType { get; set; }
 
-    /// <inheritdoc />
-    public void WriteCsv(string outputPath)
-    {
-        switch (Episode)
-        {
-            case Episode.Unknown:
-            case Episode.EP4:
-            case Episode.EP5:
-            default:
-                {
-                    var items = ItemIndex.Values.ToList().Cast<ItemDefinitionEp5>().ToList();
-                    using var writer = new StreamWriter(outputPath);
-                    using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-                    csvWriter.WriteRecords(items);
-                    break;
-                }
-            case Episode.EP6:
-            case Episode.EP7:
-                {
-                    var items = ItemIndex.Values.ToList().Cast<ItemDefinitionEp6>().ToList();
-                    using var writer = new StreamWriter(outputPath);
-                    using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-                    csvWriter.WriteRecords(items);
-                    break;
-                }
-            case Episode.EP8:
-                throw new Exception("Episode 8 must use the DBItemData class.");
-        }
-    }
+    public List<ItemType> ItemTypes { get; } = new();
 
     public override void Read()
     {
-        MaxType = _binaryReader.Read<int>();
-        for (int i = 0; i < MaxType; i++)
+        MaxItemType = _binaryReader.Read<int>();
+        for (int i = 0; i < MaxItemType; i++)
         {
-            var type = new Type(_binaryReader, i + 1, Episode, ItemIndex);
-            Types.Add(type);
+            var itemType = new ItemType(_binaryReader, i + 1, Episode, ItemIndex, Encoding);
+            ItemTypes.Add(itemType);
         }
     }
 
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
         var buffer = new List<byte>();
+        buffer.AddRange(MaxItemType.GetBytes());
 
-        buffer.AddRange(MaxType.GetBytes());
-
-        for (int i = 1; i <= MaxType; i++)
+        for (int i = 1; i <= MaxItemType; i++)
         {
-            var type = Types.SingleOrDefault(t => t.Id == i);
+            var type = ItemTypes.SingleOrDefault(t => t.Id == i);
 
             // When type isn't part of the item, its MaxTypeId = 0 must be written to the file anyways
             if (type == null)
@@ -71,7 +42,7 @@ public sealed class Item : SData.SData, ICsv
                 continue;
             }
 
-            buffer.AddRange(type.GetBytes(episode));
+            buffer.AddRange(type.GetBytes(episode, Encoding));
         }
 
         return buffer;
@@ -82,11 +53,14 @@ public sealed class Item : SData.SData, ICsv
     /// </summary>
     /// <param name="csvPath">csv file path</param>
     /// <param name="episode">The Item.SData format</param>
+    /// <param name="encoding">Item.SData encoding</param>
     /// <returns><see cref="Item"/> instance</returns>
-    public static Item ReadFromCsv(string csvPath, Episode episode)
+    public static Item ReadFromCsv(string csvPath, Episode episode, Encoding encoding = null)
     {
+        encoding ??= Encoding.ASCII;
+
         // Create Item.SData instance
-        var item = new Item { Episode = episode };
+        var item = new Item { Episode = episode, Encoding = encoding };
         var itemDefinitions = new List<IItemDefinition>();
 
         // Read all item definitions from csv file
@@ -98,7 +72,7 @@ public sealed class Item : SData.SData, ICsv
             default:
                 {
                     // Read item definitions from csv
-                    using var reader = new StreamReader(csvPath);
+                    using var reader = new StreamReader(csvPath, encoding);
                     using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
                     var records = csvReader.GetRecords<ItemDefinitionEp5>().ToList();
 
@@ -110,7 +84,7 @@ public sealed class Item : SData.SData, ICsv
             case Episode.EP7:
                 {
                     // Read item definitions from csv
-                    using var reader = new StreamReader(csvPath);
+                    using var reader = new StreamReader(csvPath, encoding);
                     using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
                     var records = csvReader.GetRecords<ItemDefinitionEp6>().ToList();
 
@@ -123,24 +97,56 @@ public sealed class Item : SData.SData, ICsv
         }
 
         // Get max type from items
-        item.MaxType = itemDefinitions.Max(x => x.Type);
+        item.MaxItemType = itemDefinitions.Max(x => x.Type);
 
         // Add all items to item index
         var itemIndex = itemDefinitions.ToDictionary(itemDef => (itemDef.Type, itemDef.TypeId));
         item.ItemIndex = itemIndex;
 
         // Create item types
-        for (int i = 1; i <= item.MaxType; i++)
+        for (int i = 1; i <= item.MaxItemType; i++)
         {
             // Get items for this type
             var items = item.ItemIndex.Values.Where(x => x.Type == i).ToList();
 
             int maxTypeId = items.Count == 0 ? 0 : items.Max(x => x.TypeId);
 
-            var type = new Type(i, maxTypeId, items);
-            item.Types.Add(type);
+            var type = new ItemType(i, maxTypeId, items);
+            item.ItemTypes.Add(type);
         }
 
         return item;
+    }
+
+    /// <inheritdoc />
+    public void WriteCsv(string outputPath, Encoding encoding = null)
+    {
+        encoding ??= Encoding.ASCII;
+
+        switch (Episode)
+        {
+            case Episode.Unknown:
+            case Episode.EP4:
+            case Episode.EP5:
+            default:
+                {
+                    var items = ItemIndex.Values.ToList().Cast<ItemDefinitionEp5>().ToList();
+                    using var writer = new StreamWriter(outputPath, false, encoding);
+                    using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                    csvWriter.WriteRecords(items);
+                    break;
+                }
+            case Episode.EP6:
+            case Episode.EP7:
+                {
+                    var items = ItemIndex.Values.ToList().Cast<ItemDefinitionEp6>().ToList();
+                    using var writer = new StreamWriter(outputPath, false, encoding);
+                    using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                    csvWriter.WriteRecords(items);
+                    break;
+                }
+            case Episode.EP8:
+                throw new Exception("Episode 8 must use the DBItemData class.");
+        }
     }
 }
