@@ -16,6 +16,39 @@ public static class FileHelper
     /// Writes a file to the file system.
     /// </summary>
     /// <param name="path">File path</param>
+    /// <param name="content">The file content</param>
+    /// <param name="backupIfExists">Makes a backup of the file if it already existed</param>
+    public static bool WriteFile(string path, string content, bool backupIfExists = false)
+    {
+        if (backupIfExists && FileExists(path))
+        {
+            DeleteFile($"{path}.bak");
+            RenameFile(path, $"{path}.bak");
+        }
+
+        string directoryPath = Path.GetDirectoryName(path);
+
+        if (!string.IsNullOrEmpty(directoryPath))
+        {
+            if (!CreateDirectory(directoryPath))
+                return false;
+        }
+
+        try
+        {
+            File.WriteAllText(path, content);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Writes a file to the file system.
+    /// </summary>
+    /// <param name="path">File path</param>
     /// <param name="data">The data byte array</param>
     /// <param name="backupIfExists">Makes a backup of the file if it already existed</param>
     public static bool WriteFile(string path, IEnumerable<byte> data, bool backupIfExists = false)
@@ -128,7 +161,6 @@ public static class FileHelper
         if (!FileExists(filePath))
             throw new FileNotFoundException($"File {filePath} not found.");
 
-        var binaryReader = new SBinaryReader(filePath);
-        return binaryReader.Buffer;
+        return File.ReadAllBytes(filePath);
     }
 }

@@ -1,32 +1,44 @@
 ﻿using System.Text;
-using Parsec.Extensions;
 
 namespace Parsec.Readers;
 
 /// <summary>
 /// A binary reader made specifically to read Shaiya file formats
 /// </summary>
-public sealed class SBinaryReader
+public sealed class SBinaryReader : IDisposable
 {
-    /// <summary>
-    /// The binary reader's data buffer
-    /// </summary>
-    public byte[] Buffer { get; }
+    private readonly BinaryReader _binaryReader;
 
-    /// <summary>
-    /// The binary reader's current reading position
-    /// </summary>
-    public int Offset { get; private set; }
+    public SBinaryReader(Stream stream)
+    {
+        _binaryReader = new BinaryReader(stream);
+    }
+
+    public SBinaryReader(FileStream fileStream) : this((Stream)fileStream)
+    {
+    }
+
+    public SBinaryReader(MemoryStream memoryStream) : this((Stream)memoryStream)
+    {
+    }
 
     public SBinaryReader(string filePath)
     {
-        using var binaryReader = new BinaryReader(File.OpenRead(filePath));
-        Buffer = binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
+        var fileStream = File.OpenRead(filePath);
+        _binaryReader = new BinaryReader(fileStream);
     }
 
     public SBinaryReader(byte[] buffer)
     {
-        Buffer = buffer;
+        var memoryStream = new MemoryStream(buffer);
+        _binaryReader = new BinaryReader(memoryStream);
+    }
+
+    public long Length => _binaryReader.BaseStream.Length;
+
+    public void Dispose()
+    {
+        _binaryReader?.Dispose();
     }
 
     /// <summary>
@@ -41,19 +53,19 @@ public sealed class SBinaryReader
 
         object value = type switch
         {
-            TypeCode.Byte    => ReadByte(),
-            TypeCode.SByte   => ReadSByte(),
-            TypeCode.Char    => ReadChar(),
+            TypeCode.Byte => ReadByte(),
+            TypeCode.SByte => ReadSByte(),
+            TypeCode.Char => ReadChar(),
             TypeCode.Boolean => ReadBoolean(),
-            TypeCode.Int16   => ReadInt16(),
-            TypeCode.UInt16  => ReadUInt16(),
-            TypeCode.Int32   => ReadInt32(),
-            TypeCode.UInt32  => ReadUInt32(),
-            TypeCode.Int64   => ReadInt64(),
-            TypeCode.UInt64  => ReadUInt64(),
-            TypeCode.Single  => ReadFloat(),
-            TypeCode.Double  => ReadDouble(),
-            _                => throw new NotSupportedException()
+            TypeCode.Int16 => ReadInt16(),
+            TypeCode.UInt16 => ReadUInt16(),
+            TypeCode.Int32 => ReadInt32(),
+            TypeCode.UInt32 => ReadUInt32(),
+            TypeCode.Int64 => ReadInt64(),
+            TypeCode.UInt64 => ReadUInt64(),
+            TypeCode.Single => ReadSingle(),
+            TypeCode.Double => ReadDouble(),
+            _ => throw new NotSupportedException()
         };
 
         return (T)value;
@@ -71,19 +83,19 @@ public sealed class SBinaryReader
 
         object value = typeCode switch
         {
-            TypeCode.Byte    => ReadByte(),
-            TypeCode.SByte   => ReadSByte(),
-            TypeCode.Char    => ReadChar(),
+            TypeCode.Byte => ReadByte(),
+            TypeCode.SByte => ReadSByte(),
+            TypeCode.Char => ReadChar(),
             TypeCode.Boolean => ReadBoolean(),
-            TypeCode.Int16   => ReadInt16(),
-            TypeCode.UInt16  => ReadUInt16(),
-            TypeCode.Int32   => ReadInt32(),
-            TypeCode.UInt32  => ReadUInt32(),
-            TypeCode.Int64   => ReadInt64(),
-            TypeCode.UInt64  => ReadUInt64(),
-            TypeCode.Single  => ReadFloat(),
-            TypeCode.Double  => ReadDouble(),
-            _                => throw new NotSupportedException()
+            TypeCode.Int16 => ReadInt16(),
+            TypeCode.UInt16 => ReadUInt16(),
+            TypeCode.Int32 => ReadInt32(),
+            TypeCode.UInt32 => ReadUInt32(),
+            TypeCode.Int64 => ReadInt64(),
+            TypeCode.UInt64 => ReadUInt64(),
+            TypeCode.Single => ReadSingle(),
+            TypeCode.Double => ReadDouble(),
+            _ => throw new NotSupportedException()
         };
 
         return value;
@@ -94,9 +106,7 @@ public sealed class SBinaryReader
     /// </summary>
     public byte ReadByte()
     {
-        byte result = Buffer[Offset];
-        Offset += sizeof(byte);
-        return result;
+        return _binaryReader.ReadByte();
     }
 
     /// <summary>
@@ -104,9 +114,7 @@ public sealed class SBinaryReader
     /// </summary>
     public sbyte ReadSByte()
     {
-        sbyte result = Convert.ToSByte(Buffer[Offset]);
-        Offset += sizeof(sbyte);
-        return result;
+        return _binaryReader.ReadSByte();
     }
 
     /// <summary>
@@ -115,9 +123,7 @@ public sealed class SBinaryReader
     /// <param name="count">Number of bytes to read</param>
     public byte[] ReadBytes(int count)
     {
-        byte[] result = Buffer.SubArray(Offset, count);
-        Offset += count;
-        return result;
+        return _binaryReader.ReadBytes(count);
     }
 
     /// <summary>
@@ -125,9 +131,7 @@ public sealed class SBinaryReader
     /// </summary>
     public bool ReadBoolean()
     {
-        bool result = Convert.ToBoolean(Buffer[Offset]);
-        Offset += sizeof(bool);
-        return result;
+        return _binaryReader.ReadBoolean();
     }
 
     /// <summary>
@@ -135,9 +139,7 @@ public sealed class SBinaryReader
     /// </summary>
     public char ReadChar()
     {
-        char result = Convert.ToChar(Buffer[Offset]);
-        Offset += sizeof(char);
-        return result;
+        return _binaryReader.ReadChar();
     }
 
     /// <summary>
@@ -145,9 +147,7 @@ public sealed class SBinaryReader
     /// </summary>
     public short ReadInt16()
     {
-        short result = BitConverter.ToInt16(Buffer, Offset);
-        Offset += sizeof(short);
-        return result;
+        return _binaryReader.ReadInt16();
     }
 
     /// <summary>
@@ -155,9 +155,7 @@ public sealed class SBinaryReader
     /// </summary>
     public ushort ReadUInt16()
     {
-        ushort result = BitConverter.ToUInt16(Buffer, Offset);
-        Offset += sizeof(ushort);
-        return result;
+        return _binaryReader.ReadUInt16();
     }
 
     /// <summary>
@@ -165,9 +163,7 @@ public sealed class SBinaryReader
     /// </summary>
     public int ReadInt32()
     {
-        int result = BitConverter.ToInt32(Buffer, Offset);
-        Offset += sizeof(int);
-        return result;
+        return _binaryReader.ReadInt32();
     }
 
     /// <summary>
@@ -175,9 +171,7 @@ public sealed class SBinaryReader
     /// </summary>
     public uint ReadUInt32()
     {
-        uint result = BitConverter.ToUInt32(Buffer, Offset);
-        Offset += sizeof(uint);
-        return result;
+        return _binaryReader.ReadUInt32();
     }
 
     /// <summary>
@@ -185,9 +179,7 @@ public sealed class SBinaryReader
     /// </summary>
     public long ReadInt64()
     {
-        long result = BitConverter.ToInt64(Buffer, Offset);
-        Offset += sizeof(long);
-        return result;
+        return _binaryReader.ReadInt64();
     }
 
     /// <summary>
@@ -195,19 +187,15 @@ public sealed class SBinaryReader
     /// </summary>
     public ulong ReadUInt64()
     {
-        ulong result = BitConverter.ToUInt64(Buffer, Offset);
-        Offset += sizeof(ulong);
-        return result;
+        return _binaryReader.ReadUInt64();
     }
 
     /// <summary>
     /// Reads a float (single) value
     /// </summary>
-    public float ReadFloat()
+    public float ReadSingle()
     {
-        float result = BitConverter.ToSingle(Buffer, Offset);
-        Offset += sizeof(float);
-        return result;
+        return _binaryReader.ReadSingle();
     }
 
     /// <summary>
@@ -215,9 +203,7 @@ public sealed class SBinaryReader
     /// </summary>
     public double ReadDouble()
     {
-        double result = BitConverter.ToDouble(Buffer, Offset);
-        Offset += sizeof(double);
-        return result;
+        return _binaryReader.ReadDouble();
     }
 
     /// <summary>
@@ -235,9 +221,8 @@ public sealed class SBinaryReader
         if (encoding.Equals(Encoding.Unicode))
             length *= 2;
 
-        string str = encoding.GetString(Buffer, Offset, length);
-
-        Offset += length;
+        var stringBytes = ReadBytes(length);
+        string str = encoding.GetString(stringBytes, 0, length);
 
         if (removeStringTerminator && str.Length > 1 && str[str.Length - 1] == '\0')
             str = str.Trim('\0');
@@ -274,11 +259,29 @@ public sealed class SBinaryReader
     /// <summary>
     /// Resets the reading offset
     /// </summary>
-    public void ResetOffset() => Offset = 0;
+    public void ResetOffset()
+    {
+        _binaryReader.BaseStream.Position = 0;
+    }
 
     /// <summary>
     /// Sets the cursor to the current position + the specified number of bytes to skip
     /// </summary>
     /// <param name="count">Number of bytes to skip</param>
-    public void Skip(int count) => Offset += count;
+    public void Skip(int count)
+    {
+        _binaryReader.BaseStream.Position += count;
+    }
+
+    public byte[] ReadAllBytes()
+    {
+        if (_binaryReader.BaseStream is MemoryStream memoryStream)
+        {
+            return memoryStream.ToArray();
+        }
+
+        using var tempMemoryStream = new MemoryStream();
+        _binaryReader.BaseStream.CopyTo(tempMemoryStream);
+        return tempMemoryStream.ToArray();
+    }
 }

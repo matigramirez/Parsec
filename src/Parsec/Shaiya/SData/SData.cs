@@ -35,10 +35,15 @@ public abstract class SData : FileBase, IEncryptable
     /// <inheritdoc />
     public void DecryptBuffer(bool validateChecksum = false)
     {
-        if (!IsEncrypted(Buffer))
-            return;
+        var fileBuffer = _binaryReader.ReadAllBytes();
 
-        byte[] decryptedBuffer = Decrypt(Buffer, validateChecksum);
+        if (!IsEncrypted(fileBuffer))
+        {
+            _binaryReader.ResetOffset();
+            return;
+        }
+
+        byte[] decryptedBuffer = Decrypt(fileBuffer, validateChecksum);
         _binaryReader = new SBinaryReader(decryptedBuffer);
     }
 

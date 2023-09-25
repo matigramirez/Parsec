@@ -18,7 +18,7 @@ public sealed class MLX : FileBase
     public override void Read(params object[] options)
     {
         // For some reason, sometimes MLX files are empty
-        if (_binaryReader.Buffer.Length == 0)
+        if (_binaryReader.Length == 0)
             return;
 
         string signature = _binaryReader.ReadString(4);

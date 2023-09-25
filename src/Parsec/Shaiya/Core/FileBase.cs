@@ -18,16 +18,6 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     protected SBinaryReader _binaryReader;
 
     /// <summary>
-    /// The file's byte array
-    /// </summary>
-    [JsonIgnore]
-    public byte[] Buffer
-    {
-        get => _binaryReader.Buffer;
-        set => _binaryReader = new SBinaryReader(value);
-    }
-
-    /// <summary>
     /// Full path to the file
     /// </summary>
     [JsonIgnore]
@@ -55,7 +45,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
     /// <inheritdoc/>
     public void ExportJson(string path, params string[] ignoredPropertyNames) =>
-        FileHelper.WriteFile(path, Encoding.ASCII.GetBytes(JsonSerialize(this, ignoredPropertyNames)));
+        FileHelper.WriteFile(path, JsonSerialize(this, ignoredPropertyNames));
 
     /// <inheritdoc/>
     public virtual string JsonSerialize(FileBase obj, params string[] ignoredPropertyNames)
@@ -213,8 +203,18 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// <param name="options">Array of reading options</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new() =>
-        (T)ReadFromFile(path, typeof(T), options);
+    public static T ReadFromFile<T>(string path, params object[] options) where T : FileBase, new()
+    {
+        var instance = new T { Path = path, _binaryReader = new SBinaryReader(path) };
+
+        if (instance is IEncryptable encryptableInstance)
+            encryptableInstance.DecryptBuffer();
+
+        instance.Read(options);
+        instance._binaryReader?.Dispose();
+
+        return instance;
+    }
 
     /// <summary>
     /// Reads the shaiya file format from a file
@@ -238,6 +238,8 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
 
         // Parse the file
         instance.Read(options);
+        instance._binaryReader?.Dispose();
+
         return instance;
     }
 
@@ -249,8 +251,18 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// <param name="options">Array of reading options</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new() =>
-        (T)ReadFromBuffer(name, buffer, typeof(T), options);
+    public static T ReadFromBuffer<T>(string name, byte[] buffer, params object[] options) where T : FileBase, new()
+    {
+        var instance = new T { Path = name, _binaryReader = new SBinaryReader(buffer) };
+
+        if (instance is IEncryptable encryptableInstance)
+            encryptableInstance.DecryptBuffer();
+
+        instance.Read(options);
+        instance._binaryReader?.Dispose();
+
+        return instance;
+    }
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array)
@@ -272,8 +284,9 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
         if (instance is IEncryptable encryptableInstance)
             encryptableInstance.DecryptBuffer();
 
-        // Parse the file
         instance.Read(options);
+        instance._binaryReader?.Dispose();
+
         return instance;
     }
 
@@ -285,7 +298,7 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// <param name="options">Array of reading options</param>
     /// <returns>FileBase instance</returns>
     public static T ReadFromData<T>(Data.Data data, SFile file, params object[] options) where T : FileBase, new() =>
-        (T)ReadFromData(data, file, typeof(T), options);
+        ReadFromBuffer<T>(file.Name, data.GetFileBuffer(file), options);
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
