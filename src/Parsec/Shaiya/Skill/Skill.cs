@@ -1,19 +1,65 @@
 ﻿using System.Globalization;
 using CsvHelper;
-using Parsec.Attributes;
 using Parsec.Common;
+using Parsec.Extensions;
 
 namespace Parsec.Shaiya.Skill;
 
-[DefaultVersion(Episode.EP5)]
 public sealed class Skill : SData.SData
 {
-    [ShaiyaProperty]
-    [LengthPrefixedList(typeof(SkillRecord))]
-    [ListLengthMultiplier(Episode.EP4, 3)]
-    [ListLengthMultiplier(Episode.EP5, 9)]
-    [ListLengthMultiplier(Episode.EP6, 15)]
     public List<SkillRecord> Records { get; set; } = new();
+
+    public override void Read(params object[] options)
+    {
+        var episode = Episode.EP5;
+
+        if (options.Length > 0)
+        {
+            episode = (Episode)options[0];
+        }
+
+        var skillCount = _binaryReader.Read<int>();
+        var recordCountPerSkill = GetRecordCountPerSkill(episode);
+
+        for (int skillId = 0; skillId < skillCount; skillId++)
+        {
+            for (int i = 0; i < recordCountPerSkill; i++)
+            {
+                var record = new SkillRecord(_binaryReader, episode, skillId);
+                Records.Add(record);
+            }
+        }
+    }
+
+    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    {
+        if (episode == Episode.Unknown)
+        {
+            episode = Episode.EP5;
+        }
+
+        var buffer = new List<byte>();
+
+        var skillCount = Records.Count / GetRecordCountPerSkill(episode);
+        buffer.AddRange(skillCount.GetBytes());
+
+        foreach (var record in Records)
+        {
+            buffer.AddRange(record.GetBytes(episode));
+        }
+
+        return buffer.ToArray();
+    }
+
+    private int GetRecordCountPerSkill(Episode episode)
+    {
+        return episode switch
+        {
+            Episode.EP5 => 9,
+            >= Episode.EP6 => 15,
+            _ => 3
+        };
+    }
 
     public void ExportCsv(string outputPath)
     {

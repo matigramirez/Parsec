@@ -1,554 +1,708 @@
-﻿using Parsec.Attributes;
-using Parsec.Common;
+﻿using Parsec.Common;
+using Parsec.Extensions;
+using Parsec.Readers;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Skill;
 
 /// <summary>
 /// Class that represents a record for the Skill.SData and NpcSkill.SData formats
 /// </summary>
-public sealed class SkillRecord
+public sealed class SkillRecord : IBinary
 {
-    [ShaiyaProperty]
-    [LengthPrefixedString]
+    public SkillRecord()
+    {
+    }
+
+    public SkillRecord(SBinaryReader binaryReader, Episode episode, int id)
+    {
+        Id = id;
+        Name = binaryReader.ReadString();
+        Description = binaryReader.ReadString();
+        SkillLevel = binaryReader.Read<byte>();
+        Icon = binaryReader.Read<ushort>();
+        Animation = binaryReader.Read<ushort>();
+
+        if (episode >= Episode.EP6)
+        {
+            Effect = binaryReader.Read<byte>();
+        }
+
+        ToggleType = binaryReader.Read<byte>();
+        Sound = binaryReader.Read<ushort>();
+        RequiredLevel = binaryReader.Read<ushort>();
+        Country = binaryReader.Read<byte>();
+        AttackFighter = binaryReader.Read<byte>();
+        DefenseFighter = binaryReader.Read<byte>();
+        PatrolRogue = binaryReader.Read<byte>();
+        ShootRogue = binaryReader.Read<byte>();
+        AttackMage = binaryReader.Read<byte>();
+        DefenseMage = binaryReader.Read<byte>();
+        Grow = binaryReader.Read<byte>();
+        Point = binaryReader.Read<byte>();
+        TypeShow = binaryReader.Read<byte>();
+        TypeAttack = binaryReader.Read<byte>();
+        TypeEffect = binaryReader.Read<byte>();
+        TypeDetail = binaryReader.Read<ushort>();
+        NeedWeapon1 = binaryReader.Read<byte>();
+        NeedWeapon2 = binaryReader.Read<byte>();
+        NeedWeapon3 = binaryReader.Read<byte>();
+        NeedWeapon4 = binaryReader.Read<byte>();
+        NeedWeapon5 = binaryReader.Read<byte>();
+        NeedWeapon6 = binaryReader.Read<byte>();
+        NeedWeapon7 = binaryReader.Read<byte>();
+        NeedWeapon8 = binaryReader.Read<byte>();
+        NeedWeapon9 = binaryReader.Read<byte>();
+        NeedWeapon10 = binaryReader.Read<byte>();
+        NeedWeapon11 = binaryReader.Read<byte>();
+        NeedWeapon12 = binaryReader.Read<byte>();
+        NeedWeapon13 = binaryReader.Read<byte>();
+        NeedWeapon14 = binaryReader.Read<byte>();
+        NeedWeapon15 = binaryReader.Read<byte>();
+        Shield = binaryReader.Read<byte>();
+        SP = binaryReader.Read<ushort>();
+        MP = binaryReader.Read<ushort>();
+        ReadyTime = binaryReader.Read<byte>();
+        ResetTime = binaryReader.Read<ushort>();
+        AttackRange = binaryReader.Read<byte>();
+        StateType = binaryReader.Read<byte>();
+        AttribType = binaryReader.Read<byte>();
+        Disable = binaryReader.Read<ushort>();
+        PrevSkill = binaryReader.Read<ushort>();
+        SuccessType = binaryReader.Read<byte>();
+        SuccessValue = binaryReader.Read<byte>();
+        TargetType = binaryReader.Read<byte>();
+        ApplyRange = binaryReader.Read<byte>();
+        MultiAttack = binaryReader.Read<byte>();
+        KeepTime = binaryReader.Read<ushort>();
+        Weapon1 = binaryReader.Read<byte>();
+        Weapon2 = binaryReader.Read<byte>();
+        WeaponValue = binaryReader.Read<byte>();
+        Bag = binaryReader.Read<byte>();
+        Arrow = binaryReader.Read<ushort>();
+        DamageType = binaryReader.Read<byte>();
+        DamageHP = binaryReader.Read<ushort>();
+        DamageSP = binaryReader.Read<ushort>();
+        DamageMP = binaryReader.Read<ushort>();
+        TimeDamageType = binaryReader.Read<byte>();
+        TimeDamageHP = binaryReader.Read<ushort>();
+        TimeDamageSP = binaryReader.Read<ushort>();
+        TimeDamageMP = binaryReader.Read<ushort>();
+        AddDamageHP = binaryReader.Read<ushort>();
+        AddDamageSP = binaryReader.Read<ushort>();
+        AddDamageMP = binaryReader.Read<ushort>();
+        AbilityType1 = binaryReader.Read<byte>();
+        AbilityValue1 = binaryReader.Read<ushort>();
+        AbilityType2 = binaryReader.Read<byte>();
+        AbilityValue2 = binaryReader.Read<ushort>();
+        AbilityType3 = binaryReader.Read<byte>();
+        AbilityValue3 = binaryReader.Read<ushort>();
+
+        if (episode >= Episode.EP6)
+        {
+            AbilityType4 = binaryReader.Read<byte>();
+            AbilityValue4 = binaryReader.Read<ushort>();
+            AbilityType5 = binaryReader.Read<byte>();
+            AbilityValue5 = binaryReader.Read<ushort>();
+            AbilityType6 = binaryReader.Read<byte>();
+            AbilityValue6 = binaryReader.Read<ushort>();
+            AbilityType7 = binaryReader.Read<byte>();
+            AbilityValue7 = binaryReader.Read<ushort>();
+            AbilityType8 = binaryReader.Read<byte>();
+            AbilityValue8 = binaryReader.Read<ushort>();
+            AbilityType9 = binaryReader.Read<byte>();
+            AbilityValue9 = binaryReader.Read<ushort>();
+            AbilityType10 = binaryReader.Read<byte>();
+            AbilityValue10 = binaryReader.Read<ushort>();
+        }
+
+        HealHP = binaryReader.Read<ushort>();
+        HealSP = binaryReader.Read<ushort>();
+        HealMP = binaryReader.Read<ushort>();
+        TimeHealHP = binaryReader.Read<ushort>();
+        TimeHealSP = binaryReader.Read<ushort>();
+        TimeHealMP = binaryReader.Read<ushort>();
+        DefenseType = binaryReader.Read<byte>();
+        DefenseValue = binaryReader.Read<byte>();
+        LimitHP = binaryReader.Read<byte>();
+        FixRange = binaryReader.Read<byte>();
+        ChangeType = binaryReader.Read<ushort>();
+        ChangeLevel = binaryReader.Read<ushort>();
+    }
+
+    /// <summary>
+    /// The skill Id. It's not part of the structure itself, but it's assigned manually when reading the file.
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
+    /// The skill name
+    /// </summary>
     public string Name { get; set; }
 
-    [ShaiyaProperty]
-    [LengthPrefixedString]
+    /// <summary>
+    /// The skill description
+    /// </summary>
     public string Description { get; set; }
 
     /// <summary>
     /// Level of skill.
     /// </summary>
-    [ShaiyaProperty]
     public byte SkillLevel { get; set; }
 
     /// <summary>
     /// Skill icon.
     /// </summary>
-    [ShaiyaProperty]
     public ushort Icon { get; set; }
 
     /// <summary>
     /// Skill animation.
     /// </summary>
-    [ShaiyaProperty]
     public ushort Animation { get; set; }
 
     /// <summary>
     /// Skill Effect
     /// </summary>
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte Effect { get; set; }
 
     /// <summary>
     /// Used for toggleable skills like "Frenzied Force", "Dungeon Map Scroll", etc.
     /// </summary>
-    [ShaiyaProperty]
     public byte ToggleType { get; set; }
 
     /// <summary>
     /// Skill Sound
     /// </summary>
-    [ShaiyaProperty]
     public ushort Sound { get; set; }
 
     /// <summary>
     /// Character required level.
     /// </summary>
-    [ShaiyaProperty]
     public ushort RequiredLevel { get; set; }
 
     /// <summary>
     /// Which faction and profession can use this skill.
     /// </summary>
-    [ShaiyaProperty]
     public byte Country { get; set; }
 
     /// <summary>
     /// Indicates if skill can be used by fighter.
     /// </summary>
-    [ShaiyaProperty]
     public byte AttackFighter { get; set; }
 
     /// <summary>
     /// Indicates if skill can be used by defender.
     /// </summary>
-    [ShaiyaProperty]
     public byte DefenseFighter { get; set; }
 
     /// <summary>
     /// Indicates if skill can be used by ranger.
     /// </summary>
-    [ShaiyaProperty]
     public byte PatrolRogue { get; set; }
 
     /// <summary>
     /// Indicates if skill can be used by archer.
     /// </summary>
-    [ShaiyaProperty]
     public byte ShootRogue { get; set; }
 
     /// <summary>
     /// Indicates if skill can be used by mage.
     /// </summary>
-    [ShaiyaProperty]
     public byte AttackMage { get; set; }
 
     /// <summary>
     /// Indicates if skill can be used by priest.
     /// </summary>
-    [ShaiyaProperty]
     public byte DefenseMage { get; set; }
 
     /// <summary>
     /// Skill can be used in basic/ultimate mode.
     /// </summary>
-    [ShaiyaProperty]
     public byte Grow { get; set; }
 
     /// <summary>
     /// How many skill points are needed in order to learn this skill.
     /// </summary>
-    [ShaiyaProperty]
     public byte Point { get; set; }
 
     /// <summary>
     /// Category of skill. E.g. combat or special.
     /// </summary>
-    [ShaiyaProperty]
     public byte TypeShow { get; set; }
 
     /// <summary>
     /// Passive, physical, magic or shooting attack.
     /// </summary>
-    [ShaiyaProperty]
     public byte TypeAttack { get; set; }
 
     /// <summary>
     /// Additional effect description.
     /// </summary>
-    [ShaiyaProperty]
     public byte TypeEffect { get; set; }
 
     /// <summary>
     /// Type detail describes what skill does.
     /// </summary>
-    [ShaiyaProperty]
     public ushort TypeDetail { get; set; }
 
     /// <summary>
     /// Skill requires 1 Handed Sword.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon1 { get; set; }
 
     /// <summary>
     /// Skill requires 2 Handed Sword.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon2 { get; set; }
 
     /// <summary>
     /// Skill requires 1 Handed Axe.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon3 { get; set; }
 
     /// <summary>
     /// Skill requires 2 Handed Axe.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon4 { get; set; }
 
     /// <summary>
     /// Skill requires Double Sword.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon5 { get; set; }
 
     /// <summary>
     /// Skill requires Spear.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon6 { get; set; }
 
     /// <summary>
     /// Skill requires 1 Handed Blunt.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon7 { get; set; }
 
     /// <summary>
     /// Skill requires 2 Handed Blunt.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon8 { get; set; }
 
     /// <summary>
     /// Skill requires Reverse sword.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon9 { get; set; }
 
     /// <summary>
     /// Skill requires Dagger.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon10 { get; set; }
 
     /// <summary>
     /// Skill requires Javelin.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon11 { get; set; }
 
     /// <summary>
     /// Skill requires Staff.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon12 { get; set; }
 
     /// <summary>
     /// Skill requires Bow.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon13 { get; set; }
 
     /// <summary>
     /// Skill requires Crossbow.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon14 { get; set; }
 
     /// <summary>
     /// Skill requires Knuckle.
     /// </summary>
-    [ShaiyaProperty]
     public byte NeedWeapon15 { get; set; }
 
     /// <summary>
     /// Skill requires shield.
     /// </summary>
-    [ShaiyaProperty]
     public byte Shield { get; set; }
 
     /// <summary>
     /// How many stamina points requires the skill.
     /// </summary>
-    [ShaiyaProperty]
     public ushort SP { get; set; }
 
     /// <summary>
     /// How many mana points requires the skill.
     /// </summary>
-    [ShaiyaProperty]
     public ushort MP { get; set; }
 
     /// <summary>
     /// Cast time.
     /// </summary>
-    [ShaiyaProperty]
     public byte ReadyTime { get; set; }
 
     /// <summary>
     /// Time after which skill can be used again.
     /// </summary>
-    [ShaiyaProperty]
     public ushort ResetTime { get; set; }
 
     /// <summary>
     /// How many meters are needed in order to use the skill.
     /// </summary>
-    [ShaiyaProperty]
     public byte AttackRange { get; set; }
 
     /// <summary>
     /// State type contains information about what bad influence debuff has on target.
     /// </summary>
-    [ShaiyaProperty]
     public byte StateType { get; set; }
 
     /// <summary>
     /// None or fire/wind/earth/water.
     /// </summary>
-    [ShaiyaProperty]
     public byte AttribType { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-    [ShaiyaProperty]
     public ushort Disable { get; set; }
 
     /// <summary>
     /// Skill, that must be used before the skill.
     /// </summary>
-    [ShaiyaProperty]
     public ushort PrevSkill { get; set; }
 
     /// <summary>
     /// SuccessType is always 0 for passive skills and 1 for other.
     /// </summary>
-    [ShaiyaProperty]
     public byte SuccessType { get; set; }
 
     /// <summary>
     /// Success chance in %.
     /// </summary>
-    [ShaiyaProperty]
     public byte SuccessValue { get; set; }
 
     /// <summary>
     /// What target is required for the skill.
     /// </summary>
-    [ShaiyaProperty]
     public byte TargetType { get; set; }
 
     /// <summary>
     /// Skill will be applied within X meters.
     /// </summary>
-    [ShaiyaProperty]
     public byte ApplyRange { get; set; }
 
     /// <summary>
     /// Used in multiple skill attacks.
     /// </summary>
-    [ShaiyaProperty]
     public byte MultiAttack { get; set; }
 
     /// <summary>
     /// Time for example for buffs. This time shows how long the skill will be applied.
     /// </summary>
-    [ShaiyaProperty]
     public ushort KeepTime { get; set; }
 
     /// <summary>
     /// Only for passive skills; Weapon type to which passive skill speed modificator can be applied.
     /// </summary>
-    [ShaiyaProperty]
     public byte Weapon1 { get; set; }
 
     /// <summary>
     /// Only for passive skills; Weapon type to which passive skill speed modificator can be applied.
     /// </summary>
-    [ShaiyaProperty]
     public byte Weapon2 { get; set; }
 
     /// <summary>
     /// Only for passive skills; passive skill speed modificator or passive attack power up.
     /// </summary>
-    [ShaiyaProperty]
     public byte WeaponValue { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-    [ShaiyaProperty]
     public byte Bag { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-    [ShaiyaProperty]
     public ushort Arrow { get; set; }
 
     /// <summary>
     /// Damage type.
     /// </summary>
-    [ShaiyaProperty]
     public byte DamageType { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
-    [ShaiyaProperty]
     public ushort DamageHP { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
-    [ShaiyaProperty]
     public ushort DamageSP { get; set; }
 
     /// <summary>
     /// Const damage used, when skill makes fixed damage.
     /// </summary>
-    [ShaiyaProperty]
     public ushort DamageMP { get; set; }
 
     /// <summary>
     /// Time damage type.
     /// </summary>
-    [ShaiyaProperty]
     public byte TimeDamageType { get; set; }
 
     /// <summary>
     /// Either fixed hp or % hp damage made over time.
     /// </summary>
-    [ShaiyaProperty]
     public ushort TimeDamageHP { get; set; }
 
     /// <summary>
     /// Either fixed sp or % sp damage made over time.
     /// </summary>
-    [ShaiyaProperty]
     public ushort TimeDamageSP { get; set; }
 
     /// <summary>
     /// Either fixed mp or % mp damage made over time.
     /// </summary>
-    [ShaiyaProperty]
     public ushort TimeDamageMP { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
-    [ShaiyaProperty]
     public ushort AddDamageHP { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
-    [ShaiyaProperty]
     public ushort AddDamageSP { get; set; }
 
     /// <summary>
     /// Const skill damage, that is added to damage made of stats.
     /// </summary>
-    [ShaiyaProperty]
     public ushort AddDamageMP { get; set; }
 
-    [ShaiyaProperty]
     public byte AbilityType1 { get; set; }
 
-    [ShaiyaProperty]
     public ushort AbilityValue1 { get; set; }
 
-    [ShaiyaProperty]
     public byte AbilityType2 { get; set; }
 
-    [ShaiyaProperty]
     public ushort AbilityValue2 { get; set; }
 
-    [ShaiyaProperty]
     public byte AbilityType3 { get; set; }
 
-    [ShaiyaProperty]
     public ushort AbilityValue3 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType4 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public ushort AbilityValue4 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType5 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public ushort AbilityValue5 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType6 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public ushort AbilityValue6 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType7 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public ushort AbilityValue7 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType8 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public ushort AbilityValue8 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType9 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public ushort AbilityValue9 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public byte AbilityType10 { get; set; }
 
-    [ShaiyaProperty(MinEpisode = Episode.EP6)]
     public ushort AbilityValue10 { get; set; }
 
     /// <summary>
     /// How many health points can be healed.
     /// </summary>
-    [ShaiyaProperty]
     public ushort HealHP { get; set; }
 
     /// <summary>
     /// How many stamina points can be healed.
     /// </summary>
-    [ShaiyaProperty]
     public ushort HealSP { get; set; }
 
     /// <summary>
     /// How many mana points can be healed.
     /// </summary>
-    [ShaiyaProperty]
     public ushort HealMP { get; set; }
 
     /// <summary>
     /// HP healed over time.
     /// </summary>
-    [ShaiyaProperty]
     public ushort TimeHealHP { get; set; }
 
     /// <summary>
     /// SP healed over time.
     /// </summary>
-    [ShaiyaProperty]
     public ushort TimeHealSP { get; set; }
 
     /// <summary>
     /// MP healed over time.
     /// </summary>
-    [ShaiyaProperty]
     public ushort TimeHealMP { get; set; }
 
     /// <summary>
     /// For "Fleet Foot" it's value 2, which is block shoot attack for X %.
     /// For "Magic Veil" it's value 3, which is block X magic attacks.
     /// </summary>
-    [ShaiyaProperty]
     public byte DefenseType { get; set; }
 
     /// <summary>
     /// When <see cref="DefenseType"/> is 2, it's % of blocked shoot attacks.
     /// When <see cref="DefenseType"/> is 3, it's block X magic attacks.
     /// </summary>
-    [ShaiyaProperty]
     public byte DefenseValue { get; set; }
 
     /// <summary>
     /// % of hp, when this skill is activated.
     /// </summary>
-    [ShaiyaProperty]
     public byte LimitHP { get; set; }
 
     /// <summary>
     /// How long the skill should be kept.
     /// </summary>
-    [ShaiyaProperty]
     public byte FixRange { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-    [ShaiyaProperty]
     public ushort ChangeType { get; set; }
 
     /// <summary>
     /// ?
     /// </summary>
-    [ShaiyaProperty]
     public ushort ChangeLevel { get; set; }
+
+    public IEnumerable<byte> GetBytes(params object[] options)
+    {
+        var episode = Episode.EP5;
+
+        if (options.Length > 0)
+        {
+            episode = (Episode)options[0];
+        }
+
+        var buffer = new List<byte>();
+        buffer.AddRange(Name.GetLengthPrefixedBytes());
+        buffer.AddRange(Description.GetLengthPrefixedBytes());
+        buffer.Add(SkillLevel);
+        buffer.AddRange(Icon.GetBytes());
+        buffer.AddRange(Animation.GetBytes());
+
+        if (episode >= Episode.EP6)
+        {
+            buffer.Add(Effect);
+        }
+
+        buffer.Add(ToggleType);
+        buffer.AddRange(Sound.GetBytes());
+        buffer.AddRange(RequiredLevel.GetBytes());
+        buffer.Add(Country);
+        buffer.Add(AttackFighter);
+        buffer.Add(DefenseFighter);
+        buffer.Add(PatrolRogue);
+        buffer.Add(ShootRogue);
+        buffer.Add(AttackMage);
+        buffer.Add(DefenseMage);
+        buffer.Add(Grow);
+        buffer.Add(Point);
+        buffer.Add(TypeShow);
+        buffer.Add(TypeAttack);
+        buffer.Add(TypeEffect);
+        buffer.AddRange(TypeDetail.GetBytes());
+        buffer.Add(NeedWeapon1);
+        buffer.Add(NeedWeapon2);
+        buffer.Add(NeedWeapon3);
+        buffer.Add(NeedWeapon4);
+        buffer.Add(NeedWeapon5);
+        buffer.Add(NeedWeapon6);
+        buffer.Add(NeedWeapon7);
+        buffer.Add(NeedWeapon8);
+        buffer.Add(NeedWeapon9);
+        buffer.Add(NeedWeapon10);
+        buffer.Add(NeedWeapon11);
+        buffer.Add(NeedWeapon12);
+        buffer.Add(NeedWeapon13);
+        buffer.Add(NeedWeapon14);
+        buffer.Add(NeedWeapon15);
+        buffer.Add(Shield);
+        buffer.AddRange(SP.GetBytes());
+        buffer.AddRange(MP.GetBytes());
+        buffer.Add(ReadyTime);
+        buffer.AddRange(ResetTime.GetBytes());
+        buffer.Add(AttackRange);
+        buffer.Add(StateType);
+        buffer.Add(AttribType);
+        buffer.AddRange(Disable.GetBytes());
+        buffer.AddRange(PrevSkill.GetBytes());
+        buffer.Add(SuccessType);
+        buffer.Add(SuccessValue);
+        buffer.Add(TargetType);
+        buffer.Add(ApplyRange);
+        buffer.Add(MultiAttack);
+        buffer.AddRange(KeepTime.GetBytes());
+        buffer.Add(Weapon1);
+        buffer.Add(Weapon2);
+        buffer.Add(WeaponValue);
+        buffer.Add(Bag);
+        buffer.AddRange(Arrow.GetBytes());
+        buffer.Add(DamageType);
+        buffer.AddRange(DamageHP.GetBytes());
+        buffer.AddRange(DamageSP.GetBytes());
+        buffer.AddRange(DamageMP.GetBytes());
+        buffer.Add(TimeDamageType);
+        buffer.AddRange(TimeDamageHP.GetBytes());
+        buffer.AddRange(TimeDamageSP.GetBytes());
+        buffer.AddRange(TimeDamageMP.GetBytes());
+        buffer.AddRange(AddDamageHP.GetBytes());
+        buffer.AddRange(AddDamageSP.GetBytes());
+        buffer.AddRange(AddDamageMP.GetBytes());
+        buffer.Add(AbilityType1);
+        buffer.AddRange(AbilityValue1.GetBytes());
+        buffer.Add(AbilityType2);
+        buffer.AddRange(AbilityValue2.GetBytes());
+        buffer.Add(AbilityType3);
+        buffer.AddRange(AbilityValue3.GetBytes());
+
+        if (episode >= Episode.EP6)
+        {
+            buffer.Add(AbilityType4);
+            buffer.AddRange(AbilityValue4.GetBytes());
+            buffer.Add(AbilityType5);
+            buffer.AddRange(AbilityValue5.GetBytes());
+            buffer.Add(AbilityType6);
+            buffer.AddRange(AbilityValue6.GetBytes());
+            buffer.Add(AbilityType7);
+            buffer.AddRange(AbilityValue7.GetBytes());
+            buffer.Add(AbilityType8);
+            buffer.AddRange(AbilityValue8.GetBytes());
+            buffer.Add(AbilityType9);
+            buffer.AddRange(AbilityValue9.GetBytes());
+            buffer.Add(AbilityType10);
+            buffer.AddRange(AbilityValue10.GetBytes());
+        }
+
+        buffer.AddRange(HealHP.GetBytes());
+        buffer.AddRange(HealSP.GetBytes());
+        buffer.AddRange(HealMP.GetBytes());
+        buffer.AddRange(TimeHealHP.GetBytes());
+        buffer.AddRange(TimeHealSP.GetBytes());
+        buffer.AddRange(TimeHealMP.GetBytes());
+        buffer.Add(DefenseType);
+        buffer.Add(DefenseValue);
+        buffer.Add(LimitHP);
+        buffer.Add(FixRange);
+        buffer.AddRange(ChangeType.GetBytes());
+        buffer.AddRange(ChangeLevel.GetBytes());
+        return buffer;
+    }
 }
