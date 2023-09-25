@@ -48,18 +48,22 @@ public abstract class SData : FileBase, IEncryptable
     }
 
     /// <inheritdoc />
-    public byte[] GetEncryptedBytes(Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular) =>
-        Encrypt(GetBytes(episode).ToArray(), version);
+    public byte[] GetEncryptedBytes()
+    {
+        var version = Episode >= Episode.EP8 ? SDataVersion.Binary : SDataVersion.Regular;
+        return Encrypt(GetBytes(Episode).ToArray(), version);
+    }
 
     /// <inheritdoc />
-    public void WriteEncrypted(string path, Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular)
+    public void WriteEncrypted(string path)
     {
-        byte[] encryptedBuffer = Encrypt(GetBytes(episode).ToArray(), version);
+        var version = Episode >= Episode.EP8 ? SDataVersion.Binary : SDataVersion.Regular;
+        byte[] encryptedBuffer = Encrypt(GetBytes(Episode).ToArray(), version);
         FileHelper.WriteFile(path, encryptedBuffer);
     }
 
     /// <inheritdoc />
-    public void WriteDecrypted(string path, Episode episode = Episode.Unknown) => Write(path, episode);
+    public void WriteDecrypted(string path) => Write(path, Episode);
 
     /// <summary>
     /// Checks if the file is encrypted with the SEED algorithm
@@ -177,10 +181,10 @@ public abstract class SData : FileBase, IEncryptable
         return decryptedData;
     }
 
-    public static void EncryptFile(string inputFilePath, string outputFilePath)
+    public static void EncryptFile(string inputFilePath, string outputFilePath, SDataVersion sDataVersion = SDataVersion.Regular)
     {
         byte[] fileData = FileHelper.ReadBytes(inputFilePath);
-        byte[] encryptedData = Encrypt(fileData);
+        byte[] encryptedData = Encrypt(fileData, sDataVersion);
         FileHelper.WriteFile(outputFilePath, encryptedData);
     }
 

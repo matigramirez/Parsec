@@ -1,7 +1,4 @@
-﻿using Parsec.Common;
-using Parsec.Shaiya.SData;
-
-namespace Parsec.Shaiya.Core;
+﻿namespace Parsec.Shaiya.Core;
 
 public interface IEncryptable
 {
@@ -13,19 +10,17 @@ public interface IEncryptable
     /// <summary>
     /// Gets the encrypted file bytes
     /// </summary>
-    byte[] GetEncryptedBytes(Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular);
+    byte[] GetEncryptedBytes();
 
     /// <summary>
     /// Writes the file with encryption
     /// </summary>
     /// <param name="path">Save path</param>
-    /// <param name="episode">The desired episode</param>
-    void WriteEncrypted(string path, Episode episode = Episode.Unknown, SDataVersion version = SDataVersion.Regular);
+    void WriteEncrypted(string path);
 
     /// <summary>
     /// Writes the file without encryption
     /// </summary>
     /// <param name="path">Save path</param>
-    /// <param name="episode">The desired episode</param>
-    void WriteDecrypted(string path, Episode episode = Episode.Unknown);
+    void WriteDecrypted(string path);
 }
