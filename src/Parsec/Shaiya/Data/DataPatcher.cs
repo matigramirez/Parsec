@@ -2,49 +2,40 @@
 
 namespace Parsec.Shaiya.Data;
 
-public static class DataPatcher
+public class DataPatcher : IDisposable
 {
-    private static BinaryReader _patchBinaryReader;
-    private static BinaryWriter _targetBinaryWriter;
+    private BinaryReader _patchBinaryReader;
+    private BinaryWriter _targetBinaryWriter;
+
+    public void Dispose()
+    {
+        _patchBinaryReader?.Dispose();
+        _targetBinaryWriter?.Dispose();
+    }
 
     /// <summary>
     /// Applies the patches in the patch list into a target data
     /// </summary>
-    /// <param name="targetData">Data where to apply the patches</param>
-    /// <param name="patchDataList">Patches to apply</param>
-    public static void Patch(Data targetData, params Data[] patchDataList)
+    /// <param name="targetData">Data instance where the patch should be applied</param>
+    /// <param name="patchData">Data instance containing the patch files</param>
+    public void Patch(Data targetData, Data patchData)
     {
-        try
-        {
-            // Create binary writer instance for the target saf file
-            _targetBinaryWriter = new BinaryWriter(File.OpenWrite(targetData.Saf.Path));
+        // Create binary writer instance for the target saf file
+        _targetBinaryWriter = new BinaryWriter(File.OpenWrite(targetData.Saf.Path));
 
-            // Patch files
-            foreach (var patchData in patchDataList)
-            {
-                // Create binary reader instance to read the patch data
-                _patchBinaryReader = new BinaryReader(File.OpenRead(patchData.Saf.Path));
+        // Create binary reader instance to read the patch data
+        _patchBinaryReader = new BinaryReader(File.OpenRead(patchData.Saf.Path));
 
-                // Patch files
-                PatchFiles(targetData, patchData);
+        // Patch files
+        PatchFiles(targetData, patchData);
 
-                // Cleanup
-                _patchBinaryReader.Dispose();
-                _patchBinaryReader = null;
-            }
+        // Cleanup
+        _patchBinaryReader.Dispose();
+        _patchBinaryReader = null;
 
-            // Remove previous sah and save the new one
-            FileHelper.DeleteFile(targetData.Sah.Path);
-            targetData.Sah.Write(targetData.Sah.Path);
-        }
-        finally
-        {
-            // Cleanup
-            _targetBinaryWriter?.Dispose();
-            _targetBinaryWriter = null;
-            _patchBinaryReader?.Dispose();
-            _patchBinaryReader = null;
-        }
+        // Remove previous sah and save the new one
+        FileHelper.DeleteFile(targetData.Sah.Path);
+        targetData.Sah.Write(targetData.Sah.Path);
     }
 
     /// <summary>
@@ -52,7 +43,7 @@ public static class DataPatcher
     /// </summary>
     /// <param name="targetData">Data where to save the files</param>
     /// <param name="patchData">Data where to take the files from</param>
-    private static void PatchFiles(Data targetData, Data patchData)
+    private void PatchFiles(Data targetData, Data patchData)
     {
         foreach (var patchFile in patchData.FileIndex.Values)
             // File was already present in the data - it needs to be replaced and doesn't need to be added to the FileIndex
@@ -105,7 +96,7 @@ public static class DataPatcher
     /// </summary>
     /// <param name="offset">Saf offset where to begin</param>
     /// <param name="length">Amount of bytes to set to 0</param>
-    private static void ClearBytes(long offset, int length)
+    private void ClearBytes(long offset, int length)
     {
         // Set writing offset
         _targetBinaryWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
@@ -120,7 +111,7 @@ public static class DataPatcher
     /// </summary>
     /// <param name="targetOffset">The target saf's offset where to write the patch file</param>
     /// <param name="patchFile">Patch file instance</param>
-    private static long WriteFile(long targetOffset, SFile patchFile)
+    private long WriteFile(long targetOffset, SFile patchFile)
     {
         // Set reading offset
         _patchBinaryReader.BaseStream.Seek(patchFile.Offset, SeekOrigin.Begin);
@@ -139,5 +130,5 @@ public static class DataPatcher
     /// Appends a file at the end of the target Saf file from a patch Saf file
     /// </summary>
     /// <param name="patchFile">Patch file instance</param>
-    private static long AppendFile(SFile patchFile) => WriteFile(_targetBinaryWriter.BaseStream.Length, patchFile);
+    private long AppendFile(SFile patchFile) => WriteFile(_targetBinaryWriter.BaseStream.Length, patchFile);
 }
