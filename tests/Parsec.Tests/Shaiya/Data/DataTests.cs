@@ -103,9 +103,8 @@ public class DataTests
 
         var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys).ToList();
 
-        using var dataPatcher = new DataPatcher();
-
         // Apply patches
+        using var dataPatcher = new DataPatcher();
         dataPatcher.Patch(data, patch);
         dataPatcher.Patch(data, patch2);
 

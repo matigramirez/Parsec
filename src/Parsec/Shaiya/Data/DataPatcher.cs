@@ -29,13 +29,11 @@ public class DataPatcher : IDisposable
         // Patch files
         PatchFiles(targetData, patchData);
 
-        // Cleanup
-        _patchBinaryReader.Dispose();
-        _patchBinaryReader = null;
-
         // Remove previous sah and save the new one
         FileHelper.DeleteFile(targetData.Sah.Path);
         targetData.Sah.Write(targetData.Sah.Path);
+
+        Dispose();
     }
 
     /// <summary>
