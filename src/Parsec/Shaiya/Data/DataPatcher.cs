@@ -18,7 +18,8 @@ public class DataPatcher : IDisposable
     /// </summary>
     /// <param name="targetData">Data instance where the patch should be applied</param>
     /// <param name="patchData">Data instance containing the patch files</param>
-    public void Patch(Data targetData, Data patchData)
+    /// <param name="filePatchedCallback">Action which gets invoked when a file gets patched</param>
+    public void Patch(Data targetData, Data patchData, Action filePatchedCallback = null)
     {
         // Create binary writer instance for the target saf file
         _targetBinaryWriter = new BinaryWriter(File.OpenWrite(targetData.Saf.Path));
@@ -27,7 +28,7 @@ public class DataPatcher : IDisposable
         _patchBinaryReader = new BinaryReader(File.OpenRead(patchData.Saf.Path));
 
         // Patch files
-        PatchFiles(targetData, patchData);
+        PatchFiles(targetData, patchData, filePatchedCallback);
 
         // Remove previous sah and save the new one
         FileHelper.DeleteFile(targetData.Sah.Path);
@@ -41,9 +42,11 @@ public class DataPatcher : IDisposable
     /// </summary>
     /// <param name="targetData">Data where to save the files</param>
     /// <param name="patchData">Data where to take the files from</param>
-    private void PatchFiles(Data targetData, Data patchData)
+    /// <param name="filePatchedCallback">Action which gets invoked when a file gets patched</param>
+    private void PatchFiles(Data targetData, Data patchData, Action filePatchedCallback = null)
     {
         foreach (var patchFile in patchData.FileIndex.Values)
+        {
             // File was already present in the data - it needs to be replaced and doesn't need to be added to the FileIndex
             if (targetData.FileIndex.TryGetValue(patchFile.RelativePath, out var targetFile))
             {
@@ -87,6 +90,9 @@ public class DataPatcher : IDisposable
                 // Add file to file index
                 targetData.FileIndex.Add(patchFile.RelativePath, patchFile);
             }
+
+            filePatchedCallback?.Invoke();
+        }
     }
 
     /// <summary>

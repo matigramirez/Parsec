@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Parsec.Shaiya.Data;
@@ -103,10 +104,15 @@ public class DataTests
 
         var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys).ToList();
 
+        int patchedFileCount = 0;
+        var callback = new Action(() => { patchedFileCount++; });
+
         // Apply patches
         using var dataPatcher = new DataPatcher();
-        dataPatcher.Patch(data, patch);
-        dataPatcher.Patch(data, patch2);
+        dataPatcher.Patch(data, patch, callback);
+        dataPatcher.Patch(data, patch2, callback);
+
+        Assert.Equal(patchFiles.Count, patchedFileCount);
 
         // Get files that were added to the data and weren't present before
         var newFiles = patchFiles.Except(initialFiles).ToList();
