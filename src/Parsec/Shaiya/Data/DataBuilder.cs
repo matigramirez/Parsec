@@ -33,7 +33,6 @@ public static class DataBuilder
             if (!FileHelper.DirectoryExists(inputFolderPath))
                 throw new DirectoryNotFoundException();
 
-            // Create output folder
             FileHelper.CreateDirectory(outputFolderPath);
 
             var outputDirectoryInfo = new DirectoryInfo(outputFolderPath);
@@ -41,19 +40,12 @@ public static class DataBuilder
             var safPath = Path.Combine(outputFolderPath, $"{outputDirectoryInfo.Name}.saf");
             var sahPath = Path.Combine(outputFolderPath, $"{outputDirectoryInfo.Name}.sah");
 
-            // Create binary writer instance to write saf file
             _safWriter = new BinaryWriter(File.OpenWrite(safPath));
 
-            // Create root folder
             var rootFolder = new SFolder(null);
-
-            // Read data folder
             ReadFolderFromDirectory(rootFolder, inputFolderPath);
 
-            // Create sah instance
             var sah = new Sah(inputFolderPath, rootFolder, _fileCount);
-
-            // Write sah
             sah.Write(sahPath);
 
             var saf = new Saf(safPath);
@@ -63,7 +55,6 @@ public static class DataBuilder
         }
         finally
         {
-            // Cleanup
             _safWriter?.Dispose();
             _safWriter = null;
             _path = "";
@@ -79,16 +70,12 @@ public static class DataBuilder
     private static void ReadFolderFromDirectory(SFolder folder, string directoryPath)
     {
         ReadFilesFromDirectory(folder, directoryPath);
-
         var subfolders = Directory.GetDirectories(directoryPath).Select(sf => new DirectoryInfo(sf).Name);
 
         foreach (var subfolder in subfolders)
         {
             var shaiyaFolder = new SFolder(folder) { Name = subfolder, ParentFolder = folder };
-
             folder.AddSubfolder(shaiyaFolder);
-
-            // Recursively read subfolders
             ReadFolderFromDirectory(shaiyaFolder, Path.Combine(directoryPath, subfolder));
         }
     }
@@ -100,7 +87,6 @@ public static class DataBuilder
     /// <param name="directoryPath">Directory path</param>
     private static void ReadFilesFromDirectory(SFolder folder, string directoryPath)
     {
-        // Read all files in directory
         var files = Directory.GetFiles(directoryPath).Select(Path.GetFileName);
 
         foreach (var file in files)
@@ -109,18 +95,11 @@ public static class DataBuilder
 
             var fileStream = File.OpenRead(filePath);
 
-            var shaiyaFile = new SFile(folder)
-            {
-                Name = file, Length = (int)fileStream.Length
-                //RelativePath = Path.Combine(folder.RelativePath, file)
-            };
+            var shaiyaFile = new SFile(folder) { Name = file, Length = (int)fileStream.Length };
 
-            // Write file in saf file
             WriteFile(shaiyaFile);
-
             folder.AddFile(shaiyaFile);
 
-            // Increase file count
             _fileCount++;
         }
     }
@@ -131,13 +110,9 @@ public static class DataBuilder
     /// <param name="file"><see cref="SFile"/> instance to add</param>
     private static void WriteFile(SFile file)
     {
-        // Write file offset
         file.Offset = _safWriter.BaseStream.Position;
 
-        // Read file bytes
         var fileBytes = File.ReadAllBytes(Path.Combine(_path, file.RelativePath));
-
-        // Store file bytes in saf
         _safWriter.Write(fileBytes);
     }
 }

@@ -24,11 +24,9 @@ public sealed class Saf
     /// <param name="length">Amount of bytes to read</param>
     public byte[] ReadBytes(long offset, int length)
     {
-        // Create binary reader
         using var safReader = new BinaryReader(File.OpenRead(Path));
         safReader.BaseStream.Seek(offset, SeekOrigin.Begin);
 
-        // Read bytes
         byte[] bytes = safReader.ReadBytes(length);
         return bytes;
     }
@@ -40,7 +38,6 @@ public sealed class Saf
     /// <param name="length">Amount of bytes to clear</param>
     public void ClearBytes(long offset, int length)
     {
-        // Create binary reader
         using var safWriter = new BinaryWriter(File.OpenWrite(Path));
         safWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
 

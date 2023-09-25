@@ -113,21 +113,17 @@ public class Data
     /// <param name="extractionDirectory">Extraction directory path</param>
     public void Extract(SFolder folder, string extractionDirectory)
     {
-        // Create extraction path
         string extractionPath = extractionDirectory;
 
         if (folder != Sah.RootFolder)
             extractionPath = Path.Combine(extractionDirectory, folder.RelativePath);
 
-        // If extraction directory couldn't be created because of invalid characters, skip it
         if (!FileHelper.CreateDirectory(extractionPath))
             return;
 
-        // Extract files
         foreach (var file in folder.Files)
             Extract(file, extractionPath);
 
-        // Extract subfolders
         foreach (var subfolder in folder.Subfolders)
             Extract(subfolder, extractionDirectory);
     }
@@ -159,12 +155,10 @@ public class Data
         if (!FileIndex.TryGetValue(path, out var file))
             return;
 
-        // Remove file from sah
         Sah.FileCount--;
         file.ParentFolder.Files.Remove(file);
         FileIndex.Remove(path);
 
-        // Clear bytes on saf
         Saf.ClearBytes(file.Offset, file.Length);
     }
 

@@ -70,10 +70,10 @@ public sealed class Sah : FileBase
     /// </summary>
     public SahCrypto Crypto { get; set; }
 
-    public void ResetEncryption() => Crypto = null;
-
     [JsonIgnore]
     public override string Extension => "sah";
+
+    public void ResetEncryption() => Crypto = null;
 
     /// <inheritdoc />
     public override void Read(params object[] options)
@@ -105,13 +105,9 @@ public sealed class Sah : FileBase
     /// <param name="file">File to add</param>
     public void AddFile(string directoryPath, SFile file)
     {
-        // Ensure directory exists
         var parentFolder = AddFolder(directoryPath);
-
-        // Assign parent folder to file
         file.ParentFolder = parentFolder;
 
-        // Add file to file list and file index
         parentFolder.AddFile(file);
         FileIndex.Add(file.RelativePath, file);
     }
@@ -122,36 +118,27 @@ public sealed class Sah : FileBase
     /// <param name="path">Folder path</param>
     public SFolder EnsureFolderExists(string path)
     {
-        // Check if folder is part of the folder index
         if (FolderIndex.TryGetValue(path, out var matchingFolder))
             return matchingFolder;
 
-        // Split path with the '/' separator
         var pathFolders = path.Separate().ToList();
-
-        // Set current folder to root folder
         var currentFolder = RootFolder;
 
-        //  Iterate recursively through subfolders creating the missing one/
         foreach (string folderName in pathFolders)
+        {
             if (!currentFolder.HasSubfolder(folderName))
             {
-                // Create new folder if it doesn't exist
                 var newFolder = new SFolder(folderName, currentFolder);
-
-                // Add new folder to current folder's subfolders
                 currentFolder.AddSubfolder(newFolder);
 
-                // Add folder to folder index
                 FolderIndex.Add(newFolder.RelativePath, newFolder);
-
                 currentFolder = newFolder;
             }
             else
             {
-                // Get subfolder with path name
                 currentFolder = currentFolder.GetSubfolder(folderName);
             }
+        }
 
         return currentFolder;
     }
@@ -171,15 +158,17 @@ public sealed class Sah : FileBase
     /// <inheritdoc />
     public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
     {
-        // Create byte list which will have the sah's data
         var buffer = new List<byte>();
         buffer.AddRange(Signature.GetBytes());
         buffer.AddRange(Version.GetBytes());
         buffer.AddRange(FileCount.GetBytes());
-        // Write padding
+
+        // Padding
         buffer.AddRange(new byte[40]);
+
         buffer.AddRange(RootFolder.GetBytes(Crypto));
-        // Write last 8 empty bytes
+
+        // Suffix with 8 empty bytes - I don't think the game cares about these at all, but some other tools do
         buffer.AddRange(new byte[8]);
         return buffer;
     }

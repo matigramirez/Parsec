@@ -61,20 +61,15 @@ public static class FileHelper
 
         string directoryPath = Path.GetDirectoryName(path);
 
-        // Check that directory isn't an empty string
         if (!string.IsNullOrEmpty(directoryPath))
         {
-            // Create directory. If it fails to create it because of invalid characters, execution is stopped.
             if (!CreateDirectory(directoryPath))
                 return false;
         }
 
-        // Try to write file, it can fail if invalid characters are used in the path.
         try
         {
-            // Create file and save data
             using var binaryWriter = new BinaryWriter(File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None));
-
             binaryWriter.Write(data.ToArray());
             return true;
         }
@@ -127,7 +122,6 @@ public static class FileHelper
         if (string.IsNullOrEmpty(directoryPath))
             return false;
 
-        // Try to create the directory, it will fail and throw an exception if characters are invalid.
         try
         {
             Directory.CreateDirectory(directoryPath);
