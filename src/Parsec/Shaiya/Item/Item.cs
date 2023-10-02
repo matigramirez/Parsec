@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.Item;
 public sealed class Item : SData.SData, ICsv
 {
     [JsonIgnore]
-    public Dictionary<(byte type, byte typeId), IItemDefinition> ItemIndex = new();
+    public Dictionary<(byte type, byte typeId), ItemDefinition> ItemIndex = new();
 
     public int MaxItemType { get; set; }
 
@@ -55,46 +55,17 @@ public sealed class Item : SData.SData, ICsv
     /// <param name="episode">The Item.SData format</param>
     /// <param name="encoding">Item.SData encoding</param>
     /// <returns><see cref="Item"/> instance</returns>
-    public static Item ReadFromCsv(string csvPath, Episode episode, Encoding encoding = null)
+    public static Item ReadFromCsv(string csvPath, Episode episode, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
 
         // Create Item.SData instance
         var item = new Item { Episode = episode, Encoding = encoding };
-        var itemDefinitions = new List<IItemDefinition>();
 
-        // Read all item definitions from csv file
-        switch (episode)
-        {
-            case Episode.EP4:
-            case Episode.EP5:
-            case Episode.Unknown:
-            default:
-                {
-                    // Read item definitions from csv
-                    using var reader = new StreamReader(csvPath, encoding);
-                    using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
-                    var records = csvReader.GetRecords<ItemDefinitionEp5>().ToList();
-
-                    // Cast item definitions to IItemDefinition since the FileIndex is generic for every format
-                    itemDefinitions = records.Cast<IItemDefinition>().ToList();
-                    break;
-                }
-            case Episode.EP6:
-            case Episode.EP7:
-                {
-                    // Read item definitions from csv
-                    using var reader = new StreamReader(csvPath, encoding);
-                    using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
-                    var records = csvReader.GetRecords<ItemDefinitionEp6>().ToList();
-
-                    // Cast item definitions to IItemDefinition since the FileIndex is generic for every format
-                    itemDefinitions = records.Cast<IItemDefinition>().ToList();
-                    break;
-                }
-            case Episode.EP8:
-                throw new Exception("Episode 8 must use the DBItemData class.");
-        }
+        // Read item definitions from csv
+        using var reader = new StreamReader(csvPath, encoding);
+        using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
+        var itemDefinitions = csvReader.GetRecords<ItemDefinition>().ToList();
 
         // Get max type from items
         item.MaxItemType = itemDefinitions.Max(x => x.Type);
@@ -119,34 +90,13 @@ public sealed class Item : SData.SData, ICsv
     }
 
     /// <inheritdoc />
-    public void WriteCsv(string outputPath, Encoding encoding = null)
+    public void WriteCsv(string outputPath, Encoding? encoding = null)
     {
-        encoding ??= Encoding.ASCII;
+        encoding ??= Encoding;
 
-        switch (Episode)
-        {
-            case Episode.Unknown:
-            case Episode.EP4:
-            case Episode.EP5:
-            default:
-                {
-                    var items = ItemIndex.Values.ToList().Cast<ItemDefinitionEp5>().ToList();
-                    using var writer = new StreamWriter(outputPath, false, encoding);
-                    using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-                    csvWriter.WriteRecords(items);
-                    break;
-                }
-            case Episode.EP6:
-            case Episode.EP7:
-                {
-                    var items = ItemIndex.Values.ToList().Cast<ItemDefinitionEp6>().ToList();
-                    using var writer = new StreamWriter(outputPath, false, encoding);
-                    using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-                    csvWriter.WriteRecords(items);
-                    break;
-                }
-            case Episode.EP8:
-                throw new Exception("Episode 8 must use the DBItemData class.");
-        }
+        var items = ItemIndex.Values.ToList().ToList();
+        using var writer = new StreamWriter(outputPath, false, encoding);
+        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csvWriter.WriteRecords(items);
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
+using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Item;
 
-public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
+public sealed class ItemDefinition : IBinary
 {
     [JsonConstructor]
-    public ItemDefinitionEp6()
+    public ItemDefinition()
     {
     }
 
-    public ItemDefinitionEp6(SBinaryReader binaryReader)
+    public ItemDefinition(SBinaryReader binaryReader, Episode episode)
     {
         Name = binaryReader.ReadString();
         Description = binaryReader.ReadString();
@@ -39,10 +40,20 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
         ReqWis = binaryReader.Read<ushort>();
         ReqLuc = binaryReader.Read<ushort>();
         ReqVg = binaryReader.Read<ushort>();
-        Unknown = binaryReader.Read<ushort>();
+
+        if (episode >= Episode.EP6)
+        {
+            Unknown = binaryReader.Read<ushort>();
+        }
+
         ReqOg = binaryReader.Read<byte>();
         ReqIg = binaryReader.Read<byte>();
-        Range = binaryReader.Read<ushort>();
+
+
+        Range = binaryReader.Read<byte>();
+        // Range = binaryReader.Read<ushort>();
+
+
         AttackTime = binaryReader.Read<byte>();
         Attrib = binaryReader.Read<byte>();
         Special = binaryReader.Read<byte>();
@@ -70,28 +81,31 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
         Server = binaryReader.Read<byte>();
         Count = binaryReader.Read<byte>();
 
-        Duration = binaryReader.Read<uint>();
-        ExtDuration = binaryReader.Read<byte>();
-        SecOption = binaryReader.Read<byte>();
-        OptionRate = binaryReader.Read<byte>();
-        BuyMethod = binaryReader.Read<byte>();
-        MaxLevel = binaryReader.Read<byte>();
+        if (episode >= Episode.EP6)
+        {
+            Duration = binaryReader.Read<uint>();
+            ExtDuration = binaryReader.Read<byte>();
+            SecOption = binaryReader.Read<byte>();
+            OptionRate = binaryReader.Read<byte>();
+            BuyMethod = binaryReader.Read<byte>();
+            MaxLevel = binaryReader.Read<byte>();
 
-        Arg1 = binaryReader.Read<byte>();
-        Arg2 = binaryReader.Read<byte>();
-        Arg3 = binaryReader.Read<byte>();
-        Arg4 = binaryReader.Read<byte>();
-        Arg5 = binaryReader.Read<byte>();
+            Arg1 = binaryReader.Read<byte>();
+            Arg2 = binaryReader.Read<byte>();
+            Arg3 = binaryReader.Read<byte>();
+            Arg4 = binaryReader.Read<byte>();
+            Arg5 = binaryReader.Read<byte>();
 
-        Arg6 = binaryReader.Read<uint>();
-        Arg7 = binaryReader.Read<uint>();
-        Arg8 = binaryReader.Read<uint>();
-        Arg9 = binaryReader.Read<uint>();
-        Arg10 = binaryReader.Read<uint>();
-        Arg11 = binaryReader.Read<uint>();
-        Arg12 = binaryReader.Read<uint>();
-        Arg13 = binaryReader.Read<uint>();
-        Arg14 = binaryReader.Read<uint>();
+            Arg6 = binaryReader.Read<uint>();
+            Arg7 = binaryReader.Read<uint>();
+            Arg8 = binaryReader.Read<uint>();
+            Arg9 = binaryReader.Read<uint>();
+            Arg10 = binaryReader.Read<uint>();
+            Arg11 = binaryReader.Read<uint>();
+            Arg12 = binaryReader.Read<uint>();
+            Arg13 = binaryReader.Read<uint>();
+            Arg14 = binaryReader.Read<uint>();
+        }
     }
 
     /// <summary>
@@ -166,7 +180,6 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
     public byte Count { get; set; }
 
     public uint Duration { get; set; }
-
     public byte ExtDuration { get; set; }
     public byte SecOption { get; set; }
     public byte OptionRate { get; set; }
@@ -191,8 +204,14 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
     public IEnumerable<byte> GetBytes(params object[] options)
     {
         var encoding = Encoding.ASCII;
+        var episode = Episode.EP5;
 
-        if (options.Length > 0 && options[0] is Encoding stringEncoding)
+        if (options.Length > 0 && options[0] is Episode episodeOption)
+        {
+            episode = episodeOption;
+        }
+
+        if (options.Length > 1 && options[1] is Encoding stringEncoding)
         {
             encoding = stringEncoding;
         }
@@ -222,10 +241,24 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
         buffer.AddRange(ReqWis.GetBytes());
         buffer.AddRange(ReqLuc.GetBytes());
         buffer.AddRange(ReqVg.GetBytes());
-        buffer.AddRange(Unknown.GetBytes());
+
+        if (episode >= Episode.EP6)
+        {
+            buffer.AddRange(Unknown.GetBytes());
+        }
+
         buffer.Add(ReqOg);
         buffer.Add(ReqIg);
-        buffer.AddRange(Range.GetBytes());
+
+        if (episode <= Episode.EP5)
+        {
+            buffer.Add((byte)Range);
+        }
+        else
+        {
+            buffer.AddRange(Range.GetBytes());
+        }
+
         buffer.Add(AttackTime);
         buffer.Add(Attrib);
         buffer.Add(Special);
@@ -252,26 +285,31 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
         buffer.AddRange(Drop.GetBytes());
         buffer.Add(Server);
         buffer.Add(Count);
-        buffer.AddRange(Duration.GetBytes());
-        buffer.Add(ExtDuration);
-        buffer.Add(SecOption);
-        buffer.Add(OptionRate);
-        buffer.Add(BuyMethod);
-        buffer.Add(MaxLevel);
-        buffer.Add(Arg1);
-        buffer.Add(Arg2);
-        buffer.Add(Arg3);
-        buffer.Add(Arg4);
-        buffer.Add(Arg5);
-        buffer.AddRange(Arg6.GetBytes());
-        buffer.AddRange(Arg7.GetBytes());
-        buffer.AddRange(Arg8.GetBytes());
-        buffer.AddRange(Arg9.GetBytes());
-        buffer.AddRange(Arg10.GetBytes());
-        buffer.AddRange(Arg11.GetBytes());
-        buffer.AddRange(Arg12.GetBytes());
-        buffer.AddRange(Arg13.GetBytes());
-        buffer.AddRange(Arg14.GetBytes());
+
+        if (episode >= Episode.EP6)
+        {
+            buffer.AddRange(Duration.GetBytes());
+            buffer.Add(ExtDuration);
+            buffer.Add(SecOption);
+            buffer.Add(OptionRate);
+            buffer.Add(BuyMethod);
+            buffer.Add(MaxLevel);
+            buffer.Add(Arg1);
+            buffer.Add(Arg2);
+            buffer.Add(Arg3);
+            buffer.Add(Arg4);
+            buffer.Add(Arg5);
+            buffer.AddRange(Arg6.GetBytes());
+            buffer.AddRange(Arg7.GetBytes());
+            buffer.AddRange(Arg8.GetBytes());
+            buffer.AddRange(Arg9.GetBytes());
+            buffer.AddRange(Arg10.GetBytes());
+            buffer.AddRange(Arg11.GetBytes());
+            buffer.AddRange(Arg12.GetBytes());
+            buffer.AddRange(Arg13.GetBytes());
+            buffer.AddRange(Arg14.GetBytes());
+        }
+
         return buffer;
     }
 }

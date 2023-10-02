@@ -13,41 +13,30 @@ public sealed class ItemType : IBinary
 
     public int MaxTypeId { get; set; }
 
-    public List<IItemDefinition> ItemDefinitions { get; } = new();
+    public List<ItemDefinition> ItemDefinitions { get; } = new();
 
     [JsonConstructor]
     public ItemType()
     {
     }
 
-    public ItemType(int id, int maxTypeId, IEnumerable<IItemDefinition> itemDefinitions)
+    public ItemType(int id, int maxTypeId, IEnumerable<ItemDefinition> itemDefinitions)
     {
         Id = id;
         MaxTypeId = maxTypeId;
         ItemDefinitions = itemDefinitions.ToList();
     }
 
-    public ItemType(SBinaryReader binaryReader, int id, Episode episode, IDictionary<(byte type, byte typeId), IItemDefinition> itemIndex)
+    public ItemType(SBinaryReader binaryReader, int id, Episode episode, IDictionary<(byte type, byte typeId), ItemDefinition> itemIndex)
     {
         Id = id;
         MaxTypeId = binaryReader.Read<int>();
 
         for (int i = 0; i < MaxTypeId; i++)
         {
-            switch (episode)
-            {
-                case Episode.EP5:
-                default:
-                    var itemEp5 = new ItemDefinitionEp5(binaryReader);
-                    ItemDefinitions.Add(itemEp5);
-                    itemIndex.Add((itemEp5.Type, itemEp5.TypeId), itemEp5);
-                    break;
-                case Episode.EP6:
-                    var itemEp6 = new ItemDefinitionEp6(binaryReader);
-                    ItemDefinitions.Add(itemEp6);
-                    itemIndex.Add((itemEp6.Type, itemEp6.TypeId), itemEp6);
-                    break;
-            }
+            var itemDefinition = new ItemDefinition(binaryReader, episode);
+            ItemDefinitions.Add(itemDefinition);
+            itemIndex.Add((itemDefinition.Type, itemDefinition.TypeId), itemDefinition);
         }
     }
 
@@ -71,17 +60,7 @@ public sealed class ItemType : IBinary
 
         foreach (var itemDefinition in ItemDefinitions)
         {
-            // Add item definitions based on format
-            switch (episode)
-            {
-                case Episode.EP5:
-                default:
-                    buffer.AddRange(((ItemDefinitionEp5)itemDefinition).GetBytes(encoding));
-                    break;
-                case Episode.EP6:
-                    buffer.AddRange(((ItemDefinitionEp6)itemDefinition).GetBytes(encoding));
-                    break;
-            }
+            buffer.AddRange(itemDefinition.GetBytes(episode, encoding));
         }
 
         return buffer;
