@@ -3,7 +3,7 @@ using System.Text;
 using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 
 namespace Parsec.Shaiya.Core;

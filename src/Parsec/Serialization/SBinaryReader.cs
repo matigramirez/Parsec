@@ -1,7 +1,6 @@
 ﻿using System.Text;
-using Parsec.Serialization;
 
-namespace Parsec.Readers;
+namespace Parsec.Serialization;
 
 /// <summary>
 /// A binary reader made specifically to read Shaiya file formats

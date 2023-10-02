@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Parsec.Attributes;
 using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 

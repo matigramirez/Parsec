@@ -8,7 +8,7 @@
 using System.Globalization;
 using Newtonsoft.Json;
 using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common;

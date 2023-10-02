@@ -4,7 +4,7 @@ using Parsec.Common;
 using Parsec.Cryptography;
 using Parsec.Extensions;
 using Parsec.Helpers;
-using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SData;

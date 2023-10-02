@@ -7,7 +7,6 @@ using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
-using Parsec.Readers;
 using Parsec.Serialization;
 using Parsec.Shaiya.Data;
 

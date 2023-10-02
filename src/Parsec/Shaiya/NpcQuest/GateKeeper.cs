@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.NpcQuest;
 
