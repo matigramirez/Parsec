@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Parsec.Serialization;
 
 namespace Parsec.Readers;
 
@@ -8,38 +9,37 @@ namespace Parsec.Readers;
 public sealed class SBinaryReader : IDisposable
 {
     private readonly BinaryReader _binaryReader;
+    public readonly BinarySerializationOptions SerializationOptions;
 
-    public SBinaryReader(Stream stream)
+    public SBinaryReader(Stream stream, BinarySerializationOptions serializationOptions)
     {
         _binaryReader = new BinaryReader(stream);
+        SerializationOptions = serializationOptions;
     }
 
-    public SBinaryReader(FileStream fileStream) : this((Stream)fileStream)
+    public SBinaryReader(FileStream fileStream, BinarySerializationOptions serializationOptions) : this((Stream)fileStream, serializationOptions)
     {
     }
 
-    public SBinaryReader(MemoryStream memoryStream) : this((Stream)memoryStream)
+    public SBinaryReader(MemoryStream memoryStream, BinarySerializationOptions serializationOptions) : this((Stream)memoryStream, serializationOptions)
     {
     }
 
-    public SBinaryReader(string filePath)
+    public SBinaryReader(string filePath, BinarySerializationOptions serializationOptions)
     {
         var fileStream = File.OpenRead(filePath);
         _binaryReader = new BinaryReader(fileStream);
+        SerializationOptions = serializationOptions;
     }
 
-    public SBinaryReader(byte[] buffer)
+    public SBinaryReader(byte[] buffer, BinarySerializationOptions serializationOptions)
     {
         var memoryStream = new MemoryStream(buffer);
         _binaryReader = new BinaryReader(memoryStream);
+        SerializationOptions = serializationOptions;
     }
 
     public long Length => _binaryReader.BaseStream.Length;
-
-    public void Dispose()
-    {
-        _binaryReader?.Dispose();
-    }
 
     /// <summary>
     /// Reads a generic type from the byte buffer
@@ -49,26 +49,8 @@ public sealed class SBinaryReader : IDisposable
     /// <exception cref="NotSupportedException">When the provided type is not supported</exception>
     public T Read<T>()
     {
-        var type = Type.GetTypeCode(typeof(T));
-
-        object value = type switch
-        {
-            TypeCode.Byte => ReadByte(),
-            TypeCode.SByte => ReadSByte(),
-            TypeCode.Char => ReadChar(),
-            TypeCode.Boolean => ReadBoolean(),
-            TypeCode.Int16 => ReadInt16(),
-            TypeCode.UInt16 => ReadUInt16(),
-            TypeCode.Int32 => ReadInt32(),
-            TypeCode.UInt32 => ReadUInt32(),
-            TypeCode.Int64 => ReadInt64(),
-            TypeCode.UInt64 => ReadUInt64(),
-            TypeCode.Single => ReadSingle(),
-            TypeCode.Double => ReadDouble(),
-            _ => throw new NotSupportedException()
-        };
-
-        return (T)value;
+        var type = typeof(T);
+        return (T)Read(type);
     }
 
     /// <summary>
@@ -245,16 +227,22 @@ public sealed class SBinaryReader : IDisposable
     }
 
     /// <summary>
-    /// Reads length-fixed string with ASCII encoding
+    /// Reads length-fixed string using the encoding specified on the serialization options
     /// </summary>
     /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
-    public string ReadString(bool removeStringTerminator = true) => ReadString(Encoding.ASCII, removeStringTerminator);
+    public string ReadString(bool removeStringTerminator = true)
+    {
+        return ReadString(SerializationOptions.Encoding, removeStringTerminator);
+    }
 
     /// <summary>
-    /// Reads length-fixed string with ASCII encoding
+    /// Reads length-fixed string using the encoding specified on the serialization options
     /// </summary>
     /// <param name="length">The string's length</param>
-    public string ReadString(int length) => ReadString(Encoding.ASCII, length);
+    public string ReadString(int length)
+    {
+        return ReadString(SerializationOptions.Encoding, length);
+    }
 
     /// <summary>
     /// Resets the reading offset
@@ -283,5 +271,10 @@ public sealed class SBinaryReader : IDisposable
         using var tempMemoryStream = new MemoryStream();
         _binaryReader.BaseStream.CopyTo(tempMemoryStream);
         return tempMemoryStream.ToArray();
+    }
+
+    public void Dispose()
+    {
+        _binaryReader.Dispose();
     }
 }

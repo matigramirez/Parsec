@@ -3,7 +3,7 @@
 /// <summary>
 /// Interface that defines the behavior of files that can be exported as json
 /// </summary>
-public interface IJsonable<T>
+public interface IJsonSerializable<T>
 {
     /// <summary>
     /// Serializes an object into json

@@ -8,14 +8,15 @@ using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
 using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Data;
 
 namespace Parsec.Shaiya.Core;
 
-public abstract class FileBase : IFileBase, IExportable<FileBase>
+public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
 {
     [JsonIgnore]
-    protected SBinaryReader _binaryReader;
+    protected SBinaryReader _binaryReader { get; set; } = null!;
 
     /// <summary>
     /// Full path to the file
@@ -65,7 +66,10 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     }
 
     /// <inheritdoc />
-    public virtual void Write(string path, Episode episode = Episode.Unknown) => FileHelper.WriteFile(path, GetBytes(episode));
+    public virtual void Write(string path, Episode episode = Episode.Unknown)
+    {
+        FileHelper.WriteFile(path, GetBytes(episode));
+    }
 
     /// <inheritdoc />
     public virtual IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
@@ -196,22 +200,24 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// Reads the shaiya file format from a file
     /// </summary>
     /// <param name="path">File path</param>
-    /// <param name="episode">File episode</param>
-    /// <param name="encoding">File encoding</param>
+    /// <param name="serializationOptions">Serialization options</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, Episode episode = Episode.EP5, Encoding encoding = null) where T : FileBase, new()
+    internal static T ReadFromFile<T>(string path, BinarySerializationOptions serializationOptions) where T : FileBase, new()
     {
         var instance = new T
         {
-            Path = path, _binaryReader = new SBinaryReader(path), Episode = episode, Encoding = encoding ?? Encoding.ASCII
+            Path = path,
+            _binaryReader = new SBinaryReader(path, serializationOptions),
+            Episode = serializationOptions.Episode,
+            Encoding = serializationOptions.Encoding
         };
 
         if (instance is IEncryptable encryptableInstance)
             encryptableInstance.DecryptBuffer();
 
         instance.Read();
-        instance._binaryReader?.Dispose();
+        instance._binaryReader.Dispose();
 
         return instance;
     }
@@ -221,26 +227,25 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// </summary>
     /// <param name="path">File path</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="episode">File episode</param>
-    /// <param name="encoding">File encoding</param>
+    /// <param name="serializationOptions">Serialization options</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromFile(string path, Type type, Episode episode = Episode.EP5, Encoding encoding = null)
+    internal static FileBase ReadFromFile(string path, Type type, BinarySerializationOptions serializationOptions)
     {
         if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
             throw new ArgumentException("Type must be a child of FileBase");
 
-        var binaryReader = new SBinaryReader(path);
+        var binaryReader = new SBinaryReader(path, serializationOptions);
         var instance = (FileBase)Activator.CreateInstance(type);
         instance.Path = path;
         instance._binaryReader = binaryReader;
-        instance.Episode = episode;
-        instance.Encoding = encoding ?? Encoding.ASCII;
+        instance.Episode = serializationOptions.Episode;
+        instance.Encoding = serializationOptions.Encoding;
 
         if (instance is IEncryptable encryptableInstance)
             encryptableInstance.DecryptBuffer();
 
         instance.Read();
-        instance._binaryReader?.Dispose();
+        instance._binaryReader.Dispose();
 
         return instance;
     }
@@ -250,23 +255,24 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// </summary>
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
-    /// <param name="episode">File episode</param>
-    /// <param name="encoding">File encoding</param>
+    /// <param name="serializationOptions">Serialization options</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromBuffer<T>(string name, byte[] buffer, Episode episode = Episode.EP5, Encoding encoding = null)
-        where T : FileBase, new()
+    internal static T ReadFromBuffer<T>(string name, byte[] buffer, BinarySerializationOptions serializationOptions) where T : FileBase, new()
     {
         var instance = new T
         {
-            Path = name, _binaryReader = new SBinaryReader(buffer), Episode = episode, Encoding = encoding ?? Encoding.ASCII
+            Path = name,
+            _binaryReader = new SBinaryReader(buffer, serializationOptions),
+            Episode = serializationOptions.Episode,
+            Encoding = serializationOptions.Encoding
         };
 
         if (instance is IEncryptable encryptableInstance)
             encryptableInstance.DecryptBuffer();
 
         instance.Read();
-        instance._binaryReader?.Dispose();
+        instance._binaryReader.Dispose();
 
         return instance;
     }
@@ -277,25 +283,24 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// <param name="name">File name</param>
     /// <param name="buffer">File buffer</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="episode">File episode</param>
-    /// <param name="encoding">File encoding</param>
+    /// <param name="serializationOptions">Serialization options</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, Episode episode = Episode.EP5, Encoding encoding = null)
+    internal static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, BinarySerializationOptions serializationOptions)
     {
         if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
             throw new ArgumentException("Type must be a child of FileBase");
 
         var instance = (FileBase)Activator.CreateInstance(type);
         instance.Path = name;
-        instance._binaryReader = new SBinaryReader(buffer);
-        instance.Episode = episode;
-        instance.Encoding = encoding ?? Encoding.ASCII;
+        instance._binaryReader = new SBinaryReader(buffer, serializationOptions);
+        instance.Episode = serializationOptions.Episode;
+        instance.Encoding = serializationOptions.Encoding;
 
         if (instance is IEncryptable encryptableInstance)
             encryptableInstance.DecryptBuffer();
 
         instance.Read();
-        instance._binaryReader?.Dispose();
+        instance._binaryReader.Dispose();
 
         return instance;
     }
@@ -305,12 +310,12 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// </summary>
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
-    /// <param name="episode">File episode</param>
-    /// <param name="encoding">File encoding</param>
+    /// <param name="serializationOptions">Serialization options</param>
     /// <returns>FileBase instance</returns>
-    public static T ReadFromData<T>(Data.Data data, SFile file, Episode episode = Episode.EP5, Encoding encoding = null)
-        where T : FileBase, new() =>
-        ReadFromBuffer<T>(file.Name, data.GetFileBuffer(file), episode, encoding);
+    internal static T ReadFromData<T>(Data.Data data, SFile file, BinarySerializationOptions serializationOptions) where T : FileBase, new()
+    {
+        return ReadFromBuffer<T>(file.Name, data.GetFileBuffer(file), serializationOptions);
+    }
 
     /// <summary>
     /// Reads the shaiya file format from a buffer (byte array) within a <see cref="Data"/> instance
@@ -318,14 +323,13 @@ public abstract class FileBase : IFileBase, IExportable<FileBase>
     /// <param name="data"><see cref="Data"/> instance</param>
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="type">FileBase child type to be read</param>
-    /// <param name="episode">File episode</param>
-    /// <param name="encoding">File encoding</param>
+    /// <param name="serializationOptions"></param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromData(Data.Data data, SFile file, Type type, Episode episode = Episode.EP5, Encoding encoding = null)
+    internal static FileBase ReadFromData(Data.Data data, SFile file, Type type, BinarySerializationOptions serializationOptions)
     {
         if (!data.FileIndex.ContainsValue(file))
             throw new FileNotFoundException("The provided SFile instance is not part of the Data");
 
-        return ReadFromBuffer(file.Name, data.GetFileBuffer(file), type, episode, encoding);
+        return ReadFromBuffer(file.Name, data.GetFileBuffer(file), type, serializationOptions);
     }
 }
