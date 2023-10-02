@@ -37,7 +37,7 @@ public sealed class MonsterRecord : IBinary
         QuestItemId = binaryReader.Read<short>();
     }
 
-    public string MobName { get; set; }
+    public string MobName { get; set; } = string.Empty;
     public short ModelId { get; set; }
     public short Level { get; set; }
     public byte AI { get; set; }

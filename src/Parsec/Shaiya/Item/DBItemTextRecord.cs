@@ -13,9 +13,9 @@ public sealed class DBItemTextRecord : IBinarySDataRecord
 
     [ShaiyaProperty]
     [LengthPrefixedString(false)]
-    public string ItemName { get; set; }
+    public string ItemName { get; set; } = string.Empty;
 
     [ShaiyaProperty]
     [LengthPrefixedString(false)]
-    public string Text { get; set; }
+    public string Text { get; set; } = string.Empty;
 }

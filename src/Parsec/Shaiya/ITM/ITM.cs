@@ -10,7 +10,7 @@ public sealed class ITM : FileBase
     /// <summary>
     /// File Signature. Read as char[3]. "ITM" or "IT2"
     /// </summary>
-    public string Signature { get; set; }
+    public string Signature { get; set; } = string.Empty;
 
     [JsonIgnore]
     public ITMFormat Format { get; set; }

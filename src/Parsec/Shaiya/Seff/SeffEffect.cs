@@ -58,7 +58,7 @@ public sealed class SeffEffect
     /// </summary>
     public uint ParticleLifetime { get; set; }
     public float Unknown6 { get; set; }
-    public string TextureFileName { get; set; }
+    public string TextureFileName { get; set; } = string.Empty;
     public byte Red { get; set; }
     public byte Green { get; set; }
     public byte Blue { get; set; }

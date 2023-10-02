@@ -83,12 +83,12 @@ public sealed class ItemDefinitionEp5 : IBinary, IItemDefinition
     /// <summary>
     /// Order: 0. Changed because of CSV.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// Order: 1. Changed because of CSV.
     /// </summary>
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     public byte Model { get; set; }
     public byte Icon { get; set; }

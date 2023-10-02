@@ -9,7 +9,7 @@ public sealed class DBSetItemTextRecord : IBinarySDataRecord
     public long Id { get; set; }
 
     [ShaiyaProperty]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     [ShaiyaProperty]
     public long SetEff1 { get; set; }

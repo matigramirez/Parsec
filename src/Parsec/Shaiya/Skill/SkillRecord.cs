@@ -138,12 +138,12 @@ public sealed class SkillRecord : IBinary
     /// <summary>
     /// The skill name
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// The skill description
     /// </summary>
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     /// <summary>
     /// Level of skill.

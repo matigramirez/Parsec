@@ -44,7 +44,8 @@ public abstract class SData : FileBase, IEncryptable
         }
 
         byte[] decryptedBuffer = Decrypt(fileBuffer, validateChecksum);
-        _binaryReader = new SBinaryReader(decryptedBuffer);
+
+        _binaryReader = new SBinaryReader(decryptedBuffer, _binaryReader.SerializationOptions);
     }
 
     /// <inheritdoc />

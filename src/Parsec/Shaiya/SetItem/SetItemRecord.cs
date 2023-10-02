@@ -28,7 +28,7 @@ public sealed class SetItemRecord : IBinary
     }
 
     public short Index { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public List<SetItemItem> Items { get; } = new();
     public List<string> Synergies { get; } = new();
 

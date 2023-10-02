@@ -4,8 +4,8 @@ namespace Parsec.Shaiya.Data;
 
 public class DataPatcher : IDisposable
 {
-    private BinaryReader _patchBinaryReader;
-    private BinaryWriter _targetBinaryWriter;
+    private BinaryReader? _patchBinaryReader;
+    private BinaryWriter? _targetBinaryWriter;
 
     public void Dispose()
     {
@@ -19,7 +19,7 @@ public class DataPatcher : IDisposable
     /// <param name="targetData">Data instance where the patch should be applied</param>
     /// <param name="patchData">Data instance containing the patch files</param>
     /// <param name="filePatchedCallback">Action which gets invoked when a file gets patched</param>
-    public void Patch(Data targetData, Data patchData, Action filePatchedCallback = null)
+    public void Patch(Data targetData, Data patchData, Action? filePatchedCallback = null)
     {
         _targetBinaryWriter = new BinaryWriter(File.OpenWrite(targetData.Saf.Path));
         _patchBinaryReader = new BinaryReader(File.OpenRead(patchData.Saf.Path));
@@ -39,7 +39,7 @@ public class DataPatcher : IDisposable
     /// <param name="targetData">Data where to save the files</param>
     /// <param name="patchData">Data where to take the files from</param>
     /// <param name="filePatchedCallback">Action which gets invoked when a file gets patched</param>
-    private void PatchFiles(Data targetData, Data patchData, Action filePatchedCallback = null)
+    private void PatchFiles(Data targetData, Data patchData, Action? filePatchedCallback = null)
     {
         foreach (var patchFile in patchData.FileIndex.Values)
         {
@@ -89,10 +89,10 @@ public class DataPatcher : IDisposable
     /// <param name="length">Amount of bytes to set to 0</param>
     private void ClearBytes(long offset, int length)
     {
-        _targetBinaryWriter.BaseStream.Seek(offset, SeekOrigin.Begin);
+        _targetBinaryWriter!.BaseStream.Seek(offset, SeekOrigin.Begin);
 
         var emptyData = new byte[length];
-        _targetBinaryWriter.Write(emptyData);
+        _targetBinaryWriter!.Write(emptyData);
     }
 
     /// <summary>
@@ -102,11 +102,11 @@ public class DataPatcher : IDisposable
     /// <param name="patchFile">Patch file instance</param>
     private long WriteFile(long targetOffset, SFile patchFile)
     {
-        _patchBinaryReader.BaseStream.Seek(patchFile.Offset, SeekOrigin.Begin);
+        _patchBinaryReader!.BaseStream.Seek(patchFile.Offset, SeekOrigin.Begin);
 
         var patchBuffer = _patchBinaryReader.ReadBytes(patchFile.Length);
 
-        _targetBinaryWriter.BaseStream.Seek(targetOffset, SeekOrigin.Begin);
+        _targetBinaryWriter!.BaseStream.Seek(targetOffset, SeekOrigin.Begin);
         _targetBinaryWriter.Write(patchBuffer);
 
         return targetOffset;
@@ -116,5 +116,8 @@ public class DataPatcher : IDisposable
     /// Appends a file at the end of the target Saf file from a patch Saf file
     /// </summary>
     /// <param name="patchFile">Patch file instance</param>
-    private long AppendFile(SFile patchFile) => WriteFile(_targetBinaryWriter.BaseStream.Length, patchFile);
+    private long AppendFile(SFile patchFile)
+    {
+        return WriteFile(_targetBinaryWriter!.BaseStream.Length, patchFile);
+    }
 }

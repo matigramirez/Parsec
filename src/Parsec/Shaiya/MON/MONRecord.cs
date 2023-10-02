@@ -58,33 +58,33 @@ public sealed class MONRecord : IBinary
         }
     }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public byte Unknown { get; set; }
-    public string WalkAnimation { get; set; }
-    public string RunAnimation { get; set; }
+    public string WalkAnimation { get; set; } = string.Empty;
+    public string RunAnimation { get; set; } = string.Empty;
 
     /// <summary>
     /// Jump or Attack1 animation. Jump for vehicles, Attack1 for mobs.
     /// </summary>
-    public string JumpAttack1Animation { get; set; }
+    public string JumpAttack1Animation { get; set; } = string.Empty;
 
-    public string Attack2Animation { get; set; }
-    public string Attack3Animation { get; set; }
-    public string DeathAnimation { get; set; }
-    public string BreathAnimation { get; set; }
-    public string DamageAnimation { get; set; }
-    public string IdleAnimation { get; set; }
+    public string Attack2Animation { get; set; } = string.Empty;
+    public string Attack3Animation { get; set; } = string.Empty;
+    public string DeathAnimation { get; set; } = string.Empty;
+    public string BreathAnimation { get; set; } = string.Empty;
+    public string DamageAnimation { get; set; } = string.Empty;
+    public string IdleAnimation { get; set; } = string.Empty;
 
-    public string Attack1Wav { get; set; }
-    public string Attack2Wav { get; set; }
-    public string Attack3Wav { get; set; }
-    public string DeathWav { get; set; }
+    public string Attack1Wav { get; set; } = string.Empty;
+    public string Attack2Wav { get; set; } = string.Empty;
+    public string Attack3Wav { get; set; } = string.Empty;
+    public string DeathWav { get; set; } = string.Empty;
 
-    public string Attack1Effect { get; set; }
-    public string Attack2Effect { get; set; }
-    public string Attack3Effect { get; set; }
-    public string DieEffect { get; set; }
-    public string AttachEffect { get; set; }
+    public string Attack1Effect { get; set; } = string.Empty;
+    public string Attack2Effect { get; set; } = string.Empty;
+    public string Attack3Effect { get; set; } = string.Empty;
+    public string DieEffect { get; set; } = string.Empty;
+    public string AttachEffect { get; set; } = string.Empty;
 
     public List<MONObject> Objects { get; } = new();
 

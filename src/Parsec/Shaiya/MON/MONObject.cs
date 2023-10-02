@@ -18,8 +18,8 @@ public sealed class MONObject : IBinary
         TextureName = binaryReader.ReadString();
     }
 
-    public string Object3DCName { get; set; }
-    public string TextureName { get; set; }
+    public string Object3DCName { get; set; } = string.Empty;
+    public string TextureName { get; set; } = string.Empty;
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

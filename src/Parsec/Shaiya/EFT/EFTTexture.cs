@@ -19,7 +19,7 @@ public sealed class EFTTexture : IBinary
     }
 
     public int Index { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public IEnumerable<byte> GetBytes(params object[] options) => Name.GetLengthPrefixedBytes();
 }

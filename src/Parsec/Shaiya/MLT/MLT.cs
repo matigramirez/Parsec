@@ -9,7 +9,7 @@ public sealed class MLT : FileBase
     /// <summary>
     /// File Signature. Read as char[3]
     /// </summary>
-    public string Signature { get; set; }
+    public string Signature { get; set; } = string.Empty;
 
     /// <summary>
     /// List of .3DC object names

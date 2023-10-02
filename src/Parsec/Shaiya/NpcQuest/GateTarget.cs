@@ -11,7 +11,7 @@ public class GateTarget : IBinary
 {
     public short MapId { get; set; }
     public Vector3 Position { get; set; }
-    public string TargetName { get; set; }
+    public string TargetName { get; set; } = string.Empty;
 
     /// <summary>
     /// Teleporting gold cost

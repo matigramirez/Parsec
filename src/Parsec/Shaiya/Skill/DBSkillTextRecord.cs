@@ -13,9 +13,9 @@ public sealed class DBSkillTextRecord : IBinarySDataRecord
 
     [ShaiyaProperty]
     [LengthPrefixedString(false)]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     [ShaiyaProperty]
     [LengthPrefixedString(false)]
-    public string Text { get; set; }
+    public string Text { get; set; } = string.Empty;
 }

@@ -5,7 +5,7 @@ public class LengthPrefixedStringAttribute : Attribute
 {
     public bool IncludeStringTerminator { get; set; }
 
-    public string Suffix { get; set; }
+    public string Suffix { get; set; } = string.Empty;
 
     public LengthPrefixedStringAttribute()
     {

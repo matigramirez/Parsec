@@ -10,5 +10,5 @@ public sealed class DBMonsterTextRecord : IBinarySDataRecord
 
     [ShaiyaProperty]
     [LengthPrefixedString(false)]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 }

@@ -32,12 +32,12 @@ public sealed class WldNamedArea : IBinary
     /// If Mode is 0, it reads the caption from world_index.txt
     /// If Mode is 2, this field defines the bmp file for the area's name
     /// </summary>
-    public String256 Text1 { get; set; }
+    public String256 Text1 { get; set; } = string.Empty;
 
     /// <summary>
     /// Comment or file name (unlocalized - Korean)
     /// </summary>
-    public String256 Text2 { get; set; }
+    public String256 Text2 { get; set; } = string.Empty;
 
     /// <summary>
     /// Defines the mode for <see cref="Text1"/>

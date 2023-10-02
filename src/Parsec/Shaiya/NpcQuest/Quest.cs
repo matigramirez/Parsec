@@ -10,8 +10,8 @@ namespace Parsec.Shaiya.NpcQuest;
 public class Quest : IBinary
 {
     public short Id { get; set; }
-    public string Name { get; set; }
-    public string Summary { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Summary { get; set; } = string.Empty;
 
     public ushort MinLevel { get; set; }
     public ushort MaxLevel { get; set; }
@@ -105,10 +105,10 @@ public class Quest : IBinary
     /// </summary>
     public List<QuestResult> Results { get; } = new();
 
-    public string InitialDescription { get; set; }
-    public string QuestWindowSummary { get; set; }
-    public string ReminderInstructions { get; set; }
-    public string AlternateResponse { get; set; }
+    public string InitialDescription { get; set; } = string.Empty;
+    public string QuestWindowSummary { get; set; } = string.Empty;
+    public string ReminderInstructions { get; set; } = string.Empty;
+    public string AlternateResponse { get; set; } = string.Empty;
 
     [JsonConstructor]
     public Quest()

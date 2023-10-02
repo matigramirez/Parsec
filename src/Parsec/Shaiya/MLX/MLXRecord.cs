@@ -46,18 +46,18 @@ public sealed class MLXRecord : IBinary
     }
 
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string UpperTextureName { get; set; }
-    public string Upper3DCName { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string UpperTextureName { get; set; } = string.Empty;
+    public string Upper3DCName { get; set; } = string.Empty;
     public int UpperNumber { get; set; } = 1;
-    public string LowerTextureName { get; set; }
-    public string Lower3DCName { get; set; }
+    public string LowerTextureName { get; set; } = string.Empty;
+    public string Lower3DCName { get; set; } = string.Empty;
     public int LowerNumber { get; set; } = 1;
-    public string BootsTextureName { get; set; }
-    public string Boots3DCName { get; set; }
+    public string BootsTextureName { get; set; } = string.Empty;
+    public string Boots3DCName { get; set; } = string.Empty;
     public int BootsNumber { get; set; } = 1;
-    public string HandsTextureName { get; set; }
-    public string Hands3DCName { get; set; }
+    public string HandsTextureName { get; set; } = string.Empty;
+    public string Hands3DCName { get; set; } = string.Empty;
     public int HandsNumber { get; set; } = 1;
 
     public IEnumerable<byte> GetBytes(params object[] options)

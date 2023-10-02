@@ -14,7 +14,7 @@ public sealed class _3DO : FileBase
 {
     [ShaiyaProperty]
     [LengthPrefixedString(includeStringTerminator: false)]
-    public string TextureName { get; set; }
+    public string TextureName { get; set; } = string.Empty;
 
     [ShaiyaProperty]
     [LengthPrefixedList(typeof(Vertex))]

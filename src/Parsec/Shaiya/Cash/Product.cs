@@ -22,13 +22,13 @@ public sealed class Product
 
     [ShaiyaProperty]
     [LengthPrefixedString(IncludeStringTerminator = false, Suffix = "\0\0")]
-    public string ProductName { get; set; }
+    public string ProductName { get; set; } = string.Empty;
 
     [ShaiyaProperty]
     [LengthPrefixedString(IncludeStringTerminator = false, Suffix = "\0\0")]
-    public string ProductCode { get; set; }
+    public string ProductCode { get; set; } = string.Empty;
 
     [ShaiyaProperty]
     [LengthPrefixedString(IncludeStringTerminator = false, Suffix = "\0\0")]
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 }

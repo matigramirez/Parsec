@@ -14,7 +14,7 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
     /// 128-byte header unused by the game itself. It looks like a file signature + metadata
     /// </summary>
     [ShaiyaProperty]
-    public byte[] Header { get; set; }
+    public byte[]? Header { get; set; }
 
     /// <summary>
     /// Field names are defined before the data. They aren't really used but knowing which each field means is nice

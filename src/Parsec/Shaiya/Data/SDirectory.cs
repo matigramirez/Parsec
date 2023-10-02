@@ -21,7 +21,7 @@ public sealed class SDirectory : IBinary
 
     public SDirectory(
         SBinaryReader binaryReader,
-        SDirectory parentDirectory,
+        SDirectory? parentDirectory,
         Dictionary<string, SDirectory> directoryIndex,
         Dictionary<string, SFile> fileIndex
     )
@@ -93,7 +93,7 @@ public sealed class SDirectory : IBinary
     /// <summary>
     /// The folder's parent directory
     /// </summary>
-    public SDirectory ParentDirectory { get; set; }
+    public SDirectory? ParentDirectory { get; set; }
 
     /// <inheritdoc />
     public IEnumerable<byte> GetBytes(params object[] options)
@@ -147,11 +147,11 @@ public sealed class SDirectory : IBinary
     /// Gets a folder's file
     /// </summary>
     /// <param name="name">File name</param>
-    public SFile GetFile(string name) => Files.FirstOrDefault(f => f.Name == name);
+    public SFile? GetFile(string name) => Files.FirstOrDefault(f => f.Name == name);
 
     /// <summary>
     /// Gets a folder's subfolder
     /// </summary>
     /// <param name="name">Subfolder name</param>
-    public SDirectory GetSubfolder(string name) => Directories.FirstOrDefault(sf => sf.Name == name);
+    public SDirectory? GetSubfolder(string name) => Directories.FirstOrDefault(sf => sf.Name == name);
 }

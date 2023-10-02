@@ -14,7 +14,7 @@ public sealed class VAniObject : IBinary
     /// <summary>
     /// Texture name of the .dds file
     /// </summary>
-    public string TextureName { get; set; }
+    public string TextureName { get; set; } = string.Empty;
 
     /// <summary>
     /// List of the 3d object's faces (polygons - triangles)

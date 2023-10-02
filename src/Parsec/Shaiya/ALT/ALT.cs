@@ -11,7 +11,7 @@ namespace Parsec.Shaiya.ALT;
 /// </summary>
 public sealed class ALT : FileBase
 {
-    public string Signature { get; set; }
+    public string Signature { get; set; } = string.Empty;
     public List<Animation> Animations { get; } = new();
 
     public override string Extension => ".ALT";

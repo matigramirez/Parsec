@@ -15,7 +15,7 @@ public sealed class TexturedObject : IBinary
     /// Name of the .tga texture file. Although they have the .tga extension, the client actually has .dds files, so they're very likely
     /// replacing the .tga extension with .dds when searching for the texture.
     /// </summary>
-    public string TextureName { get; set; }
+    public string TextureName { get; set; } = string.Empty;
 
     /// <summary>
     /// Mesh vertices

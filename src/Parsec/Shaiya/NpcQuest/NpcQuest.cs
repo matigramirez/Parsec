@@ -18,7 +18,7 @@ public class NpcQuest : SData.SData
     public List<StandardNpc> GuildMasters { get; } = new();
     public List<StandardNpc> DeadNpcs { get; } = new();
     public List<StandardNpc> CombatCommanders { get; } = new();
-    public byte[] UnknownArray { get; set; }
+    public byte[]? UnknownArray { get; set; }
     public List<Quest> Quests { get; } = new();
 
     public override void Read()

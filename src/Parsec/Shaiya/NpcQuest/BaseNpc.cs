@@ -13,8 +13,8 @@ public abstract class BaseNpc : IBinary
     public int MoveDistance { get; set; }
     public int MoveSpeed { get; set; }
     public NpcFaction Faction { get; set; }
-    public string Name { get; set; }
-    public string WelcomeMessage { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string WelcomeMessage { get; set; } = string.Empty;
 
     public List<short> InQuestIds { get; } = new();
     public List<short> OutQuestIds { get; } = new();

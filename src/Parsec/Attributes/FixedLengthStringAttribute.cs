@@ -6,7 +6,7 @@ public class FixedLengthStringAttribute : Attribute
     public int Length { get; set; }
     public bool IncludeStringTerminator { get; set; }
     public bool IsString256 { get; set; }
-    public string Suffix { get; set; }
+    public string Suffix { get; set; } = string.Empty;
 
     public FixedLengthStringAttribute(int length)
     {

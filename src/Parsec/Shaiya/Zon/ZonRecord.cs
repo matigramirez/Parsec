@@ -68,7 +68,7 @@ public sealed class ZonRecord : IBinary
     public float Unknown2 { get; set; }
 
     public short MapId { get; set; }
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     /// <summary>
     /// Expects format (int) as an option

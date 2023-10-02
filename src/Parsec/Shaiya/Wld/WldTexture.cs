@@ -11,7 +11,7 @@ public sealed class WldTexture : IBinary
     /// <summary>
     /// .tga texture file
     /// </summary>
-    public String256 TextureName { get; set; }
+    public String256 TextureName { get; set; } = string.Empty;
 
     /// <summary>
     /// Texture tile size
@@ -21,7 +21,7 @@ public sealed class WldTexture : IBinary
     /// <summary>
     /// .wav sound file
     /// </summary>
-    public String256 WalkSound { get; set; }
+    public String256 WalkSound { get; set; } = string.Empty;
 
     [JsonConstructor]
     public WldTexture()

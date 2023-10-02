@@ -24,7 +24,7 @@ public sealed class BinarySDataField : IBinary
         Name = binaryReader.ReadString(Encoding.Unicode, length);
     }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public IEnumerable<byte> GetBytes(params object[] options)
     {

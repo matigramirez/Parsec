@@ -9,7 +9,7 @@ public sealed class MON : FileBase
     /// <summary>
     /// File signature. "MO2", "MO4". Read as char[3]
     /// </summary>
-    public string Signature { get; set; }
+    public string Signature { get; set; } = string.Empty;
 
     public MONFormat Format { get; set; } = MONFormat.MO2;
 

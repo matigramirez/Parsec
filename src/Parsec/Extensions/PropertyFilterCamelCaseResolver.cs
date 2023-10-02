@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Parsec.Extensions;
@@ -12,7 +11,7 @@ public class PropertyFilterCamelCaseResolver : CamelCasePropertyNamesContractRes
 {
     private IEnumerable<string> _ignoredProps { get; }
 
-    public PropertyFilterCamelCaseResolver(IEnumerable<string> ignoredProps = null)
+    public PropertyFilterCamelCaseResolver(IEnumerable<string>? ignoredProps = null)
     {
         if (ignoredProps == null)
         {
