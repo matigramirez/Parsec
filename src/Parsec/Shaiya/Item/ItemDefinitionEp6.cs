@@ -13,10 +13,10 @@ public sealed class ItemDefinitionEp6 : IBinary, IItemDefinition
     {
     }
 
-    public ItemDefinitionEp6(SBinaryReader binaryReader, Encoding encoding)
+    public ItemDefinitionEp6(SBinaryReader binaryReader)
     {
-        Name = binaryReader.ReadString(encoding);
-        Description = binaryReader.ReadString(encoding);
+        Name = binaryReader.ReadString();
+        Description = binaryReader.ReadString();
         Type = binaryReader.Read<byte>();
         TypeId = binaryReader.Read<byte>();
         Model = binaryReader.Read<byte>();

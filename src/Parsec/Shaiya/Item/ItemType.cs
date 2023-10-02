@@ -27,8 +27,7 @@ public sealed class ItemType : IBinary
         ItemDefinitions = itemDefinitions.ToList();
     }
 
-    public ItemType(SBinaryReader binaryReader, int id, Episode episode, IDictionary<(byte type, byte typeId), IItemDefinition> itemIndex,
-        Encoding encoding)
+    public ItemType(SBinaryReader binaryReader, int id, Episode episode, IDictionary<(byte type, byte typeId), IItemDefinition> itemIndex)
     {
         Id = id;
         MaxTypeId = binaryReader.Read<int>();
@@ -39,12 +38,12 @@ public sealed class ItemType : IBinary
             {
                 case Episode.EP5:
                 default:
-                    var itemEp5 = new ItemDefinitionEp5(binaryReader, encoding);
+                    var itemEp5 = new ItemDefinitionEp5(binaryReader);
                     ItemDefinitions.Add(itemEp5);
                     itemIndex.Add((itemEp5.Type, itemEp5.TypeId), itemEp5);
                     break;
                 case Episode.EP6:
-                    var itemEp6 = new ItemDefinitionEp6(binaryReader, encoding);
+                    var itemEp6 = new ItemDefinitionEp6(binaryReader);
                     ItemDefinitions.Add(itemEp6);
                     itemIndex.Add((itemEp6.Type, itemEp6.TypeId), itemEp6);
                     break;

@@ -27,4 +27,17 @@ public class ItemTests
         var itemFromCsv = Parsec.Shaiya.Item.Item.ReadFromCsv(csvPath, Episode.EP6);
         Assert.Equal(item.GetBytes(Episode.EP6), itemFromCsv.GetBytes(Episode.EP6));
     }
+
+    [Fact]
+    public void ItemEp6Csv_EncodingTest()
+    {
+        const string filePath = "Shaiya/Item/ItemEp6_1251.SData";
+        const string csvPath = "Shaiya/Item/ItemEp6_1252.SData.csv";
+
+        var encoding = TestEncodings.Encoding1251;
+        var item = Reader.ReadFromFile<Parsec.Shaiya.Item.Item>(filePath, Episode.EP6, encoding);
+        item.WriteCsv(csvPath, encoding);
+        var itemFromCsv = Parsec.Shaiya.Item.Item.ReadFromCsv(csvPath, Episode.EP6, encoding);
+        Assert.Equal(item.GetBytes(Episode.EP6), itemFromCsv.GetBytes(Episode.EP6));
+    }
 }

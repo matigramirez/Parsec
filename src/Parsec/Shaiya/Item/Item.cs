@@ -21,7 +21,7 @@ public sealed class Item : SData.SData, ICsv
         MaxItemType = _binaryReader.Read<int>();
         for (int i = 0; i < MaxItemType; i++)
         {
-            var itemType = new ItemType(_binaryReader, i + 1, Episode, ItemIndex, Encoding);
+            var itemType = new ItemType(_binaryReader, i + 1, Episode, ItemIndex);
             ItemTypes.Add(itemType);
         }
     }
