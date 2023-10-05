@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
 /// <summary>
 /// Represents a Portal in the world
 /// </summary>
-public sealed class WldPortal : IBinary
+public sealed class WldPortal : ISerializable
 {
     /// <summary>
     /// The area of the portal
@@ -37,9 +35,9 @@ public sealed class WldPortal : IBinary
     public byte MapId { get; set; }
 
     /// <summary>
-    /// The faction which can use the portal
+    /// The faction which can use the portal (unsigned short)
     /// </summary>
-    public FactionShort Faction { get; set; }
+    public WldFaction Faction { get; set; }
 
     /// <summary>
     /// Almost always 0L
@@ -51,34 +49,27 @@ public sealed class WldPortal : IBinary
     /// </summary>
     public Vector3 DestinationPosition { get; set; }
 
-    [JsonConstructor]
-    public WldPortal()
+    public void Read(SBinaryReader binaryReader)
     {
+        BoundingBox = binaryReader.Read<BoundingBox>();
+        Radius = binaryReader.ReadSingle();
+        Text1 = binaryReader.Read<String256>();
+        Text2 = binaryReader.Read<String256>();
+        MapId = binaryReader.ReadByte();
+        Faction = (WldFaction)binaryReader.ReadInt16();
+        Unknown = binaryReader.ReadByte();
+        DestinationPosition = binaryReader.Read<Vector3>();
     }
 
-    public WldPortal(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        BoundingBox = new BoundingBox(binaryReader);
-        Radius = binaryReader.Read<float>();
-        Text1 = new String256(binaryReader);
-        Text2 = new String256(binaryReader);
-        MapId = binaryReader.Read<byte>();
-        Faction = (FactionShort)binaryReader.Read<short>();
-        Unknown = binaryReader.Read<byte>();
-        DestinationPosition = new Vector3(binaryReader);
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(BoundingBox.GetBytes());
-        buffer.AddRange(Radius.GetBytes());
-        buffer.AddRange(Text1.GetBytes());
-        buffer.AddRange(Text2.GetBytes());
-        buffer.Add(MapId);
-        buffer.AddRange(((short)Faction).GetBytes());
-        buffer.Add(Unknown);
-        buffer.AddRange(DestinationPosition.GetBytes());
-        return buffer;
+        binaryWriter.Write(BoundingBox);
+        binaryWriter.Write(Radius);
+        binaryWriter.Write(Text1);
+        binaryWriter.Write(Text2);
+        binaryWriter.Write(MapId);
+        binaryWriter.Write((short)Faction);
+        binaryWriter.Write(Unknown);
+        binaryWriter.Write(DestinationPosition);
     }
 }

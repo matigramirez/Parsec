@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
 /// <summary>
 /// Coordinates to place a 3D object in the field. Used by 'MANI' entities only.
 /// </summary>
-public sealed class WldManiCoordinate : IBinary
+public sealed class WldManiCoordinate : ISerializable
 {
     /// <summary>
     /// Id of the building that should be animated using this MAni file
@@ -36,28 +34,21 @@ public sealed class WldManiCoordinate : IBinary
     /// </summary>
     public Vector3 RotationUp { get; set; }
 
-    [JsonConstructor]
-    public WldManiCoordinate()
+    public void Read(SBinaryReader binaryReader)
     {
+        WorldBuildingId = binaryReader.ReadInt32();
+        Id = binaryReader.ReadInt32();
+        Position = binaryReader.Read<Vector3>();
+        RotationForward = binaryReader.Read<Vector3>();
+        RotationUp = binaryReader.Read<Vector3>();
     }
 
-    public WldManiCoordinate(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        WorldBuildingId = binaryReader.Read<int>();
-        Id = binaryReader.Read<int>();
-        Position = new Vector3(binaryReader);
-        RotationForward = new Vector3(binaryReader);
-        RotationUp = new Vector3(binaryReader);
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(WorldBuildingId.GetBytes());
-        buffer.AddRange(Id.GetBytes());
-        buffer.AddRange(Position.GetBytes());
-        buffer.AddRange(RotationForward.GetBytes());
-        buffer.AddRange(RotationUp.GetBytes());
-        return buffer;
+        binaryWriter.Write(WorldBuildingId);
+        binaryWriter.Write(Id);
+        binaryWriter.Write(Position);
+        binaryWriter.Write(RotationForward);
+        binaryWriter.Write(RotationUp);
     }
 }

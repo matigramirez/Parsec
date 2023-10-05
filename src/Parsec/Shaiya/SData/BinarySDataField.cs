@@ -1,36 +1,26 @@
 ﻿using System.Text;
-using Newtonsoft.Json;
-using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SData;
 
-public sealed class BinarySDataField : IBinary
+public sealed class BinarySDataField : ISerializable
 {
-    public BinarySDataField(string name)
-    {
-        Name = name;
-    }
-
-    [JsonConstructor]
-    public BinarySDataField()
-    {
-    }
-
-    public BinarySDataField(SBinaryReader binaryReader)
-    {
-        int length = binaryReader.Read<byte>();
-        Name = binaryReader.ReadString(Encoding.Unicode, length);
-    }
-
     public string Name { get; set; } = string.Empty;
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Read(SBinaryReader binaryReader)
     {
-        var buffer = new List<byte>();
-        buffer.Add((byte)Name.Length);
-        buffer.AddRange(Name.GetBytes(Encoding.Unicode));
-        return buffer;
+        Name = binaryReader.ReadString(Encoding.Unicode);
     }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Name, Encoding.Unicode);
+    }
+
+    public static implicit operator string(BinarySDataField field) => field.Name;
+
+    public static implicit operator BinarySDataField(string fieldName) => new BinarySDataField { Name = fieldName };
+
+    public override string ToString() => Name;
 }

@@ -1,18 +1,23 @@
-﻿using Parsec.Attributes;
+﻿using Parsec.Serialization;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.KillStatus;
 
-public sealed class KillStatusBonus
+public sealed class KillStatusBonus : ISerializable
 {
-    /// <summary>
-    /// The type of bonus
-    /// </summary>
-    [ShaiyaProperty]
-    public KillStatusBonusType Type { get; set; }
+    public KillStatusBonusType BonusType { get; set; }
 
-    /// <summary>
-    /// The value of the bonus
-    /// </summary>
-    [ShaiyaProperty]
-    public short Value { get; set; }
+    public ushort BonusValue { get; set; }
+
+    public void Read(SBinaryReader binaryReader)
+    {
+        BonusType = (KillStatusBonusType)binaryReader.ReadByte();
+        BonusValue = binaryReader.ReadUInt16();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write((byte)BonusType);
+        binaryWriter.Write(BonusValue);
+    }
 }

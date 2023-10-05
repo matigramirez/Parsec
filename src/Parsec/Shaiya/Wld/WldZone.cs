@@ -1,44 +1,25 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
-public sealed class WldZone : IBinary
+public sealed class WldZone : ISerializable
 {
     public BoundingBox BoundingBox { get; set; }
 
-    public List<int> Identifiers { get; set; } = new();
+    public List<WldZoneIdentifier> Identifiers { get; set; } = new();
 
-    [JsonConstructor]
-    public WldZone()
+    public void Read(SBinaryReader binaryReader)
     {
+        BoundingBox = binaryReader.Read<BoundingBox>();
+        Identifiers = binaryReader.ReadList<WldZoneIdentifier>().ToList();
     }
 
-    public WldZone(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        BoundingBox = new BoundingBox(binaryReader);
-
-        int identifierCount = binaryReader.Read<int>();
-
-        for (int i = 0; i < identifierCount; i++)
-        {
-            int identifier = binaryReader.Read<int>();
-            Identifiers.Add(identifier);
-        }
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(BoundingBox.GetBytes());
-
-        buffer.AddRange(Identifiers.Count.GetBytes());
-        foreach (int identifier in Identifiers)
-            buffer.AddRange(identifier.GetBytes());
-
-        return buffer;
+        binaryWriter.Write(BoundingBox);
+        binaryWriter.Write(Identifiers.ToSerializable());
     }
 }

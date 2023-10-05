@@ -1,42 +1,10 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Monster;
 
-public sealed class MonsterRecord : IBinary
+public sealed class MonsterRecord : ISerializable
 {
-    [JsonConstructor]
-    public MonsterRecord()
-    {
-    }
-
-    public MonsterRecord(SBinaryReader binaryReader, Encoding encoding)
-    {
-        MobName = binaryReader.ReadString(encoding);
-        ModelId = binaryReader.Read<short>();
-        Level = binaryReader.Read<short>();
-        AI = binaryReader.Read<byte>();
-        HP = binaryReader.Read<int>();
-        Day = binaryReader.Read<byte>();
-        Size = binaryReader.Read<byte>();
-        Element = binaryReader.Read<byte>();
-        NormalTime = binaryReader.Read<int>();
-        NormalStep = binaryReader.Read<byte>();
-        ChaseTime = binaryReader.Read<int>();
-        ChaseStep = binaryReader.Read<byte>();
-        AttackType1 = binaryReader.Read<byte>();
-        AttackElement1 = binaryReader.Read<byte>();
-        AttackType2 = binaryReader.Read<byte>();
-        AttackRange2 = binaryReader.Read<byte>();
-        AttackType3 = binaryReader.Read<byte>();
-        Unknown1 = binaryReader.Read<byte>();
-        Unknown2 = binaryReader.Read<byte>();
-        QuestItemId = binaryReader.Read<short>();
-    }
-
     public string MobName { get; set; } = string.Empty;
     public short ModelId { get; set; }
     public short Level { get; set; }
@@ -58,29 +26,51 @@ public sealed class MonsterRecord : IBinary
     public byte Unknown2 { get; set; }
     public short QuestItemId { get; set; }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Read(SBinaryReader binaryReader)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(MobName.GetLengthPrefixedBytes());
-        buffer.AddRange(ModelId.GetBytes());
-        buffer.AddRange(Level.GetBytes());
-        buffer.Add(AI);
-        buffer.AddRange(HP.GetBytes());
-        buffer.Add(Day);
-        buffer.Add(Size);
-        buffer.Add(Element);
-        buffer.AddRange(NormalTime.GetBytes());
-        buffer.Add(NormalStep);
-        buffer.AddRange(ChaseTime.GetBytes());
-        buffer.Add(ChaseStep);
-        buffer.Add(AttackType1);
-        buffer.Add(AttackElement1);
-        buffer.Add(AttackType2);
-        buffer.Add(AttackRange2);
-        buffer.Add(AttackType3);
-        buffer.Add(Unknown1);
-        buffer.Add(Unknown2);
-        buffer.AddRange(QuestItemId.GetBytes());
-        return buffer;
+        MobName = binaryReader.ReadString();
+        ModelId = binaryReader.ReadInt16();
+        Level = binaryReader.ReadInt16();
+        AI = binaryReader.ReadByte();
+        HP = binaryReader.ReadInt32();
+        Day = binaryReader.ReadByte();
+        Size = binaryReader.ReadByte();
+        Element = binaryReader.ReadByte();
+        NormalTime = binaryReader.ReadInt32();
+        NormalStep = binaryReader.ReadByte();
+        ChaseTime = binaryReader.ReadInt32();
+        ChaseStep = binaryReader.ReadByte();
+        AttackType1 = binaryReader.ReadByte();
+        AttackElement1 = binaryReader.ReadByte();
+        AttackType2 = binaryReader.ReadByte();
+        AttackRange2 = binaryReader.ReadByte();
+        AttackType3 = binaryReader.ReadByte();
+        Unknown1 = binaryReader.ReadByte();
+        Unknown2 = binaryReader.ReadByte();
+        QuestItemId = binaryReader.ReadInt16();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(MobName);
+        binaryWriter.Write(ModelId);
+        binaryWriter.Write(Level);
+        binaryWriter.Write(AI);
+        binaryWriter.Write(HP);
+        binaryWriter.Write(Day);
+        binaryWriter.Write(Size);
+        binaryWriter.Write(Element);
+        binaryWriter.Write(NormalTime);
+        binaryWriter.Write(NormalStep);
+        binaryWriter.Write(ChaseTime);
+        binaryWriter.Write(ChaseStep);
+        binaryWriter.Write(AttackType1);
+        binaryWriter.Write(AttackElement1);
+        binaryWriter.Write(AttackType2);
+        binaryWriter.Write(AttackRange2);
+        binaryWriter.Write(AttackType3);
+        binaryWriter.Write(Unknown1);
+        binaryWriter.Write(Unknown2);
+        binaryWriter.Write(QuestItemId);
     }
 }

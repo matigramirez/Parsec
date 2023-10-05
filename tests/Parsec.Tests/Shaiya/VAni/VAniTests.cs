@@ -18,15 +18,15 @@ public class VAniTests
         string jsonPath = $"Shaiya/VAni/{fileName}.json";
         string newObjPath = $"Shaiya/VAni/new_{fileName}";
 
-        var vani = Reader.ReadFromFile<Parsec.Shaiya.VAni.VAni>(filePath);
+        var vani = Reader.ReadFromFile<Parsec.Shaiya.Vani.Vani>(filePath);
         vani.WriteJson(jsonPath);
-        var vaniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.VAni.VAni>(jsonPath);
+        var vaniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Vani.Vani>(jsonPath);
 
         // Check bytes
         Assert.Equal(vani.GetBytes(), vaniFromJson.GetBytes());
 
         vaniFromJson.Write(newObjPath);
-        var newVani = Reader.ReadFromFile<Parsec.Shaiya.VAni.VAni>(newObjPath);
+        var newVani = Reader.ReadFromFile<Parsec.Shaiya.Vani.Vani>(newObjPath);
 
         // Check bytes
         Assert.Equal(vani.GetBytes(), newVani.GetBytes());

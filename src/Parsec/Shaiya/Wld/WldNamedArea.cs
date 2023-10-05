@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
-public enum NamedAreaMode
+public enum WldNamedAreaMode
 {
     WorldIndexTxt = 0,
     BmpFile = 2
@@ -15,7 +13,7 @@ public enum NamedAreaMode
 /// <summary>
 /// Represents a NamedArea in the world
 /// </summary>
-public sealed class WldNamedArea : IBinary
+public sealed class WldNamedArea : ISerializable
 {
     /// <summary>
     /// The BoundingBox where this Named Area applies
@@ -42,37 +40,30 @@ public sealed class WldNamedArea : IBinary
     /// <summary>
     /// Defines the mode for <see cref="Text1"/>
     /// </summary>
-    public NamedAreaMode Mode { get; set; }
+    public WldNamedAreaMode Mode { get; set; }
 
     /// <summary>
     /// Almost always 0
     /// </summary>
     public int Unknown { get; set; }
 
-    [JsonConstructor]
-    public WldNamedArea()
+    public void Read(SBinaryReader binaryReader)
     {
+        BoundingBox = binaryReader.Read<BoundingBox>();
+        Radius = binaryReader.ReadSingle();
+        Text1 = binaryReader.Read<String256>();
+        Text2 = binaryReader.Read<String256>();
+        Mode = (WldNamedAreaMode)binaryReader.ReadInt32();
+        Unknown = binaryReader.ReadInt32();
     }
 
-    public WldNamedArea(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        BoundingBox = new BoundingBox(binaryReader);
-        Radius = binaryReader.Read<float>();
-        Text1 = new String256(binaryReader);
-        Text2 = new String256(binaryReader);
-        Mode = (NamedAreaMode)binaryReader.Read<int>();
-        Unknown = binaryReader.Read<int>();
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(BoundingBox.GetBytes());
-        buffer.AddRange(Radius.GetBytes());
-        buffer.AddRange(Text1.GetBytes());
-        buffer.AddRange(Text2.GetBytes());
-        buffer.AddRange(((int)Mode).GetBytes());
-        buffer.AddRange(Unknown.GetBytes());
-        return buffer;
+        binaryWriter.Write(BoundingBox);
+        binaryWriter.Write(Radius);
+        binaryWriter.Write(Text1);
+        binaryWriter.Write(Text2);
+        binaryWriter.Write((int)Mode);
+        binaryWriter.Write(Unknown);
     }
 }

@@ -163,7 +163,7 @@ public static class Reader
 
         encoding ??= Encoding.ASCII;
 
-        string jsonContent = File.ReadAllText(path, encoding);
+        var jsonContent = File.ReadAllText(path, encoding);
         var deserializedObject = JsonConvert.DeserializeObject(jsonContent, type);
 
         if (deserializedObject == null)
@@ -172,12 +172,14 @@ public static class Reader
         }
 
         var fileBase = (FileBase)deserializedObject;
-        string fileNameWithoutJsonExtension = Path.GetFileNameWithoutExtension(path);
+        var fileNameWithoutJsonExtension = Path.GetFileNameWithoutExtension(path);
 
         fileBase.Encoding = encoding;
-        string objectExtension = fileBase.Extension;
+        var objectExtension = fileBase.Extension;
         if (Path.GetExtension(fileNameWithoutJsonExtension) != objectExtension)
+        {
             fileBase.Path = $"{fileNameWithoutJsonExtension}.{objectExtension}";
+        }
 
         return fileBase;
     }

@@ -1,18 +1,27 @@
-﻿using Parsec.Attributes;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Cash;
 
 public sealed class DBItemSellTextRecord : IBinarySDataRecord
 {
-    [ShaiyaProperty]
     public long Id { get; set; }
 
-    [ShaiyaProperty]
-    [LengthPrefixedString(false)]
-    public string ProductName { get; set; }
+    public string ProductName { get; set; } = string.Empty;
 
-    [ShaiyaProperty]
-    [LengthPrefixedString(false)]
-    public string Text { get; set; }
+    public string Text { get; set; } = string.Empty;
+
+    public void Read(SBinaryReader binaryReader)
+    {
+        Id = binaryReader.ReadInt64();
+        ProductName = binaryReader.ReadString();
+        Text = binaryReader.ReadString();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Id);
+        binaryWriter.WriteLengthPrefixedString(ProductName, includeStringTerminator: false);
+        binaryWriter.WriteLengthPrefixedString(Text, includeStringTerminator: false);
+    }
 }

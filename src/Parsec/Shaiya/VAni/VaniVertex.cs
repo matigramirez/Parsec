@@ -1,16 +1,20 @@
-﻿using Parsec.Shaiya.Core;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
+using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.VAni;
+namespace Parsec.Shaiya.Vani;
 
-public sealed class VaniVertex : IBinary
+public sealed class VaniVertex : ISerializable
 {
-    public List<VaniVertexFrame> Frames { get; } = new();
+    public List<VaniVertexFrame> Frames { get; set; } = new();
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Read(SBinaryReader binaryReader)
     {
-        var buffer = new List<byte>();
-        foreach (var frame in Frames)
-            buffer.AddRange(frame.GetBytes());
-        return buffer;
+        Frames = binaryReader.ReadList<VaniVertexFrame>().ToList();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Frames.ToSerializable());
     }
 }

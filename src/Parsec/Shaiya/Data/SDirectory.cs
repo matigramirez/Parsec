@@ -1,13 +1,11 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Parsec.Extensions;
 using Parsec.Serialization;
-using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Data;
 
 [DataContract]
-public sealed class SDirectory : IBinary
+public sealed class SDirectory
 {
     [JsonConstructor]
     public SDirectory()
@@ -39,19 +37,17 @@ public sealed class SDirectory : IBinary
 
         directoryIndex.Add(RelativePath, this);
 
-        int fileCount = binaryReader.Read<int>();
-
-        // Read all files in this folder
-        for (int i = 0; i < fileCount; i++)
+        var fileCount = binaryReader.ReadInt32();
+        for (var i = 0; i < fileCount; i++)
         {
             var file = new SFile(binaryReader, this, fileIndex);
             AddFile(file);
         }
 
-        int subfolderCount = binaryReader.Read<int>();
+        var subfolderCount = binaryReader.ReadInt32();
 
-        // Recursively read subfolders data
-        for (int i = 0; i < subfolderCount; i++)
+        // Recursively read subfolder data
+        for (var i = 0; i < subfolderCount; i++)
         {
             var subfolder = new SDirectory(binaryReader, this, directoryIndex, fileIndex);
             AddDirectory(subfolder);
@@ -95,14 +91,28 @@ public sealed class SDirectory : IBinary
     /// </summary>
     public SDirectory? ParentDirectory { get; set; }
 
-    /// <inheritdoc />
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(ParentDirectory == null ? RealName.GetLengthPrefixedBytes() : Name.GetLengthPrefixedBytes());
-        buffer.AddRange(Files.GetBytes());
-        buffer.AddRange(Directories.GetBytes());
-        return buffer;
+        if (ParentDirectory == null)
+        {
+            binaryWriter.Write(RealName);
+        }
+        else
+        {
+            binaryWriter.Write(Name);
+        }
+
+        binaryWriter.Write(Files.Count);
+        foreach (var file in Files)
+        {
+            file.Write(binaryWriter);
+        }
+
+        binaryWriter.Write(Directories.Count);
+        foreach (var directory in Directories)
+        {
+            directory.Write(binaryWriter);
+        }
     }
 
     /// <summary>

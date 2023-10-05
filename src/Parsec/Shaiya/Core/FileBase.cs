@@ -1,9 +1,7 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Helpers;
@@ -12,11 +10,8 @@ using Parsec.Shaiya.Data;
 
 namespace Parsec.Shaiya.Core;
 
-public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
+public abstract class FileBase : IJsonWritable<FileBase>
 {
-    [JsonIgnore]
-    protected SBinaryReader _binaryReader { get; set; } = null!;
-
     /// <summary>
     /// Full path to the file
     /// </summary>
@@ -44,8 +39,10 @@ public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
     public string FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(Path);
 
     /// <inheritdoc/>
-    public void WriteJson(string path, params string[] ignoredPropertyNames) =>
+    public void WriteJson(string path, params string[] ignoredPropertyNames)
+    {
         FileHelper.WriteFile(path, JsonSerialize(this, ignoredPropertyNames), Encoding);
+    }
 
     /// <inheritdoc/>
     public virtual string JsonSerialize(FileBase obj, params string[] ignoredPropertyNames)
@@ -64,135 +61,22 @@ public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
         return JsonConvert.SerializeObject(obj, settings);
     }
 
-    /// <inheritdoc />
-    public virtual void Write(string path, Episode episode = Episode.Unknown)
+    protected abstract void Read(SBinaryReader binaryReader);
+
+    protected abstract void Write(SBinaryWriter binaryWriter);
+
+    public void Write(string path)
     {
-        FileHelper.WriteFile(path, GetBytes(episode));
+        var serializationOptions = new BinarySerializationOptions(Episode, Encoding);
+        using var binaryWriter = new SBinaryWriter(path, serializationOptions);
+        Write(binaryWriter);
     }
 
-    /// <inheritdoc />
-    public virtual IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    public void Write(string path, Episode episode, Encoding encoding)
     {
-        var buffer = new List<byte>();
-        var type = GetType();
-
-        // If episode wasn't explicitly set, use former episode
-        if (episode == Episode.Unknown)
-            episode = Episode;
-
-        if (episode == Episode.Unknown && type.IsDefined(typeof(DefaultVersionAttribute)))
-        {
-            var defaultEpisodeAttribute = type.GetCustomAttributes<DefaultVersionAttribute>().FirstOrDefault();
-            episode = defaultEpisodeAttribute!.Episode;
-        }
-
-        // Add version prefix if present (eg. "ANI_V2", "MO2", "MO4", etc)
-        bool isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
-        if (isVersionPrefixed)
-        {
-            var versionPrefixes = type.GetCustomAttributes<VersionPrefixedAttribute>();
-
-            foreach (var versionPrefix in versionPrefixes)
-            {
-                if ((episode == versionPrefix.MinEpisode && versionPrefix.MaxEpisode == Episode.Unknown) ||
-                    (episode >= versionPrefix.MinEpisode && episode <= versionPrefix.MaxEpisode))
-                {
-                    if (versionPrefix.PrefixType == typeof(string))
-                    {
-                        buffer.AddRange(((string)versionPrefix.Prefix).GetBytes());
-                    }
-                    else if (versionPrefix.PrefixType.IsPrimitive)
-                    {
-                        buffer.AddRange(ReflectionHelper.GetPrimitiveBytes(versionPrefix.PrefixType, versionPrefix.Prefix));
-                    }
-                }
-            }
-        }
-
-        // Get bytes for all properties
-        var properties = GetType().GetProperties();
-        foreach (var property in properties)
-        {
-            if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
-                continue;
-
-            buffer.AddRange(ReflectionHelper.GetPropertyBytes(type, this, property, Encoding, episode));
-        }
-
-        return buffer;
-    }
-
-    /// <inheritdoc/>
-    public virtual void Read()
-    {
-        var type = GetType();
-
-        // Set default version (Episode) if defined. This must be checked/set before checking the existence of the VersionPrefixedAttribute
-        if (type.IsDefined(typeof(DefaultVersionAttribute)))
-        {
-            var defaultEpisodeAttribute = type.GetCustomAttributes<DefaultVersionAttribute>().First();
-            Episode = defaultEpisodeAttribute.Episode;
-        }
-
-        // Check if version prefix could be present (eg. "ANI_V2", "MO2", "MO4", etc)
-        bool isVersionPrefixed = type.IsDefined(typeof(VersionPrefixedAttribute));
-
-        if (isVersionPrefixed)
-        {
-            var versionPrefixes = type.GetCustomAttributes<VersionPrefixedAttribute>();
-
-            foreach (var versionPrefix in versionPrefixes)
-            {
-                object filePrefix;
-                if (versionPrefix.PrefixType == typeof(string))
-                {
-                    filePrefix = _binaryReader.ReadString(((string)versionPrefix.Prefix).Length);
-                }
-                else if (versionPrefix.PrefixType.IsPrimitive)
-                {
-                    filePrefix = ReflectionHelper.ReadPrimitive(_binaryReader, versionPrefix.PrefixType);
-                }
-                else
-                {
-                    continue;
-                }
-
-                // If prefix matches, episode must be set and reading must continue. If it doesn't, the reading offset must be reset to the beginning of the file
-                if (filePrefix.Equals(versionPrefix.Prefix))
-                {
-                    Episode = versionPrefix.MinEpisode;
-                    break;
-                }
-
-                _binaryReader.ResetOffset();
-            }
-        }
-
-        // Read all properties
-        var properties = GetType().GetProperties();
-
-        foreach (var property in properties)
-        {
-            // skip non ShaiyaProperty properties
-            if (!property.IsDefined(typeof(ShaiyaPropertyAttribute)))
-                continue;
-
-            object value = ReflectionHelper.ReadProperty(_binaryReader, type, this, property, Episode, Encoding);
-            property.SetValue(this, Convert.ChangeType(value, property.PropertyType));
-
-            // Set episode based on property
-            if (property.IsDefined(typeof(EpisodeDefinerAttribute)))
-            {
-                var definerAttributes = property.GetCustomAttributes<EpisodeDefinerAttribute>();
-                foreach (var definer in definerAttributes)
-                {
-                    if (value.Equals(definer.Value))
-                    {
-                        Episode = definer.Episode;
-                    }
-                }
-            }
-        }
+        var serializationOptions = new BinarySerializationOptions(episode, encoding);
+        using var binaryWriter = new SBinaryWriter(path, serializationOptions);
+        Write(binaryWriter);
     }
 
     /// <summary>
@@ -204,19 +88,15 @@ public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
     /// <returns>T instance</returns>
     internal static T ReadFromFile<T>(string path, BinarySerializationOptions serializationOptions) where T : FileBase, new()
     {
-        var instance = new T
-        {
-            Path = path,
-            _binaryReader = new SBinaryReader(path, serializationOptions),
-            Episode = serializationOptions.Episode,
-            Encoding = serializationOptions.Encoding
-        };
+        var instance = new T { Path = path, Episode = serializationOptions.Episode, Encoding = serializationOptions.Encoding };
+        var binaryReader = new SBinaryReader(path, serializationOptions);
 
-        if (instance is IEncryptable encryptableInstance)
-            encryptableInstance.DecryptBuffer();
+        // TODO:
+        // if (instance is IEncryptable encryptableInstance)
+        //     encryptableInstance.DecryptBuffer();
 
-        instance.Read();
-        instance._binaryReader.Dispose();
+        instance.Read(binaryReader);
+        binaryReader.Dispose();
 
         return instance;
     }
@@ -233,18 +113,19 @@ public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
         if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
             throw new ArgumentException("Type must be a child of FileBase");
 
-        var binaryReader = new SBinaryReader(path, serializationOptions);
         var instance = (FileBase)Activator.CreateInstance(type);
         instance.Path = path;
-        instance._binaryReader = binaryReader;
         instance.Episode = serializationOptions.Episode;
         instance.Encoding = serializationOptions.Encoding;
 
-        if (instance is IEncryptable encryptableInstance)
-            encryptableInstance.DecryptBuffer();
+        var binaryReader = new SBinaryReader(path, serializationOptions);
 
-        instance.Read();
-        instance._binaryReader.Dispose();
+        // TODO:
+        // if (instance is IEncryptable encryptableInstance)
+        //     encryptableInstance.DecryptBuffer();
+
+        instance.Read(binaryReader);
+        binaryReader.Dispose();
 
         return instance;
     }
@@ -259,19 +140,15 @@ public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
     /// <returns>T instance</returns>
     internal static T ReadFromBuffer<T>(string name, byte[] buffer, BinarySerializationOptions serializationOptions) where T : FileBase, new()
     {
-        var instance = new T
-        {
-            Path = name,
-            _binaryReader = new SBinaryReader(buffer, serializationOptions),
-            Episode = serializationOptions.Episode,
-            Encoding = serializationOptions.Encoding
-        };
+        var instance = new T { Path = name, Episode = serializationOptions.Episode, Encoding = serializationOptions.Encoding };
+        var binaryReader = new SBinaryReader(buffer, serializationOptions);
 
-        if (instance is IEncryptable encryptableInstance)
-            encryptableInstance.DecryptBuffer();
+        // TODO:
+        // if (instance is IEncryptable encryptableInstance)
+        //     encryptableInstance.DecryptBuffer();
 
-        instance.Read();
-        instance._binaryReader.Dispose();
+        instance.Read(binaryReader);
+        binaryReader.Dispose();
 
         return instance;
     }
@@ -291,15 +168,17 @@ public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
 
         var instance = (FileBase)Activator.CreateInstance(type);
         instance.Path = name;
-        instance._binaryReader = new SBinaryReader(buffer, serializationOptions);
         instance.Episode = serializationOptions.Episode;
         instance.Encoding = serializationOptions.Encoding;
 
-        if (instance is IEncryptable encryptableInstance)
-            encryptableInstance.DecryptBuffer();
+        var binaryReader = new SBinaryReader(buffer, serializationOptions);
 
-        instance.Read();
-        instance._binaryReader.Dispose();
+        // TODO:
+        // if (instance is IEncryptable encryptableInstance)
+        //     encryptableInstance.DecryptBuffer();
+
+        instance.Read(binaryReader);
+        binaryReader.Dispose();
 
         return instance;
     }
@@ -330,5 +209,19 @@ public abstract class FileBase : IFileBase, IJsonWritable<FileBase>
             throw new FileNotFoundException("The provided SFile instance is not part of the Data");
 
         return ReadFromBuffer(file.Name, data.GetFileBuffer(file), type, serializationOptions);
+    }
+
+    public IEnumerable<byte> GetBytes()
+    {
+        var serializationOptions = BinarySerializationOptions.Default;
+        return GetBytes(serializationOptions);
+    }
+
+    public IEnumerable<byte> GetBytes(BinarySerializationOptions serializationOptions)
+    {
+        using var memoryStream = new MemoryStream();
+        using var binaryWriter = new SBinaryWriter(memoryStream, serializationOptions);
+        Write(binaryWriter);
+        return memoryStream.ToArray();
     }
 }

@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
-public sealed class WldTexture : IBinary
+public sealed class WldTexture : ISerializable
 {
     /// <summary>
     /// .tga texture file
@@ -23,24 +21,17 @@ public sealed class WldTexture : IBinary
     /// </summary>
     public String256 WalkSound { get; set; } = string.Empty;
 
-    [JsonConstructor]
-    public WldTexture()
+    public void Read(SBinaryReader binaryReader)
     {
+        TextureName = binaryReader.Read<String256>();
+        TileSize = binaryReader.ReadSingle();
+        WalkSound = binaryReader.Read<String256>();
     }
 
-    public WldTexture(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        TextureName = new String256(binaryReader);
-        TileSize = binaryReader.Read<float>();
-        WalkSound = new String256(binaryReader);
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(TextureName.GetBytes());
-        buffer.AddRange(TileSize.GetBytes());
-        buffer.AddRange(WalkSound.GetBytes());
-        return buffer;
+        binaryWriter.Write(TextureName);
+        binaryWriter.Write(TileSize);
+        binaryWriter.Write(WalkSound);
     }
 }

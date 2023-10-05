@@ -1,5 +1,4 @@
 ﻿using Parsec.Common;
-using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
@@ -8,133 +7,8 @@ namespace Parsec.Shaiya.Skill;
 /// <summary>
 /// Class that represents a record for the Skill.SData and NpcSkill.SData formats
 /// </summary>
-public sealed class SkillRecord : IBinary
+public sealed class SkillRecord : ISerializable
 {
-    public SkillRecord()
-    {
-    }
-
-    public SkillRecord(SBinaryReader binaryReader, Episode episode, int id)
-    {
-        Id = id;
-        Name = binaryReader.ReadString();
-        Description = binaryReader.ReadString();
-        SkillLevel = binaryReader.Read<byte>();
-        Icon = binaryReader.Read<ushort>();
-        Animation = binaryReader.Read<ushort>();
-
-        if (episode >= Episode.EP6)
-        {
-            Effect = binaryReader.Read<byte>();
-        }
-
-        ToggleType = binaryReader.Read<byte>();
-        Sound = binaryReader.Read<ushort>();
-        RequiredLevel = binaryReader.Read<ushort>();
-        Country = binaryReader.Read<byte>();
-        AttackFighter = binaryReader.Read<byte>();
-        DefenseFighter = binaryReader.Read<byte>();
-        PatrolRogue = binaryReader.Read<byte>();
-        ShootRogue = binaryReader.Read<byte>();
-        AttackMage = binaryReader.Read<byte>();
-        DefenseMage = binaryReader.Read<byte>();
-        Grow = binaryReader.Read<byte>();
-        Point = binaryReader.Read<byte>();
-        TypeShow = binaryReader.Read<byte>();
-        TypeAttack = binaryReader.Read<byte>();
-        TypeEffect = binaryReader.Read<byte>();
-        TypeDetail = binaryReader.Read<ushort>();
-        NeedWeapon1 = binaryReader.Read<byte>();
-        NeedWeapon2 = binaryReader.Read<byte>();
-        NeedWeapon3 = binaryReader.Read<byte>();
-        NeedWeapon4 = binaryReader.Read<byte>();
-        NeedWeapon5 = binaryReader.Read<byte>();
-        NeedWeapon6 = binaryReader.Read<byte>();
-        NeedWeapon7 = binaryReader.Read<byte>();
-        NeedWeapon8 = binaryReader.Read<byte>();
-        NeedWeapon9 = binaryReader.Read<byte>();
-        NeedWeapon10 = binaryReader.Read<byte>();
-        NeedWeapon11 = binaryReader.Read<byte>();
-        NeedWeapon12 = binaryReader.Read<byte>();
-        NeedWeapon13 = binaryReader.Read<byte>();
-        NeedWeapon14 = binaryReader.Read<byte>();
-        NeedWeapon15 = binaryReader.Read<byte>();
-        Shield = binaryReader.Read<byte>();
-        SP = binaryReader.Read<ushort>();
-        MP = binaryReader.Read<ushort>();
-        ReadyTime = binaryReader.Read<byte>();
-        ResetTime = binaryReader.Read<ushort>();
-        AttackRange = binaryReader.Read<byte>();
-        StateType = binaryReader.Read<byte>();
-        AttribType = binaryReader.Read<byte>();
-        Disable = binaryReader.Read<ushort>();
-        PrevSkill = binaryReader.Read<ushort>();
-        SuccessType = binaryReader.Read<byte>();
-        SuccessValue = binaryReader.Read<byte>();
-        TargetType = binaryReader.Read<byte>();
-        ApplyRange = binaryReader.Read<byte>();
-        MultiAttack = binaryReader.Read<byte>();
-        KeepTime = binaryReader.Read<ushort>();
-        Weapon1 = binaryReader.Read<byte>();
-        Weapon2 = binaryReader.Read<byte>();
-        WeaponValue = binaryReader.Read<byte>();
-        Bag = binaryReader.Read<byte>();
-        Arrow = binaryReader.Read<ushort>();
-        DamageType = binaryReader.Read<byte>();
-        DamageHP = binaryReader.Read<ushort>();
-        DamageSP = binaryReader.Read<ushort>();
-        DamageMP = binaryReader.Read<ushort>();
-        TimeDamageType = binaryReader.Read<byte>();
-        TimeDamageHP = binaryReader.Read<ushort>();
-        TimeDamageSP = binaryReader.Read<ushort>();
-        TimeDamageMP = binaryReader.Read<ushort>();
-        AddDamageHP = binaryReader.Read<ushort>();
-        AddDamageSP = binaryReader.Read<ushort>();
-        AddDamageMP = binaryReader.Read<ushort>();
-        AbilityType1 = binaryReader.Read<byte>();
-        AbilityValue1 = binaryReader.Read<ushort>();
-        AbilityType2 = binaryReader.Read<byte>();
-        AbilityValue2 = binaryReader.Read<ushort>();
-        AbilityType3 = binaryReader.Read<byte>();
-        AbilityValue3 = binaryReader.Read<ushort>();
-
-        if (episode >= Episode.EP6)
-        {
-            AbilityType4 = binaryReader.Read<byte>();
-            AbilityValue4 = binaryReader.Read<ushort>();
-            AbilityType5 = binaryReader.Read<byte>();
-            AbilityValue5 = binaryReader.Read<ushort>();
-            AbilityType6 = binaryReader.Read<byte>();
-            AbilityValue6 = binaryReader.Read<ushort>();
-            AbilityType7 = binaryReader.Read<byte>();
-            AbilityValue7 = binaryReader.Read<ushort>();
-            AbilityType8 = binaryReader.Read<byte>();
-            AbilityValue8 = binaryReader.Read<ushort>();
-            AbilityType9 = binaryReader.Read<byte>();
-            AbilityValue9 = binaryReader.Read<ushort>();
-            AbilityType10 = binaryReader.Read<byte>();
-            AbilityValue10 = binaryReader.Read<ushort>();
-        }
-
-        HealHP = binaryReader.Read<ushort>();
-        HealSP = binaryReader.Read<ushort>();
-        HealMP = binaryReader.Read<ushort>();
-        TimeHealHP = binaryReader.Read<ushort>();
-        TimeHealSP = binaryReader.Read<ushort>();
-        TimeHealMP = binaryReader.Read<ushort>();
-        DefenseType = binaryReader.Read<byte>();
-        DefenseValue = binaryReader.Read<byte>();
-        LimitHP = binaryReader.Read<byte>();
-        FixRange = binaryReader.Read<byte>();
-        ChangeType = binaryReader.Read<ushort>();
-        ChangeLevel = binaryReader.Read<ushort>();
-    }
-
-    /// <summary>
-    /// The skill Id. It's not part of the structure itself, but it's assigned manually when reading the file.
-    /// </summary>
-    public int Id { get; set; }
-
     /// <summary>
     /// The skill name
     /// </summary>
@@ -582,127 +456,237 @@ public sealed class SkillRecord : IBinary
     /// </summary>
     public ushort ChangeLevel { get; set; }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Read(SBinaryReader binaryReader)
     {
-        var episode = Episode.EP5;
+        var episode = binaryReader.SerializationOptions.Episode;
 
-        if (options.Length > 0)
-        {
-            episode = (Episode)options[0];
-        }
-
-        var buffer = new List<byte>();
-        buffer.AddRange(Name.GetLengthPrefixedBytes());
-        buffer.AddRange(Description.GetLengthPrefixedBytes());
-        buffer.Add(SkillLevel);
-        buffer.AddRange(Icon.GetBytes());
-        buffer.AddRange(Animation.GetBytes());
+        Name = binaryReader.ReadString();
+        Description = binaryReader.ReadString();
+        SkillLevel = binaryReader.ReadByte();
+        Icon = binaryReader.ReadUInt16();
+        Animation = binaryReader.ReadUInt16();
 
         if (episode >= Episode.EP6)
         {
-            buffer.Add(Effect);
+            Effect = binaryReader.ReadByte();
         }
 
-        buffer.Add(ToggleType);
-        buffer.AddRange(Sound.GetBytes());
-        buffer.AddRange(RequiredLevel.GetBytes());
-        buffer.Add(Country);
-        buffer.Add(AttackFighter);
-        buffer.Add(DefenseFighter);
-        buffer.Add(PatrolRogue);
-        buffer.Add(ShootRogue);
-        buffer.Add(AttackMage);
-        buffer.Add(DefenseMage);
-        buffer.Add(Grow);
-        buffer.Add(Point);
-        buffer.Add(TypeShow);
-        buffer.Add(TypeAttack);
-        buffer.Add(TypeEffect);
-        buffer.AddRange(TypeDetail.GetBytes());
-        buffer.Add(NeedWeapon1);
-        buffer.Add(NeedWeapon2);
-        buffer.Add(NeedWeapon3);
-        buffer.Add(NeedWeapon4);
-        buffer.Add(NeedWeapon5);
-        buffer.Add(NeedWeapon6);
-        buffer.Add(NeedWeapon7);
-        buffer.Add(NeedWeapon8);
-        buffer.Add(NeedWeapon9);
-        buffer.Add(NeedWeapon10);
-        buffer.Add(NeedWeapon11);
-        buffer.Add(NeedWeapon12);
-        buffer.Add(NeedWeapon13);
-        buffer.Add(NeedWeapon14);
-        buffer.Add(NeedWeapon15);
-        buffer.Add(Shield);
-        buffer.AddRange(SP.GetBytes());
-        buffer.AddRange(MP.GetBytes());
-        buffer.Add(ReadyTime);
-        buffer.AddRange(ResetTime.GetBytes());
-        buffer.Add(AttackRange);
-        buffer.Add(StateType);
-        buffer.Add(AttribType);
-        buffer.AddRange(Disable.GetBytes());
-        buffer.AddRange(PrevSkill.GetBytes());
-        buffer.Add(SuccessType);
-        buffer.Add(SuccessValue);
-        buffer.Add(TargetType);
-        buffer.Add(ApplyRange);
-        buffer.Add(MultiAttack);
-        buffer.AddRange(KeepTime.GetBytes());
-        buffer.Add(Weapon1);
-        buffer.Add(Weapon2);
-        buffer.Add(WeaponValue);
-        buffer.Add(Bag);
-        buffer.AddRange(Arrow.GetBytes());
-        buffer.Add(DamageType);
-        buffer.AddRange(DamageHP.GetBytes());
-        buffer.AddRange(DamageSP.GetBytes());
-        buffer.AddRange(DamageMP.GetBytes());
-        buffer.Add(TimeDamageType);
-        buffer.AddRange(TimeDamageHP.GetBytes());
-        buffer.AddRange(TimeDamageSP.GetBytes());
-        buffer.AddRange(TimeDamageMP.GetBytes());
-        buffer.AddRange(AddDamageHP.GetBytes());
-        buffer.AddRange(AddDamageSP.GetBytes());
-        buffer.AddRange(AddDamageMP.GetBytes());
-        buffer.Add(AbilityType1);
-        buffer.AddRange(AbilityValue1.GetBytes());
-        buffer.Add(AbilityType2);
-        buffer.AddRange(AbilityValue2.GetBytes());
-        buffer.Add(AbilityType3);
-        buffer.AddRange(AbilityValue3.GetBytes());
+        ToggleType = binaryReader.ReadByte();
+        Sound = binaryReader.ReadUInt16();
+        RequiredLevel = binaryReader.ReadUInt16();
+        Country = binaryReader.ReadByte();
+        AttackFighter = binaryReader.ReadByte();
+        DefenseFighter = binaryReader.ReadByte();
+        PatrolRogue = binaryReader.ReadByte();
+        ShootRogue = binaryReader.ReadByte();
+        AttackMage = binaryReader.ReadByte();
+        DefenseMage = binaryReader.ReadByte();
+        Grow = binaryReader.ReadByte();
+        Point = binaryReader.ReadByte();
+        TypeShow = binaryReader.ReadByte();
+        TypeAttack = binaryReader.ReadByte();
+        TypeEffect = binaryReader.ReadByte();
+        TypeDetail = binaryReader.ReadUInt16();
+        NeedWeapon1 = binaryReader.ReadByte();
+        NeedWeapon2 = binaryReader.ReadByte();
+        NeedWeapon3 = binaryReader.ReadByte();
+        NeedWeapon4 = binaryReader.ReadByte();
+        NeedWeapon5 = binaryReader.ReadByte();
+        NeedWeapon6 = binaryReader.ReadByte();
+        NeedWeapon7 = binaryReader.ReadByte();
+        NeedWeapon8 = binaryReader.ReadByte();
+        NeedWeapon9 = binaryReader.ReadByte();
+        NeedWeapon10 = binaryReader.ReadByte();
+        NeedWeapon11 = binaryReader.ReadByte();
+        NeedWeapon12 = binaryReader.ReadByte();
+        NeedWeapon13 = binaryReader.ReadByte();
+        NeedWeapon14 = binaryReader.ReadByte();
+        NeedWeapon15 = binaryReader.ReadByte();
+        Shield = binaryReader.ReadByte();
+        SP = binaryReader.ReadUInt16();
+        MP = binaryReader.ReadUInt16();
+        ReadyTime = binaryReader.ReadByte();
+        ResetTime = binaryReader.ReadUInt16();
+        AttackRange = binaryReader.ReadByte();
+        StateType = binaryReader.ReadByte();
+        AttribType = binaryReader.ReadByte();
+        Disable = binaryReader.ReadUInt16();
+        PrevSkill = binaryReader.ReadUInt16();
+        SuccessType = binaryReader.ReadByte();
+        SuccessValue = binaryReader.ReadByte();
+        TargetType = binaryReader.ReadByte();
+        ApplyRange = binaryReader.ReadByte();
+        MultiAttack = binaryReader.ReadByte();
+        KeepTime = binaryReader.ReadUInt16();
+        Weapon1 = binaryReader.ReadByte();
+        Weapon2 = binaryReader.ReadByte();
+        WeaponValue = binaryReader.ReadByte();
+        Bag = binaryReader.ReadByte();
+        Arrow = binaryReader.ReadUInt16();
+        DamageType = binaryReader.ReadByte();
+        DamageHP = binaryReader.ReadUInt16();
+        DamageSP = binaryReader.ReadUInt16();
+        DamageMP = binaryReader.ReadUInt16();
+        TimeDamageType = binaryReader.ReadByte();
+        TimeDamageHP = binaryReader.ReadUInt16();
+        TimeDamageSP = binaryReader.ReadUInt16();
+        TimeDamageMP = binaryReader.ReadUInt16();
+        AddDamageHP = binaryReader.ReadUInt16();
+        AddDamageSP = binaryReader.ReadUInt16();
+        AddDamageMP = binaryReader.ReadUInt16();
+        AbilityType1 = binaryReader.ReadByte();
+        AbilityValue1 = binaryReader.ReadUInt16();
+        AbilityType2 = binaryReader.ReadByte();
+        AbilityValue2 = binaryReader.ReadUInt16();
+        AbilityType3 = binaryReader.ReadByte();
+        AbilityValue3 = binaryReader.ReadUInt16();
 
         if (episode >= Episode.EP6)
         {
-            buffer.Add(AbilityType4);
-            buffer.AddRange(AbilityValue4.GetBytes());
-            buffer.Add(AbilityType5);
-            buffer.AddRange(AbilityValue5.GetBytes());
-            buffer.Add(AbilityType6);
-            buffer.AddRange(AbilityValue6.GetBytes());
-            buffer.Add(AbilityType7);
-            buffer.AddRange(AbilityValue7.GetBytes());
-            buffer.Add(AbilityType8);
-            buffer.AddRange(AbilityValue8.GetBytes());
-            buffer.Add(AbilityType9);
-            buffer.AddRange(AbilityValue9.GetBytes());
-            buffer.Add(AbilityType10);
-            buffer.AddRange(AbilityValue10.GetBytes());
+            AbilityType4 = binaryReader.ReadByte();
+            AbilityValue4 = binaryReader.ReadUInt16();
+            AbilityType5 = binaryReader.ReadByte();
+            AbilityValue5 = binaryReader.ReadUInt16();
+            AbilityType6 = binaryReader.ReadByte();
+            AbilityValue6 = binaryReader.ReadUInt16();
+            AbilityType7 = binaryReader.ReadByte();
+            AbilityValue7 = binaryReader.ReadUInt16();
+            AbilityType8 = binaryReader.ReadByte();
+            AbilityValue8 = binaryReader.ReadUInt16();
+            AbilityType9 = binaryReader.ReadByte();
+            AbilityValue9 = binaryReader.ReadUInt16();
+            AbilityType10 = binaryReader.ReadByte();
+            AbilityValue10 = binaryReader.ReadUInt16();
         }
 
-        buffer.AddRange(HealHP.GetBytes());
-        buffer.AddRange(HealSP.GetBytes());
-        buffer.AddRange(HealMP.GetBytes());
-        buffer.AddRange(TimeHealHP.GetBytes());
-        buffer.AddRange(TimeHealSP.GetBytes());
-        buffer.AddRange(TimeHealMP.GetBytes());
-        buffer.Add(DefenseType);
-        buffer.Add(DefenseValue);
-        buffer.Add(LimitHP);
-        buffer.Add(FixRange);
-        buffer.AddRange(ChangeType.GetBytes());
-        buffer.AddRange(ChangeLevel.GetBytes());
-        return buffer;
+        HealHP = binaryReader.ReadUInt16();
+        HealSP = binaryReader.ReadUInt16();
+        HealMP = binaryReader.ReadUInt16();
+        TimeHealHP = binaryReader.ReadUInt16();
+        TimeHealSP = binaryReader.ReadUInt16();
+        TimeHealMP = binaryReader.ReadUInt16();
+        DefenseType = binaryReader.ReadByte();
+        DefenseValue = binaryReader.ReadByte();
+        LimitHP = binaryReader.ReadByte();
+        FixRange = binaryReader.ReadByte();
+        ChangeType = binaryReader.ReadUInt16();
+        ChangeLevel = binaryReader.ReadUInt16();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        var episode = binaryWriter.SerializationOptions.Episode;
+
+        binaryWriter.WriteLengthPrefixedString(Name);
+        binaryWriter.WriteLengthPrefixedString(Description);
+        binaryWriter.Write(SkillLevel);
+        binaryWriter.Write(Icon);
+        binaryWriter.Write(Animation);
+
+        if (episode >= Episode.EP6)
+        {
+            binaryWriter.Write(Effect);
+        }
+
+        binaryWriter.Write(ToggleType);
+        binaryWriter.Write(Sound);
+        binaryWriter.Write(RequiredLevel);
+        binaryWriter.Write(Country);
+        binaryWriter.Write(AttackFighter);
+        binaryWriter.Write(DefenseFighter);
+        binaryWriter.Write(PatrolRogue);
+        binaryWriter.Write(ShootRogue);
+        binaryWriter.Write(AttackMage);
+        binaryWriter.Write(DefenseMage);
+        binaryWriter.Write(Grow);
+        binaryWriter.Write(Point);
+        binaryWriter.Write(TypeShow);
+        binaryWriter.Write(TypeAttack);
+        binaryWriter.Write(TypeEffect);
+        binaryWriter.Write(TypeDetail);
+        binaryWriter.Write(NeedWeapon1);
+        binaryWriter.Write(NeedWeapon2);
+        binaryWriter.Write(NeedWeapon3);
+        binaryWriter.Write(NeedWeapon4);
+        binaryWriter.Write(NeedWeapon5);
+        binaryWriter.Write(NeedWeapon6);
+        binaryWriter.Write(NeedWeapon7);
+        binaryWriter.Write(NeedWeapon8);
+        binaryWriter.Write(NeedWeapon9);
+        binaryWriter.Write(NeedWeapon10);
+        binaryWriter.Write(NeedWeapon11);
+        binaryWriter.Write(NeedWeapon12);
+        binaryWriter.Write(NeedWeapon13);
+        binaryWriter.Write(NeedWeapon14);
+        binaryWriter.Write(NeedWeapon15);
+        binaryWriter.Write(Shield);
+        binaryWriter.Write(SP);
+        binaryWriter.Write(MP);
+        binaryWriter.Write(ReadyTime);
+        binaryWriter.Write(ResetTime);
+        binaryWriter.Write(AttackRange);
+        binaryWriter.Write(StateType);
+        binaryWriter.Write(AttribType);
+        binaryWriter.Write(Disable);
+        binaryWriter.Write(PrevSkill);
+        binaryWriter.Write(SuccessType);
+        binaryWriter.Write(SuccessValue);
+        binaryWriter.Write(TargetType);
+        binaryWriter.Write(ApplyRange);
+        binaryWriter.Write(MultiAttack);
+        binaryWriter.Write(KeepTime);
+        binaryWriter.Write(Weapon1);
+        binaryWriter.Write(Weapon2);
+        binaryWriter.Write(WeaponValue);
+        binaryWriter.Write(Bag);
+        binaryWriter.Write(Arrow);
+        binaryWriter.Write(DamageType);
+        binaryWriter.Write(DamageHP);
+        binaryWriter.Write(DamageSP);
+        binaryWriter.Write(DamageMP);
+        binaryWriter.Write(TimeDamageType);
+        binaryWriter.Write(TimeDamageHP);
+        binaryWriter.Write(TimeDamageSP);
+        binaryWriter.Write(TimeDamageMP);
+        binaryWriter.Write(AddDamageHP);
+        binaryWriter.Write(AddDamageSP);
+        binaryWriter.Write(AddDamageMP);
+        binaryWriter.Write(AbilityType1);
+        binaryWriter.Write(AbilityValue1);
+        binaryWriter.Write(AbilityType2);
+        binaryWriter.Write(AbilityValue2);
+        binaryWriter.Write(AbilityType3);
+        binaryWriter.Write(AbilityValue3);
+
+        if (episode >= Episode.EP6)
+        {
+            binaryWriter.Write(AbilityType4);
+            binaryWriter.Write(AbilityValue4);
+            binaryWriter.Write(AbilityType5);
+            binaryWriter.Write(AbilityValue5);
+            binaryWriter.Write(AbilityType6);
+            binaryWriter.Write(AbilityValue6);
+            binaryWriter.Write(AbilityType7);
+            binaryWriter.Write(AbilityValue7);
+            binaryWriter.Write(AbilityType8);
+            binaryWriter.Write(AbilityValue8);
+            binaryWriter.Write(AbilityType9);
+            binaryWriter.Write(AbilityValue9);
+            binaryWriter.Write(AbilityType10);
+            binaryWriter.Write(AbilityValue10);
+        }
+
+        binaryWriter.Write(HealHP);
+        binaryWriter.Write(HealSP);
+        binaryWriter.Write(HealMP);
+        binaryWriter.Write(TimeHealHP);
+        binaryWriter.Write(TimeHealSP);
+        binaryWriter.Write(TimeHealMP);
+        binaryWriter.Write(DefenseType);
+        binaryWriter.Write(DefenseValue);
+        binaryWriter.Write(LimitHP);
+        binaryWriter.Write(FixRange);
+        binaryWriter.Write(ChangeType);
+        binaryWriter.Write(ChangeLevel);
     }
 }

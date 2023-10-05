@@ -1,54 +1,46 @@
-﻿using Newtonsoft.Json;
-using Parsec.Common;
-using Parsec.Extensions;
+﻿using Parsec.Common;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class GateTarget : IBinary
+public class GateTarget : ISerializable
 {
-    public short MapId { get; set; }
+    public ushort MapId { get; set; }
+
     public Vector3 Position { get; set; }
+
     public string TargetName { get; set; } = string.Empty;
 
     /// <summary>
     /// Teleporting gold cost
     /// </summary>
-    public int Cost { get; set; }
+    public uint Cost { get; set; }
 
-    public GateTarget(SBinaryReader binaryReader, Episode episode)
+    public void Read(SBinaryReader binaryReader)
     {
-        MapId = binaryReader.Read<short>();
-        Position = new Vector3(binaryReader);
+        MapId = binaryReader.ReadUInt16();
+        Position = binaryReader.Read<Vector3>();
 
-        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
-            TargetName = binaryReader.ReadString(false);
+        if (binaryReader.SerializationOptions.Episode < Episode.EP8)
+        {
+            TargetName = binaryReader.ReadString();
+        }
 
-        Cost = binaryReader.Read<int>();
+        Cost = binaryReader.ReadUInt32();
     }
 
-    [JsonConstructor]
-    public GateTarget()
+    public void Write(SBinaryWriter binaryWriter)
     {
-    }
+        binaryWriter.Write(MapId);
+        binaryWriter.Write(Position);
 
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var episode = Episode.EP5;
+        if (binaryWriter.SerializationOptions.Episode < Episode.EP8)
+        {
+            binaryWriter.Write(TargetName);
+        }
 
-        if (options.Length > 0)
-            episode = (Episode)options[0];
-
-        var buffer = new List<byte>();
-        buffer.AddRange(MapId.GetBytes());
-        buffer.AddRange(Position.GetBytes());
-
-        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
-            buffer.AddRange(TargetName.GetLengthPrefixedBytes(false));
-
-        buffer.AddRange(Cost.GetBytes());
-        return buffer;
+        binaryWriter.Write(Cost);
     }
 }

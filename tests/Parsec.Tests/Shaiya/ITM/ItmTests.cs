@@ -16,15 +16,15 @@ public class ItmTests
         string jsonPath = $"Shaiya/ITM/{fileName}.json";
         string newObjPath = $"Shaiya/ITM/new_{fileName}";
 
-        var itm = Reader.ReadFromFile<Parsec.Shaiya.ITM.ITM>(filePath);
+        var itm = Reader.ReadFromFile<Parsec.Shaiya.Itm.Itm>(filePath);
         itm.WriteJson(jsonPath);
-        var itmFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.ITM.ITM>(jsonPath);
+        var itmFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Itm.Itm>(jsonPath);
 
         // Check bytes
         Assert.Equal(itm.GetBytes(), itmFromJson.GetBytes());
 
         itmFromJson.Write(newObjPath);
-        var newItm = Reader.ReadFromFile<Parsec.Shaiya.ITM.ITM>(newObjPath);
+        var newItm = Reader.ReadFromFile<Parsec.Shaiya.Itm.Itm>(newObjPath);
 
         // Check bytes
         Assert.Equal(itm.GetBytes(), newItm.GetBytes());

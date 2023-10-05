@@ -1,49 +1,23 @@
-﻿using Newtonsoft.Json;
-using Parsec.Attributes;
+﻿using Parsec.Serialization;
+using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.NpcQuest
+namespace Parsec.Shaiya.NpcQuest;
+
+public class NpcQuestTran : ISerializable
 {
-    public class NpcQuestTran
+    public string Name { get; set; } = string.Empty;
+
+    public string WelcomeMessage { get; set; } = string.Empty;
+
+    public void Read(SBinaryReader binaryReader)
     {
-        [ShaiyaProperty]
-        [LengthPrefixedString]
-        public string Name { get; set; } = string.Empty;
-
-        [ShaiyaProperty]
-        [LengthPrefixedString]
-        public string WelcomeMessage { get; set; } = string.Empty;
-
-        [JsonConstructor]
-        public NpcQuestTran()
-        {
-        }
+        Name = binaryReader.ReadString();
+        WelcomeMessage = binaryReader.ReadString();
     }
 
-    public class GateKeeperQuestTran
+    public void Write(SBinaryWriter binaryWriter)
     {
-        [ShaiyaProperty]
-        [LengthPrefixedString]
-        public string Name { get; set; } = string.Empty;
-
-        [ShaiyaProperty]
-        [LengthPrefixedString]
-        public string WelcomeMessage { get; set; } = string.Empty;
-
-        [ShaiyaProperty]
-        [LengthPrefixedString]
-        public string TeleportName1 { get; set; } = string.Empty;
-
-        [ShaiyaProperty]
-        [LengthPrefixedString]
-        public string TeleportName2 { get; set; } = string.Empty;
-
-        [ShaiyaProperty]
-        [LengthPrefixedString]
-        public string TeleportName3 { get; set; } = string.Empty;
-
-        [JsonConstructor]
-        public GateKeeperQuestTran()
-        {
-        }
+        binaryWriter.WriteLengthPrefixedString(Name, false);
+        binaryWriter.WriteLengthPrefixedString(WelcomeMessage, false);
     }
 }

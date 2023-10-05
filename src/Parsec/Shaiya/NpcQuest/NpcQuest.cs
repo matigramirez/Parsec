@@ -1,67 +1,90 @@
-﻿using Parsec.Common;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.NpcQuest;
 
 public class NpcQuest : SData.SData
 {
-    public List<Merchant> Merchants { get; } = new();
-    public List<GateKeeper> Gatekeepers { get; } = new();
-    public List<StandardNpc> Blacksmiths { get; } = new();
-    public List<StandardNpc> PvpManagers { get; } = new();
-    public List<StandardNpc> GamblingHouses { get; } = new();
-    public List<StandardNpc> Warehouses { get; } = new();
-    public List<StandardNpc> NormalNpcs { get; } = new();
-    public List<StandardNpc> Guards { get; } = new();
-    public List<StandardNpc> Animals { get; } = new();
-    public List<StandardNpc> Apprentices { get; } = new();
-    public List<StandardNpc> GuildMasters { get; } = new();
-    public List<StandardNpc> DeadNpcs { get; } = new();
-    public List<StandardNpc> CombatCommanders { get; } = new();
+    public List<Merchant> Merchants { get; set; } = new();
+
+    public List<NpcQuestGateKeeper> Gatekeepers { get; set; } = new();
+
+    public List<StandardNpc> Blacksmiths { get; set; } = new();
+
+    public List<StandardNpc> PvpManagers { get; set; } = new();
+
+    public List<StandardNpc> GamblingHouses { get; set; } = new();
+
+    public List<StandardNpc> Warehouses { get; set; } = new();
+
+    public List<StandardNpc> NormalNpcs { get; set; } = new();
+
+    public List<StandardNpc> Guards { get; set; } = new();
+
+    public List<StandardNpc> Animals { get; set; } = new();
+
+    public List<StandardNpc> Apprentices { get; set; } = new();
+
+    public List<StandardNpc> GuildMasters { get; set; } = new();
+
+    public List<StandardNpc> DeadNpcs { get; set; } = new();
+
+    public List<StandardNpc> CombatCommanders { get; set; } = new();
+
     public byte[]? UnknownArray { get; set; }
-    public List<Quest> Quests { get; } = new();
 
-    public override void Read()
+    public List<Quest> Quests { get; set; } = new();
+
+    protected override void Read(SBinaryReader binaryReader)
     {
-        ReadMerchants();
-        ReadGatekeepers();
-        ReadStandardNpcs(Blacksmiths);
-        ReadStandardNpcs(PvpManagers);
-        ReadStandardNpcs(GamblingHouses);
-        ReadStandardNpcs(Warehouses);
-        ReadStandardNpcs(NormalNpcs);
-        ReadStandardNpcs(Guards);
-        ReadStandardNpcs(Animals);
-        ReadStandardNpcs(Apprentices);
-        ReadStandardNpcs(GuildMasters);
-        ReadStandardNpcs(DeadNpcs);
-        ReadStandardNpcs(CombatCommanders);
-        ReadUnknownArray();
-        ReadQuests();
+        ReadMerchants(binaryReader);
+        ReadGatekeepers(binaryReader);
+        ReadStandardNpcs(binaryReader, Blacksmiths);
+        ReadStandardNpcs(binaryReader, PvpManagers);
+        ReadStandardNpcs(binaryReader, GamblingHouses);
+        ReadStandardNpcs(binaryReader, Warehouses);
+        ReadStandardNpcs(binaryReader, NormalNpcs);
+        ReadStandardNpcs(binaryReader, Guards);
+        ReadStandardNpcs(binaryReader, Animals);
+        ReadStandardNpcs(binaryReader, Apprentices);
+        ReadStandardNpcs(binaryReader, GuildMasters);
+        ReadStandardNpcs(binaryReader, DeadNpcs);
+        ReadStandardNpcs(binaryReader, CombatCommanders);
+        ReadUnknownArray(binaryReader);
+        ReadQuests(binaryReader);
     }
 
-    private void ReadMerchants()
+    private void ReadMerchants(SBinaryReader binaryReader)
     {
-        int merchantCount = _binaryReader.Read<int>();
-        for (int i = 0; i < merchantCount; i++)
-            Merchants.Add(new Merchant(_binaryReader, Episode));
+        var merchantCount = binaryReader.ReadInt32();
+        for (var i = 0; i < merchantCount; i++)
+        {
+            var merchant = binaryReader.Read<Merchant>();
+            Merchants.Add(merchant);
+        }
     }
 
-    private void ReadGatekeepers()
+    private void ReadGatekeepers(SBinaryReader binaryReader)
     {
-        int gateKeeperCount = _binaryReader.Read<int>();
-        for (int i = 0; i < gateKeeperCount; i++)
-            Gatekeepers.Add(new GateKeeper(_binaryReader, Episode));
+        var gateKeeperCount = binaryReader.ReadInt32();
+        for (var i = 0; i < gateKeeperCount; i++)
+        {
+            var gateKeeper = binaryReader.Read<NpcQuestGateKeeper>();
+            Gatekeepers.Add(gateKeeper);
+        }
     }
 
-    private void ReadStandardNpcs(ICollection<StandardNpc> npcList)
+    private void ReadStandardNpcs(SBinaryReader binaryReader, ICollection<StandardNpc> npcList)
     {
-        int npcCount = _binaryReader.Read<int>();
-        for (int i = 0; i < npcCount; i++)
-            npcList.Add(new StandardNpc(_binaryReader, Episode));
+        var npcCount = binaryReader.ReadInt32();
+        for (var i = 0; i < npcCount; i++)
+        {
+            var standardNpc = binaryReader.Read<StandardNpc>();
+            npcList.Add(standardNpc);
+        }
     }
 
-    private void ReadUnknownArray()
+    private void ReadUnknownArray(SBinaryReader binaryReader)
     {
         var unknownBuffer = new List<byte>();
 
@@ -70,16 +93,16 @@ public class NpcQuest : SData.SData
         {
             for (int j = 0; j < 256; j++)
             {
-                int value1 = _binaryReader.Read<int>();
-                byte[] array1 = _binaryReader.ReadBytes(2 * value1);
+                int value1 = binaryReader.ReadInt32();
+                byte[] array1 = binaryReader.ReadBytes(2 * value1);
 
-                unknownBuffer.AddRange(value1.GetBytes());
+                unknownBuffer.AddRange(BitConverter.GetBytes(value1));
                 unknownBuffer.AddRange(array1);
 
-                int value2 = _binaryReader.Read<int>();
-                byte[] array2 = _binaryReader.ReadBytes(2 * value2);
+                int value2 = binaryReader.ReadInt32();
+                byte[] array2 = binaryReader.ReadBytes(2 * value2);
 
-                unknownBuffer.AddRange(value2.GetBytes());
+                unknownBuffer.AddRange(BitConverter.GetBytes(value2));
                 unknownBuffer.AddRange(array2);
             }
         }
@@ -87,34 +110,32 @@ public class NpcQuest : SData.SData
         UnknownArray = unknownBuffer.ToArray();
     }
 
-    private void ReadQuests()
+    private void ReadQuests(SBinaryReader binaryReader)
     {
-        int questCount = _binaryReader.Read<int>();
-        for (int i = 0; i < questCount; i++)
-            Quests.Add(new Quest(_binaryReader, Episode));
+        var questCount = binaryReader.ReadInt32();
+        for (var i = 0; i < questCount; i++)
+        {
+            var quest = binaryReader.Read<Quest>();
+            Quests.Add(quest);
+        }
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        if (episode == Episode.Unknown)
-            episode = Episode;
-
-        var buffer = new List<byte>();
-        buffer.AddRange(Merchants.GetBytes(true, episode));
-        buffer.AddRange(Gatekeepers.GetBytes(true, episode));
-        buffer.AddRange(Blacksmiths.GetBytes(true, episode));
-        buffer.AddRange(PvpManagers.GetBytes(true, episode));
-        buffer.AddRange(GamblingHouses.GetBytes(true, episode));
-        buffer.AddRange(Warehouses.GetBytes(true, episode));
-        buffer.AddRange(NormalNpcs.GetBytes(true, episode));
-        buffer.AddRange(Guards.GetBytes(true, episode));
-        buffer.AddRange(Animals.GetBytes(true, episode));
-        buffer.AddRange(Apprentices.GetBytes(true, episode));
-        buffer.AddRange(GuildMasters.GetBytes(true, episode));
-        buffer.AddRange(DeadNpcs.GetBytes(true, episode));
-        buffer.AddRange(CombatCommanders.GetBytes(true, episode));
-        buffer.AddRange(UnknownArray);
-        buffer.AddRange(Quests.GetBytes(true, episode));
-        return buffer;
+        binaryWriter.Write(Merchants.ToSerializable());
+        binaryWriter.Write(Gatekeepers.ToSerializable());
+        binaryWriter.Write(Blacksmiths.ToSerializable());
+        binaryWriter.Write(PvpManagers.ToSerializable());
+        binaryWriter.Write(GamblingHouses.ToSerializable());
+        binaryWriter.Write(Warehouses.ToSerializable());
+        binaryWriter.Write(NormalNpcs.ToSerializable());
+        binaryWriter.Write(Guards.ToSerializable());
+        binaryWriter.Write(Animals.ToSerializable());
+        binaryWriter.Write(Apprentices.ToSerializable());
+        binaryWriter.Write(GuildMasters.ToSerializable());
+        binaryWriter.Write(DeadNpcs.ToSerializable());
+        binaryWriter.Write(CombatCommanders.ToSerializable());
+        binaryWriter.Write(UnknownArray);
+        binaryWriter.Write(Quests.ToSerializable());
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
@@ -8,7 +7,7 @@ namespace Parsec.Shaiya.Common;
 /// <summary>
 /// Represents a vector in a 3-dimensional space
 /// </summary>
-public struct Vector3 : IBinary
+public struct Vector3 : ISerializable
 {
     /// <summary>
     /// 1st (first) element of the vector
@@ -33,20 +32,18 @@ public struct Vector3 : IBinary
         Z = z;
     }
 
-    public Vector3(SBinaryReader binaryReader)
+    public void Read(SBinaryReader binaryReader)
     {
-        X = binaryReader.Read<float>();
-        Y = binaryReader.Read<float>();
-        Z = binaryReader.Read<float>();
+        X = binaryReader.ReadSingle();
+        Y = binaryReader.ReadSingle();
+        Z = binaryReader.ReadSingle();
     }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(X.GetBytes());
-        buffer.AddRange(Y.GetBytes());
-        buffer.AddRange(Z.GetBytes());
-        return buffer;
+        binaryWriter.Write(X);
+        binaryWriter.Write(Y);
+        binaryWriter.Write(Z);
     }
 
     public static Vector3 operator +(Vector3 vec1, Vector3 vec2) => new(vec1.X + vec2.X, vec1.Y + vec2.Y, vec1.Z + vec2.Z);

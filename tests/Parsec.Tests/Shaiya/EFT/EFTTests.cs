@@ -6,7 +6,7 @@ public class EftTests
     public void EftReadWriteTest()
     {
         const string filePath = "Shaiya/EFT/Monster.EFT";
-        var eft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(filePath);
+        var eft = Reader.ReadFromFile<Parsec.Shaiya.Eft.Eft>(filePath);
 
         // Check original EFT values
         Assert.Empty(eft.Objects);
@@ -17,7 +17,7 @@ public class EftTests
         // Export to json
         const string jsonPath = "Shaiya/EFT/Monster.EFT.json";
         eft.WriteJson(jsonPath);
-        var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.EFT.EFT>(jsonPath);
+        var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Eft.Eft>(jsonPath);
 
         // Check fields
         Assert.Equal(eft.Objects.Count, eftFromJson.Objects.Count);
@@ -28,7 +28,7 @@ public class EftTests
         const string newEftPath = "Shaiya/EFT/Monster.new.EFT";
         eftFromJson.Write(newEftPath);
 
-        var newEft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(newEftPath);
+        var newEft = Reader.ReadFromFile<Parsec.Shaiya.Eft.Eft>(newEftPath);
 
         // Check fields
         Assert.Equal(eft.Objects.Count, newEft.Objects.Count);
@@ -60,19 +60,19 @@ public class EftTests
         string jsonPath = $"Shaiya/EFT/{fileName}.json";
         string newObjPath = $"Shaiya/EFT/new_{fileName}";
 
-        var eft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(filePath);
+        var eft = Reader.ReadFromFile<Parsec.Shaiya.Eft.Eft>(filePath);
         eft.Write(outputPath);
         eft.WriteJson(jsonPath);
 
-        var outputEft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(outputPath);
-        var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.EFT.EFT>(jsonPath);
+        var outputEft = Reader.ReadFromFile<Parsec.Shaiya.Eft.Eft>(outputPath);
+        var eftFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Eft.Eft>(jsonPath);
 
         // Check bytes
         Assert.Equal(eft.GetBytes(), outputEft.GetBytes());
         // Assert.Equal(eft.GetBytes(), eftFromJson.GetBytes());
 
         eftFromJson.Write(newObjPath);
-        var newEft = Reader.ReadFromFile<Parsec.Shaiya.EFT.EFT>(newObjPath);
+        var newEft = Reader.ReadFromFile<Parsec.Shaiya.Eft.Eft>(newObjPath);
 
         // Since EFTs use different encodings on texts, the EFT -> JSON -> EFT conversion will modify the strings,
         // so a checksum can't be done here, that's why only list lengths will be compared

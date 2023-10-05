@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Seff;
@@ -8,45 +8,29 @@ namespace Parsec.Shaiya.Seff;
 public sealed class Seff : FileBase
 {
     public int Format { get; set; }
-    public TimeStamp TimeStamp;
-    public List<Record> Records { get; } = new();
+
+    public SeffTimeStamp TimeStamp;
+
+    public List<SeffRecord> Records { get; set; } = new();
 
     [JsonIgnore]
     public override string Extension => "seff";
 
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        Format = _binaryReader.Read<int>();
-        TimeStamp.Year = _binaryReader.Read<short>();
-        TimeStamp.Month = _binaryReader.Read<short>();
-        TimeStamp.Day = _binaryReader.Read<short>();
-        TimeStamp.Hour = _binaryReader.Read<short>();
-        TimeStamp.Minute = _binaryReader.Read<short>();
-        TimeStamp.Second = _binaryReader.Read<short>();
+        Format = binaryReader.ReadInt32();
+        binaryReader.SerializationOptions.ExtraOption = Format;
 
-        int recordCount = _binaryReader.Read<int>();
-        for (int i = 0; i < recordCount; i++)
-        {
-            var record = new Record(_binaryReader, Format);
-            Records.Add(record);
-        }
+        TimeStamp = binaryReader.Read<SeffTimeStamp>();
+        Records = binaryReader.ReadList<SeffRecord>().ToList();
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Format.GetBytes());
-        buffer.AddRange(TimeStamp.Year.GetBytes());
-        buffer.AddRange(TimeStamp.Month.GetBytes());
-        buffer.AddRange(TimeStamp.Day.GetBytes());
-        buffer.AddRange(TimeStamp.Hour.GetBytes());
-        buffer.AddRange(TimeStamp.Minute.GetBytes());
-        buffer.AddRange(TimeStamp.Second.GetBytes());
+        binaryWriter.SerializationOptions.ExtraOption = Format;
 
-        buffer.AddRange(Records.Count.GetBytes());
-        foreach (var effect in Records)
-            buffer.AddRange(effect.GetBytes(Format));
-
-        return buffer;
+        binaryWriter.Write(Format);
+        binaryWriter.Write(TimeStamp);
+        binaryWriter.Write(Records.ToSerializable());
     }
 }

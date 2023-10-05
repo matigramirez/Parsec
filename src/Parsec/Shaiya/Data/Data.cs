@@ -10,37 +10,20 @@ public class Data
         Saf = saf;
     }
 
-    public Data(string path)
+    public Data(string sahPath, string safPath)
     {
-        if (!FileHelper.FileExists(path))
-            throw new FileNotFoundException($"Data file not found at {path}");
-
-        switch (Path.GetExtension(path))
+        if (!FileHelper.FileExists(sahPath))
         {
-            case ".sah":
-                {
-                    Sah = Reader.ReadFromFile<Sah>(path);
-
-                    if (!FileHelper.FileExists(Sah.SafPath))
-                        throw new FileNotFoundException("A valid saf file must be placed in the same directory as the sah file.");
-
-                    Saf = new Saf(Sah.SafPath);
-                    break;
-                }
-            case ".saf":
-                {
-                    Saf = new Saf(path);
-
-                    if (!FileHelper.FileExists(Saf.SahPath))
-                        throw new FileNotFoundException("A valid sah file must be placed in the same directory as the saf file.");
-
-                    Sah = Reader.ReadFromFile<Sah>(Saf.SahPath);
-
-                    break;
-                }
-            default:
-                throw new ArgumentException("The provided path must belong to either a .sah or a .saf file");
+            throw new FileNotFoundException($"data.sah file not found at {sahPath}");
         }
+
+        if (!FileHelper.FileExists(safPath))
+        {
+            throw new FileNotFoundException($"data.saf file not found at {safPath}");
+        }
+
+        Sah = Reader.ReadFromFile<Sah>(sahPath);
+        Saf = new Saf(safPath);
     }
 
     /// <summary>

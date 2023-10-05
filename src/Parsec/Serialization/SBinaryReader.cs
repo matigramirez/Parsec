@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Serialization;
 
@@ -41,48 +42,6 @@ public sealed class SBinaryReader : IDisposable
     public long Length => _binaryReader.BaseStream.Length;
 
     /// <summary>
-    /// Reads a generic type from the byte buffer
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns>Read value</returns>
-    /// <exception cref="NotSupportedException">When the provided type is not supported</exception>
-    public T Read<T>()
-    {
-        var type = typeof(T);
-        return (T)Read(type);
-    }
-
-    /// <summary>
-    /// Reads a value from the byte buffer based on its <see cref="Type"/>
-    /// </summary>
-    /// <param name="type">The <see cref="Type"/> of the value to be read</param>
-    /// <returns>Read value as an object</returns>
-    /// <exception cref="NotSupportedException">When the provided <see cref="Type"/> is not supported</exception>
-    public object Read(Type type)
-    {
-        var typeCode = Type.GetTypeCode(type);
-
-        object value = typeCode switch
-        {
-            TypeCode.Byte => ReadByte(),
-            TypeCode.SByte => ReadSByte(),
-            TypeCode.Char => ReadChar(),
-            TypeCode.Boolean => ReadBoolean(),
-            TypeCode.Int16 => ReadInt16(),
-            TypeCode.UInt16 => ReadUInt16(),
-            TypeCode.Int32 => ReadInt32(),
-            TypeCode.UInt32 => ReadUInt32(),
-            TypeCode.Int64 => ReadInt64(),
-            TypeCode.UInt64 => ReadUInt64(),
-            TypeCode.Single => ReadSingle(),
-            TypeCode.Double => ReadDouble(),
-            _ => throw new NotSupportedException()
-        };
-
-        return value;
-    }
-
-    /// <summary>
     /// Reads a byte (unsigned)
     /// </summary>
     public byte ReadByte()
@@ -110,7 +69,7 @@ public sealed class SBinaryReader : IDisposable
     /// <summary>
     /// Reads a boolean value
     /// </summary>
-    public bool ReadBoolean()
+    public bool ReadBool()
     {
         return _binaryReader.ReadBoolean();
     }
@@ -196,20 +155,28 @@ public sealed class SBinaryReader : IDisposable
     public string ReadString(Encoding encoding, int length, bool removeStringTerminator = true)
     {
         if (length <= 0)
+        {
             return string.Empty;
+        }
 
         // If encoding is UTF16, length needs to be doubled, since UTF16 uses 2 bytes per character
         if (encoding.Equals(Encoding.Unicode))
+        {
             length *= 2;
+        }
 
         var stringBytes = ReadBytes(length);
-        string str = encoding.GetString(stringBytes, 0, length);
+        var str = encoding.GetString(stringBytes, 0, length);
 
         if (removeStringTerminator && str.Length > 1 && str[str.Length - 1] == '\0')
+        {
             str = str.Trim('\0');
+        }
 
         if (str == "\0")
+        {
             str = string.Empty;
+        }
 
         return str;
     }
@@ -270,6 +237,32 @@ public sealed class SBinaryReader : IDisposable
         using var tempMemoryStream = new MemoryStream();
         _binaryReader.BaseStream.CopyTo(tempMemoryStream);
         return tempMemoryStream.ToArray();
+    }
+
+    public T Read<T>() where T : ISerializable, new()
+    {
+        var instance = new T();
+        instance.Read(this);
+        return instance;
+    }
+
+    public IList<T> ReadList<T>(int count) where T : ISerializable, new()
+    {
+        var list = new List<T>();
+
+        for (var i = 0; i < count; i++)
+        {
+            var item = Read<T>();
+            list.Add(item);
+        }
+
+        return list;
+    }
+
+    public IList<T> ReadList<T>() where T : ISerializable, new()
+    {
+        var count = ReadInt32();
+        return ReadList<T>(count);
     }
 
     public void Dispose()

@@ -33,38 +33,43 @@ public abstract class SData : FileBase, IEncryptable
     public override string Extension => "SData";
 
     /// <inheritdoc />
-    public void DecryptBuffer(bool validateChecksum = false)
+    public void DecryptBuffer(SBinaryReader binaryReader, bool validateChecksum = false)
     {
-        var fileBuffer = _binaryReader.ReadAllBytes();
+        var fileBuffer = binaryReader.ReadAllBytes();
 
         if (!IsEncrypted(fileBuffer))
         {
-            _binaryReader.ResetOffset();
+            binaryReader.ResetOffset();
             return;
         }
 
         byte[] decryptedBuffer = Decrypt(fileBuffer, validateChecksum);
-
-        _binaryReader = new SBinaryReader(decryptedBuffer, _binaryReader.SerializationOptions);
+        binaryReader = new SBinaryReader(decryptedBuffer, binaryReader.SerializationOptions);
     }
 
     /// <inheritdoc />
     public byte[] GetEncryptedBytes()
     {
         var version = Episode >= Episode.EP8 ? SDataVersion.Binary : SDataVersion.Regular;
-        return Encrypt(GetBytes(Episode).ToArray(), version);
+        var serializationOptions = new BinarySerializationOptions(Episode, Encoding);
+
+        var memoryStream = new MemoryStream();
+        var binaryWriter = new SBinaryWriter(memoryStream, serializationOptions);
+        Write(binaryWriter);
+
+        byte[] encryptedBuffer = Encrypt(memoryStream.ToArray(), version);
+        return encryptedBuffer;
     }
 
     /// <inheritdoc />
     public void WriteEncrypted(string path)
     {
-        var version = Episode >= Episode.EP8 ? SDataVersion.Binary : SDataVersion.Regular;
-        byte[] encryptedBuffer = Encrypt(GetBytes(Episode).ToArray(), version);
+        var encryptedBuffer = GetEncryptedBytes();
         FileHelper.WriteFile(path, encryptedBuffer);
     }
 
     /// <inheritdoc />
-    public void WriteDecrypted(string path) => Write(path, Episode);
+    public void WriteDecrypted(string path) => Write(path);
 
     /// <summary>
     /// Checks if the file is encrypted with the SEED algorithm

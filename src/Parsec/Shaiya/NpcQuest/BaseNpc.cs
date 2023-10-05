@@ -1,114 +1,117 @@
 ﻿using Parsec.Common;
-using Parsec.Extensions;
 using Parsec.Serialization;
-using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public abstract class BaseNpc : IBinary
+public abstract class BaseNpc
 {
-    public NpcType Type { get; set; }
-    public short TypeId { get; set; }
+    public NpcType NpcType { get; set; }
+
+    public short NpcTypeId { get; set; }
+
     public int Model { get; set; }
+
     public int MoveDistance { get; set; }
+
     public int MoveSpeed { get; set; }
+
     public NpcFaction Faction { get; set; }
+
     public string Name { get; set; } = string.Empty;
+
     public string WelcomeMessage { get; set; } = string.Empty;
 
-    public List<short> InQuestIds { get; } = new();
-    public List<short> OutQuestIds { get; } = new();
+    public List<short> InQuestIds { get; set; } = new();
 
-    protected void ReadNpcBaseComplete(SBinaryReader binaryReader, Episode episode)
+    public List<short> OutQuestIds { get; set; } = new();
+
+    protected void ReadNpcBaseComplete(SBinaryReader binaryReader)
     {
         ReadBaseNpcFirstSegment(binaryReader);
-        ReadBaseNpcSecondSegment(binaryReader, episode);
+        ReadBaseNpcSecondSegment(binaryReader);
         ReadBaseNpcThirdSegment(binaryReader);
     }
 
     protected void ReadBaseNpcFirstSegment(SBinaryReader binaryReader)
     {
-        Type = (NpcType)binaryReader.Read<byte>();
-        TypeId = binaryReader.Read<short>();
+        NpcType = (NpcType)binaryReader.ReadByte();
+        NpcTypeId = binaryReader.ReadInt16();
     }
 
-    protected void WriteBaseNpcFirstSegmentBytes(List<byte> buffer)
+    protected void WriteBaseNpcFirstSegment(SBinaryWriter binaryWriter)
     {
-        buffer.Add((byte)Type);
-        buffer.AddRange(TypeId.GetBytes());
+        binaryWriter.Write((byte)NpcType);
+        binaryWriter.Write(NpcTypeId);
     }
 
-    protected void ReadBaseNpcSecondSegment(SBinaryReader binaryReader, Episode episode)
+    protected void ReadBaseNpcSecondSegment(SBinaryReader binaryReader)
     {
-        Model = binaryReader.Read<int>();
-        MoveDistance = binaryReader.Read<int>();
-        MoveSpeed = binaryReader.Read<int>();
-        Faction = (NpcFaction)binaryReader.Read<int>();
+        Model = binaryReader.ReadInt32();
+        MoveDistance = binaryReader.ReadInt32();
+        MoveSpeed = binaryReader.ReadInt32();
+        Faction = (NpcFaction)binaryReader.ReadInt32();
 
-        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        // In Ep8 strings are stored in separate translation files
+        if (binaryReader.SerializationOptions.Episode < Episode.EP8)
         {
             Name = binaryReader.ReadString(false);
             WelcomeMessage = binaryReader.ReadString(false);
         }
     }
 
-    protected void WriteBaseNpcSecondSegmentBytes(List<byte> buffer, Episode episode)
+    protected void WriteBaseNpcSecondSegment(SBinaryWriter binaryWriter)
     {
-        buffer.AddRange(Model.GetBytes());
-        buffer.AddRange(MoveDistance.GetBytes());
-        buffer.AddRange(MoveSpeed.GetBytes());
-        buffer.AddRange(((int)Faction).GetBytes());
+        binaryWriter.Write(Model);
+        binaryWriter.Write(MoveDistance);
+        binaryWriter.Write(MoveSpeed);
+        binaryWriter.Write((int)Faction);
 
-        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        // In Ep8 strings are stored in separate translation files
+        if (binaryWriter.SerializationOptions.Episode < Episode.EP8)
         {
-            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
-            buffer.AddRange(WelcomeMessage.GetLengthPrefixedBytes(false));
+            binaryWriter.WriteLengthPrefixedString(Name, false);
+            binaryWriter.WriteLengthPrefixedString(WelcomeMessage, false);
         }
     }
 
     protected void ReadBaseNpcThirdSegment(SBinaryReader binaryReader)
     {
-        int inQuestQuantity = binaryReader.Read<int>();
+        var inQuestQuantity = binaryReader.ReadInt32();
 
-        for (int i = 0; i < inQuestQuantity; i++)
+        for (var i = 0; i < inQuestQuantity; i++)
         {
-            short questId = binaryReader.Read<short>();
+            var questId = binaryReader.ReadInt16();
             InQuestIds.Add(questId);
         }
 
-        int outQuestQuantity = binaryReader.Read<int>();
+        var outQuestQuantity = binaryReader.ReadInt32();
 
-        for (int i = 0; i < outQuestQuantity; i++)
+        for (var i = 0; i < outQuestQuantity; i++)
         {
-            short questId = binaryReader.Read<short>();
+            var questId = binaryReader.ReadInt16();
             OutQuestIds.Add(questId);
         }
     }
 
-    protected void WriteBaseNpcThirdSegmentBytes(List<byte> buffer)
+    protected void WriteBaseNpcThirdSegment(SBinaryWriter binaryWriter)
     {
-        buffer.AddRange(InQuestIds.Count.GetBytes());
+        binaryWriter.Write(InQuestIds.Count);
+        foreach (var inQuestId in InQuestIds)
+        {
+            binaryWriter.Write(inQuestId);
+        }
 
-        foreach (short inQuestId in InQuestIds)
-            buffer.AddRange(inQuestId.GetBytes());
-
-        buffer.AddRange(OutQuestIds.Count.GetBytes());
-
-        foreach (short outQuestId in OutQuestIds)
-            buffer.AddRange(outQuestId.GetBytes());
+        binaryWriter.Write(OutQuestIds.Count);
+        foreach (var outQuestId in OutQuestIds)
+        {
+            binaryWriter.Write(outQuestId);
+        }
     }
 
-    public virtual IEnumerable<byte> GetBytes(params object[] options)
+    protected void WriteNpcBaseComplete(SBinaryWriter binaryWriter)
     {
-        var episode = Episode.EP5;
-
-        if (options.Length > 0)
-            episode = (Episode)options[0];
-
-        var buffer = new List<byte>();
-        WriteBaseNpcFirstSegmentBytes(buffer);
-        WriteBaseNpcSecondSegmentBytes(buffer, episode);
-        WriteBaseNpcThirdSegmentBytes(buffer);
-        return buffer;
+        WriteBaseNpcFirstSegment(binaryWriter);
+        WriteBaseNpcSecondSegment(binaryWriter);
+        WriteBaseNpcThirdSegment(binaryWriter);
     }
 }

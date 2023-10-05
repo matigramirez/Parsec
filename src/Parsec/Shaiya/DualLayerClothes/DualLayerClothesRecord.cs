@@ -1,27 +1,43 @@
-﻿using Parsec.Attributes;
+﻿using Parsec.Serialization;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.DualLayerClothes;
 
-public sealed class DualLayerClothesRecord
+public sealed class DualLayerClothesRecord : ISerializable
 {
-    [ShaiyaProperty]
-    public short Index { get; set; }
+    public ushort Index { get; set; }
 
-    [ShaiyaProperty]
-    public short Upper { get; set; }
+    public ushort Upper { get; set; }
 
-    [ShaiyaProperty]
-    public short Hands { get; set; }
+    public ushort Hands { get; set; }
 
-    [ShaiyaProperty]
-    public short Lower { get; set; }
+    public ushort Lower { get; set; }
 
-    [ShaiyaProperty]
-    public short Feet { get; set; }
+    public ushort Feet { get; set; }
 
-    [ShaiyaProperty]
-    public short Face { get; set; }
+    public ushort Face { get; set; }
 
-    [ShaiyaProperty]
-    public short Head { get; set; }
+    public ushort Head { get; set; }
+
+    public void Read(SBinaryReader binaryReader)
+    {
+        Index = binaryReader.ReadUInt16();
+        Upper = binaryReader.ReadUInt16();
+        Hands = binaryReader.ReadUInt16();
+        Lower = binaryReader.ReadUInt16();
+        Feet = binaryReader.ReadUInt16();
+        Face = binaryReader.ReadUInt16();
+        Head = binaryReader.ReadUInt16();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Index);
+        binaryWriter.Write(Upper);
+        binaryWriter.Write(Hands);
+        binaryWriter.Write(Lower);
+        binaryWriter.Write(Feet);
+        binaryWriter.Write(Face);
+        binaryWriter.Write(Head);
+    }
 }

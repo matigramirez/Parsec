@@ -1,4 +1,5 @@
-using Parsec.Attributes;
+using Parsec.Extensions;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.Cash;
 
@@ -7,7 +8,15 @@ namespace Parsec.Shaiya.Cash;
 /// </summary>
 public sealed class Cash : SData.SData
 {
-    [ShaiyaProperty]
-    [LengthPrefixedList(typeof(Product))]
-    public List<Product> Products { get; set; } = new();
+    public List<CashProduct> Products { get; set; } = new();
+
+    protected override void Read(SBinaryReader binaryReader)
+    {
+        Products = binaryReader.ReadList<CashProduct>().ToList();
+    }
+
+    protected override void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Products.ToSerializable());
+    }
 }

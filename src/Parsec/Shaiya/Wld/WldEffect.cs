@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
 /// <summary>
 /// Represents an effect in the world
 /// </summary>
-public sealed class WldEffect : IBinary
+public sealed class WldEffect : ISerializable
 {
     /// <summary>
     /// Effect's position
@@ -31,26 +29,19 @@ public sealed class WldEffect : IBinary
     /// </summary>
     public int EffectId { get; set; }
 
-    [JsonConstructor]
-    public WldEffect()
+    public void Read(SBinaryReader binaryReader)
     {
+        Position = binaryReader.Read<Vector3>();
+        RotationForward = binaryReader.Read<Vector3>();
+        RotationUp = binaryReader.Read<Vector3>();
+        EffectId = binaryReader.ReadInt32();
     }
 
-    public WldEffect(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        Position = new Vector3(binaryReader);
-        RotationForward = new Vector3(binaryReader);
-        RotationUp = new Vector3(binaryReader);
-        EffectId = binaryReader.Read<int>();
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(Position.GetBytes());
-        buffer.AddRange(RotationForward.GetBytes());
-        buffer.AddRange(RotationUp.GetBytes());
-        buffer.AddRange(EffectId.GetBytes());
-        return buffer;
+        binaryWriter.Write(Position);
+        binaryWriter.Write(RotationForward);
+        binaryWriter.Write(RotationUp);
+        binaryWriter.Write(EffectId);
     }
 }

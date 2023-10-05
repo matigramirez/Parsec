@@ -1,289 +1,315 @@
-﻿using Parsec.Attributes;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.SData;
 
 namespace Parsec.Shaiya.Monster;
 
 public sealed class DBMonsterDataRecord : IBinarySDataRecord
 {
-    [ShaiyaProperty]
     public long Id { get; set; }
 
-    [ShaiyaProperty]
     public long Image { get; set; }
 
-    [ShaiyaProperty]
     public long Level { get; set; }
 
-    [ShaiyaProperty]
     public long Exp { get; set; }
 
-    [ShaiyaProperty]
     public long Ai { get; set; }
 
-    [ShaiyaProperty]
     public long Money1 { get; set; }
 
-    [ShaiyaProperty]
     public long Money2 { get; set; }
 
-    [ShaiyaProperty]
     public long Item1 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate1 { get; set; }
 
-    [ShaiyaProperty]
     public long Item2 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate2 { get; set; }
 
-    [ShaiyaProperty]
     public long Item3 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate3 { get; set; }
 
-    [ShaiyaProperty]
     public long Item4 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate4 { get; set; }
 
-    [ShaiyaProperty]
     public long Item5 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate5 { get; set; }
 
-    [ShaiyaProperty]
     public long Item6 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate6 { get; set; }
 
-    [ShaiyaProperty]
     public long Item7 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate7 { get; set; }
 
-    [ShaiyaProperty]
     public long Item8 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate8 { get; set; }
 
-    [ShaiyaProperty]
     public long Item9 { get; set; }
 
-    [ShaiyaProperty]
     public long ItemDropRate9 { get; set; }
 
-    [ShaiyaProperty]
     public long QuestItem { get; set; }
 
-    [ShaiyaProperty]
     public long Hp { get; set; }
 
-    [ShaiyaProperty]
     public long Sp { get; set; }
 
-    [ShaiyaProperty]
     public long Mp { get; set; }
 
-    [ShaiyaProperty]
     public long Dex { get; set; }
 
-    [ShaiyaProperty]
     public long Wis { get; set; }
 
-    [ShaiyaProperty]
     public long Luc { get; set; }
 
-    [ShaiyaProperty]
     public long Day { get; set; }
 
-    [ShaiyaProperty]
     public long Size { get; set; }
 
-    [ShaiyaProperty]
     public long Attrib { get; set; }
 
-    [ShaiyaProperty]
     public long Defense { get; set; }
 
-    [ShaiyaProperty]
     public long Magic { get; set; }
 
-    [ShaiyaProperty]
     public long State1 { get; set; }
 
-    [ShaiyaProperty]
     public long State2 { get; set; }
 
-    [ShaiyaProperty]
     public long State3 { get; set; }
 
-    [ShaiyaProperty]
     public long State4 { get; set; }
 
-    [ShaiyaProperty]
     public long State5 { get; set; }
 
-    [ShaiyaProperty]
     public long State6 { get; set; }
 
-    [ShaiyaProperty]
     public long State7 { get; set; }
 
-    [ShaiyaProperty]
     public long State8 { get; set; }
 
-    [ShaiyaProperty]
     public long State9 { get; set; }
 
-    [ShaiyaProperty]
     public long State10 { get; set; }
 
-    [ShaiyaProperty]
     public long State11 { get; set; }
 
-    [ShaiyaProperty]
     public long State12 { get; set; }
 
-    [ShaiyaProperty]
     public long State13 { get; set; }
 
-    [ShaiyaProperty]
     public long State14 { get; set; }
 
-    [ShaiyaProperty]
     public long State15 { get; set; }
 
-    [ShaiyaProperty]
     public long Skill1 { get; set; }
 
-    [ShaiyaProperty]
     public long Skill2 { get; set; }
 
-    [ShaiyaProperty]
     public long Skill3 { get; set; }
 
-    [ShaiyaProperty]
     public long Skill4 { get; set; }
 
-    [ShaiyaProperty]
     public long Skill5 { get; set; }
 
-    [ShaiyaProperty]
     public long Skill6 { get; set; }
 
-    [ShaiyaProperty]
     public long NormalTime { get; set; }
 
-    [ShaiyaProperty]
     public long NormalStep { get; set; }
 
-    [ShaiyaProperty]
     public long ChaseTime { get; set; }
 
-    [ShaiyaProperty]
     public long ChaseStep { get; set; }
 
-    [ShaiyaProperty]
     public long ChaseRange { get; set; }
 
-    [ShaiyaProperty]
     public long AttackAni1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackType1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackTime1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackRange1 { get; set; }
 
-    [ShaiyaProperty]
     public long Attack1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackPlus1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackAttrib1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackSpecial1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackOk1 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackAni2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackType2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackTime2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackRange2 { get; set; }
 
-    [ShaiyaProperty]
     public long Attack2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackPlus2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackAttrib2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackSpecial2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackOk2 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackAni3 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackType3 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackTime3 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackRange3 { get; set; }
 
-    [ShaiyaProperty]
     public long Attack3 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackPlus3 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackAttrib3 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackSpecial3 { get; set; }
 
-    [ShaiyaProperty]
     public long AttackOk3 { get; set; }
 
-    [ShaiyaProperty]
     public long ColorType { get; set; }
 
-    [ShaiyaProperty]
     public long ColorHue { get; set; }
 
-    [ShaiyaProperty]
     public long ColorSaturation { get; set; }
 
-    [ShaiyaProperty]
     public long ColorLight { get; set; }
+
+    public void Read(SBinaryReader binaryReader)
+    {
+        Id = binaryReader.ReadInt64();
+        Image = binaryReader.ReadInt64();
+        Level = binaryReader.ReadInt64();
+        Exp = binaryReader.ReadInt64();
+        Ai = binaryReader.ReadInt64();
+        Money1 = binaryReader.ReadInt64();
+        Money2 = binaryReader.ReadInt64();
+        Item1 = binaryReader.ReadInt64();
+        ItemDropRate1 = binaryReader.ReadInt64();
+        Item2 = binaryReader.ReadInt64();
+        ItemDropRate2 = binaryReader.ReadInt64();
+        Item3 = binaryReader.ReadInt64();
+        ItemDropRate3 = binaryReader.ReadInt64();
+        Item4 = binaryReader.ReadInt64();
+        ItemDropRate4 = binaryReader.ReadInt64();
+        Item5 = binaryReader.ReadInt64();
+        ItemDropRate5 = binaryReader.ReadInt64();
+        Item6 = binaryReader.ReadInt64();
+        ItemDropRate6 = binaryReader.ReadInt64();
+        Item7 = binaryReader.ReadInt64();
+        ItemDropRate7 = binaryReader.ReadInt64();
+        Item8 = binaryReader.ReadInt64();
+        ItemDropRate8 = binaryReader.ReadInt64();
+        Item9 = binaryReader.ReadInt64();
+        ItemDropRate9 = binaryReader.ReadInt64();
+        QuestItem = binaryReader.ReadInt64();
+        Hp = binaryReader.ReadInt64();
+        Sp = binaryReader.ReadInt64();
+        Mp = binaryReader.ReadInt64();
+        Dex = binaryReader.ReadInt64();
+        Wis = binaryReader.ReadInt64();
+        Luc = binaryReader.ReadInt64();
+        Day = binaryReader.ReadInt64();
+        Size = binaryReader.ReadInt64();
+        Attrib = binaryReader.ReadInt64();
+        Defense = binaryReader.ReadInt64();
+        Magic = binaryReader.ReadInt64();
+        State1 = binaryReader.ReadInt64();
+        State2 = binaryReader.ReadInt64();
+        State3 = binaryReader.ReadInt64();
+        State4 = binaryReader.ReadInt64();
+        State5 = binaryReader.ReadInt64();
+        State6 = binaryReader.ReadInt64();
+        State7 = binaryReader.ReadInt64();
+        State8 = binaryReader.ReadInt64();
+        State9 = binaryReader.ReadInt64();
+        State10 = binaryReader.ReadInt64();
+        State11 = binaryReader.ReadInt64();
+        State12 = binaryReader.ReadInt64();
+        State13 = binaryReader.ReadInt64();
+        State14 = binaryReader.ReadInt64();
+        State15 = binaryReader.ReadInt64();
+        Skill1 = binaryReader.ReadInt64();
+        Skill2 = binaryReader.ReadInt64();
+        Skill3 = binaryReader.ReadInt64();
+        Skill4 = binaryReader.ReadInt64();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Id);
+        binaryWriter.Write(Image);
+        binaryWriter.Write(Level);
+        binaryWriter.Write(Exp);
+        binaryWriter.Write(Ai);
+        binaryWriter.Write(Money1);
+        binaryWriter.Write(Money2);
+        binaryWriter.Write(Item1);
+        binaryWriter.Write(ItemDropRate1);
+        binaryWriter.Write(Item2);
+        binaryWriter.Write(ItemDropRate2);
+        binaryWriter.Write(Item3);
+        binaryWriter.Write(ItemDropRate3);
+        binaryWriter.Write(Item4);
+        binaryWriter.Write(ItemDropRate4);
+        binaryWriter.Write(Item5);
+        binaryWriter.Write(ItemDropRate5);
+        binaryWriter.Write(Item6);
+        binaryWriter.Write(ItemDropRate6);
+        binaryWriter.Write(Item7);
+        binaryWriter.Write(ItemDropRate7);
+        binaryWriter.Write(Item8);
+        binaryWriter.Write(ItemDropRate8);
+        binaryWriter.Write(Item9);
+        binaryWriter.Write(ItemDropRate9);
+        binaryWriter.Write(QuestItem);
+        binaryWriter.Write(Hp);
+        binaryWriter.Write(Sp);
+        binaryWriter.Write(Mp);
+        binaryWriter.Write(Dex);
+        binaryWriter.Write(Wis);
+        binaryWriter.Write(Luc);
+        binaryWriter.Write(Day);
+        binaryWriter.Write(Size);
+        binaryWriter.Write(Attrib);
+        binaryWriter.Write(Defense);
+        binaryWriter.Write(Magic);
+        binaryWriter.Write(State1);
+        binaryWriter.Write(State2);
+        binaryWriter.Write(State3);
+        binaryWriter.Write(State4);
+        binaryWriter.Write(State5);
+        binaryWriter.Write(State6);
+        binaryWriter.Write(State7);
+        binaryWriter.Write(State8);
+        binaryWriter.Write(State9);
+        binaryWriter.Write(State10);
+        binaryWriter.Write(State11);
+        binaryWriter.Write(State12);
+        binaryWriter.Write(State13);
+        binaryWriter.Write(State14);
+        binaryWriter.Write(State15);
+        binaryWriter.Write(Skill1);
+        binaryWriter.Write(Skill2);
+        binaryWriter.Write(Skill3);
+        binaryWriter.Write(Skill4);
+    }
 }

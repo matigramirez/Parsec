@@ -10,7 +10,7 @@ public class SafTests
     [InlineData(1000, 3000)]
     public void SafClearingTest(long offset, int length)
     {
-        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/clearme.sah");
+        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/clearme.sah", "Shaiya/Data/clearme.saf");
 
         var nullData = new byte[length];
         data.Saf.ClearBytes(offset, length);

@@ -1,18 +1,17 @@
-﻿using Newtonsoft.Json;
-using Parsec.Common;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class StandardNpc : BaseNpc
+public class StandardNpc : BaseNpc, ISerializable
 {
-    public StandardNpc(SBinaryReader binaryReader, Episode episode)
+    public void Read(SBinaryReader binaryReader)
     {
-        ReadNpcBaseComplete(binaryReader, episode);
+        ReadNpcBaseComplete(binaryReader);
     }
 
-    [JsonConstructor]
-    public StandardNpc()
+    public void Write(SBinaryWriter binaryWriter)
     {
+        WriteNpcBaseComplete(binaryWriter);
     }
 }

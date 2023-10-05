@@ -8,7 +8,7 @@ public class _3DOTests
     public void _3DOReadWriteTest()
     {
         const string filePath = "Shaiya/3DO/F_34_a002.3DO";
-        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(filePath);
+        var obj = Reader.ReadFromFile<Parsec.Shaiya._3do._3do>(filePath);
 
         // Check original EFT values
         Assert.Equal(1087, obj.Vertices.Count);
@@ -18,7 +18,7 @@ public class _3DOTests
         // Export to json
         const string jsonPath = "Shaiya/3DO/F_34_a002.3DO.json";
         obj.WriteJson(jsonPath);
-        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DO._3DO>(jsonPath);
+        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3do._3do>(jsonPath);
 
         // Check fields
         Assert.Equal(obj.Vertices.Count, objFromJson.Vertices.Count);
@@ -30,7 +30,7 @@ public class _3DOTests
         const string newObjPath = "Shaiya/3DO/F_34_a002.new.3DO";
         objFromJson.Write(newObjPath);
 
-        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(newObjPath);
+        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3do._3do>(newObjPath);
 
         // Check fields
         Assert.Equal(obj.Vertices.Count, newObj.Vertices.Count);
@@ -56,15 +56,15 @@ public class _3DOTests
         string jsonPath = $"Shaiya/3DO/{fileName}.json";
         string newObjPath = $"Shaiya/3DO/new_{fileName}";
 
-        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(filePath);
+        var obj = Reader.ReadFromFile<Parsec.Shaiya._3do._3do>(filePath);
         obj.WriteJson(jsonPath);
-        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DO._3DO>(jsonPath);
+        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3do._3do>(jsonPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());
 
         objFromJson.Write(newObjPath);
-        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DO._3DO>(newObjPath);
+        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3do._3do>(newObjPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), newObj.GetBytes());

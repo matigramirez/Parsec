@@ -1,13 +1,11 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Parsec.Extensions;
 using Parsec.Serialization;
-using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Data;
 
 [DataContract]
-public sealed class SFile : IBinary
+public sealed class SFile
 {
     [JsonConstructor]
     public SFile()
@@ -29,9 +27,9 @@ public sealed class SFile : IBinary
     public SFile(SBinaryReader binaryReader, SDirectory directory, Dictionary<string, SFile> fileIndex) : this(directory)
     {
         Name = binaryReader.ReadString();
-        Offset = binaryReader.Read<long>();
-        Length = binaryReader.Read<int>();
-        Version = binaryReader.Read<int>();
+        Offset = binaryReader.ReadInt64();
+        Length = binaryReader.ReadInt32();
+        Version = binaryReader.ReadInt32();
 
         if (!fileIndex.ContainsKey(RelativePath))
             fileIndex.Add(RelativePath, this);
@@ -41,7 +39,7 @@ public sealed class SFile : IBinary
     /// The name of the file
     /// </summary>
     [DataMember]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// The offset in data.saf where the file is located
@@ -64,23 +62,18 @@ public sealed class SFile : IBinary
     /// <summary>
     /// The relative path to the file
     /// </summary>
-    public string RelativePath => ParentDirectory == null || string.IsNullOrEmpty(ParentDirectory.Name)
-        ? Name
-        : Path.Combine(ParentDirectory.RelativePath, Name);
+    public string RelativePath => string.IsNullOrEmpty(ParentDirectory.Name) ? Name : Path.Combine(ParentDirectory.RelativePath, Name);
 
     /// <summary>
     /// The directory in which the file is
     /// </summary>
-    public SDirectory ParentDirectory { get; set; }
+    public SDirectory ParentDirectory { get; set; } = null!;
 
-    /// <inheritdoc />
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Name.GetLengthPrefixedBytes());
-        buffer.AddRange(Offset.GetBytes());
-        buffer.AddRange(Length.GetBytes());
-        buffer.AddRange(Version.GetBytes());
-        return buffer;
+        binaryWriter.Write(Name);
+        binaryWriter.Write(Offset);
+        binaryWriter.Write(Length);
+        binaryWriter.Write(Version);
     }
 }

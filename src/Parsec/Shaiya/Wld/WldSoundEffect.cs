@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
 /// <summary>
 /// A circular area of the world in which music is played
 /// </summary>
-public sealed class WldSoundEffect : IBinary
+public sealed class WldSoundEffect : ISerializable
 {
     /// <summary>
     /// Id of the wav file (from the linked name list of files)
@@ -26,24 +24,17 @@ public sealed class WldSoundEffect : IBinary
     /// </summary>
     public float Radius { get; set; }
 
-    [JsonConstructor]
-    public WldSoundEffect()
+    public void Read(SBinaryReader binaryReader)
     {
+        Id = binaryReader.ReadInt32();
+        Center = binaryReader.Read<Vector3>();
+        Radius = binaryReader.ReadSingle();
     }
 
-    public WldSoundEffect(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        Id = binaryReader.Read<int>();
-        Center = new Vector3(binaryReader);
-        Radius = binaryReader.Read<float>();
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(Id.GetBytes());
-        buffer.AddRange(Center.GetBytes());
-        buffer.AddRange(Radius.GetBytes());
-        return buffer;
+        binaryWriter.Write(Id);
+        binaryWriter.Write(Center);
+        binaryWriter.Write(Radius);
     }
 }

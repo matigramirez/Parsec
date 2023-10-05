@@ -17,20 +17,20 @@ public class MonTests
         string jsonPath = $"Shaiya/MON/{fileName}.json";
         string newObjPath = $"Shaiya/MON/new_{fileName}";
 
-        var mon = Reader.ReadFromFile<Parsec.Shaiya.MON.MON>(filePath);
+        var mon = Reader.ReadFromFile<Parsec.Shaiya.Mon.Mon>(filePath);
 
         mon.Write(outputPath);
         mon.WriteJson(jsonPath);
 
-        var outputMon = Reader.ReadFromFile<Parsec.Shaiya.MON.MON>(outputPath);
-        var monFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MON.MON>(jsonPath);
+        var outputMon = Reader.ReadFromFile<Parsec.Shaiya.Mon.Mon>(outputPath);
+        var monFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Mon.Mon>(jsonPath);
 
         // Check bytes
         Assert.Equal(mon.GetBytes(), outputMon.GetBytes());
         Assert.Equal(mon.GetBytes(), monFromJson.GetBytes());
 
         monFromJson.Write(newObjPath);
-        var newMon = Reader.ReadFromFile<Parsec.Shaiya.MON.MON>(newObjPath);
+        var newMon = Reader.ReadFromFile<Parsec.Shaiya.Mon.Mon>(newObjPath);
 
         // Check bytes
         Assert.Equal(mon.GetBytes(), newMon.GetBytes());

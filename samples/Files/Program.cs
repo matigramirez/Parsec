@@ -15,7 +15,7 @@ internal static class Program
         Svmap svmap = Reader.ReadFromFile<Svmap>("2.svmap");
 
         // You can go through and modify its properties here too
-        foreach (Npc npc in svmap.Npcs)
+        foreach (SvmapNpc npc in svmap.Npcs)
         {
             Console.WriteLine($"NpcId: {npc.NpcId}, Type: {npc.Type}");
         }

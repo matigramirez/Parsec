@@ -1,5 +1,4 @@
-﻿using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common;
@@ -7,7 +6,7 @@ namespace Parsec.Shaiya.Common;
 /// <summary>
 /// Represents a vector in a 4-dimensional space
 /// </summary>
-public struct Vector4 : IBinary
+public struct Vector4 : ISerializable
 {
     /// <summary>
     /// 1st (first) element of the vector
@@ -37,21 +36,19 @@ public struct Vector4 : IBinary
         W = w;
     }
 
-    public Vector4(SBinaryReader binaryReader)
+    public void Read(SBinaryReader binaryReader)
     {
-        X = binaryReader.Read<float>();
-        Y = binaryReader.Read<float>();
-        Z = binaryReader.Read<float>();
-        W = binaryReader.Read<float>();
+        X = binaryReader.ReadSingle();
+        Y = binaryReader.ReadSingle();
+        Z = binaryReader.ReadSingle();
+        W = binaryReader.ReadSingle();
     }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(X.GetBytes());
-        buffer.AddRange(Y.GetBytes());
-        buffer.AddRange(Z.GetBytes());
-        buffer.AddRange(W.GetBytes());
-        return buffer;
+        binaryWriter.Write(X);
+        binaryWriter.Write(Y);
+        binaryWriter.Write(Z);
+        binaryWriter.Write(W);
     }
 }

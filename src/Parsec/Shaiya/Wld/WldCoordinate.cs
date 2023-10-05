@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Serialization;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
 /// <summary>
 /// Coordinates to place a 3D model in the world
 /// </summary>
-public sealed class WldCoordinate : IBinary
+public sealed class WldCoordinate : ISerializable
 {
     /// <summary>
     /// Id of a 3D Model
@@ -31,26 +29,20 @@ public sealed class WldCoordinate : IBinary
     /// </summary>
     public Vector3 RotationUp { get; set; }
 
-    [JsonConstructor]
-    public WldCoordinate()
+
+    public void Read(SBinaryReader binaryReader)
     {
+        Id = binaryReader.ReadInt32();
+        Position = binaryReader.Read<Vector3>();
+        RotationForward = binaryReader.Read<Vector3>();
+        RotationUp = binaryReader.Read<Vector3>();
     }
 
-    public WldCoordinate(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        Id = binaryReader.Read<int>();
-        Position = new Vector3(binaryReader);
-        RotationForward = new Vector3(binaryReader);
-        RotationUp = new Vector3(binaryReader);
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(Id.GetBytes());
-        buffer.AddRange(Position.GetBytes());
-        buffer.AddRange(RotationForward.GetBytes());
-        buffer.AddRange(RotationUp.GetBytes());
-        return buffer;
+        binaryWriter.Write(Id);
+        binaryWriter.Write(Position);
+        binaryWriter.Write(RotationForward);
+        binaryWriter.Write(RotationUp);
     }
 }
