@@ -28,9 +28,9 @@ public class WldTests
         Assert.Equal(wld.GetBytes(), wldFromJson.GetBytes());
 
         wldFromJson.Write(newObjPath);
-        var newZon = ParsecReader.ReadFromFile<Parsec.Shaiya.Wld.Wld>(newObjPath);
+        var newWld = ParsecReader.ReadFromFile<Parsec.Shaiya.Wld.Wld>(newObjPath);
 
         // Check bytes
-        Assert.Equal(wld.GetBytes(), newZon.GetBytes());
+        Assert.Equal(wld.GetBytes(), newWld.GetBytes());
     }
 }

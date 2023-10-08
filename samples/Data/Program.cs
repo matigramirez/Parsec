@@ -14,7 +14,6 @@ internal class Program
         Parsec.Shaiya.Data.Data data = new("data.sah", "data.saf");
 
         // Find the file you want to extract with it's full relative path
-        // Keep in mind that in Episode 8, the relative path for this same case would be "data/world/2.svmap
         var file = data.GetFile("world/2.svmap");
         // Extract the selected file
         data.Extract(file, "extracted");
