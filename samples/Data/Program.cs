@@ -11,7 +11,7 @@ internal class Program
         #region Read Data
 
         // Read data from .sah and .saf files
-        Parsec.Shaiya.Data.Data data = new("data.sah");
+        Parsec.Shaiya.Data.Data data = new("data.sah", "data.saf");
 
         // Find the file you want to extract with it's full relative path
         // Keep in mind that in Episode 8, the relative path for this same case would be "data/world/2.svmap
