@@ -734,5 +734,11 @@
     <None Update="Shaiya\Cash\DBItemSellData.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Shaiya\Item\DBItemData.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\Item\DBItemText_USA.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
