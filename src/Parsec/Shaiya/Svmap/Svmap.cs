@@ -9,7 +9,7 @@ public sealed class Svmap : FileBase
 {
     public int MapSize { get; set; }
 
-    public byte[] MapHeight { get; private set; } = Array.Empty<byte>();
+    public byte[] MapHeight { get; set; } = Array.Empty<byte>();
 
     public int CellSize { get; set; }
 

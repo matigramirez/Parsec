@@ -123,7 +123,9 @@ public sealed class SDirectory
     public void AddFile(SFile file)
     {
         if (HasFile(file.Name))
-            throw new Exception($"File {file.Name} already exists in folder {Name}");
+        {
+            return;
+        }
 
         Files.Add(file);
     }

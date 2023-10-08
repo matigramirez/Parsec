@@ -76,7 +76,7 @@ public sealed class Itm : FileBase
             _ => "ITM"
         };
 
-        binaryWriter.Write(signature);
+        binaryWriter.Write(signature, isLengthPrefixed: false, includeStringTerminator: false);
 
         binaryWriter.Write(MeshNames.Count);
         foreach (var meshName in MeshNames)

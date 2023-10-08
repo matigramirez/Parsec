@@ -15,19 +15,19 @@ public class SeffTests
         string jsonPath = $"Shaiya/Seff/{fileName}.json";
         string newFilePath = $"Shaiya/Seff/new_{fileName}";
 
-        var seff = Reader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(filePath);
+        var seff = ParsecReader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(filePath);
         seff.Write(outputPath);
         seff.WriteJson(jsonPath);
 
-        var outputSeff = Reader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(outputPath);
-        var seffFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Seff.Seff>(jsonPath);
+        var outputSeff = ParsecReader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(outputPath);
+        var seffFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.Seff.Seff>(jsonPath);
 
         // Check bytes
         Assert.Equal(seff.GetBytes(), outputSeff.GetBytes());
         Assert.Equal(seff.GetBytes(), seffFromJson.GetBytes());
 
         seffFromJson.Write(newFilePath);
-        var newSeff = Reader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(newFilePath);
+        var newSeff = ParsecReader.ReadFromFile<Parsec.Shaiya.Seff.Seff>(newFilePath);
 
         // Check bytes
         Assert.Equal(seff.GetBytes(), newSeff.GetBytes());

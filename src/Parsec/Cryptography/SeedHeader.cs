@@ -18,7 +18,7 @@ public sealed class SeedHeader
     {
         Signature = Encoding.ASCII.GetString(data.SubArray(0, 40));
 
-        int currentOffset = 40;
+        var currentOffset = 40;
         Checksum = BitConverter.ToUInt32(data, currentOffset);
         currentOffset += 4;
 
@@ -33,7 +33,7 @@ public sealed class SeedHeader
         currentOffset += 4;
 
         // Depending on the header type, the padding is 12 or 16 bytes (based on the existence of the 4 empty bytes)
-        int paddingLength = currentOffset == 48 ? 16 : 12;
+        var paddingLength = currentOffset == 48 ? 16 : 12;
         Padding = data.SubArray(currentOffset, paddingLength);
     }
 
@@ -63,7 +63,7 @@ public sealed class SeedHeader
 
         buffer.AddRange(BitConverter.GetBytes(Checksum));
         buffer.AddRange(BitConverter.GetBytes(RealSize));
-        buffer.AddRange(Padding);
+        buffer.AddRange(version == SDataVersion.Binary ? new byte[12] : new byte[16]);
         return buffer;
     }
 }

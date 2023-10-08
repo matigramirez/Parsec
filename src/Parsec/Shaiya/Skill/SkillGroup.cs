@@ -7,27 +7,18 @@ namespace Parsec.Shaiya.Skill;
 
 public class SkillGroup : ISerializable
 {
-    /// <summary>
-    /// SkillId is not part of the structure itself, instead, it's set based on the order of the skill groups.
-    /// </summary>
-    public int SkillId { get; set; }
-
-    public List<SkillRecord> Records { get; set; } = new();
+    public List<SkillDefinition> SkillDefinitions { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
-        if (binaryReader.SerializationOptions.ExtraOption is int skillId)
-        {
-            SkillId = skillId;
-        }
-
         var recordCountPerGroup = GetRecordCountPerGroup(binaryReader.SerializationOptions.Episode);
-        Records = binaryReader.ReadList<SkillRecord>(recordCountPerGroup).ToList();
+        SkillDefinitions = binaryReader.ReadList<SkillDefinition>(recordCountPerGroup).ToList();
     }
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Records.ToSerializable());
+        var recordCount = GetRecordCountPerGroup(binaryWriter.SerializationOptions.Episode);
+        binaryWriter.Write(SkillDefinitions.Take(recordCount).ToSerializable(), lengthPrefixed: false);
     }
 
     private int GetRecordCountPerGroup(Episode episode)

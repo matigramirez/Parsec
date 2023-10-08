@@ -1,5 +1,4 @@
-﻿using Parsec;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Shaiya.Item;
 
 namespace Sample.SData;
@@ -12,7 +11,7 @@ internal class Program
         Parsec.Shaiya.SData.SData.DecryptFile("ItemEP6.SData", "ItemEP6.Decrypted.SData");
 
         // Read SData from file
-        Item item = Reader.ReadFromFile<Item>("ItemEP6.SData", Episode.EP6);
+        Item item = Parsec.ParsecReader.ReadFromFile<Item>("ItemEP6.SData", Episode.EP6);
 
         // or.. export it as csv
         item.WriteCsv("Item.csv");

@@ -25,7 +25,7 @@ public sealed class DBNpcSkillTextRecord : IBinarySDataRecord
     {
         binaryWriter.Write(Id);
         binaryWriter.Write(SkillLevel);
-        binaryWriter.Write(Name, false);
-        binaryWriter.Write(Text, false);
+        binaryWriter.Write(Name, includeStringTerminator: false);
+        binaryWriter.Write(Text, includeStringTerminator: false);
     }
 }

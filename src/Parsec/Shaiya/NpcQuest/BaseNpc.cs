@@ -69,8 +69,8 @@ public abstract class BaseNpc
         // In Ep8 strings are stored in separate translation files
         if (binaryWriter.SerializationOptions.Episode < Episode.EP8)
         {
-            binaryWriter.WriteLengthPrefixedString(Name, false);
-            binaryWriter.WriteLengthPrefixedString(WelcomeMessage, false);
+            binaryWriter.Write(Name, false);
+            binaryWriter.Write(WelcomeMessage, false);
         }
     }
 

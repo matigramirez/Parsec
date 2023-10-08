@@ -36,7 +36,14 @@ public sealed class VaniMesh : ISerializable
 
         TextureName = binaryReader.ReadString();
         Faces = binaryReader.ReadList<MeshFace>().ToList();
-        Vertices = binaryReader.ReadList<VaniVertex>().ToList();
+
+        // Initialize empty vertices
+        var vertexCount = binaryReader.ReadInt32();
+        for (var i = 0; i < vertexCount; i++)
+        {
+            var vertex = new VaniVertex();
+            Vertices.Add(vertex);
+        }
 
         for (var frame = 0; frame < frameCount; frame++)
         {
@@ -59,7 +66,7 @@ public sealed class VaniMesh : ISerializable
 
         binaryWriter.Write(TextureName);
         binaryWriter.Write(Faces.ToSerializable());
-        binaryWriter.Write(Vertices.ToSerializable());
+        binaryWriter.Write(Vertices.Count);
 
         for (var frame = 0; frame < frameCount; frame++)
         {

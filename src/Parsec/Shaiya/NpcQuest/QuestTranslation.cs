@@ -47,17 +47,17 @@ public class QuestTranslation : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.WriteLengthPrefixedString(Name, false);
-        binaryWriter.WriteLengthPrefixedString(Summary, false);
-        binaryWriter.WriteLengthPrefixedString(CompletionMessage, false);
-        binaryWriter.WriteLengthPrefixedString(CompletionMessage2, false);
-        binaryWriter.WriteLengthPrefixedString(CompletionMessage3, false);
-        binaryWriter.WriteLengthPrefixedString(CompletionMessage4, false);
-        binaryWriter.WriteLengthPrefixedString(CompletionMessage5, false);
-        binaryWriter.WriteLengthPrefixedString(CompletionMessage6, false);
-        binaryWriter.WriteLengthPrefixedString(InitialDescription, false);
-        binaryWriter.WriteLengthPrefixedString(WelcomeMessage, false);
-        binaryWriter.WriteLengthPrefixedString(ReminderMessage, false);
-        binaryWriter.WriteLengthPrefixedString(AlternateResponse, false);
+        binaryWriter.Write(Name, false);
+        binaryWriter.Write(Summary, false);
+        binaryWriter.Write(CompletionMessage, false);
+        binaryWriter.Write(CompletionMessage2, false);
+        binaryWriter.Write(CompletionMessage3, false);
+        binaryWriter.Write(CompletionMessage4, false);
+        binaryWriter.Write(CompletionMessage5, false);
+        binaryWriter.Write(CompletionMessage6, false);
+        binaryWriter.Write(InitialDescription, false);
+        binaryWriter.Write(WelcomeMessage, false);
+        binaryWriter.Write(ReminderMessage, false);
+        binaryWriter.Write(AlternateResponse, false);
     }
 }

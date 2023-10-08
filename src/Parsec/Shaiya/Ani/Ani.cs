@@ -55,7 +55,7 @@ public sealed class Ani : FileBase
     {
         if (binaryWriter.SerializationOptions.Episode >= Episode.EP6)
         {
-            binaryWriter.Write("ANI_V2");
+            binaryWriter.Write("ANI_V2", isLengthPrefixed: false, includeStringTerminator: false);
         }
 
         binaryWriter.Write(StartKeyframe);

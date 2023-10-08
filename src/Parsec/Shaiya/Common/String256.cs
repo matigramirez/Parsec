@@ -30,7 +30,7 @@ public sealed class String256 : ISerializable
     public void Write(SBinaryWriter binaryWriter)
     {
         var value = Value.PadRight(256, PaddingChar);
-        binaryWriter.Write(value);
+        binaryWriter.Write(value, isLengthPrefixed: false, includeStringTerminator: false);
     }
 
     public override string ToString() => Value;

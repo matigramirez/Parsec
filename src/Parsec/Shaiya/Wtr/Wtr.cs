@@ -8,7 +8,9 @@ namespace Parsec.Shaiya.Wtr;
 public sealed class Wtr : FileBase
 {
     public float Unknown1 { get; set; }
+
     public uint Unknown2 { get; set; }
+
     public int Unknown3 { get; set; }
 
     /// <summary>

@@ -17,6 +17,12 @@ public sealed class Mlx : FileBase
 
     protected override void Read(SBinaryReader binaryReader)
     {
+        // Some MLX files are empty
+        if (binaryReader.StreamLength == 0)
+        {
+            return;
+        }
+
         var signature = binaryReader.ReadString(4);
 
         if (signature == "MLX2")
@@ -38,7 +44,7 @@ public sealed class Mlx : FileBase
     {
         if (Format == MlxFormat.MLX2)
         {
-            binaryWriter.Write("MLX2");
+            binaryWriter.Write("MLX2", isLengthPrefixed: false, includeStringTerminator: false);
         }
 
         // MlxRecord instances expect the Format to be set as the ExtraOption on the serialization options

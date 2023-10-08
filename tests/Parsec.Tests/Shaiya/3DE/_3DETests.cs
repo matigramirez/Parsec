@@ -6,7 +6,7 @@ public class _3DETests
     public void _3DEReadWriteTest()
     {
         const string filePath = "Shaiya/3DE/waterfall04.3DE";
-        var obj = Reader.ReadFromFile<Parsec.Shaiya._3de._3de>(filePath);
+        var obj = ParsecReader.ReadFromFile<Parsec.Shaiya._3de._3de>(filePath);
 
         // Check original EFT values
         Assert.Equal(126, obj.Vertices.Count);
@@ -17,7 +17,7 @@ public class _3DETests
         // Export to json
         const string jsonPath = "Shaiya/3DE/waterfall04.3DE.json";
         obj.WriteJson(jsonPath);
-        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3de._3de>(jsonPath);
+        var objFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya._3de._3de>(jsonPath);
 
         // Check fields
         Assert.Equal(obj.Vertices.Count, objFromJson.Vertices.Count);
@@ -31,7 +31,7 @@ public class _3DETests
         const string newObjPath = "Shaiya/3DE/waterfall04.new.3DE";
         objFromJson.Write(newObjPath);
 
-        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3de._3de>(newObjPath);
+        var newObj = ParsecReader.ReadFromFile<Parsec.Shaiya._3de._3de>(newObjPath);
 
         // Check fields
         Assert.Equal(obj.Vertices.Count, newObj.Vertices.Count);
@@ -59,15 +59,15 @@ public class _3DETests
         string jsonPath = $"Shaiya/3DE/{fileName}.json";
         string newObjPath = $"Shaiya/3DE/new_{fileName}";
 
-        var obj = Reader.ReadFromFile<Parsec.Shaiya._3de._3de>(filePath);
+        var obj = ParsecReader.ReadFromFile<Parsec.Shaiya._3de._3de>(filePath);
         obj.WriteJson(jsonPath);
-        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3de._3de>(jsonPath);
+        var objFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya._3de._3de>(jsonPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());
 
         objFromJson.Write(newObjPath);
-        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3de._3de>(newObjPath);
+        var newObj = ParsecReader.ReadFromFile<Parsec.Shaiya._3de._3de>(newObjPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), newObj.GetBytes());

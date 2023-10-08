@@ -26,10 +26,10 @@ public class GateKeeperQuestTran : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.WriteLengthPrefixedString(Name, false);
-        binaryWriter.WriteLengthPrefixedString(WelcomeMessage, false);
-        binaryWriter.WriteLengthPrefixedString(TeleportName1, false);
-        binaryWriter.WriteLengthPrefixedString(TeleportName2, false);
-        binaryWriter.WriteLengthPrefixedString(TeleportName3, false);
+        binaryWriter.Write(Name, false);
+        binaryWriter.Write(WelcomeMessage, false);
+        binaryWriter.Write(TeleportName1, false);
+        binaryWriter.Write(TeleportName2, false);
+        binaryWriter.Write(TeleportName3, false);
     }
 }

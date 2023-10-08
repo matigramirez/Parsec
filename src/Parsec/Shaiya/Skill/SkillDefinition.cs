@@ -7,8 +7,13 @@ namespace Parsec.Shaiya.Skill;
 /// <summary>
 /// Class that represents a record for the Skill.SData and NpcSkill.SData formats
 /// </summary>
-public sealed class SkillRecord : ISerializable
+public sealed class SkillDefinition : ISerializable
 {
+    /// <summary>
+    /// SkillId is not part of the structure itself, instead, it's set based on the order of the skill groups.
+    /// </summary>
+    public int SkillId { get; set; }
+
     /// <summary>
     /// The skill name
     /// </summary>
@@ -458,6 +463,11 @@ public sealed class SkillRecord : ISerializable
 
     public void Read(SBinaryReader binaryReader)
     {
+        if (binaryReader.SerializationOptions.ExtraOption is int skillId)
+        {
+            SkillId = skillId;
+        }
+
         var episode = binaryReader.SerializationOptions.Episode;
 
         Name = binaryReader.ReadString();
@@ -577,8 +587,8 @@ public sealed class SkillRecord : ISerializable
     {
         var episode = binaryWriter.SerializationOptions.Episode;
 
-        binaryWriter.WriteLengthPrefixedString(Name);
-        binaryWriter.WriteLengthPrefixedString(Description);
+        binaryWriter.Write(Name);
+        binaryWriter.Write(Description);
         binaryWriter.Write(SkillLevel);
         binaryWriter.Write(Icon);
         binaryWriter.Write(Animation);

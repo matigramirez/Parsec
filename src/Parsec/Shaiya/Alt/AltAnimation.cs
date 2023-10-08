@@ -50,7 +50,7 @@ public sealed class AltAnimation : ISerializable
             return;
         }
 
-        binaryWriter.WriteLengthPrefixedString(Name);
+        binaryWriter.Write(Name);
         binaryWriter.Write(Mode);
         binaryWriter.Write(Unknown);
         binaryWriter.Write(Float1);

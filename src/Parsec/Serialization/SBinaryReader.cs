@@ -8,8 +8,10 @@ namespace Parsec.Serialization;
 /// </summary>
 public sealed class SBinaryReader : IDisposable
 {
-    private readonly BinaryReader _binaryReader;
+    private BinaryReader _binaryReader;
     public readonly BinarySerializationOptions SerializationOptions;
+
+    public long StreamLength => _binaryReader.BaseStream.Length;
 
     public SBinaryReader(Stream stream, BinarySerializationOptions serializationOptions)
     {
@@ -37,6 +39,13 @@ public sealed class SBinaryReader : IDisposable
         var memoryStream = new MemoryStream(buffer);
         _binaryReader = new BinaryReader(memoryStream);
         SerializationOptions = serializationOptions;
+    }
+
+    public void ResetBuffer(byte[] buffer)
+    {
+        _binaryReader.Dispose();
+        var memoryStream = new MemoryStream(buffer);
+        _binaryReader = new BinaryReader(memoryStream);
     }
 
     public long Length => _binaryReader.BaseStream.Length;

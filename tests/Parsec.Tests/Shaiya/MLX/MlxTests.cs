@@ -26,19 +26,19 @@ public class MlxTests
         string jsonPath = $"Shaiya/MLX/{fileName}.json";
         string newObjPath = $"Shaiya/MLX/new_{fileName}";
 
-        var mlx = Reader.ReadFromFile<Parsec.Shaiya.Mlx.Mlx>(filePath);
+        var mlx = ParsecReader.ReadFromFile<Parsec.Shaiya.Mlx.Mlx>(filePath);
         mlx.Write(outputPath);
         mlx.WriteJson(jsonPath);
 
-        var outputMlx = Reader.ReadFromFile<Parsec.Shaiya.Mlx.Mlx>(outputPath);
-        var mlxFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Mlx.Mlx>(jsonPath);
+        var outputMlx = ParsecReader.ReadFromFile<Parsec.Shaiya.Mlx.Mlx>(outputPath);
+        var mlxFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.Mlx.Mlx>(jsonPath);
 
         // Check bytes
         Assert.Equal(mlx.GetBytes(), outputMlx.GetBytes());
         Assert.Equal(mlx.GetBytes(), mlxFromJson.GetBytes());
 
         mlxFromJson.Write(newObjPath);
-        var newMlx = Reader.ReadFromFile<Parsec.Shaiya.Mlx.Mlx>(newObjPath);
+        var newMlx = ParsecReader.ReadFromFile<Parsec.Shaiya.Mlx.Mlx>(newObjPath);
 
         // Check bytes
         Assert.Equal(mlx.GetBytes(), newMlx.GetBytes());

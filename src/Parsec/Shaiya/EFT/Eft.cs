@@ -10,7 +10,7 @@ public sealed class Eft : FileBase
     [JsonIgnore]
     public EftFormat Format { get; set; }
 
-    public List<EftEffectMesh> Objects { get; set; } = new();
+    public List<EftEffectMesh> Meshes { get; set; } = new();
 
     public List<EftTexture> Textures { get; set; } = new();
 
@@ -36,7 +36,7 @@ public sealed class Eft : FileBase
         // Effect instances expect the Format to be set as the ExtraOption property on the serialization settings
         binaryReader.SerializationOptions.ExtraOption = Format;
 
-        Objects = binaryReader.ReadList<EftEffectMesh>().ToList();
+        Meshes = binaryReader.ReadList<EftEffectMesh>().ToList();
         Textures = binaryReader.ReadList<EftTexture>().ToList();
         Effects = binaryReader.ReadList<EftEffect>().ToList();
         EffectSequences = binaryReader.ReadList<EftEffectSequence>().ToList();
@@ -55,8 +55,8 @@ public sealed class Eft : FileBase
         // Effect instances expect the Format to be set as the ExtraOption property on the serialization settings
         binaryWriter.SerializationOptions.ExtraOption = Format;
 
-        binaryWriter.Write(signature);
-        binaryWriter.Write(Objects.ToSerializable());
+        binaryWriter.Write(signature, isLengthPrefixed: false, includeStringTerminator: false);
+        binaryWriter.Write(Meshes.ToSerializable());
         binaryWriter.Write(Textures.ToSerializable());
         binaryWriter.Write(Effects.ToSerializable());
         binaryWriter.Write(EffectSequences.ToSerializable());

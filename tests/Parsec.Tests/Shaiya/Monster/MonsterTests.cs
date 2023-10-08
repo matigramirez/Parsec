@@ -8,7 +8,7 @@ public class MonsterTests
         const string filePath = "Shaiya/Monster/Monster.SData";
         const string csvPath = "Shaiya/Monster/Monster.SData.csv";
 
-        var monster = Reader.ReadFromFile<Parsec.Shaiya.Monster.Monster>(filePath);
+        var monster = ParsecReader.ReadFromFile<Parsec.Shaiya.Monster.Monster>(filePath);
         monster.WriteCsv(csvPath);
         var monsterFromCsv = Parsec.Shaiya.Monster.Monster.ReadFromCsv(csvPath);
         Assert.Equal(monster.GetBytes(), monsterFromCsv.GetBytes());
@@ -22,7 +22,7 @@ public class MonsterTests
 
         var encoding = TestEncodings.Encoding1252;
 
-        var monster = Reader.ReadFromFile<Parsec.Shaiya.Monster.Monster>(filePath, encoding: encoding);
+        var monster = ParsecReader.ReadFromFile<Parsec.Shaiya.Monster.Monster>(filePath, encoding: encoding);
         monster.WriteCsv(csvPath, encoding);
         var monsterFromCsv = Parsec.Shaiya.Monster.Monster.ReadFromCsv(csvPath, encoding);
         Assert.Equal(monster.GetBytes(), monsterFromCsv.GetBytes());

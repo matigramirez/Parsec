@@ -72,8 +72,10 @@ public abstract class FileBase : IJsonWritable<FileBase>
         Write(binaryWriter);
     }
 
-    public void Write(string path, Episode episode, Encoding encoding)
+    public void Write(string path, Episode episode, Encoding? encoding = null)
     {
+        encoding ??= Encoding.ASCII;
+
         var serializationOptions = new BinarySerializationOptions(episode, encoding);
         using var binaryWriter = new SBinaryWriter(path, serializationOptions);
         Write(binaryWriter);
@@ -89,15 +91,14 @@ public abstract class FileBase : IJsonWritable<FileBase>
     internal static T ReadFromFile<T>(string path, BinarySerializationOptions serializationOptions) where T : FileBase, new()
     {
         var instance = new T { Path = path, Episode = serializationOptions.Episode, Encoding = serializationOptions.Encoding };
-        var binaryReader = new SBinaryReader(path, serializationOptions);
+        using var binaryReader = new SBinaryReader(path, serializationOptions);
 
-        // TODO:
-        // if (instance is IEncryptable encryptableInstance)
-        //     encryptableInstance.DecryptBuffer();
+        if (instance is IEncryptable encryptableInstance)
+        {
+            encryptableInstance.DecryptBuffer(binaryReader);
+        }
 
         instance.Read(binaryReader);
-        binaryReader.Dispose();
-
         return instance;
     }
 
@@ -118,15 +119,14 @@ public abstract class FileBase : IJsonWritable<FileBase>
         instance.Episode = serializationOptions.Episode;
         instance.Encoding = serializationOptions.Encoding;
 
-        var binaryReader = new SBinaryReader(path, serializationOptions);
+        using var binaryReader = new SBinaryReader(path, serializationOptions);
 
-        // TODO:
-        // if (instance is IEncryptable encryptableInstance)
-        //     encryptableInstance.DecryptBuffer();
+        if (instance is IEncryptable encryptableInstance)
+        {
+            encryptableInstance.DecryptBuffer(binaryReader);
+        }
 
         instance.Read(binaryReader);
-        binaryReader.Dispose();
-
         return instance;
     }
 
@@ -141,15 +141,14 @@ public abstract class FileBase : IJsonWritable<FileBase>
     internal static T ReadFromBuffer<T>(string name, byte[] buffer, BinarySerializationOptions serializationOptions) where T : FileBase, new()
     {
         var instance = new T { Path = name, Episode = serializationOptions.Episode, Encoding = serializationOptions.Encoding };
-        var binaryReader = new SBinaryReader(buffer, serializationOptions);
+        using var binaryReader = new SBinaryReader(buffer, serializationOptions);
 
-        // TODO:
-        // if (instance is IEncryptable encryptableInstance)
-        //     encryptableInstance.DecryptBuffer();
+        if (instance is IEncryptable encryptableInstance)
+        {
+            encryptableInstance.DecryptBuffer(binaryReader);
+        }
 
         instance.Read(binaryReader);
-        binaryReader.Dispose();
-
         return instance;
     }
 
@@ -171,15 +170,14 @@ public abstract class FileBase : IJsonWritable<FileBase>
         instance.Episode = serializationOptions.Episode;
         instance.Encoding = serializationOptions.Encoding;
 
-        var binaryReader = new SBinaryReader(buffer, serializationOptions);
+        using var binaryReader = new SBinaryReader(buffer, serializationOptions);
 
-        // TODO:
-        // if (instance is IEncryptable encryptableInstance)
-        //     encryptableInstance.DecryptBuffer();
+        if (instance is IEncryptable encryptableInstance)
+        {
+            encryptableInstance.DecryptBuffer(binaryReader);
+        }
 
         instance.Read(binaryReader);
-        binaryReader.Dispose();
-
         return instance;
     }
 
@@ -214,6 +212,12 @@ public abstract class FileBase : IJsonWritable<FileBase>
     public IEnumerable<byte> GetBytes()
     {
         var serializationOptions = BinarySerializationOptions.Default;
+        return GetBytes(serializationOptions);
+    }
+
+    public IEnumerable<byte> GetBytes(Episode episode, Encoding? encoding = null)
+    {
+        var serializationOptions = new BinarySerializationOptions(episode, encoding);
         return GetBytes(serializationOptions);
     }
 

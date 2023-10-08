@@ -110,7 +110,7 @@ public sealed class SeffEffect : ISerializable
         binaryWriter.Write(StartPositionMultiplier);
         binaryWriter.Write(ParticleLifetime);
         binaryWriter.Write(Unknown6);
-        binaryWriter.Write(TextureFileName, Encoding.Unicode, false);
+        binaryWriter.Write(TextureFileName, Encoding.Unicode, isLengthPrefixed: true, includeStringTerminator: false);
         binaryWriter.Write(Red);
         binaryWriter.Write(Green);
         binaryWriter.Write(Blue);

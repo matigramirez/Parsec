@@ -43,21 +43,21 @@ public abstract class SData : FileBase, IEncryptable
             return;
         }
 
-        byte[] decryptedBuffer = Decrypt(fileBuffer, validateChecksum);
-        binaryReader = new SBinaryReader(decryptedBuffer, binaryReader.SerializationOptions);
+        var decryptedBuffer = Decrypt(fileBuffer, validateChecksum);
+        binaryReader.ResetBuffer(decryptedBuffer);
     }
 
     /// <inheritdoc />
     public byte[] GetEncryptedBytes()
     {
-        var version = Episode >= Episode.EP8 ? SDataVersion.Binary : SDataVersion.Regular;
+        var version = Episode == Episode.EP8 ? SDataVersion.Binary : SDataVersion.Regular;
         var serializationOptions = new BinarySerializationOptions(Episode, Encoding);
 
         var memoryStream = new MemoryStream();
         var binaryWriter = new SBinaryWriter(memoryStream, serializationOptions);
         Write(binaryWriter);
 
-        byte[] encryptedBuffer = Encrypt(memoryStream.ToArray(), version);
+        var encryptedBuffer = Encrypt(memoryStream.ToArray(), version);
         return encryptedBuffer;
     }
 
@@ -79,7 +79,7 @@ public abstract class SData : FileBase, IEncryptable
         if (data.Length < SEED_SIGNATURE.Length)
             return false;
 
-        string sDataHeader = Encoding.ASCII.GetString(data.SubArray(0, SEED_SIGNATURE.Length));
+        var sDataHeader = Encoding.ASCII.GetString(data.SubArray(0, SEED_SIGNATURE.Length));
         return sDataHeader == SEED_SIGNATURE;
     }
 
@@ -94,24 +94,24 @@ public abstract class SData : FileBase, IEncryptable
         if (IsEncrypted(decryptedData))
             return decryptedData;
 
-        byte[] padding = version == SDataVersion.Regular ? new byte[16] : new byte[12];
+        var padding = version == SDataVersion.Regular ? new byte[16] : new byte[12];
         var header = new SeedHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, padding);
-        uint alignmentSize = header.RealSize;
+        var alignmentSize = header.RealSize;
 
         if (alignmentSize % CHUNK_SIZE != 0)
             alignmentSize = header.RealSize + (CHUNK_SIZE - header.RealSize % CHUNK_SIZE);
 
         // Create data array including the extra alignment bytes
-        byte[] data = new byte[alignmentSize];
+        var data = new byte[alignmentSize];
         Array.Copy(decryptedData, data, decryptedData.Length);
 
         // Calculate and set checksum
-        uint checksum = uint.MaxValue;
+        var checksum = uint.MaxValue;
 
-        for (int i = 0; i < header.RealSize; i++)
+        for (var i = 0; i < header.RealSize; i++)
         {
-            uint index = (checksum & 0xFF) ^ decryptedData[i];
-            uint key = Seed.ByteArrayToUInt32(SeedConstants.ChecksumTable, index * 4);
+            var index = (checksum & 0xFF) ^ decryptedData[i];
+            var key = Seed.ByteArrayToUInt32(SeedConstants.ChecksumTable, index * 4);
             Seed.EndiannessSwap(ref key);
             checksum >>= 8;
             checksum ^= key;
@@ -126,12 +126,12 @@ public abstract class SData : FileBase, IEncryptable
         // Encrypt data in chunks
         for (int i = 0; i < alignmentSize / CHUNK_SIZE; ++i)
         {
-            byte[] chunk = data.AsSpan().Slice(i * CHUNK_SIZE, CHUNK_SIZE).ToArray();
-            Seed.EncryptChunk(chunk, out byte[] encryptedChunk);
+            var chunk = data.AsSpan().Slice(i * CHUNK_SIZE, CHUNK_SIZE).ToArray();
+            Seed.EncryptChunk(chunk, out var encryptedChunk);
             buffer.AddRange(encryptedChunk);
         }
 
-        byte[] encryptedData = buffer.ToArray();
+        var encryptedData = buffer.ToArray();
         return encryptedData;
     }
 
@@ -154,22 +154,22 @@ public abstract class SData : FileBase, IEncryptable
         var data = new List<byte>();
 
         // Decrypt data in chunks
-        for (int i = 0; i < encryptedData.Length / CHUNK_SIZE; ++i)
+        for (var i = 0; i < encryptedData.Length / CHUNK_SIZE; ++i)
         {
             var chunk = encryptedData.Slice(i * CHUNK_SIZE, CHUNK_SIZE);
-            Seed.DecryptChunk(chunk.ToArray(), out byte[] decryptedChunk);
+            Seed.DecryptChunk(chunk.ToArray(), out var decryptedChunk);
             data.AddRange(decryptedChunk);
         }
 
         if (validateChecksum)
         {
-            uint checksum = uint.MaxValue;
+            var checksum = uint.MaxValue;
 
             // Checksum is calculated with the whole file's data except for the header (not with the real size)
-            for (int i = 0; i < header.RealSize; i++)
+            for (var i = 0; i < header.RealSize; i++)
             {
-                uint index = (checksum & 0xFF) ^ data[i];
-                uint key = Seed.ByteArrayToUInt32(SeedConstants.ChecksumTable, index * 4);
+                var index = (checksum & 0xFF) ^ data[i];
+                var key = Seed.ByteArrayToUInt32(SeedConstants.ChecksumTable, index * 4);
                 Seed.EndiannessSwap(ref key);
                 checksum >>= 8;
                 checksum ^= key;
@@ -182,22 +182,22 @@ public abstract class SData : FileBase, IEncryptable
                 throw new FormatException("Invalid SEED checksum.");
         }
 
-        byte[] decryptedData = new byte[header.RealSize];
+        var decryptedData = new byte[header.RealSize];
         Array.Copy(data.ToArray(), decryptedData, header.RealSize);
         return decryptedData;
     }
 
     public static void EncryptFile(string inputFilePath, string outputFilePath, SDataVersion sDataVersion = SDataVersion.Regular)
     {
-        byte[] fileData = FileHelper.ReadBytes(inputFilePath);
-        byte[] encryptedData = Encrypt(fileData, sDataVersion);
+        var fileData = FileHelper.ReadBytes(inputFilePath);
+        var encryptedData = Encrypt(fileData, sDataVersion);
         FileHelper.WriteFile(outputFilePath, encryptedData);
     }
 
     public static void DecryptFile(string inputFilePath, string outputFilePath, bool validateChecksum = false)
     {
-        byte[] fileData = FileHelper.ReadBytes(inputFilePath);
-        byte[] decryptedData = Decrypt(fileData, validateChecksum);
+        var fileData = FileHelper.ReadBytes(inputFilePath);
+        var decryptedData = Decrypt(fileData, validateChecksum);
         FileHelper.WriteFile(outputFilePath, decryptedData);
     }
 }

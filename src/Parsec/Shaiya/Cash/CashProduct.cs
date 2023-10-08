@@ -45,9 +45,9 @@ public sealed class CashProduct : ISerializable
         binaryWriter.Write(Bag);
         binaryWriter.Write(Unknown);
         binaryWriter.Write(Cost);
-        binaryWriter.Write(Items.Take(24).ToSerializable(), false);
-        binaryWriter.Write(ProductName + "\0\0", false);
-        binaryWriter.Write(ProductCode + "\0\0", false);
-        binaryWriter.Write(Description + "\0\0", false);
+        binaryWriter.Write(Items.Take(24).ToSerializable(), lengthPrefixed: false);
+        binaryWriter.Write(ProductName + "\0\0", includeStringTerminator: false);
+        binaryWriter.Write(ProductCode + "\0\0", includeStringTerminator: false);
+        binaryWriter.Write(Description + "\0\0", includeStringTerminator: false);
     }
 }

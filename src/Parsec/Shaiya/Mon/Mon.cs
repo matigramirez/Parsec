@@ -42,7 +42,7 @@ public sealed class Mon : FileBase
         // Record instances expect the Format to be set as the ExtraOption on the serialization options
         binaryWriter.SerializationOptions.ExtraOption = Format;
 
-        binaryWriter.Write(Signature);
+        binaryWriter.Write(Signature, isLengthPrefixed: false, includeStringTerminator: false);
         binaryWriter.Write(Records.ToSerializable());
     }
 }

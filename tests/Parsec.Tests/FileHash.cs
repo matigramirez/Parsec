@@ -11,4 +11,9 @@ public static class FileHash
         using var stream = File.OpenRead(filePath);
         return md5.ComputeHash(stream);
     }
+
+    public static byte[] Checksum(byte[] buffer)
+    {
+        return MD5.HashData(buffer);
+    }
 }

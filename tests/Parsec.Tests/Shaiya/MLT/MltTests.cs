@@ -23,19 +23,19 @@ public class MltTests
         string jsonPath = $"Shaiya/MLT/{fileName}.json";
         string newObjPath = $"Shaiya/MLT/new_{fileName}";
 
-        var mlt = Reader.ReadFromFile<Parsec.Shaiya.Mlt.Mlt>(filePath);
+        var mlt = ParsecReader.ReadFromFile<Parsec.Shaiya.Mlt.Mlt>(filePath);
         mlt.Write(outputPath);
         mlt.WriteJson(jsonPath);
 
-        var outputMlt = Reader.ReadFromFile<Parsec.Shaiya.Mlt.Mlt>(outputPath);
-        var mltFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Mlt.Mlt>(jsonPath);
+        var outputMlt = ParsecReader.ReadFromFile<Parsec.Shaiya.Mlt.Mlt>(outputPath);
+        var mltFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.Mlt.Mlt>(jsonPath);
 
         // Check bytes
         Assert.Equal(mlt.GetBytes(), outputMlt.GetBytes());
         Assert.Equal(mlt.GetBytes(), mltFromJson.GetBytes());
 
         mltFromJson.Write(newObjPath);
-        var newMlt = Reader.ReadFromFile<Parsec.Shaiya.Mlt.Mlt>(newObjPath);
+        var newMlt = ParsecReader.ReadFromFile<Parsec.Shaiya.Mlt.Mlt>(newObjPath);
 
         // Check bytes
         Assert.Equal(mlt.GetBytes(), newMlt.GetBytes());

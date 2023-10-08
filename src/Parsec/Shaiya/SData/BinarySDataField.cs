@@ -10,12 +10,15 @@ public sealed class BinarySDataField : ISerializable
 
     public void Read(SBinaryReader binaryReader)
     {
-        Name = binaryReader.ReadString(Encoding.Unicode);
+        var length = binaryReader.ReadByte();
+        Name = binaryReader.ReadString(Encoding.Unicode, length);
     }
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Name, Encoding.Unicode);
+        var length = (byte)Name.Length;
+        binaryWriter.Write(length);
+        binaryWriter.Write(Name, Encoding.Unicode, isLengthPrefixed: false, includeStringTerminator: false);
     }
 
     public static implicit operator string(BinarySDataField field) => field.Name;

@@ -14,6 +14,6 @@ public sealed class EftEffectMesh : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.WriteLengthPrefixedString(Name);
+        binaryWriter.Write(Name);
     }
 }

@@ -8,14 +8,14 @@ namespace Parsec.Shaiya.Wld;
 
 public sealed class Wld : FileBase
 {
-    public WldType Type { get; set; } = WldType.FLD;
+    public WldType WldType { get; set; } = WldType.FLD;
 
     #region FLD Only fields
 
     /// <summary>
     /// Map Size, must be a power of 2 (1024 or 2048)
     /// </summary>
-    public int MapSize { get; set; }
+    public uint MapSize { get; set; }
 
     /// <summary>
     /// Map used for Y coordinate calculation based on X and Z
@@ -165,17 +165,17 @@ public sealed class Wld : FileBase
 
     protected override void Read(SBinaryReader binaryReader)
     {
-        var typeStr = binaryReader.ReadString(4).Trim('\0');
+        var typeStr = binaryReader.ReadString(4);
 
         if (typeStr == "DUN")
         {
-            Type = WldType.DUN;
+            WldType = WldType.DUN;
         }
 
         // FLD only fields
-        if (Type == WldType.FLD)
+        if (WldType == WldType.FLD)
         {
-            MapSize = binaryReader.ReadInt32();
+            MapSize = binaryReader.ReadUInt32();
 
             var mappingSize = (int)Math.Pow(MapSize / 2f + 1, 2);
             Heightmap = binaryReader.ReadBytes(mappingSize * 2);
@@ -217,7 +217,7 @@ public sealed class Wld : FileBase
         NamedAreas = binaryReader.ReadList<WldNamedArea>().ToList();
 
         // NOTE: npcCount is the real npc count + the patrol coordinates count
-        int npcCount = binaryReader.ReadInt32();
+        var npcCount = binaryReader.ReadInt32();
 
         while (npcCount > 0)
         {
@@ -227,7 +227,7 @@ public sealed class Wld : FileBase
             npcCount--;
         }
 
-        if (Type == WldType.FLD)
+        if (WldType == WldType.FLD)
         {
             SkyName = binaryReader.Read<String256>();
             CloudsName1 = binaryReader.Read<String256>();
@@ -267,11 +267,11 @@ public sealed class Wld : FileBase
 
     protected override void Write(SBinaryWriter binaryWriter)
     {
-        var typeStr = Type == WldType.FLD ? "FLD" : "DUN";
-        binaryWriter.Write(typeStr, false);
+        var typeStr = WldType == WldType.FLD ? "FLD" : "DUN";
+        binaryWriter.Write(typeStr, isLengthPrefixed: false, includeStringTerminator: true);
 
         // FLD only fields
-        if (Type == WldType.FLD)
+        if (WldType == WldType.FLD)
         {
             binaryWriter.Write(MapSize);
             binaryWriter.Write(Heightmap);
@@ -324,7 +324,7 @@ public sealed class Wld : FileBase
             binaryWriter.Write(npc);
         }
 
-        if (Type == WldType.FLD)
+        if (WldType == WldType.FLD)
         {
             binaryWriter.Write(SkyName);
             binaryWriter.Write(CloudsName1);

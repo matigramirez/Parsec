@@ -18,6 +18,6 @@ public sealed class DBMonsterTextRecord : IBinarySDataRecord
     public void Write(SBinaryWriter binaryWriter)
     {
         binaryWriter.Write(Id);
-        binaryWriter.WriteLengthPrefixedString(Name, false);
+        binaryWriter.Write(Name, includeStringTerminator: false);
     }
 }

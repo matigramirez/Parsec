@@ -25,7 +25,7 @@ public sealed class DBItemTextRecord : IBinarySDataRecord
     {
         binaryWriter.Write(ItemType);
         binaryWriter.Write(ItemTypeId);
-        binaryWriter.WriteLengthPrefixedString(ItemName, false);
-        binaryWriter.WriteLengthPrefixedString(Text, false);
+        binaryWriter.Write(ItemName, includeStringTerminator: false);
+        binaryWriter.Write(Text, includeStringTerminator: false);
     }
 }

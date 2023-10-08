@@ -253,8 +253,8 @@ public class Quest : ISerializable
 
         if (episode < Episode.EP8)
         {
-            binaryWriter.WriteLengthPrefixedString(Name);
-            binaryWriter.WriteLengthPrefixedString(Summary);
+            binaryWriter.Write(Name);
+            binaryWriter.Write(Summary);
         }
 
         binaryWriter.Write(MinLevel);
@@ -309,14 +309,14 @@ public class Quest : ISerializable
         {
             binaryWriter.Write(Results.Take(3).ToSerializable());
 
-            binaryWriter.WriteLengthPrefixedString(InitialDescription);
-            binaryWriter.WriteLengthPrefixedString(QuestWindowSummary);
-            binaryWriter.WriteLengthPrefixedString(ReminderInstructions);
-            binaryWriter.WriteLengthPrefixedString(AlternateResponse);
+            binaryWriter.Write(InitialDescription);
+            binaryWriter.Write(QuestWindowSummary);
+            binaryWriter.Write(ReminderInstructions);
+            binaryWriter.Write(AlternateResponse);
 
             for (var i = 0; i < 3; i++)
             {
-                binaryWriter.WriteLengthPrefixedString(Results[i].CompletionMessage);
+                binaryWriter.Write(Results[i].CompletionMessage);
             }
         }
         else
@@ -325,10 +325,10 @@ public class Quest : ISerializable
 
             if (episode < Episode.EP8)
             {
-                binaryWriter.WriteLengthPrefixedString(InitialDescription);
-                binaryWriter.WriteLengthPrefixedString(QuestWindowSummary);
-                binaryWriter.WriteLengthPrefixedString(ReminderInstructions);
-                binaryWriter.WriteLengthPrefixedString(AlternateResponse);
+                binaryWriter.Write(InitialDescription);
+                binaryWriter.Write(QuestWindowSummary);
+                binaryWriter.Write(ReminderInstructions);
+                binaryWriter.Write(AlternateResponse);
             }
         }
     }

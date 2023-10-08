@@ -17,7 +17,7 @@ public class NpcQuestTran : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.WriteLengthPrefixedString(Name, false);
-        binaryWriter.WriteLengthPrefixedString(WelcomeMessage, false);
+        binaryWriter.Write(Name, false);
+        binaryWriter.Write(WelcomeMessage, false);
     }
 }

@@ -59,7 +59,7 @@ public sealed class _3de : FileBase
         // Frame instances expect the vertex count to be set as the ExtraOption on the serialization options
         binaryWriter.SerializationOptions.ExtraOption = Vertices.Count;
 
-        binaryWriter.WriteLengthPrefixedString(Texture);
+        binaryWriter.Write(Texture);
         binaryWriter.Write(Vertices.ToSerializable());
         binaryWriter.Write(Faces.ToSerializable());
         binaryWriter.Write(MaxKeyframe);

@@ -6,24 +6,43 @@ namespace Parsec.Shaiya.Monster;
 public sealed class MonsterRecord : ISerializable
 {
     public string MobName { get; set; } = string.Empty;
+
     public short ModelId { get; set; }
+
     public short Level { get; set; }
+
     public byte AI { get; set; }
+
     public int HP { get; set; }
+
     public byte Day { get; set; }
+
     public byte Size { get; set; }
+
     public byte Element { get; set; }
+
     public int NormalTime { get; set; }
+
     public byte NormalStep { get; set; }
+
     public int ChaseTime { get; set; }
+
     public byte ChaseStep { get; set; }
+
     public byte AttackType1 { get; set; }
+
     public byte AttackElement1 { get; set; }
+
     public byte AttackType2 { get; set; }
+
     public byte AttackRange2 { get; set; }
+
     public byte AttackType3 { get; set; }
+
     public byte Unknown1 { get; set; }
+
     public byte Unknown2 { get; set; }
+
     public short QuestItemId { get; set; }
 
     public void Read(SBinaryReader binaryReader)

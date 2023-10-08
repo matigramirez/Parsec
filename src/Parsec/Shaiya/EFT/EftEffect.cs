@@ -126,6 +126,7 @@ public class EftEffect : ISerializable
         Unknown8 = binaryReader.ReadInt32();
         MeshIndex = binaryReader.ReadInt32();
         Unknown10 = binaryReader.ReadInt32();
+
         Unknown11 = binaryReader.ReadSingle();
         Unknown12 = binaryReader.ReadSingle();
         Unknown13 = binaryReader.ReadSingle();
@@ -173,7 +174,14 @@ public class EftEffect : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.WriteLengthPrefixedString(Name);
+        var format = EftFormat.EFT;
+
+        if (binaryWriter.SerializationOptions.ExtraOption is EftFormat formatOption)
+        {
+            format = formatOption;
+        }
+
+        binaryWriter.Write(Name);
         binaryWriter.Write(Unknown1);
         binaryWriter.Write(Unknown2);
         binaryWriter.Write(Unknown3);
@@ -211,8 +219,11 @@ public class EftEffect : ISerializable
         binaryWriter.Write(Unknown25);
         binaryWriter.Write(Unknown26);
 
-        binaryWriter.Write(Unknown27);
-        binaryWriter.Write(Unknown28);
+        if (format == EftFormat.EF3)
+        {
+            binaryWriter.Write(Unknown27);
+            binaryWriter.Write(Unknown28);
+        }
 
         binaryWriter.Write(Rotations.ToSerializable());
         binaryWriter.Write(OpacityFrames.ToSerializable());

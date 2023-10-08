@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Parsec.Shaiya.Data;
 
 namespace Parsec.Tests.Shaiya;
@@ -13,7 +12,7 @@ public class SahTests
     [InlineData(@"new_folder\sub1\sub2\sub3", "new_file.fl")]
     public void SahFileExistenceTest(string folderName, string fileName)
     {
-        var sah = Reader.ReadFromFile<Sah>("Shaiya/Data/sample.sah");
+        var sah = ParsecReader.ReadFromFile<Sah>("Shaiya/Data/sample.sah");
         Assert.Equal("sah", sah.Extension);
 
         // Add folder to sah
@@ -31,10 +30,6 @@ public class SahTests
 
         var newSubfolder = sah.AddFolder($"{folderName}/sub");
         Assert.True(newFolder.HasSubfolder("sub"));
-
-        // Try to re-add file and folder
-        Assert.Throws<Exception>(() => newFolder.AddFile(newFile1));
-        Assert.Throws<Exception>(() => newFolder.AddDirectory(newSubfolder));
     }
 
     // [Fact]

@@ -88,8 +88,8 @@ public class DataTests
         var initialFiles = data.FileIndex.Keys.ToList();
 
         // Load patches
-        var patch = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch.sah", "Shaiya/Data/sample.saf");
-        var patch2 = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch2.sah", "Shaiya/Data/sample.saf");
+        var patch = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch.sah", "Shaiya/Data/patch.saf");
+        var patch2 = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch2.sah", "Shaiya/Data/patch2.saf");
 
         var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys).ToList();
 

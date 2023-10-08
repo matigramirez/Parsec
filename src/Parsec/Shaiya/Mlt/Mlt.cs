@@ -39,10 +39,10 @@ public sealed class Mlt : FileBase
             MeshNames.Add(meshName);
         }
 
-        int textureNameCount = binaryReader.ReadInt32();
-        for (int i = 0; i < textureNameCount; i++)
+        var textureNameCount = binaryReader.ReadInt32();
+        for (var i = 0; i < textureNameCount; i++)
         {
-            string textureName = binaryReader.ReadString();
+            var textureName = binaryReader.ReadString();
             TextureNames.Add(textureName);
         }
 
@@ -51,18 +51,18 @@ public sealed class Mlt : FileBase
 
     protected override void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Signature);
+        binaryWriter.Write(Signature, isLengthPrefixed: false, includeStringTerminator: false);
 
         binaryWriter.Write(MeshNames.Count);
         foreach (var meshName in MeshNames)
         {
-            binaryWriter.WriteLengthPrefixedString(meshName);
+            binaryWriter.Write(meshName);
         }
 
         binaryWriter.Write(TextureNames.Count);
         foreach (var textureName in TextureNames)
         {
-            binaryWriter.WriteLengthPrefixedString(textureName);
+            binaryWriter.Write(textureName);
         }
 
         binaryWriter.Write(Records.ToSerializable());

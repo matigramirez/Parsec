@@ -1,6 +1,6 @@
-﻿using System;
-using Parsec;
-using Parsec.Shaiya.Svmap;
+﻿using Parsec;
+using Parsec.Shaiya.SData;
+using Parsec.Shaiya.Skill;
 
 namespace Sample.Files;
 
@@ -8,27 +8,12 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
-        // This sample shows how you can convert a shaiya file format (in this case svmap) into json to be able to
-        // edit its properties as plain text, and then, convert it back to its original format
+        SData.DecryptFile("/home/matias/Desktop/DBSkillData.SData", "/home/matias/Desktop/DBSkillData.dec.SData");
 
-        // Step 1: Read a svmap from a file
-        Svmap svmap = Reader.ReadFromFile<Svmap>("2.svmap");
+        var skillData = ParsecReader.ReadFromFile<DBSkillData>("/home/matias/Desktop/DBSkillData.dec.SData");
 
-        // You can go through and modify its properties here too
-        foreach (SvmapNpc npc in svmap.Npcs)
-        {
-            Console.WriteLine($"NpcId: {npc.NpcId}, Type: {npc.Type}");
-        }
+        skillData.Write("/home/matias/Desktop/DBSkillData.dec.new.SData");
 
-        // Step 2: Export svmap as JSON
-        svmap.WriteJson("2.svmap.json");
-
-        // Step 3: Modify the json file in any text editor
-
-        // Step 4: Read svmap from the modified JSON file
-        Svmap svmapFromJson = Reader.ReadFromJsonFile<Svmap>("2.svmap.json");
-
-        // Step 5: Write the edited instance as .svmap
-        svmapFromJson.Write("2.edited.svmap");
+        var newSkillData = ParsecReader.ReadFromFile<DBSkillData>("/home/matias/Desktop/DBSkillData.dec.new.SData");
     }
 }

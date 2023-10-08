@@ -89,26 +89,20 @@ public class SBinaryWriter : IDisposable
         _binaryWriter.Write(bytes);
     }
 
-    public void WriteLengthPrefixedString(string str, bool includeStringTerminator = true)
+    public void Write(string str, bool isLengthPrefixed = true, bool includeStringTerminator = true)
     {
-        WriteLengthPrefixedString(str, SerializationOptions.Encoding, includeStringTerminator);
+        Write(str, SerializationOptions.Encoding, isLengthPrefixed, includeStringTerminator);
     }
 
-    public void WriteLengthPrefixedString(string str, Encoding encoding, bool includeStringTerminator = true)
+    public void Write(string str, Encoding encoding, bool isLengthPrefixed = true, bool includeStringTerminator = true)
     {
         var finalStr = includeStringTerminator ? str + '\0' : str;
-        Write(finalStr.Length);
-        Write(encoding.GetBytes(finalStr));
-    }
 
-    public void Write(string str, bool includeStringTerminator = true)
-    {
-        Write(str, SerializationOptions.Encoding, includeStringTerminator);
-    }
+        if (isLengthPrefixed)
+        {
+            Write(finalStr.Length);
+        }
 
-    public void Write(string str, Encoding encoding, bool includeStringTerminator = true)
-    {
-        var finalStr = includeStringTerminator ? str + '\0' : str;
         Write(encoding.GetBytes(finalStr));
     }
 

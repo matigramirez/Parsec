@@ -27,7 +27,7 @@ public sealed class SetItemRecord : ISerializable
     {
         binaryWriter.Write(Index);
         binaryWriter.Write(Name);
-        binaryWriter.Write(Items.Take(13).ToSerializable());
-        binaryWriter.Write(Synergies.Take(13).ToSerializable());
+        binaryWriter.Write(Items.Take(13).ToSerializable(), lengthPrefixed: false);
+        binaryWriter.Write(Synergies.Take(13).ToSerializable(), lengthPrefixed: false);
     }
 }

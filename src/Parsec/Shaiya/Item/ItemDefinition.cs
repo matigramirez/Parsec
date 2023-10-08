@@ -1,30 +1,23 @@
-﻿using Parsec.Common;
+﻿using CsvHelper.Configuration.Attributes;
+using Parsec.Common;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Item;
 
-public sealed class ItemGroupRecord : ISerializable
+public sealed class ItemDefinition : ISerializable
 {
-    /// <summary>
-    /// Order: 2. Changed because of CSV.
-    /// </summary>
-    public byte ItemType { get; set; }
-
-    /// <summary>
-    /// Order: 3. Changed because of CSV.
-    /// </summary>
-    public byte ItemTypeId { get; set; }
-
-    /// <summary>
-    /// Order: 0. Changed because of CSV.
-    /// </summary>
+    [Index(2)]
     public string Name { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Order: 1. Changed because of CSV.
-    /// </summary>
+    [Index(3)]
     public string Description { get; set; } = string.Empty;
+
+    [Index(0)]
+    public byte ItemType { get; set; }
+
+    [Index(1)]
+    public byte ItemTypeId { get; set; }
 
     public byte Model { get; set; }
 
@@ -271,8 +264,8 @@ public sealed class ItemGroupRecord : ISerializable
     {
         var episode = binaryWriter.SerializationOptions.Episode;
 
-        binaryWriter.WriteLengthPrefixedString(Name);
-        binaryWriter.WriteLengthPrefixedString(Description);
+        binaryWriter.Write(Name);
+        binaryWriter.Write(Description);
         binaryWriter.Write(ItemType);
         binaryWriter.Write(ItemTypeId);
         binaryWriter.Write(Model);

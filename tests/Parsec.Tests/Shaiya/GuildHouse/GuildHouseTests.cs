@@ -10,12 +10,12 @@ public class GuildHouseTests
         const string filePath = "Shaiya/GuildHouse/GuildHouse.SData";
         const string outputPath = "Shaiya/GuildHouse/GuildHouse.output.SData";
         const string jsonPath = "Shaiya/GuildHouse/GuildHouse.SData.json";
-        var guildHouse = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(filePath);
+        var guildHouse = ParsecReader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(filePath);
         guildHouse.Write(outputPath);
         guildHouse.WriteJson(jsonPath);
 
-        var outputGuildHouse = Reader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(outputPath);
-        var jsonGuildHouse = Reader.ReadFromJsonFile<Parsec.Shaiya.GuildHouse.GuildHouse>(jsonPath);
+        var outputGuildHouse = ParsecReader.ReadFromFile<Parsec.Shaiya.GuildHouse.GuildHouse>(outputPath);
+        var jsonGuildHouse = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.GuildHouse.GuildHouse>(jsonPath);
 
         var expected = guildHouse.GetBytes().ToList();
         Assert.Equal(expected, outputGuildHouse.GetBytes());

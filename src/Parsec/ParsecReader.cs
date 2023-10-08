@@ -10,7 +10,7 @@ using Parsec.Shaiya.Data;
 
 namespace Parsec;
 
-public static class Reader
+public static class ParsecReader
 {
     /// <summary>
     /// Reads a shaiya file format from a file
