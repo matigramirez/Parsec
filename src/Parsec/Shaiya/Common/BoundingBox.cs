@@ -19,6 +19,17 @@ public struct BoundingBox : ISerializable
     /// </summary>
     public Vector3 UpperLimit { get; set; }
 
+    public double Radius
+    {
+        get
+        {
+            var x = UpperLimit.X - LowerLimit.X;
+            var y = UpperLimit.Y - LowerLimit.Y;
+            var z = UpperLimit.Z - LowerLimit.Z;
+            return Math.Sqrt(x * x + y * y + z * z) / 2f;
+        }
+    }
+
     public BoundingBox(Vector3 lowerLimit, Vector3 upperLimit)
     {
         LowerLimit = lowerLimit;
@@ -35,13 +46,5 @@ public struct BoundingBox : ISerializable
     {
         binaryWriter.Write(LowerLimit);
         binaryWriter.Write(UpperLimit);
-    }
-
-    public float GetRadius()
-    {
-        var x = UpperLimit.X - LowerLimit.X;
-        var y = UpperLimit.Y - LowerLimit.Y;
-        var z = UpperLimit.Z - LowerLimit.Z;
-        return (float)Math.Sqrt(x * x + y * y + z * z) / 2f;
     }
 }
