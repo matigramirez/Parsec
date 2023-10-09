@@ -11,6 +11,8 @@ jobs:
   nuget:
     name: Publish NuGet package
     runs-on: ubuntu-latest
+    env:
+      NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
 
     steps:
       - uses: actions/checkout@v3
@@ -24,4 +26,5 @@ jobs:
         run: dotnet pack ./src/Parsec --configuration Release
 
       - name: Publish NuGet package
-        run: dotnet nuget push ./src/Parsec/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }}
+
+        run: dotnet nuget push ./src/Parsec/bin/Release/*.nupkg --api-key "$NUGET_API_KEY"
