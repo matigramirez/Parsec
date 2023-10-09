@@ -1,4 +1,4 @@
-name: release
+name: nuget
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: dotnet build ./src/Parsec
+      - run: dotnet build ./src/Parsec --configuration Release
       - name: Create NuGet package
         run: dotnet pack ./src/Parsec --configuration Release
 
