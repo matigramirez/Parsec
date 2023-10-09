@@ -23,27 +23,27 @@ public sealed class ItmRecord : ISerializable
     /// <summary>
     /// Record format. 0 or 1.
     /// </summary>
-    public int RecordFormat { get; set; }
+    public ItmRecordFormat RecordFormat { get; set; }
 
     public int Unknown2 { get; set; }
 
     /// <summary>
-    /// Present if <see cref="RecordFormat"/> is 1.
+    /// Present if <see cref="RecordFormat"/> is Extended.
     /// </summary>
     public uint RGBA { get; set; }
 
     /// <summary>
-    /// Present if <see cref="RecordFormat"/> is 1.
+    /// Present if <see cref="RecordFormat"/> is Extended.
     /// </summary>
     public float Rotation { get; set; }
 
     /// <summary>
-    /// Present if <see cref="RecordFormat"/> is 1.
+    /// Present if <see cref="RecordFormat"/> is Extended.
     /// </summary>
     public float Scale { get; set; }
 
     /// <summary>
-    /// Present if <see cref="RecordFormat"/> is 1.
+    /// Present if <see cref="RecordFormat"/> is Extended.
     /// </summary>
     public int Unknown3 { get; set; }
 
@@ -59,10 +59,10 @@ public sealed class ItmRecord : ISerializable
         TextureIndex = binaryReader.ReadInt32();
         AlphaBlendingMode = (AlphaBlendingMode)binaryReader.ReadInt32();
         Unknown1 = binaryReader.ReadInt32();
-        RecordFormat = binaryReader.ReadInt32();
+        RecordFormat = (ItmRecordFormat)binaryReader.ReadInt32();
         Unknown2 = binaryReader.ReadInt32();
 
-        if (RecordFormat == 1)
+        if (RecordFormat == ItmRecordFormat.Extended)
         {
             RGBA = binaryReader.ReadUInt32();
             Rotation = binaryReader.ReadSingle();
@@ -82,10 +82,10 @@ public sealed class ItmRecord : ISerializable
         binaryWriter.Write(TextureIndex);
         binaryWriter.Write((int)AlphaBlendingMode);
         binaryWriter.Write(Unknown1);
-        binaryWriter.Write(RecordFormat);
+        binaryWriter.Write((int)RecordFormat);
         binaryWriter.Write(Unknown2);
 
-        if (RecordFormat == 1)
+        if (RecordFormat == ItmRecordFormat.Extended)
         {
             binaryWriter.Write(RGBA);
             binaryWriter.Write(Rotation);
