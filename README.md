@@ -186,7 +186,7 @@ specify it as a parameter when calling the `Write`, `WriteJson` and `WriteCsv` m
 
 ```cs
 // Load data (sah and saf)
-var data = new Data("data.sah");
+var data = new Data("data.sah", "data.saf");
 
 // Find the file you want to extract
 var file = data.GetFile("world/2.svmap");
@@ -206,8 +206,8 @@ DataBuilder.CreateFromDirectory("input", "output");
 
 ```cs
 // Load target data and patch data
-var data = new Data("data.sah");
-var update = new Data("update.sah");
+var data = new Data("data.sah", "data.saf");
+var update = new Data("update.sah", "update.saf");
 
 // Patch data
 using (var dataPatcher = new DataPatcher())
