@@ -11,8 +11,6 @@ public sealed class SBinaryReader : IDisposable
     private BinaryReader _binaryReader;
     public readonly BinarySerializationOptions SerializationOptions;
 
-    public long StreamLength => _binaryReader.BaseStream.Length;
-
     public SBinaryReader(Stream stream, BinarySerializationOptions serializationOptions)
     {
         _binaryReader = new BinaryReader(stream);
@@ -48,7 +46,10 @@ public sealed class SBinaryReader : IDisposable
         _binaryReader = new BinaryReader(memoryStream);
     }
 
-    public long Length => _binaryReader.BaseStream.Length;
+    /// <summary>
+    /// Length of the stream
+    /// </summary>
+    public long StreamLength => _binaryReader.BaseStream.Length;
 
     /// <summary>
     /// Reads a byte (unsigned)
@@ -160,24 +161,26 @@ public sealed class SBinaryReader : IDisposable
     /// </summary>
     /// <param name="encoding">The <see cref="Encoding"/> to be used</param>
     /// <param name="length">The length of the string</param>
-    /// <param name="removeStringTerminator"></param>
-    public string ReadString(Encoding encoding, int length, bool removeStringTerminator = true)
+    public string ReadString(Encoding encoding, int length)
     {
         if (length <= 0)
         {
             return string.Empty;
         }
 
+        var byteCount = length;
+
         // If encoding is UTF16, length needs to be doubled, since UTF16 uses 2 bytes per character
         if (encoding.Equals(Encoding.Unicode))
         {
-            length *= 2;
+            byteCount *= 2;
         }
 
-        var stringBytes = ReadBytes(length);
-        var str = encoding.GetString(stringBytes, 0, length);
+        var stringBytes = ReadBytes(byteCount);
+        var str = encoding.GetString(stringBytes, 0, byteCount);
 
-        if (removeStringTerminator && str.Length > 1 && str[str.Length - 1] == '\0')
+        // Trim the string if it has a null terminator at the end
+        if (str.Length > 1 && str[str.Length - 1] == '\0')
         {
             str = str.Trim('\0');
         }
@@ -194,20 +197,18 @@ public sealed class SBinaryReader : IDisposable
     /// Reads a variable string which has its length prefixed with little endian encoding.
     /// </summary>
     /// <param name="encoding">The <see cref="Encoding"/> to be used</param>
-    /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
-    public string ReadString(Encoding encoding, bool removeStringTerminator = true)
+    public string ReadString(Encoding encoding)
     {
-        int length = ReadInt32();
-        return ReadString(encoding, length, removeStringTerminator);
+        var length = ReadInt32();
+        return ReadString(encoding, length);
     }
 
     /// <summary>
     /// Reads length-fixed string using the encoding specified on the serialization options
     /// </summary>
-    /// <param name="removeStringTerminator">Indicates whether the string terminator (\0) should be removed or not</param>
-    public string ReadString(bool removeStringTerminator = true)
+    public string ReadString()
     {
-        return ReadString(SerializationOptions.Encoding, removeStringTerminator);
+        return ReadString(SerializationOptions.Encoding);
     }
 
     /// <summary>
@@ -236,6 +237,9 @@ public sealed class SBinaryReader : IDisposable
         _binaryReader.BaseStream.Position += count;
     }
 
+    /// <summary>
+    /// Reads all bytes from the stream
+    /// </summary>
     public byte[] ReadAllBytes()
     {
         if (_binaryReader.BaseStream is MemoryStream memoryStream)
@@ -248,6 +252,9 @@ public sealed class SBinaryReader : IDisposable
         return tempMemoryStream.ToArray();
     }
 
+    /// <summary>
+    /// Reads an ISerializable object
+    /// </summary>
     public T Read<T>() where T : ISerializable, new()
     {
         var instance = new T();
@@ -255,6 +262,10 @@ public sealed class SBinaryReader : IDisposable
         return instance;
     }
 
+    /// <summary>
+    /// Reads a fixed length list of ISerializable objects
+    /// </summary>
+    /// <param name="count">Object count</param>
     public IList<T> ReadList<T>(int count) where T : ISerializable, new()
     {
         var list = new List<T>();
@@ -268,12 +279,16 @@ public sealed class SBinaryReader : IDisposable
         return list;
     }
 
+    /// <summary>
+    /// Reads a length-prefixed list of ISerializable objects
+    /// </summary>
     public IList<T> ReadList<T>() where T : ISerializable, new()
     {
         var count = ReadInt32();
         return ReadList<T>(count);
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         _binaryReader.Dispose();

@@ -229,14 +229,14 @@ public class Quest : ISerializable
             // Episodes 4 & 5 have 3 results and completion messages are read afterwards
             Results = binaryReader.ReadList<QuestResult>(resultCount).ToList();
 
-            InitialDescription = binaryReader.ReadString(false);
-            QuestWindowSummary = binaryReader.ReadString(false);
-            ReminderInstructions = binaryReader.ReadString(false);
-            AlternateResponse = binaryReader.ReadString(false);
+            InitialDescription = binaryReader.ReadString();
+            QuestWindowSummary = binaryReader.ReadString();
+            ReminderInstructions = binaryReader.ReadString();
+            AlternateResponse = binaryReader.ReadString();
 
             for (var i = 0; i < resultCount; i++)
             {
-                Results[i].CompletionMessage = binaryReader.ReadString(false);
+                Results[i].CompletionMessage = binaryReader.ReadString();
             }
         }
         else
@@ -246,10 +246,10 @@ public class Quest : ISerializable
 
             if (episode < Episode.EP8)
             {
-                InitialDescription = binaryReader.ReadString(false);
-                QuestWindowSummary = binaryReader.ReadString(false);
-                ReminderInstructions = binaryReader.ReadString(false);
-                AlternateResponse = binaryReader.ReadString(false);
+                InitialDescription = binaryReader.ReadString();
+                QuestWindowSummary = binaryReader.ReadString();
+                ReminderInstructions = binaryReader.ReadString();
+                AlternateResponse = binaryReader.ReadString();
             }
         }
     }

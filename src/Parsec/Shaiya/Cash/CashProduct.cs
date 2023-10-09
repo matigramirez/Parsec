@@ -29,14 +29,14 @@ public sealed class CashProduct : ISerializable
         Unknown = binaryReader.ReadUInt32();
         Cost = binaryReader.ReadUInt32();
         Items = binaryReader.ReadList<CashProductItem>(24).ToList();
-        ProductName = binaryReader.ReadString(false);
-        ProductCode = binaryReader.ReadString(false);
-        Description = binaryReader.ReadString(false);
+        ProductName = binaryReader.ReadString();
+        ProductCode = binaryReader.ReadString();
+        Description = binaryReader.ReadString();
 
         // Manually remove double string terminator on the end of each string.
-        ProductName = ProductName.Substring(0, ProductName.Length - 2);
-        ProductCode = ProductCode.Substring(0, ProductCode.Length - 2);
-        Description = Description.Substring(0, Description.Length - 2);
+        ProductName = ProductName.Trim('\0');
+        ProductCode = ProductCode.Trim('\0');
+        Description = Description.Trim('\0');
     }
 
     public void Write(SBinaryWriter binaryWriter)
@@ -46,8 +46,10 @@ public sealed class CashProduct : ISerializable
         binaryWriter.Write(Unknown);
         binaryWriter.Write(Cost);
         binaryWriter.Write(Items.Take(24).ToSerializable(), lengthPrefixed: false);
-        binaryWriter.Write(ProductName + "\0\0", includeStringTerminator: false);
-        binaryWriter.Write(ProductCode + "\0\0", includeStringTerminator: false);
-        binaryWriter.Write(Description + "\0\0", includeStringTerminator: false);
+
+        // Manually add double string terminator on the end of each string.
+        binaryWriter.Write(ProductName + "\0");
+        binaryWriter.Write(ProductCode + "\0");
+        binaryWriter.Write(Description + "\0");
     }
 }
