@@ -26,4 +26,4 @@ jobs:
         run: dotnet pack ./src/Parsec --configuration Release
 
       - name: Publish NuGet package
-        run: dotnet nuget push ./src/Parsec/bin/Release/*.nupkg --api-key $NUGET_AUTH_TOKEN
+        run: dotnet nuget push ./src/Parsec/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
