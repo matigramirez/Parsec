@@ -743,5 +743,11 @@
     <None Update="Shaiya\NpcQuest\NpcQuestTrans_USA.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Shaiya\DualLayerClothes\DualLayerClothes.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\DualLayerClothes\DBDualLayerClothesData.SData">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
