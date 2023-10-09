@@ -97,9 +97,9 @@ public class _3DCTests
     [InlineData("Wing_01.3DC")]
     public void _3DCMultipleReadWriteTest(string fileName)
     {
-        string filePath = $"Shaiya/3DC/{fileName}";
-        string jsonPath = $"Shaiya/3DC/{fileName}.json";
-        string newObjPath = $"Shaiya/3DC/new_{fileName}";
+        var filePath = $"Shaiya/3DC/{fileName}";
+        var jsonPath = $"Shaiya/3DC/{fileName}.json";
+        var newObjPath = $"Shaiya/3DC/new_{fileName}";
 
         var obj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(filePath);
 
@@ -111,6 +111,36 @@ public class _3DCTests
 
         objFromJson.Write(newObjPath);
         var newObj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(newObjPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), newObj.GetBytes());
+    }
+
+    [Theory]
+    [InlineData("Demf_Mentle000_HL.3DC")]
+    [InlineData("Demf_Mentle000_L.3DC")]
+    [InlineData("Demf_Mentle000_S.3DC")]
+    [InlineData("Demf_Mentle001_HL.3DC")]
+    [InlineData("Demf_Mentle001_L.3DC")]
+    [InlineData("Demf_Mentle001_S.3DC")]
+    [InlineData("Demf_Mentle002_HL.3DC")]
+    [InlineData("Demf_Mentle002_L.3DC")]
+    public void Static3DCMultipleReadWriteTest(string fileName)
+    {
+        var filePath = $"Shaiya/3DC/{fileName}";
+        var jsonPath = $"Shaiya/3DC/{fileName}.json";
+        var newObjPath = $"Shaiya/3DC/new_{fileName}";
+
+        var obj = ParsecReader.FromFile<Parsec.Shaiya._3dc.Static3dc>(filePath);
+
+        obj.WriteJson(jsonPath);
+        var objFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya._3dc.Static3dc>(jsonPath);
+
+        // Check bytes
+        Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());
+
+        objFromJson.Write(newObjPath);
+        var newObj = ParsecReader.FromFile<Parsec.Shaiya._3dc.Static3dc>(newObjPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), newObj.GetBytes());
