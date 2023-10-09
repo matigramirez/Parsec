@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Parsec.Extensions;
 using Parsec.Shaiya.SData;
 
 namespace Parsec.Cryptography;
@@ -16,7 +15,7 @@ public sealed class SeedHeader
 
     public SeedHeader(byte[] data)
     {
-        Signature = Encoding.ASCII.GetString(data.SubArray(0, 40));
+        Signature = Encoding.ASCII.GetString(data.AsSpan().Slice(0, 40).ToArray());
 
         var currentOffset = 40;
         Checksum = BitConverter.ToUInt32(data, currentOffset);
@@ -34,7 +33,7 @@ public sealed class SeedHeader
 
         // Depending on the header type, the padding is 12 or 16 bytes (based on the existence of the 4 empty bytes)
         var paddingLength = currentOffset == 48 ? 16 : 12;
-        Padding = data.SubArray(currentOffset, paddingLength);
+        Padding = data.AsSpan().Slice(currentOffset, paddingLength).ToArray();
     }
 
     /// <summary>

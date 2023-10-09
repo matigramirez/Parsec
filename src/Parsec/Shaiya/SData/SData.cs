@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Cryptography;
-using Parsec.Extensions;
 using Parsec.Helpers;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
@@ -79,7 +78,7 @@ public abstract class SData : FileBase, IEncryptable
         if (data.Length < SEED_SIGNATURE.Length)
             return false;
 
-        var sDataHeader = Encoding.ASCII.GetString(data.SubArray(0, SEED_SIGNATURE.Length));
+        var sDataHeader = Encoding.ASCII.GetString(data.AsSpan().Slice(0, SEED_SIGNATURE.Length).ToArray());
         return sDataHeader == SEED_SIGNATURE;
     }
 
