@@ -5,11 +5,11 @@
 [![Nuget](https://img.shields.io/nuget/v/Parsec.svg)](https://www.nuget.org/packages/Parsec/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-`Parsec` is a simple .NET file parsing library for `Shaiya` file formats which provides easy to use APIs
-for serialization and deserialization of the game's file formats, as well as JSON and CSV support.
+`Parsec` is a simple .NET parsing library for `Shaiya` file formats which provides easy to use APIs
+for serialization and deserialization of the game's file formats, including JSON and CSV support.
 
 Parsec works on any .NET Standard 2.0 compliant platform, including .NET 7.0, .NET Framework 4.6.1+, .NET Core 2.0+,
-Unity's Mono and Godot (C# version).
+Unity's Mono and Godot.
 
 ## Supported file formats
 
@@ -175,8 +175,6 @@ item.WriteCsv("Item.csv")
 
 When writing files, the default encoding is `ASCII`. If you want to write a file with a different encoding, you can
 specify it as a parameter when calling the `Write`, `WriteJson` and `WriteCsv` methods.
-
-```cs
 
 ## Samples
 
