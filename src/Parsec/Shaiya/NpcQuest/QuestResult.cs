@@ -76,7 +76,7 @@ public class QuestResult : ISerializable
 
         NextQuestId = binaryReader.ReadUInt16();
 
-        if (binaryReader.SerializationOptions.Episode < Episode.EP8)
+        if (binaryReader.SerializationOptions.Episode is > Episode.EP5 and < Episode.EP8)
         {
             CompletionMessage = binaryReader.ReadString();
         }
@@ -109,5 +109,10 @@ public class QuestResult : ISerializable
         }
 
         binaryWriter.Write(NextQuestId);
+
+        if (binaryWriter.SerializationOptions.Episode is > Episode.EP5 and < Episode.EP8)
+        {
+            binaryWriter.Write(CompletionMessage, includeStringTerminator: false);
+        }
     }
 }

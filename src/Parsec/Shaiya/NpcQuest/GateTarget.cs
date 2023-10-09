@@ -38,7 +38,7 @@ public class GateTarget : ISerializable
 
         if (binaryWriter.SerializationOptions.Episode < Episode.EP8)
         {
-            binaryWriter.Write(TargetName);
+            binaryWriter.Write(TargetName, includeStringTerminator: false);
         }
 
         binaryWriter.Write(Cost);

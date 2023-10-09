@@ -135,9 +135,16 @@ public class Quest : ISerializable
     public List<QuestResult> Results { get; set; } = new();
 
     public string InitialDescription { get; set; } = string.Empty;
+
     public string QuestWindowSummary { get; set; } = string.Empty;
+
     public string ReminderInstructions { get; set; } = string.Empty;
+
     public string AlternateResponse { get; set; } = string.Empty;
+
+    private const int RequiredItemCount = 3;
+
+    private const int FarmItemCount = 3;
 
     public void Read(SBinaryReader binaryReader)
     {
@@ -198,13 +205,13 @@ public class Quest : ISerializable
         StartItemType = binaryReader.ReadByte();
         StartItemId = binaryReader.ReadByte();
 
-        RequiredItems = binaryReader.ReadList<QuestItem>(3).ToList();
+        RequiredItems = binaryReader.ReadList<QuestItem>(RequiredItemCount).ToList();
 
         EndType = binaryReader.ReadByte();
         EndNpcType = binaryReader.ReadByte();
         EndNpcId = binaryReader.ReadInt16();
 
-        FarmItems = binaryReader.ReadList<QuestItem>(3).ToList();
+        FarmItems = binaryReader.ReadList<QuestItem>(FarmItemCount).ToList();
 
         PvpKillCount = binaryReader.ReadByte();
         RequiredMobId1 = binaryReader.ReadUInt16();
@@ -215,17 +222,19 @@ public class Quest : ISerializable
         ResultType = binaryReader.ReadByte();
         ResultUserSelect = binaryReader.ReadByte();
 
+        var resultCount = GetResultCount(episode);
+
         if (episode <= Episode.EP5)
         {
             // Episodes 4 & 5 have 3 results and completion messages are read afterwards
-            Results = binaryReader.ReadList<QuestResult>(3).ToList();
+            Results = binaryReader.ReadList<QuestResult>(resultCount).ToList();
 
             InitialDescription = binaryReader.ReadString(false);
             QuestWindowSummary = binaryReader.ReadString(false);
             ReminderInstructions = binaryReader.ReadString(false);
             AlternateResponse = binaryReader.ReadString(false);
 
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < resultCount; i++)
             {
                 Results[i].CompletionMessage = binaryReader.ReadString(false);
             }
@@ -233,7 +242,7 @@ public class Quest : ISerializable
         else
         {
             // Episode 6 has 6 quest results and each result value is followed by its completion message
-            Results = binaryReader.ReadList<QuestResult>(6).ToList();
+            Results = binaryReader.ReadList<QuestResult>(resultCount).ToList();
 
             if (episode < Episode.EP8)
             {
@@ -292,11 +301,11 @@ public class Quest : ISerializable
         binaryWriter.Write(StartNpcId);
         binaryWriter.Write(StartItemType);
         binaryWriter.Write(StartItemId);
-        binaryWriter.Write(RequiredItems.Take(3).ToSerializable());
+        binaryWriter.Write(RequiredItems.Take(RequiredItemCount).ToSerializable(), lengthPrefixed: false);
         binaryWriter.Write(EndType);
         binaryWriter.Write(EndNpcType);
         binaryWriter.Write(EndNpcId);
-        binaryWriter.Write(FarmItems.Take(3).ToSerializable());
+        binaryWriter.Write(FarmItems.Take(FarmItemCount).ToSerializable(), lengthPrefixed: false);
         binaryWriter.Write(PvpKillCount);
         binaryWriter.Write(RequiredMobId1);
         binaryWriter.Write(RequiredMobCount1);
@@ -305,31 +314,38 @@ public class Quest : ISerializable
         binaryWriter.Write(ResultType);
         binaryWriter.Write(ResultUserSelect);
 
+        var resultCount = GetResultCount(episode);
+
         if (episode <= Episode.EP5)
         {
-            binaryWriter.Write(Results.Take(3).ToSerializable());
+            binaryWriter.Write(Results.Take(resultCount).ToSerializable(), lengthPrefixed: false);
 
-            binaryWriter.Write(InitialDescription);
-            binaryWriter.Write(QuestWindowSummary);
-            binaryWriter.Write(ReminderInstructions);
-            binaryWriter.Write(AlternateResponse);
+            binaryWriter.Write(InitialDescription, includeStringTerminator: false);
+            binaryWriter.Write(QuestWindowSummary, includeStringTerminator: false);
+            binaryWriter.Write(ReminderInstructions, includeStringTerminator: false);
+            binaryWriter.Write(AlternateResponse, includeStringTerminator: false);
 
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < resultCount; i++)
             {
-                binaryWriter.Write(Results[i].CompletionMessage);
+                binaryWriter.Write(Results[i].CompletionMessage, includeStringTerminator: false);
             }
         }
         else
         {
-            binaryWriter.Write(Results.Take(6).ToSerializable());
+            binaryWriter.Write(Results.Take(resultCount).ToSerializable(), lengthPrefixed: false);
 
             if (episode < Episode.EP8)
             {
-                binaryWriter.Write(InitialDescription);
-                binaryWriter.Write(QuestWindowSummary);
-                binaryWriter.Write(ReminderInstructions);
-                binaryWriter.Write(AlternateResponse);
+                binaryWriter.Write(InitialDescription, includeStringTerminator: false);
+                binaryWriter.Write(QuestWindowSummary, includeStringTerminator: false);
+                binaryWriter.Write(ReminderInstructions, includeStringTerminator: false);
+                binaryWriter.Write(AlternateResponse, includeStringTerminator: false);
             }
         }
+    }
+
+    private int GetResultCount(Episode episode)
+    {
+        return episode <= Episode.EP5 ? 3 : 6;
     }
 }

@@ -47,17 +47,17 @@ public class QuestTranslation : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Name, false);
-        binaryWriter.Write(Summary, false);
-        binaryWriter.Write(CompletionMessage, false);
-        binaryWriter.Write(CompletionMessage2, false);
-        binaryWriter.Write(CompletionMessage3, false);
-        binaryWriter.Write(CompletionMessage4, false);
-        binaryWriter.Write(CompletionMessage5, false);
-        binaryWriter.Write(CompletionMessage6, false);
-        binaryWriter.Write(InitialDescription, false);
-        binaryWriter.Write(WelcomeMessage, false);
-        binaryWriter.Write(ReminderMessage, false);
-        binaryWriter.Write(AlternateResponse, false);
+        binaryWriter.Write(Name, includeStringTerminator: false);
+        binaryWriter.Write(Summary, includeStringTerminator: false);
+        binaryWriter.Write(CompletionMessage, includeStringTerminator: false);
+        binaryWriter.Write(CompletionMessage2, includeStringTerminator: false);
+        binaryWriter.Write(CompletionMessage3, includeStringTerminator: false);
+        binaryWriter.Write(CompletionMessage4, includeStringTerminator: false);
+        binaryWriter.Write(CompletionMessage5, includeStringTerminator: false);
+        binaryWriter.Write(CompletionMessage6, includeStringTerminator: false);
+        binaryWriter.Write(InitialDescription, includeStringTerminator: false);
+        binaryWriter.Write(WelcomeMessage, includeStringTerminator: false);
+        binaryWriter.Write(ReminderMessage, includeStringTerminator: false);
+        binaryWriter.Write(AlternateResponse, includeStringTerminator: false);
     }
 }

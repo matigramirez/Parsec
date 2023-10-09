@@ -54,8 +54,8 @@ public abstract class BaseNpc
         // In Ep8 strings are stored in separate translation files
         if (binaryReader.SerializationOptions.Episode < Episode.EP8)
         {
-            Name = binaryReader.ReadString(false);
-            WelcomeMessage = binaryReader.ReadString(false);
+            Name = binaryReader.ReadString();
+            WelcomeMessage = binaryReader.ReadString();
         }
     }
 
@@ -69,8 +69,8 @@ public abstract class BaseNpc
         // In Ep8 strings are stored in separate translation files
         if (binaryWriter.SerializationOptions.Episode < Episode.EP8)
         {
-            binaryWriter.Write(Name, false);
-            binaryWriter.Write(WelcomeMessage, false);
+            binaryWriter.Write(Name, includeStringTerminator: false);
+            binaryWriter.Write(WelcomeMessage, includeStringTerminator: false);
         }
     }
 

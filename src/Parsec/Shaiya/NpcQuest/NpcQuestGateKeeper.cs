@@ -20,7 +20,7 @@ public class NpcQuestGateKeeper : BaseNpc, ISerializable
     {
         WriteBaseNpcFirstSegment(binaryWriter);
         WriteBaseNpcSecondSegment(binaryWriter);
-        binaryWriter.Write(GateTargets.Take(3).ToSerializable());
+        binaryWriter.Write(GateTargets.Take(3).ToSerializable(), lengthPrefixed: false);
         WriteBaseNpcThirdSegment(binaryWriter);
     }
 }
