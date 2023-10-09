@@ -1,0 +1,28 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  nuget:
+    name: Publish NuGet package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          source-url: https://nuget.pkg.github.com/matigramirez/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and generate NuGet package
+        run: dotnet pack ./src/Parsec -c Release -o publish
+
+      - name: Publish NuGet package
+        run: dotnet nuget push ./publish/*.nupkg --skip-duplicate --no-symbols true
