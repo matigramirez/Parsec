@@ -14,19 +14,19 @@ public abstract class SData : FileBase, IEncryptable
     /// The signature present in the header of encrypted files
     /// </summary>
     [JsonIgnore]
-    private const string SEED_SIGNATURE = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
+    private const string SeedSignature = "0001CBCEBC5B2784D3FC9A2A9DB84D1C3FEB6E99";
 
     /// <summary>
     /// KISA SEED chunk size in bytes
     /// </summary>
     [JsonIgnore]
-    private const int CHUNK_SIZE = 16;
+    private const int SeedChunkSize = 16;
 
     /// <summary>
     /// KISA SEED Header size in bytes
     /// </summary>
     [JsonIgnore]
-    private const int HEADER_SIZE = 64;
+    private const int SeedHeaderSize = 64;
 
     [JsonIgnore]
     public override string Extension => "SData";
@@ -75,11 +75,11 @@ public abstract class SData : FileBase, IEncryptable
     /// </summary>
     public static bool IsEncrypted(byte[] data)
     {
-        if (data.Length < SEED_SIGNATURE.Length)
+        if (data.Length < SeedSignature.Length)
             return false;
 
-        var sDataHeader = Encoding.ASCII.GetString(data.AsSpan().Slice(0, SEED_SIGNATURE.Length).ToArray());
-        return sDataHeader == SEED_SIGNATURE;
+        var sDataHeader = Encoding.ASCII.GetString(data.AsSpan().Slice(0, SeedSignature.Length).ToArray());
+        return sDataHeader == SeedSignature;
     }
 
     /// <summary>
@@ -94,11 +94,11 @@ public abstract class SData : FileBase, IEncryptable
             return decryptedData;
 
         var padding = version == SDataVersion.Regular ? new byte[16] : new byte[12];
-        var header = new SeedHeader(SEED_SIGNATURE, 0, (uint)decryptedData.Length, padding);
+        var header = new SeedHeader(SeedSignature, 0, (uint)decryptedData.Length, padding);
         var alignmentSize = header.RealSize;
 
-        if (alignmentSize % CHUNK_SIZE != 0)
-            alignmentSize = header.RealSize + (CHUNK_SIZE - header.RealSize % CHUNK_SIZE);
+        if (alignmentSize % SeedChunkSize != 0)
+            alignmentSize = header.RealSize + (SeedChunkSize - header.RealSize % SeedChunkSize);
 
         // Create data array including the extra alignment bytes
         var data = new byte[alignmentSize];
@@ -123,9 +123,9 @@ public abstract class SData : FileBase, IEncryptable
         buffer.AddRange(header.GetBytes(version));
 
         // Encrypt data in chunks
-        for (int i = 0; i < alignmentSize / CHUNK_SIZE; ++i)
+        for (int i = 0; i < alignmentSize / SeedChunkSize; ++i)
         {
-            var chunk = data.AsSpan().Slice(i * CHUNK_SIZE, CHUNK_SIZE).ToArray();
+            var chunk = data.AsSpan().Slice(i * SeedChunkSize, SeedChunkSize).ToArray();
             Seed.EncryptChunk(chunk, out var encryptedChunk);
             buffer.AddRange(encryptedChunk);
         }
@@ -144,18 +144,18 @@ public abstract class SData : FileBase, IEncryptable
             return encryptedBuffer;
 
         // Check alignment
-        if (encryptedBuffer.Length % CHUNK_SIZE != 0)
+        if (encryptedBuffer.Length % SeedChunkSize != 0)
             throw new FormatException("SData file is not properly aligned.");
 
         var header = new SeedHeader(encryptedBuffer);
-        var encryptedData = encryptedBuffer.AsSpan().Slice(HEADER_SIZE);
+        var encryptedData = encryptedBuffer.AsSpan().Slice(SeedHeaderSize);
 
         var data = new List<byte>();
 
         // Decrypt data in chunks
-        for (var i = 0; i < encryptedData.Length / CHUNK_SIZE; ++i)
+        for (var i = 0; i < encryptedData.Length / SeedChunkSize; ++i)
         {
-            var chunk = encryptedData.Slice(i * CHUNK_SIZE, CHUNK_SIZE);
+            var chunk = encryptedData.Slice(i * SeedChunkSize, SeedChunkSize);
             Seed.DecryptChunk(chunk.ToArray(), out var decryptedChunk);
             data.AddRange(decryptedChunk);
         }
