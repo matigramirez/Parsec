@@ -60,7 +60,7 @@ public class SDataTests
         const string encryptedOutputPath = "Shaiya/SData/ItemEp6.encrypted.SData";
         const string decryptedOutputPath = "Shaiya/SData/ItemEp6.decrypted.SData";
 
-        var item = ParsecReader.ReadFromFile<Parsec.Shaiya.Item.Item>(EncryptedSDataFilePath, Episode.EP6);
+        var item = ParsecReader.FromFile<Parsec.Shaiya.Item.Item>(EncryptedSDataFilePath, Episode.EP6);
         item.WriteEncrypted(encryptedOutputPath);
         item.WriteDecrypted(decryptedOutputPath);
 

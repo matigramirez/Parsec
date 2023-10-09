@@ -17,15 +17,15 @@ public class AltTests
         string jsonPath = $"Shaiya/ALT/{fileName}.json";
         string newObjPath = $"Shaiya/ALT/new_{fileName}";
 
-        var alt = ParsecReader.ReadFromFile<Parsec.Shaiya.Alt.Alt>(filePath);
+        var alt = ParsecReader.FromFile<Parsec.Shaiya.Alt.Alt>(filePath);
         alt.WriteJson(jsonPath);
-        var altFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.Alt.Alt>(jsonPath);
+        var altFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Alt.Alt>(jsonPath);
 
         // Check bytes
         Assert.Equal(alt.GetBytes(), altFromJson.GetBytes());
 
         altFromJson.Write(newObjPath);
-        var newAlt = ParsecReader.ReadFromFile<Parsec.Shaiya.Alt.Alt>(newObjPath);
+        var newAlt = ParsecReader.FromFile<Parsec.Shaiya.Alt.Alt>(newObjPath);
 
         // Check bytes
         Assert.Equal(alt.GetBytes(), newAlt.GetBytes());

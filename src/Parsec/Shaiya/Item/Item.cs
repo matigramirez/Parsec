@@ -28,7 +28,7 @@ public sealed class Item : SData.SData, ICsv
     /// <param name="episode">The Item.SData format</param>
     /// <param name="encoding">Item.SData encoding</param>
     /// <returns><see cref="Item"/> instance</returns>
-    public static Item ReadFromCsv(string csvPath, Episode episode, Encoding? encoding = null)
+    public static Item FromCsv(string csvPath, Episode episode, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
 
@@ -42,7 +42,7 @@ public sealed class Item : SData.SData, ICsv
 
         var maxGroupId = groups.Max(x => x.Key);
 
-        for (int i = 1; i <= maxGroupId; i++)
+        for (var i = 1; i <= maxGroupId; i++)
         {
             var itemGroup = new ItemGroup();
             item.ItemGroups.Add(itemGroup);

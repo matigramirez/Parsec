@@ -28,7 +28,7 @@ public sealed class Skill : SData.SData, ICsv
         binaryWriter.Write(SkillGroups.ToSerializable());
     }
 
-    public static Skill ReadFromCsv(string csvFilePath, Episode episode = Episode.EP5, Encoding? encoding = null)
+    public static Skill FromCsv(string csvFilePath, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
 

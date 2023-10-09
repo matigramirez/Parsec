@@ -13,14 +13,14 @@ public class TransformModelTests
         const string jsonPath = "Shaiya/Skill/DBTransformModelData.SData.json";
         const string csvPath = "Shaiya/Skill/DBTransformModelData.SData.csv";
 
-        var transformModel = ParsecReader.ReadFromFile<DBTransformModelData>(filePath);
+        var transformModel = ParsecReader.FromFile<DBTransformModelData>(filePath);
         transformModel.Write(outputPath);
         transformModel.WriteJson(jsonPath);
         transformModel.WriteCsv(csvPath);
 
-        var outputTransformModel = ParsecReader.ReadFromFile<DBTransformModelData>(outputPath);
-        var jsonTransformModel = ParsecReader.ReadFromJsonFile<DBTransformModelData>(jsonPath);
-        var csvTransformModel = DBTransformModelData.ReadFromCsv<DBTransformModelData>(csvPath);
+        var outputTransformModel = ParsecReader.FromFile<DBTransformModelData>(outputPath);
+        var jsonTransformModel = ParsecReader.FromJsonFile<DBTransformModelData>(jsonPath);
+        var csvTransformModel = DBTransformModelData.FromCsv<DBTransformModelData>(csvPath);
 
         var expected = transformModel.GetBytes().ToList();
         Assert.Equal(expected, outputTransformModel.GetBytes());
@@ -37,14 +37,14 @@ public class TransformModelTests
         const string jsonPath = "Shaiya/Skill/DBTransformWeaponModelData.SData.json";
         const string csvPath = "Shaiya/Skill/DBTransformWeaponModelData.SData.csv";
 
-        var transformModel = ParsecReader.ReadFromFile<DBTransformWeaponModelData>(filePath);
+        var transformModel = ParsecReader.FromFile<DBTransformWeaponModelData>(filePath);
         transformModel.Write(outputPath);
         transformModel.WriteJson(jsonPath);
         transformModel.WriteCsv(csvPath);
 
-        var outputTransformModel = ParsecReader.ReadFromFile<DBTransformWeaponModelData>(outputPath);
-        var jsonTransformModel = ParsecReader.ReadFromJsonFile<DBTransformWeaponModelData>(jsonPath);
-        var csvTransformModel = DBTransformWeaponModelData.ReadFromCsv<DBTransformWeaponModelData>(csvPath);
+        var outputTransformModel = ParsecReader.FromFile<DBTransformWeaponModelData>(outputPath);
+        var jsonTransformModel = ParsecReader.FromJsonFile<DBTransformWeaponModelData>(jsonPath);
+        var csvTransformModel = DBTransformWeaponModelData.FromCsv<DBTransformWeaponModelData>(csvPath);
 
         var expected = transformModel.GetBytes().ToList();
         Assert.Equal(expected, outputTransformModel.GetBytes());

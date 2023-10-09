@@ -16,19 +16,19 @@ public class WldTests
         string jsonPath = $"Shaiya/WLD/{fileName}.json";
         string newObjPath = $"Shaiya/WLD/new_{fileName}";
 
-        var wld = ParsecReader.ReadFromFile<Parsec.Shaiya.Wld.Wld>(filePath);
+        var wld = ParsecReader.FromFile<Parsec.Shaiya.Wld.Wld>(filePath);
         wld.Write(outputPath);
         wld.WriteJson(jsonPath);
 
-        var outputWld = ParsecReader.ReadFromFile<Parsec.Shaiya.Wld.Wld>(outputPath);
-        var wldFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.Wld.Wld>(jsonPath);
+        var outputWld = ParsecReader.FromFile<Parsec.Shaiya.Wld.Wld>(outputPath);
+        var wldFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Wld.Wld>(jsonPath);
 
         // Check bytes
         Assert.Equal(wld.GetBytes(), outputWld.GetBytes());
         Assert.Equal(wld.GetBytes(), wldFromJson.GetBytes());
 
         wldFromJson.Write(newObjPath);
-        var newWld = ParsecReader.ReadFromFile<Parsec.Shaiya.Wld.Wld>(newObjPath);
+        var newWld = ParsecReader.FromFile<Parsec.Shaiya.Wld.Wld>(newObjPath);
 
         // Check bytes
         Assert.Equal(wld.GetBytes(), newWld.GetBytes());

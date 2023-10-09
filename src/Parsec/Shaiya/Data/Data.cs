@@ -22,7 +22,7 @@ public class Data
             throw new FileNotFoundException($"data.saf file not found at {safPath}");
         }
 
-        Sah = ParsecReader.ReadFromFile<Sah>(sahPath);
+        Sah = ParsecReader.FromFile<Sah>(sahPath);
         Saf = new Saf(safPath);
     }
 

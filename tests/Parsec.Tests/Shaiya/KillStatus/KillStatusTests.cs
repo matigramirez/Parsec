@@ -10,12 +10,12 @@ public class KillStatusTests
         const string filePath = "Shaiya/KillStatus/KillStatus.SData";
         const string outputPath = "Shaiya/KillStatus/KillStatus.output.SData";
         const string jsonPath = "Shaiya/KillStatus/KillStatus.SData.json";
-        var obj = ParsecReader.ReadFromFile<Parsec.Shaiya.KillStatus.KillStatus>(filePath);
+        var obj = ParsecReader.FromFile<Parsec.Shaiya.KillStatus.KillStatus>(filePath);
         obj.Write(outputPath);
         obj.WriteJson(jsonPath);
 
-        var outputObj = ParsecReader.ReadFromFile<Parsec.Shaiya.KillStatus.KillStatus>(outputPath);
-        var jsonObj = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.KillStatus.KillStatus>(jsonPath);
+        var outputObj = ParsecReader.FromFile<Parsec.Shaiya.KillStatus.KillStatus>(outputPath);
+        var jsonObj = ParsecReader.FromJsonFile<Parsec.Shaiya.KillStatus.KillStatus>(jsonPath);
 
         var expected = obj.GetBytes().ToList();
         Assert.Equal(expected, outputObj.GetBytes());

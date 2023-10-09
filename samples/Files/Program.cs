@@ -10,10 +10,10 @@ internal static class Program
     {
         SData.DecryptFile("/home/matias/Desktop/DBSkillData.SData", "/home/matias/Desktop/DBSkillData.dec.SData");
 
-        var skillData = ParsecReader.ReadFromFile<DBSkillData>("/home/matias/Desktop/DBSkillData.dec.SData");
+        var skillData = ParsecReader.FromFile<DBSkillData>("/home/matias/Desktop/DBSkillData.dec.SData");
 
         skillData.Write("/home/matias/Desktop/DBSkillData.dec.new.SData");
 
-        var newSkillData = ParsecReader.ReadFromFile<DBSkillData>("/home/matias/Desktop/DBSkillData.dec.new.SData");
+        var newSkillData = ParsecReader.FromFile<DBSkillData>("/home/matias/Desktop/DBSkillData.dec.new.SData");
     }
 }

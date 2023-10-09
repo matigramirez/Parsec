@@ -11,9 +11,9 @@ public class CashTests
         const string filePath = "Shaiya/Cash/Cash.SData";
         const string outputPath = "Shaiya/Cash/Cash_new.SData";
 
-        var cash = ParsecReader.ReadFromFile<Parsec.Shaiya.Cash.Cash>(filePath);
+        var cash = ParsecReader.FromFile<Parsec.Shaiya.Cash.Cash>(filePath);
         cash.Write(outputPath);
-        var newCash = ParsecReader.ReadFromFile<Parsec.Shaiya.Cash.Cash>(outputPath);
+        var newCash = ParsecReader.FromFile<Parsec.Shaiya.Cash.Cash>(outputPath);
         Assert.Equal(cash.GetBytes(), newCash.GetBytes());
         Assert.Equal(FileHash.Checksum(filePath), FileHash.Checksum(outputPath));
     }
@@ -26,14 +26,14 @@ public class CashTests
         const string jsonPath = "Shaiya/Cash/DBItemSellData.SData.json";
         const string csvPath = "Shaiya/Cash/DBItemSellData.SData.csv";
 
-        var dbItemSell = ParsecReader.ReadFromFile<DBItemSellData>(filePath);
+        var dbItemSell = ParsecReader.FromFile<DBItemSellData>(filePath);
         dbItemSell.Write(outputPath);
         dbItemSell.WriteJson(jsonPath);
         dbItemSell.WriteCsv(csvPath);
 
-        var outputDbItemSell = ParsecReader.ReadFromFile<DBItemSellData>(outputPath);
-        var jsonDbItemSell = ParsecReader.ReadFromJsonFile<DBItemSellData>(jsonPath);
-        var csvItemSell = DBItemSellData.ReadFromCsv<DBItemSellData>(csvPath);
+        var outputDbItemSell = ParsecReader.FromFile<DBItemSellData>(outputPath);
+        var jsonDbItemSell = ParsecReader.FromJsonFile<DBItemSellData>(jsonPath);
+        var csvItemSell = DBItemSellData.FromCsv<DBItemSellData>(csvPath);
 
         var expected = dbItemSell.GetBytes().ToList();
         Assert.Equal(expected, outputDbItemSell.GetBytes());

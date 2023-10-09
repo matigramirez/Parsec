@@ -29,7 +29,7 @@ public sealed class Monster : SData.SData, ICsv
     /// <param name="csvPath">csv file path</param>
     /// <param name="encoding">File encoding</param>
     /// <returns><see cref="Monster"/> instance</returns>
-    public static Monster ReadFromCsv(string csvPath, Encoding? encoding = null)
+    public static Monster FromCsv(string csvPath, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
 

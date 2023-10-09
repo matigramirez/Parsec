@@ -12,7 +12,7 @@ public class SahTests
     [InlineData(@"new_folder\sub1\sub2\sub3", "new_file.fl")]
     public void SahFileExistenceTest(string folderName, string fileName)
     {
-        var sah = ParsecReader.ReadFromFile<Sah>("Shaiya/Data/sample.sah");
+        var sah = ParsecReader.FromFile<Sah>("Shaiya/Data/sample.sah");
         Assert.Equal("sah", sah.Extension);
 
         // Add folder to sah

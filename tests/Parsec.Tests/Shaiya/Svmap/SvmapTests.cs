@@ -19,15 +19,15 @@ public class SvmapTests
         string jsonPath = $"Shaiya/Svmap/{fileName}.json";
         string newObjPath = $"Shaiya/Svmap/new_{fileName}";
 
-        var svmap = ParsecReader.ReadFromFile<Parsec.Shaiya.Svmap.Svmap>(filePath);
+        var svmap = ParsecReader.FromFile<Parsec.Shaiya.Svmap.Svmap>(filePath);
         svmap.WriteJson(jsonPath);
-        var svmapFromJson = ParsecReader.ReadFromJsonFile<Parsec.Shaiya.Svmap.Svmap>(jsonPath);
+        var svmapFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Svmap.Svmap>(jsonPath);
 
         // Check bytes
         Assert.Equal(svmap.GetBytes(), svmapFromJson.GetBytes());
 
         svmapFromJson.Write(newObjPath);
-        var newSmod = ParsecReader.ReadFromFile<Parsec.Shaiya.Svmap.Svmap>(newObjPath);
+        var newSmod = ParsecReader.FromFile<Parsec.Shaiya.Svmap.Svmap>(newObjPath);
 
         // Check bytes
         Assert.Equal(svmap.GetBytes(), newSmod.GetBytes());

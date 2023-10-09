@@ -19,7 +19,7 @@ internal class Program
         data.Extract(file, "extracted");
 
         // Read and parse the file's content directly from the saf file
-        Svmap svmap = Parsec.ParsecReader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
+        Svmap svmap = Parsec.ParsecReader.FromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 
         Console.WriteLine($"File: {svmap.FileName}");
         Console.WriteLine($"MapSize: {svmap.MapSize}");

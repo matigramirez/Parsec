@@ -20,7 +20,7 @@ public static class ParsecReader
     /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromFile<T>(string path, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
+    public static T FromFile<T>(string path, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
     {
         var serializationOptions = new BinarySerializationOptions(episode, encoding);
         return FileBase.ReadFromFile<T>(path, serializationOptions);
@@ -33,9 +33,9 @@ public static class ParsecReader
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    public static Task<T> ReadFromFileAsync<T>(string path, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
+    public static Task<T> FromFileAsync<T>(string path, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
     {
-        return Task.FromResult(ReadFromFile<T>(path, episode, encoding));
+        return Task.FromResult(FromFile<T>(path, episode, encoding));
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public static class ParsecReader
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromFile(string path, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
+    public static FileBase FromFile(string path, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
         var serializationOptions = new BinarySerializationOptions(episode, encoding);
         return FileBase.ReadFromFile(path, type, serializationOptions);
@@ -59,9 +59,9 @@ public static class ParsecReader
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
-    public static Task<FileBase> ReadFromFileAsync(string path, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
+    public static Task<FileBase> FromFileAsync(string path, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
-        return Task.FromResult(ReadFromFile(path, type, episode, encoding));
+        return Task.FromResult(FromFile(path, type, episode, encoding));
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public static class ParsecReader
     /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
     /// <returns>T instance</returns>
-    public static T ReadFromBuffer<T>(string name, byte[] buffer, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
+    public static T FromBuffer<T>(string name, byte[] buffer, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
     {
         var serializationOptions = new BinarySerializationOptions(episode, encoding);
         return FileBase.ReadFromBuffer<T>(name, buffer, serializationOptions);
@@ -87,9 +87,9 @@ public static class ParsecReader
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
     /// <typeparam name="T">Shaiya File Format Type</typeparam>
-    public static Task<T> ReadFromBufferAsync<T>(string name, byte[] buffer, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
+    public static Task<T> FromBufferAsync<T>(string name, byte[] buffer, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
     {
-        return Task.FromResult(ReadFromBuffer<T>(name, buffer, episode));
+        return Task.FromResult(FromBuffer<T>(name, buffer, episode));
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public static class ParsecReader
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromBuffer(string name, byte[] buffer, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
+    public static FileBase FromBuffer(string name, byte[] buffer, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
         var serializationOptions = new BinarySerializationOptions(episode, encoding);
         return FileBase.ReadFromBuffer(name, buffer, type, serializationOptions);
@@ -115,9 +115,9 @@ public static class ParsecReader
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
-    public static Task<FileBase> ReadFromBufferAsync(string name, byte[] buffer, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
+    public static Task<FileBase> FromBufferAsync(string name, byte[] buffer, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
-        return Task.FromResult(ReadFromBuffer(name, buffer, type, episode, encoding));
+        return Task.FromResult(FromBuffer(name, buffer, type, episode, encoding));
     }
 
     /// <summary>
@@ -127,9 +127,9 @@ public static class ParsecReader
     /// <param name="encoding">String encoding</param>
     /// <typeparam name="T"><see cref="FileBase"/> type</typeparam>
     /// <returns><see cref="FileBase"/> instance</returns>
-    public static T ReadFromJsonFile<T>(string path, Encoding? encoding = null) where T : FileBase
+    public static T FromJsonFile<T>(string path, Encoding? encoding = null) where T : FileBase
     {
-        return (T)ReadFromJsonFile(path, typeof(T), encoding);
+        return (T)FromJsonFile(path, typeof(T), encoding);
     }
 
     /// <summary>
@@ -138,9 +138,9 @@ public static class ParsecReader
     /// <param name="path">Path to json file</param>
     /// <param name="encoding">String encoding</param>
     /// <typeparam name="T"><see cref="FileBase"/> type</typeparam>
-    public static Task<T> ReadFromJsonFileAsync<T>(string path, Encoding? encoding = null) where T : FileBase
+    public static Task<T> FromJsonFileAsync<T>(string path, Encoding? encoding = null) where T : FileBase
     {
-        return Task.FromResult(ReadFromJsonFile<T>(path, encoding));
+        return Task.FromResult(FromJsonFile<T>(path, encoding));
     }
 
     /// <summary>
@@ -150,7 +150,7 @@ public static class ParsecReader
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="encoding">String encoding</param>
     /// <returns><see cref="FileBase"/> instance</returns>
-    public static FileBase ReadFromJsonFile(string path, Type type, Encoding? encoding = null)
+    public static FileBase FromJsonFile(string path, Type type, Encoding? encoding = null)
     {
         if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
             throw new ArgumentException("Type must be a child of FileBase");
@@ -190,9 +190,9 @@ public static class ParsecReader
     /// <param name="path">Path to json file</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="encoding">String encoding</param>
-    public static Task<FileBase> ReadFromJsonFileAsync(string path, Type type, Encoding? encoding = null)
+    public static Task<FileBase> FromJsonFileAsync(string path, Type type, Encoding? encoding = null)
     {
-        return Task.FromResult(ReadFromJsonFile(path, type, encoding));
+        return Task.FromResult(FromJsonFile(path, type, encoding));
     }
 
     /// <summary>
@@ -203,9 +203,9 @@ public static class ParsecReader
     /// <param name="encoding">String encoding</param>
     /// <typeparam name="T"><see cref="FileBase"/> type</typeparam>
     /// <returns><see cref="FileBase"/> instance</returns>
-    public static T ReadFromJson<T>(string name, string jsonText, Encoding? encoding = null) where T : FileBase
+    public static T FromJson<T>(string name, string jsonText, Encoding? encoding = null) where T : FileBase
     {
-        return (T)ReadFromJson(name, jsonText, typeof(T), encoding);
+        return (T)FromJson(name, jsonText, typeof(T), encoding);
     }
 
     /// <summary>
@@ -215,9 +215,9 @@ public static class ParsecReader
     /// <param name="jsonText">json text</param>
     /// <param name="encoding">String encoding</param>
     /// <typeparam name="T"><see cref="FileBase"/> type</typeparam>
-    public static Task<T> ReadFromJsonAsync<T>(string name, string jsonText, Encoding? encoding = null) where T : FileBase
+    public static Task<T> FromJsonAsync<T>(string name, string jsonText, Encoding? encoding = null) where T : FileBase
     {
-        return Task.FromResult(ReadFromJson<T>(name, jsonText, encoding));
+        return Task.FromResult(FromJson<T>(name, jsonText, encoding));
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ public static class ParsecReader
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="encoding">String encoding</param>
     /// <returns><see cref="FileBase"/> instance</returns>
-    public static FileBase ReadFromJson(string name, string jsonText, Type type, Encoding? encoding = null)
+    public static FileBase FromJson(string name, string jsonText, Type type, Encoding? encoding = null)
     {
         if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
             throw new ArgumentException("Type must be a child of FileBase");
@@ -255,9 +255,9 @@ public static class ParsecReader
     /// <param name="jsonText">json text</param>
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="encoding">String encoding</param>
-    public static Task<FileBase> ReadFromJsonAsync(string name, string jsonText, Type type, Encoding? encoding = null)
+    public static Task<FileBase> FromJsonAsync(string name, string jsonText, Type type, Encoding? encoding = null)
     {
-        return Task.FromResult(ReadFromJson(name, jsonText, type, encoding));
+        return Task.FromResult(FromJson(name, jsonText, type, encoding));
     }
 
     /// <summary>
@@ -268,7 +268,7 @@ public static class ParsecReader
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static T ReadFromData<T>(Data data, SFile file, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
+    public static T FromData<T>(Data data, SFile file, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
     {
         var serializationOptions = new BinarySerializationOptions(episode, encoding);
         return FileBase.ReadFromData<T>(data, file, serializationOptions);
@@ -281,9 +281,9 @@ public static class ParsecReader
     /// <param name="file"><see cref="SFile"/> instance</param>
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
-    public static Task<T> ReadFromDataAsync<T>(Data data, SFile file, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
+    public static Task<T> FromDataAsync<T>(Data data, SFile file, Episode episode = Episode.EP5, Encoding? encoding = null) where T : FileBase, new()
     {
-        return Task.FromResult(ReadFromData<T>(data, file, episode, encoding));
+        return Task.FromResult(FromData<T>(data, file, episode, encoding));
     }
 
     /// <summary>
@@ -295,7 +295,7 @@ public static class ParsecReader
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
     /// <returns>FileBase instance</returns>
-    public static FileBase ReadFromData(Data data, SFile file, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
+    public static FileBase FromData(Data data, SFile file, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
         var serializationOptions = new BinarySerializationOptions(episode, encoding);
         return FileBase.ReadFromData(data, file, type, serializationOptions);
@@ -309,8 +309,8 @@ public static class ParsecReader
     /// <param name="type">FileBase child type to be read</param>
     /// <param name="episode">File episode</param>
     /// <param name="encoding">File encoding</param>
-    public static Task<FileBase> ReadFromDataAsync(Data data, SFile file, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
+    public static Task<FileBase> FromDataAsync(Data data, SFile file, Type type, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
-        return Task.FromResult(ReadFromData(data, file, type, episode, encoding));
+        return Task.FromResult(FromData(data, file, type, episode, encoding));
     }
 }

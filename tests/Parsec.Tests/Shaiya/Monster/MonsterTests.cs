@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Parsec.Shaiya.Monster;
-using Parsec.Shaiya.Monster;
 
 namespace Parsec.Tests.Shaiya.Monster;
 
@@ -12,9 +11,9 @@ public class MonsterTests
         const string filePath = "Shaiya/Monster/Monster.SData";
         const string csvPath = "Shaiya/Monster/Monster.SData.csv";
 
-        var monster = ParsecReader.ReadFromFile<Parsec.Shaiya.Monster.Monster>(filePath);
+        var monster = ParsecReader.FromFile<Parsec.Shaiya.Monster.Monster>(filePath);
         monster.WriteCsv(csvPath);
-        var monsterFromCsv = Parsec.Shaiya.Monster.Monster.ReadFromCsv(csvPath);
+        var monsterFromCsv = Parsec.Shaiya.Monster.Monster.FromCsv(csvPath);
         Assert.Equal(monster.GetBytes(), monsterFromCsv.GetBytes());
     }
 
@@ -26,9 +25,9 @@ public class MonsterTests
 
         var encoding = TestEncodings.Encoding1252;
 
-        var monster = ParsecReader.ReadFromFile<Parsec.Shaiya.Monster.Monster>(filePath, encoding: encoding);
+        var monster = ParsecReader.FromFile<Parsec.Shaiya.Monster.Monster>(filePath, encoding: encoding);
         monster.WriteCsv(csvPath, encoding);
-        var monsterFromCsv = Parsec.Shaiya.Monster.Monster.ReadFromCsv(csvPath, encoding);
+        var monsterFromCsv = Parsec.Shaiya.Monster.Monster.FromCsv(csvPath, encoding);
         Assert.Equal(monster.GetBytes(), monsterFromCsv.GetBytes());
     }
 
@@ -40,14 +39,14 @@ public class MonsterTests
         const string jsonPath = "Shaiya/Monster/DBMonsterData.SData.json";
         const string csvPath = "Shaiya/Monster/DBMonsterData.SData.csv";
 
-        var dbMonster = ParsecReader.ReadFromFile<DBMonsterData>(filePath);
+        var dbMonster = ParsecReader.FromFile<DBMonsterData>(filePath);
         dbMonster.Write(outputPath);
         dbMonster.WriteJson(jsonPath);
         dbMonster.WriteCsv(csvPath);
 
-        var outputDbMonster = ParsecReader.ReadFromFile<DBMonsterData>(outputPath);
-        var jsonDbMonster = ParsecReader.ReadFromJsonFile<DBMonsterData>(jsonPath);
-        var csvMonster = DBMonsterData.ReadFromCsv<DBMonsterData>(csvPath);
+        var outputDbMonster = ParsecReader.FromFile<DBMonsterData>(outputPath);
+        var jsonDbMonster = ParsecReader.FromJsonFile<DBMonsterData>(jsonPath);
+        var csvMonster = DBMonsterData.FromCsv<DBMonsterData>(csvPath);
 
         var expected = dbMonster.GetBytes().ToList();
         Assert.Equal(expected, outputDbMonster.GetBytes());
@@ -64,14 +63,14 @@ public class MonsterTests
         const string jsonPath = "Shaiya/Monster/DBMonsterText_USA.SData.json";
         const string csvPath = "Shaiya/Monster/DBMonsterText_USA.SData.csv";
 
-        var monsterText = ParsecReader.ReadFromFile<DBMonsterText>(filePath);
+        var monsterText = ParsecReader.FromFile<DBMonsterText>(filePath);
         monsterText.Write(outputPath);
         monsterText.WriteJson(jsonPath);
         monsterText.WriteCsv(csvPath);
 
-        var outputMonsterText = ParsecReader.ReadFromFile<DBMonsterText>(outputPath);
-        var jsonMonsterText = ParsecReader.ReadFromJsonFile<DBMonsterText>(jsonPath);
-        var csvMonsterText = DBMonsterText.ReadFromCsv<DBMonsterText>(csvPath);
+        var outputMonsterText = ParsecReader.FromFile<DBMonsterText>(outputPath);
+        var jsonMonsterText = ParsecReader.FromJsonFile<DBMonsterText>(jsonPath);
+        var csvMonsterText = DBMonsterText.FromCsv<DBMonsterText>(csvPath);
 
         var expected = monsterText.GetBytes().ToList();
         Assert.Equal(expected, outputMonsterText.GetBytes());

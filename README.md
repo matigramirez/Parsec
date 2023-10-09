@@ -82,27 +82,27 @@ might not work with them.
 
 ```cs
 // Read file with default episode (EP5) and encoding (ASCII)
-var svmap = Reader.ReadFromFile<Svmap>("0.svmap");
+var svmap = ParsecReader.FromFile<Svmap>("0.svmap");
 
 // Read file with a specific episode and default encoding
-var svmap = Reader.ReadFromFile<Svmap>("0.svmap", Episode.Ep6);
+var svmap = ParsecReader.FromFile<Svmap>("0.svmap", Episode.Ep6);
 
 // Read file with a specific episode and a specific encoding
 var windows1252Encoding = CodePagesEncodingProvider.Instance.GetEncoding(1252);
-var svmap = Reader.ReadFromFile<Svmap>("0.svmap", Episode.Ep6, windows1252Encoding);
+var svmap = ParsecReader.FromFile<Svmap>("0.svmap", Episode.Ep6, windows1252Encoding);
 ```
 
 #### From data.saf
 
 ```cs
 // Load data (sah and saf)
-var data = new Data("data.sah");
+var data = new Data("data.sah", "data.saf");
 
 // Find the file you want to read
 var file = data.GetFile("world/0.svmap");
 
 // Read and parse the file's content directly from the saf file
-var svmap = Reader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
+var svmap = ParsecReader.FromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 ```
 
 #### From a JSON file
@@ -113,7 +113,7 @@ format.
 
 ```cs
 // Read JSON file
-var svmap = Reader.ReadFromJsonFile<Svmap>("0_svmap.json");
+var svmap = ParsecReader.FromJsonFile<Svmap>("0_svmap.json");
 ```
 
 It is advised to first read a file from its original format, export it as JSON, edit it, and import it once again as
@@ -126,13 +126,13 @@ All of the Episode 8 `BinarySData` formats have `CSV` support.
 
 ```cs
 // Read csv file
-var item = Item.ReadFromCsv("Item.csv");
+var item = Item.FromCsv("Item.csv");
 ```
 
 ### Encoding
 
 When reading files, the default encoding is `ASCII`. If you want to read a file with a different encoding, you can
-specify it as a parameter when calling the ReadFromFile/Json/Csv methods.
+specify it as a parameter when calling the FromFile/Json/Csv methods.
 
 ### Writing
 

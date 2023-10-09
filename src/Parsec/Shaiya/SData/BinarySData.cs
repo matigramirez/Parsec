@@ -40,7 +40,7 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         binaryWriter.Write(Records.ToSerializable());
     }
 
-    public static T ReadFromCsv<T>(string csvPath, Encoding? encoding = null) where T : BinarySData<TRecord>, new()
+    public static T FromCsv<T>(string csvPath, Encoding? encoding = null) where T : BinarySData<TRecord>, new()
     {
         encoding ??= Encoding.ASCII;
         using var reader = new StreamReader(csvPath, encoding);
