@@ -1,23 +1,20 @@
-using Newtonsoft.Json;
-using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
-public sealed class WldNpcPatrolCoordinate : IBinary
+public sealed class WldNpcPatrolCoordinate : ISerializable
 {
     public Vector3 Position { get; set; }
 
-    [JsonConstructor]
-    public WldNpcPatrolCoordinate()
+    public void Read(SBinaryReader binaryReader)
     {
+        Position = binaryReader.Read<Vector3>();
     }
 
-    public WldNpcPatrolCoordinate(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        Position = new Vector3(binaryReader);
+        binaryWriter.Write(Position);
     }
-
-    public IEnumerable<byte> GetBytes(params object[] options) => Position.GetBytes();
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Parsec;
 using Parsec.Shaiya.Data;
 using Parsec.Shaiya.Svmap;
 
@@ -12,16 +11,15 @@ internal class Program
         #region Read Data
 
         // Read data from .sah and .saf files
-        Parsec.Shaiya.Data.Data data = new("data.sah");
+        Parsec.Shaiya.Data.Data data = new("data.sah", "data.saf");
 
         // Find the file you want to extract with it's full relative path
-        // Keep in mind that in Episode 8, the relative path for this same case would be "data/world/2.svmap
         var file = data.GetFile("world/2.svmap");
         // Extract the selected file
         data.Extract(file, "extracted");
 
         // Read and parse the file's content directly from the saf file
-        Svmap svmap = Reader.ReadFromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
+        Svmap svmap = Parsec.ParsecReader.FromBuffer<Svmap>(file.Name, data.GetFileBuffer(file));
 
         Console.WriteLine($"File: {svmap.FileName}");
         Console.WriteLine($"MapSize: {svmap.MapSize}");

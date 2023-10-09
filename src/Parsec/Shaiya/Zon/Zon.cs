@@ -1,5 +1,5 @@
-﻿using Parsec.Common;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Zon;
@@ -7,28 +7,26 @@ namespace Parsec.Shaiya.Zon;
 public sealed class Zon : FileBase
 {
     public int Format { get; set; }
-    public List<ZonRecord> Records { get; } = new();
+
+    public List<ZonRecord> Records { get; set; } = new();
 
     public override string Extension => "zon";
 
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        Format = _binaryReader.Read<int>();
+        Format = binaryReader.ReadInt32();
 
-        int recordCount = _binaryReader.Read<int>();
-        for (int i = 0; i < recordCount; i++)
-            Records.Add(new ZonRecord(Format, _binaryReader));
+        // Format is used as the ExtraOption on ZonRecord serialization
+        binaryReader.SerializationOptions.ExtraOption = Format;
+        Records = binaryReader.ReadList<ZonRecord>().ToList();
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Format.GetBytes());
+        binaryWriter.Write(Format);
 
-        buffer.AddRange(Records.Count.GetBytes());
-        foreach (var record in Records)
-            buffer.AddRange(record.GetBytes(Format));
-
-        return buffer;
+        // Format is used as the ExtraOption on ZonRecord serialization
+        binaryWriter.SerializationOptions.ExtraOption = Format;
+        binaryWriter.Write(Records.ToSerializable());
     }
 }

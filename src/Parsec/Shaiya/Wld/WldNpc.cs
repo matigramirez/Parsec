@@ -1,12 +1,11 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
-public sealed class WldNpc : IBinary
+public sealed class WldNpc : ISerializable
 {
     public int Type { get; set; }
 
@@ -18,31 +17,21 @@ public sealed class WldNpc : IBinary
 
     public List<WldNpcPatrolCoordinate> PatrolCoordinates { get; set; } = new();
 
-    [JsonConstructor]
-    public WldNpc()
+    public void Read(SBinaryReader binaryReader)
     {
+        Type = binaryReader.ReadInt32();
+        TypeId = binaryReader.ReadInt32();
+        Coordinates = binaryReader.Read<Vector3>();
+        Orientation = binaryReader.ReadSingle();
+        PatrolCoordinates = binaryReader.ReadList<WldNpcPatrolCoordinate>().ToList();
     }
 
-    public WldNpc(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        Type = binaryReader.Read<int>();
-        TypeId = binaryReader.Read<int>();
-        Coordinates = new Vector3(binaryReader);
-        Orientation = binaryReader.Read<float>();
-
-        int patrolCoordinatesCount = binaryReader.Read<int>();
-        for (int i = 0; i < patrolCoordinatesCount; i++)
-            PatrolCoordinates.Add(new WldNpcPatrolCoordinate(binaryReader));
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(Type.GetBytes());
-        buffer.AddRange(TypeId.GetBytes());
-        buffer.AddRange(Coordinates.GetBytes());
-        buffer.AddRange(Orientation.GetBytes());
-        buffer.AddRange(PatrolCoordinates.GetBytes());
-        return buffer;
+        binaryWriter.Write(Type);
+        binaryWriter.Write(TypeId);
+        binaryWriter.Write(Coordinates);
+        binaryWriter.Write(Orientation);
+        binaryWriter.Write(PatrolCoordinates.ToSerializable());
     }
 }

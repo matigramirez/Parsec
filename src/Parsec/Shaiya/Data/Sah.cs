@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Data;
@@ -48,11 +48,6 @@ public sealed class Sah : FileBase
     public int Version { get; set; }
 
     /// <summary>
-    /// Path to the saf file linked to this sah
-    /// </summary>
-    public string SafPath => string.Concat(Path.Substring(0, Path.Length - 3), "saf");
-
-    /// <summary>
     /// Total amount of files that are present in the data; does not include directories.
     /// </summary>
     [DataMember]
@@ -68,16 +63,16 @@ public sealed class Sah : FileBase
     public override string Extension => "sah";
 
     /// <inheritdoc />
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        Signature = _binaryReader.ReadString(3);
-        Version = _binaryReader.Read<int>();
-        FileCount = _binaryReader.Read<int>();
+        Signature = binaryReader.ReadString(3);
+        Version = binaryReader.ReadInt32();
+        FileCount = binaryReader.ReadInt32();
 
         // Index where data starts (after header - skip padding bytes)
-        _binaryReader.Skip(40);
+        binaryReader.Skip(40);
 
-        RootDirectory = new SDirectory(_binaryReader, null, DirectoryIndex, FileIndex);
+        RootDirectory = new SDirectory(binaryReader, null, DirectoryIndex, FileIndex);
     }
 
     /// <summary>
@@ -112,7 +107,7 @@ public sealed class Sah : FileBase
         var pathFolders = path.Separate().ToList();
         var currentFolder = RootDirectory;
 
-        foreach (string folderName in pathFolders)
+        foreach (var folderName in pathFolders)
         {
             if (!currentFolder.HasSubfolder(folderName))
             {
@@ -143,17 +138,16 @@ public sealed class Sah : FileBase
     /// <param name="relativePath">File's relative path (ie. "Character/Human/3DC/model.3DC")</param>
     public bool HasFile(string relativePath) => FileIndex.ContainsKey(relativePath);
 
-    /// <inheritdoc />
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Signature.GetBytes());
-        buffer.AddRange(Version.GetBytes());
-        buffer.AddRange(FileCount.GetBytes());
-        buffer.AddRange(new byte[40]); // Padding
-        buffer.AddRange(RootDirectory.GetBytes());
+        binaryWriter.Write(Signature.Take(3).ToString());
+        binaryWriter.Write(Version);
+        binaryWriter.Write(FileCount);
+        binaryWriter.Write(new byte[40]); // Padding
+
+        RootDirectory.Write(binaryWriter);
+
         // Suffix with 8 empty bytes - I don't think the game cares about these at all, but some other tools do
-        buffer.AddRange(new byte[8]);
-        return buffer;
+        binaryWriter.Write(new byte[8]);
     }
 }

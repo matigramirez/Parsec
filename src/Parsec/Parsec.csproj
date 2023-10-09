@@ -15,6 +15,7 @@
     <PackageVersion>1.0.0-alpha.9.0.0</PackageVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0</TargetFrameworks>
     <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

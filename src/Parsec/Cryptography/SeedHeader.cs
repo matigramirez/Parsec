@@ -1,11 +1,10 @@
 ﻿using System.Text;
 using Parsec.Extensions;
-using Parsec.Shaiya.Core;
 using Parsec.Shaiya.SData;
 
 namespace Parsec.Cryptography;
 
-public sealed class SeedHeader : IBinary
+public sealed class SeedHeader
 {
     public SeedHeader(string signature, uint checksum, uint realSize, byte[] padding)
     {
@@ -19,7 +18,7 @@ public sealed class SeedHeader : IBinary
     {
         Signature = Encoding.ASCII.GetString(data.SubArray(0, 40));
 
-        int currentOffset = 40;
+        var currentOffset = 40;
         Checksum = BitConverter.ToUInt32(data, currentOffset);
         currentOffset += 4;
 
@@ -34,7 +33,7 @@ public sealed class SeedHeader : IBinary
         currentOffset += 4;
 
         // Depending on the header type, the padding is 12 or 16 bytes (based on the existence of the 4 empty bytes)
-        int paddingLength = currentOffset == 48 ? 16 : 12;
+        var paddingLength = currentOffset == 48 ? 16 : 12;
         Padding = data.SubArray(currentOffset, paddingLength);
     }
 
@@ -52,22 +51,19 @@ public sealed class SeedHeader : IBinary
     /// </summary>
     public byte[] Padding { get; set; }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public IEnumerable<byte> GetBytes(SDataVersion version)
     {
-        var version = SDataVersion.Regular;
-
-        if (options.Length > 0)
-            version = (SDataVersion)options[0];
-
         var buffer = new List<byte>();
-        buffer.AddRange(Signature.GetBytes());
+        buffer.AddRange(Encoding.ASCII.GetBytes(Signature));
 
         if (version == SDataVersion.Binary)
+        {
             buffer.AddRange(new byte[4]);
+        }
 
-        buffer.AddRange(Checksum.GetBytes());
-        buffer.AddRange(RealSize.GetBytes());
-        buffer.AddRange(Padding);
+        buffer.AddRange(BitConverter.GetBytes(Checksum));
+        buffer.AddRange(BitConverter.GetBytes(RealSize));
+        buffer.AddRange(version == SDataVersion.Binary ? new byte[12] : new byte[16]);
         return buffer;
     }
 }

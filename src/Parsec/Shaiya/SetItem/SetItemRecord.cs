@@ -1,49 +1,33 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.SetItem;
 
-public sealed class SetItemRecord : IBinary
+public sealed class SetItemRecord : ISerializable
 {
-    [JsonConstructor]
-    public SetItemRecord()
-    {
-    }
+    public ushort Index { get; set; }
 
-    public SetItemRecord(SBinaryReader binaryReader)
+    public string Name { get; set; } = string.Empty;
+
+    public List<SetItemRecordItem> Items { get; set; } = new();
+
+    public List<SetItemSynergy> Synergies { get; set; } = new();
+
+
+    public void Read(SBinaryReader binaryReader)
     {
-        Index = binaryReader.Read<short>();
+        Index = binaryReader.ReadUInt16();
         Name = binaryReader.ReadString();
-
-        for (int i = 0; i < 13; i++)
-            Items.Add(new SetItemItem(binaryReader));
-
-        for (int i = 0; i < 13; i++)
-        {
-            string synergy = binaryReader.ReadString();
-            Synergies.Add(synergy);
-        }
+        Items = binaryReader.ReadList<SetItemRecordItem>(13).ToList();
+        Synergies = binaryReader.ReadList<SetItemSynergy>(13).ToList();
     }
 
-    public short Index { get; set; }
-    public string Name { get; set; }
-    public List<SetItemItem> Items { get; } = new();
-    public List<string> Synergies { get; } = new();
-
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Index.GetBytes());
-        buffer.AddRange(Name.GetLengthPrefixedBytes());
-
-        foreach (var item in Items.Take(13))
-            buffer.AddRange(item.GetBytes());
-
-        foreach (string synergy in Synergies.Take(13))
-            buffer.AddRange(synergy.GetLengthPrefixedBytes());
-
-        return buffer;
+        binaryWriter.Write(Index);
+        binaryWriter.Write(Name);
+        binaryWriter.Write(Items.Take(13).ToSerializable(), lengthPrefixed: false);
+        binaryWriter.Write(Synergies.Take(13).ToSerializable(), lengthPrefixed: false);
     }
 }

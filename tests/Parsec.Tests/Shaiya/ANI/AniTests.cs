@@ -26,15 +26,15 @@ public class AniTests
         string jsonPath = $"Shaiya/ANI/{fileName}.json";
         string newObjPath = $"Shaiya/ANI/new_{fileName}";
 
-        var ani = Reader.ReadFromFile<Parsec.Shaiya.Ani.Ani>(filePath);
+        var ani = ParsecReader.FromFile<Parsec.Shaiya.Ani.Ani>(filePath);
         ani.WriteJson(jsonPath);
-        var aniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Ani.Ani>(jsonPath);
+        var aniFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Ani.Ani>(jsonPath);
 
         // Check bytes
         Assert.Equal(ani.GetBytes(), aniFromJson.GetBytes());
 
         aniFromJson.Write(newObjPath);
-        var newANi = Reader.ReadFromFile<Parsec.Shaiya.Ani.Ani>(newObjPath);
+        var newANi = ParsecReader.FromFile<Parsec.Shaiya.Ani.Ani>(newObjPath);
 
         // Check bytes
         Assert.Equal(ani.GetBytes(), newANi.GetBytes());

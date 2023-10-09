@@ -1,5 +1,7 @@
-﻿namespace Parsec.Shaiya.SData;
+﻿using Parsec.Shaiya.Core;
 
-public interface IBinarySDataRecord
+namespace Parsec.Shaiya.SData;
+
+public interface IBinarySDataRecord : ISerializable
 {
 }

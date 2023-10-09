@@ -1,5 +1,5 @@
-﻿using Parsec.Common;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.GuildHouse;
 
@@ -11,33 +11,32 @@ public sealed class GuildHouse : SData.SData
 
     public int ServicePrice { get; set; }
 
-    public List<NpcInfo> NpcInfoList { get; set; } = new();
+    /// <summary>
+    /// Npc detail list. 36 elements
+    /// </summary>
+    public List<GuildHouseNpcInfo> NpcInfoList { get; set; } = new();
 
+    /// <summary>
+    /// Npc Id list. 24 elements
+    /// </summary>
     public List<GuildHouseNpc> Npcs { get; set; } = new();
 
     /// <inheritdoc />
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        Unknown = _binaryReader.Read<int>();
-        HousePrice = _binaryReader.Read<int>();
-        ServicePrice = _binaryReader.Read<int>();
-
-        for (int i = 0; i < 36; i++)
-            NpcInfoList.Add(new NpcInfo(_binaryReader));
-
-        for (int i = 0; i < 24; i++)
-            Npcs.Add(new GuildHouseNpc(_binaryReader));
+        Unknown = binaryReader.ReadInt32();
+        HousePrice = binaryReader.ReadInt32();
+        ServicePrice = binaryReader.ReadInt32();
+        NpcInfoList = binaryReader.ReadList<GuildHouseNpcInfo>(36).ToList();
+        Npcs = binaryReader.ReadList<GuildHouseNpc>(24).ToList();
     }
 
-    /// <inheritdoc />
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Unknown.GetBytes());
-        buffer.AddRange(HousePrice.GetBytes());
-        buffer.AddRange(ServicePrice.GetBytes());
-        buffer.AddRange(NpcInfoList.Take(36).GetBytes(false));
-        buffer.AddRange(Npcs.Take(24).GetBytes(false));
-        return buffer;
+        binaryWriter.Write(Unknown);
+        binaryWriter.Write(HousePrice);
+        binaryWriter.Write(ServicePrice);
+        binaryWriter.Write(NpcInfoList.ToSerializable(), lengthPrefixed: false);
+        binaryWriter.Write(Npcs.ToSerializable(), lengthPrefixed: false);
     }
 }

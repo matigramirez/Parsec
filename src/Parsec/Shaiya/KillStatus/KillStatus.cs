@@ -1,5 +1,5 @@
-﻿using Parsec.Attributes;
-using Parsec.Common;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.KillStatus;
 
@@ -7,10 +7,17 @@ namespace Parsec.Shaiya.KillStatus;
 /// Class that represents the KillStatus.SData file format.
 /// This file contains the bonuses each faction receives based on bless of the goddess values.
 /// </summary>
-[DefaultVersion(Episode.EP5)]
 public sealed class KillStatus : SData.SData
 {
-    [ShaiyaProperty]
-    [LengthPrefixedList(typeof(KillStatusRecord))]
     public List<KillStatusRecord> Records { get; set; } = new();
+
+    protected override void Read(SBinaryReader binaryReader)
+    {
+        Records = binaryReader.ReadList<KillStatusRecord>().ToList();
+    }
+
+    protected override void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Records.ToSerializable());
+    }
 }

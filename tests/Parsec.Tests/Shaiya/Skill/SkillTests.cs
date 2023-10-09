@@ -11,19 +11,19 @@ public class SkillTests
     [InlineData("SkillEp6", Episode.EP6)]
     public void SkillTest(string fileName, Episode episode)
     {
-        string filePath = $"Shaiya/Skill/{fileName}.SData";
-        string outputPath = $"Shaiya/Skill/output_{fileName}.SData";
-        string jsonPath = $"Shaiya/Skill/{fileName}.SData.json";
-        string csvPath = $"Shaiya/Skill/{fileName}.SData.csv";
+        var filePath = $"Shaiya/Skill/{fileName}.SData";
+        var outputPath = $"Shaiya/Skill/output_{fileName}.SData";
+        var jsonPath = $"Shaiya/Skill/{fileName}.SData.json";
+        var csvPath = $"Shaiya/Skill/{fileName}.SData.csv";
 
-        var skill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(filePath, episode);
+        var skill = ParsecReader.FromFile<Parsec.Shaiya.Skill.Skill>(filePath, episode);
         skill.Write(outputPath, episode);
         skill.WriteJson(jsonPath);
         skill.WriteCsv(csvPath);
 
-        var outputSkill = Reader.ReadFromFile<Parsec.Shaiya.Skill.Skill>(outputPath, episode);
-        var jsonSkill = Reader.ReadFromJsonFile<Parsec.Shaiya.Skill.Skill>(jsonPath);
-        var csvSkill = Parsec.Shaiya.Skill.Skill.ReadFromCsv(csvPath, episode);
+        var outputSkill = ParsecReader.FromFile<Parsec.Shaiya.Skill.Skill>(outputPath, episode);
+        var jsonSkill = ParsecReader.FromJsonFile<Parsec.Shaiya.Skill.Skill>(jsonPath);
+        var csvSkill = Parsec.Shaiya.Skill.Skill.FromCsv(csvPath, episode);
 
         var expected = skill.GetBytes().ToList();
         Assert.Equal(expected, outputSkill.GetBytes());
@@ -39,14 +39,14 @@ public class SkillTests
         const string jsonPath = "Shaiya/Skill/DBSkillData.SData.json";
         const string csvPath = "Shaiya/Skill/DBSkillData.SData.csv";
 
-        var dbSkill = Reader.ReadFromFile<DBSkillData>(filePath);
+        var dbSkill = ParsecReader.FromFile<DBSkillData>(filePath);
         dbSkill.Write(outputPath);
         dbSkill.WriteJson(jsonPath);
         dbSkill.WriteCsv(csvPath);
 
-        var outputDbSkill = Reader.ReadFromFile<DBSkillData>(outputPath);
-        var jsonDbSkill = Reader.ReadFromJsonFile<DBSkillData>(jsonPath);
-        var csvSkill = DBSkillData.ReadFromCsv<DBSkillData>(csvPath);
+        var outputDbSkill = ParsecReader.FromFile<DBSkillData>(outputPath);
+        var jsonDbSkill = ParsecReader.FromJsonFile<DBSkillData>(jsonPath);
+        var csvSkill = DBSkillData.FromCsv<DBSkillData>(csvPath);
 
         var expected = dbSkill.GetBytes().ToList();
         Assert.Equal(expected, outputDbSkill.GetBytes());
@@ -63,14 +63,14 @@ public class SkillTests
         const string jsonPath = "Shaiya/Skill/DBSkillText_USA.SData.json";
         const string csvPath = "Shaiya/Skill/DBSkillText_USA.SData.csv";
 
-        var skillText = Reader.ReadFromFile<DBSkillText>(filePath);
+        var skillText = ParsecReader.FromFile<DBSkillText>(filePath);
         skillText.Write(outputPath);
         skillText.WriteJson(jsonPath);
         skillText.WriteCsv(csvPath);
 
-        var outputSkillText = Reader.ReadFromFile<DBSkillText>(outputPath);
-        var jsonSkillText = Reader.ReadFromJsonFile<DBSkillText>(jsonPath);
-        var csvSkillText = DBSkillText.ReadFromCsv<DBSkillText>(csvPath);
+        var outputSkillText = ParsecReader.FromFile<DBSkillText>(outputPath);
+        var jsonSkillText = ParsecReader.FromJsonFile<DBSkillText>(jsonPath);
+        var csvSkillText = DBSkillText.FromCsv<DBSkillText>(csvPath);
 
         var expected = skillText.GetBytes().ToList();
         Assert.Equal(expected, outputSkillText.GetBytes());

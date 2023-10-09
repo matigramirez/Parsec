@@ -13,11 +13,6 @@ public sealed class Saf
     public string Path { get; set; }
 
     /// <summary>
-    /// Absolute path to the saf file linked to this saf
-    /// </summary>
-    public string SahPath => string.Concat(Path.Substring(0, Path.Length - 3), "sah");
-
-    /// <summary>
     /// Reads an array of bytes from the saf file
     /// </summary>
     /// <param name="offset">Offset where to start reading</param>
@@ -27,7 +22,7 @@ public sealed class Saf
         using var safReader = new BinaryReader(File.OpenRead(Path));
         safReader.BaseStream.Seek(offset, SeekOrigin.Begin);
 
-        byte[] bytes = safReader.ReadBytes(length);
+        var bytes = safReader.ReadBytes(length);
         return bytes;
     }
 

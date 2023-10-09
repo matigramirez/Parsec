@@ -14,14 +14,14 @@ public class BinarySDataTests
         const string csvDecryptedOutputPath = "Shaiya/SData/DBItemData.csv.dec.SData";
         const string csvEncryptedOutputPath = "Shaiya/SData/DBItemData.csv.enc.SData";
 
-        var itemData = Reader.ReadFromFile<DBItemData>(filePath);
+        var itemData = ParsecReader.FromFile<DBItemData>(filePath);
         // Clear header so that only the field names and data are checked
         itemData.Header = new byte[128];
         itemData.WriteCsv(csvPath);
         itemData.WriteEncrypted(encryptedOutputPath);
         itemData.WriteDecrypted(decryptedOutputPath);
 
-        var itemDataFromCsv = DBItemData.ReadFromCsv<DBItemData>(csvPath);
+        var itemDataFromCsv = DBItemData.FromCsv<DBItemData>(csvPath);
         itemDataFromCsv.WriteEncrypted(csvEncryptedOutputPath);
         itemDataFromCsv.WriteDecrypted(csvDecryptedOutputPath);
 

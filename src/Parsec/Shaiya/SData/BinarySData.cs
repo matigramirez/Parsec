@@ -1,10 +1,9 @@
 ﻿using System.Globalization;
 using System.Text;
 using CsvHelper;
-using Parsec.Attributes;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Shaiya.Core;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.SData;
 
@@ -13,81 +12,55 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
     /// <summary>
     /// 128-byte header unused by the game itself. It looks like a file signature + metadata
     /// </summary>
-    [ShaiyaProperty]
-    public byte[] Header { get; set; }
+    public byte[] Header { get; set; } = new byte[128];
 
     /// <summary>
     /// Field names are defined before the data. They aren't really used but knowing which each field means is nice
     /// </summary>
-    [ShaiyaProperty]
     public List<BinarySDataField> Fields { get; set; } = new();
 
-    [ShaiyaProperty]
     public List<TRecord> Records { get; set; } = new();
 
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        Header = _binaryReader.ReadBytes(128);
-        int fieldCount = _binaryReader.Read<int>();
-
-        for (int i = 0; i < fieldCount; i++)
-            Fields.Add(new BinarySDataField(_binaryReader));
-
-        int recordCount = _binaryReader.Read<int>();
-
-        for (int i = 0; i < recordCount; i++)
-        {
-            var recordType = typeof(TRecord);
-            var record = Activator.CreateInstance<TRecord>();
-
-            foreach (var property in recordType.GetProperties())
-            {
-                object value = ReflectionHelper.ReadProperty(_binaryReader, typeof(TRecord), record, property);
-                property.SetValue(record, value);
-            }
-
-            Records.Add(record);
-        }
+        Header = binaryReader.ReadBytes(128);
+        Fields = binaryReader.ReadList<BinarySDataField>().ToList();
+        Records = binaryReader.ReadList<TRecord>().ToList();
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Header);
-        buffer.AddRange(Fields.GetBytes());
-
-        buffer.AddRange(Records.Count.GetBytes());
-
-        var recordType = typeof(TRecord);
-
-        foreach (var record in Records)
+        if (Header is not { Length: 128 })
         {
-            foreach (var property in recordType.GetProperties())
-            {
-                var propertyBytes = ReflectionHelper.GetPropertyBytes(recordType, record, property, Encoding, episode);
-                buffer.AddRange(propertyBytes);
-            }
+            Header = new byte[128];
         }
 
-        return buffer;
+        binaryWriter.Write(Header);
+        binaryWriter.Write(Fields.ToSerializable());
+        binaryWriter.Write(Records.ToSerializable());
     }
 
-    public static T ReadFromCsv<T>(string csvPath, Encoding encoding = null) where T : BinarySData<TRecord>, new()
+    public static T FromCsv<T>(string csvPath, Encoding? encoding = null) where T : BinarySData<TRecord>, new()
     {
         encoding ??= Encoding.ASCII;
         using var reader = new StreamReader(csvPath, encoding);
         using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
 
-        // Read headers and records
+        // Read records
         var records = csvReader.GetRecords<TRecord>().ToList();
-        var fields = csvReader.HeaderRecord?.Select(c => new BinarySDataField(c.ToLower())).ToList();
 
-        // Create the BinarySData instance with an empty header. The header is skipped entirely by the game so this isn't an issue.
-        var binarySData = new T { Header = new byte[128], Fields = fields, Records = records, Encoding = encoding };
+        if (csvReader.HeaderRecord == null)
+        {
+            throw new FileLoadException("Csv file doesn't have a valid header.");
+        }
+
+        // Read headers
+        var fields = csvReader.HeaderRecord.Select(column => (BinarySDataField)column.ToLower()).ToList();
+        var binarySData = new T { Fields = fields, Records = records, Encoding = encoding };
         return binarySData;
     }
 
-    public void WriteCsv(string outputPath, Encoding encoding = null)
+    public void WriteCsv(string outputPath, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
         using var writer = new StreamWriter(outputPath, false, encoding);

@@ -8,7 +8,7 @@ public class _3DCTests
     public void _3DCReadWriteEP5Test()
     {
         const string filePath = "Shaiya/3DC/Mob_Fox_01.3DC";
-        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(filePath);
+        var obj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(filePath);
 
         // Check original EFT values
         Assert.Equal(32, obj.Bones.Count);
@@ -19,7 +19,7 @@ public class _3DCTests
         // Export to json
         const string jsonPath = "Shaiya/3DC/Mob_Fox_01.3DC.json";
         obj.WriteJson(jsonPath);
-        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DC._3DC>(jsonPath);
+        var objFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya._3dc._3dc>(jsonPath);
 
         // Check fields
         Assert.Equal(obj.Bones.Count, objFromJson.Bones.Count);
@@ -32,7 +32,7 @@ public class _3DCTests
         const string newObjPath = "Shaiya/3DC/Mob_Fox_01.new.3DC";
         objFromJson.Write(newObjPath);
 
-        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(newObjPath);
+        var newObj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(newObjPath);
 
         // Check fields
         Assert.Equal(obj.Bones.Count, newObj.Bones.Count);
@@ -47,7 +47,7 @@ public class _3DCTests
     public void _3DCReadWriteEP6Test()
     {
         const string filePath = "Shaiya/3DC/pet_maddog.3DC";
-        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(filePath);
+        var obj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(filePath);
 
         // Check original EFT values
         Assert.Equal(48, obj.Bones.Count);
@@ -58,7 +58,7 @@ public class _3DCTests
         // Export to json
         const string jsonPath = "Shaiya/3DC/pet_maddog.3DC.json";
         obj.WriteJson(jsonPath);
-        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DC._3DC>(jsonPath);
+        var objFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya._3dc._3dc>(jsonPath);
 
         // Check fields
         Assert.Equal(obj.Bones.Count, objFromJson.Bones.Count);
@@ -71,7 +71,7 @@ public class _3DCTests
         const string newObjPath = "Shaiya/3DC/pet_maddog.new.3DC";
         objFromJson.Write(newObjPath);
 
-        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(newObjPath);
+        var newObj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(newObjPath);
 
         // Check fields
         Assert.Equal(obj.Bones.Count, newObj.Bones.Count);
@@ -101,16 +101,16 @@ public class _3DCTests
         string jsonPath = $"Shaiya/3DC/{fileName}.json";
         string newObjPath = $"Shaiya/3DC/new_{fileName}";
 
-        var obj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(filePath);
+        var obj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(filePath);
 
         obj.WriteJson(jsonPath);
-        var objFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya._3DC._3DC>(jsonPath);
+        var objFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya._3dc._3dc>(jsonPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), objFromJson.GetBytes());
 
         objFromJson.Write(newObjPath);
-        var newObj = Reader.ReadFromFile<Parsec.Shaiya._3DC._3DC>(newObjPath);
+        var newObj = ParsecReader.FromFile<Parsec.Shaiya._3dc._3dc>(newObjPath);
 
         // Check bytes
         Assert.Equal(obj.GetBytes(), newObj.GetBytes());

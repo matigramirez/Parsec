@@ -1,32 +1,44 @@
-﻿using Parsec.Attributes;
-using Parsec.Shaiya.Common;
+﻿using Parsec.Extensions;
+using Parsec.Serialization;
+using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.KillStatus;
 
-public sealed class KillStatusRecord
+public sealed class KillStatusRecord : ISerializable
 {
     /// <summary>
     /// The faction that will receive the bonus
     /// </summary>
-    [ShaiyaProperty]
-    public FactionByte Faction { get; set; }
+    public KillStatusFaction Faction { get; set; }
 
     /// <summary>
     /// The absolute bless value at which the bonuses will take effect
     /// </summary>
-    [ShaiyaProperty]
     public int BlessValue { get; set; }
 
     /// <summary>
     /// The index of this record
     /// </summary>
-    [ShaiyaProperty]
-    public short Index { get; set; }
+    public ushort Index { get; set; }
 
     /// <summary>
-    /// The bonuses to be applied
+    /// The bonuses to be applied (fixed length of 6)
     /// </summary>
-    [ShaiyaProperty]
-    [FixedLengthList(typeof(KillStatusBonus), 6)]
     public List<KillStatusBonus> Bonuses { get; set; } = new();
+
+    public void Read(SBinaryReader binaryReader)
+    {
+        Faction = (KillStatusFaction)binaryReader.ReadByte();
+        BlessValue = binaryReader.ReadInt32();
+        Index = binaryReader.ReadUInt16();
+        Bonuses = binaryReader.ReadList<KillStatusBonus>(6).ToList();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write((byte)Faction);
+        binaryWriter.Write(BlessValue);
+        binaryWriter.Write(Index);
+        binaryWriter.Write(Bonuses.Take(6).ToSerializable(), lengthPrefixed: false);
+    }
 }

@@ -10,17 +10,6 @@ namespace Parsec.Tests.Shaiya.Data;
 public class DataTests
 {
     [Fact]
-    [Description("Tests opening and reading the data file")]
-    public void DataReadingTest()
-    {
-        var dataFromSah = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah");
-        var dataFromSaf = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.saf");
-
-        Assert.Equal(dataFromSah.FileIndex.Count, dataFromSaf.FileIndex.Count);
-        Assert.Equal(dataFromSah.DirectoryIndex.Count, dataFromSaf.DirectoryIndex.Count);
-    }
-
-    [Fact]
     [Description("Tests building both data.sah and data.saf from a directory")]
     public void DataBuildingTest()
     {
@@ -36,7 +25,7 @@ public class DataTests
     [Description("Tests extracting a data file fully")]
     public void DataExtractionTest()
     {
-        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah");
+        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah", "Shaiya/Data/sample.saf");
         data.ExtractAll("Shaiya/Data/extracted");
 
         foreach (var file in data.FileIndex.Values)
@@ -47,7 +36,7 @@ public class DataTests
     [Description("Tests extracting a single folder from a data file")]
     public void DataFolderExtractionTest()
     {
-        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah");
+        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah", "Shaiya/Data/sample.saf");
         const string extractionDirectory = "Shaiya/Data/single_folder_extraction";
 
         var folder1 = data.RootDirectory.Directories.FirstOrDefault();
@@ -74,7 +63,7 @@ public class DataTests
     [Description("Tests extracting a single file from a data file")]
     public void DataFileExtractionTest()
     {
-        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah");
+        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/sample.sah", "Shaiya/Data/sample.saf");
         const string extractionDirectory = "Shaiya/Data/single_file_extraction";
 
         var file1 = data.FileIndex.Values.FirstOrDefault();
@@ -95,12 +84,12 @@ public class DataTests
     public void DataPatchingTest()
     {
         // Load data
-        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/target.sah");
+        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/target.sah", "Shaiya/Data/sample.saf");
         var initialFiles = data.FileIndex.Keys.ToList();
 
         // Load patches
-        var patch = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch.sah");
-        var patch2 = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch2.sah");
+        var patch = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch.sah", "Shaiya/Data/patch.saf");
+        var patch2 = new Parsec.Shaiya.Data.Data("Shaiya/Data/patch2.sah", "Shaiya/Data/patch2.saf");
 
         var patchFiles = patch.FileIndex.Keys.Concat(patch2.FileIndex.Keys).ToList();
 
@@ -129,7 +118,7 @@ public class DataTests
     [Description("Tests deleting files from a delete.lst list")]
     public void DataDeleteListTest()
     {
-        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/delete.sah");
+        var data = new Parsec.Shaiya.Data.Data("Shaiya/Data/delete.sah", "Shaiya/Data/sample.saf");
 
         var lstPath = "Shaiya/Data/delete.lst";
         data.RemoveFilesFromLst(lstPath);

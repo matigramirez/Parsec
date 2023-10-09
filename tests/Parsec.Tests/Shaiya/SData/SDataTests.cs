@@ -26,6 +26,9 @@ public class SDataTests
 
         Assert.True(Parsec.Shaiya.SData.SData.IsEncrypted(encryptedFileBuffer));
         Assert.False(Parsec.Shaiya.SData.SData.IsEncrypted(decryptedBuffer));
+
+        Assert.Equal(FileHash.Checksum(decryptedBuffer), FileHash.Checksum(decryptedFileBuffer));
+        Assert.Equal(FileHash.Checksum(encryptedFileBuffer), FileHash.Checksum(encryptedFileBuffer));
     }
 
     [Fact]
@@ -33,20 +36,21 @@ public class SDataTests
     public void SDataFileEncryptionTest()
     {
         // Encrypt file
-        const string encryptedOutputPath = "Shaiya/SData/ItemEp6.encrypted.SData";
-        Parsec.Shaiya.SData.SData.EncryptFile(DecryptedSDataFilePath, encryptedOutputPath);
+        const string outputEncryptedFilePath = "Shaiya/SData/ItemEp6.encrypted.SData";
+        Parsec.Shaiya.SData.SData.EncryptFile(DecryptedSDataFilePath, outputEncryptedFilePath);
 
-        var encryptedBuffer = File.ReadAllBytes(encryptedOutputPath);
+        var encryptedBuffer = File.ReadAllBytes(outputEncryptedFilePath);
         Assert.True(Parsec.Shaiya.SData.SData.IsEncrypted(encryptedBuffer));
 
         // Decrypt file
-        const string decryptedOutputPath = "Shaiya/SData/ItemEp6.decrypted.SData";
-        Parsec.Shaiya.SData.SData.DecryptFile(EncryptedSDataFilePath, decryptedOutputPath);
+        const string outputDecryptedFilePath = "Shaiya/SData/ItemEp6.decrypted.SData";
+        Parsec.Shaiya.SData.SData.DecryptFile(EncryptedSDataFilePath, outputDecryptedFilePath);
 
-        var decryptedBuffer = File.ReadAllBytes(decryptedOutputPath);
+        var decryptedBuffer = File.ReadAllBytes(outputDecryptedFilePath);
         Assert.False(Parsec.Shaiya.SData.SData.IsEncrypted(decryptedBuffer));
 
-        Assert.Equal(FileHash.Checksum(EncryptedSDataFilePath), FileHash.Checksum(encryptedOutputPath));
+        Assert.Equal(FileHash.Checksum(DecryptedSDataFilePath), FileHash.Checksum(outputDecryptedFilePath));
+        Assert.Equal(FileHash.Checksum(EncryptedSDataFilePath), FileHash.Checksum(outputEncryptedFilePath));
     }
 
     [Fact]
@@ -56,7 +60,7 @@ public class SDataTests
         const string encryptedOutputPath = "Shaiya/SData/ItemEp6.encrypted.SData";
         const string decryptedOutputPath = "Shaiya/SData/ItemEp6.decrypted.SData";
 
-        var item = Reader.ReadFromFile<Parsec.Shaiya.Item.Item>(EncryptedSDataFilePath, Episode.EP6);
+        var item = ParsecReader.FromFile<Parsec.Shaiya.Item.Item>(EncryptedSDataFilePath, Episode.EP6);
         item.WriteEncrypted(encryptedOutputPath);
         item.WriteDecrypted(decryptedOutputPath);
 

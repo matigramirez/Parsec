@@ -3,84 +3,60 @@ using System.Text;
 using CsvHelper;
 using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.Skill;
 
 public sealed class Skill : SData.SData, ICsv
 {
-    public List<SkillRecord> Records { get; set; } = new();
+    public List<SkillGroup> SkillGroups { get; set; } = new();
 
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        var skillCount = _binaryReader.Read<int>();
-        var recordCountPerSkill = GetRecordCountPerSkill(Episode);
+        var skillGroupCount = binaryReader.ReadInt32();
 
-        for (int skillId = 0; skillId < skillCount; skillId++)
+        for (var skillGroupId = 0; skillGroupId < skillGroupCount; skillGroupId++)
         {
-            for (int i = 0; i < recordCountPerSkill; i++)
-            {
-                var record = new SkillRecord(_binaryReader, Episode, skillId);
-                Records.Add(record);
-            }
+            binaryReader.SerializationOptions.ExtraOption = skillGroupId;
+            var skillGroup = binaryReader.Read<SkillGroup>();
+            SkillGroups.Add(skillGroup);
         }
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        if (episode == Episode.Unknown)
-        {
-            episode = Episode.EP5;
-        }
-
-        var buffer = new List<byte>();
-
-        var skillCount = Records.Count / GetRecordCountPerSkill(episode);
-        buffer.AddRange(skillCount.GetBytes());
-
-        foreach (var record in Records)
-        {
-            buffer.AddRange(record.GetBytes(episode));
-        }
-
-        return buffer.ToArray();
+        binaryWriter.Write(SkillGroups.ToSerializable());
     }
 
-    private int GetRecordCountPerSkill(Episode episode)
-    {
-        return episode switch
-        {
-            Episode.EP5 => 9,
-            >= Episode.EP6 => 15,
-            _ => 3
-        };
-    }
-
-    /// <summary>
-    /// Reads the Skill.SData format from a csv file
-    /// </summary>
-    /// <param name="csvPath">csv file path</param>
-    /// <param name="episode">File episode</param>
-    /// <param name="encoding">File encoding</param>
-    /// <returns><see cref="Skill"/> instance</returns>
-    public static Skill ReadFromCsv(string csvPath, Episode episode, Encoding encoding = null)
+    public static Skill FromCsv(string csvFilePath, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
 
-        // Read all skill definitions from csv file
-        using var reader = new StreamReader(csvPath, encoding);
+        using var reader = new StreamReader(csvFilePath, encoding);
         using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
-        var records = csvReader.GetRecords<SkillRecord>().ToList();
+        var skillRecords = csvReader.GetRecords<SkillDefinition>().ToList();
 
-        // Create skill instance
-        var skill = new Skill { Episode = episode, Records = records, Encoding = encoding };
+        var groupedSkillRecords = skillRecords.GroupBy(x => x.SkillId);
+        var skill = new Skill { Episode = episode, Encoding = encoding };
+
+        foreach (var groupedSkills in groupedSkillRecords)
+        {
+            var skillGroup = new SkillGroup { SkillDefinitions = groupedSkills.ToList() };
+            skill.SkillGroups.Add(skillGroup);
+        }
+
         return skill;
     }
 
-    public void WriteCsv(string outputPath, Encoding encoding = null)
+    public void WriteCsv(string outputPath, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
         using var writer = new StreamWriter(outputPath, false, encoding);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-        csvWriter.WriteRecords(Records);
+
+        foreach (var skillGroup in SkillGroups)
+        {
+            csvWriter.WriteRecords(skillGroup.SkillDefinitions);
+        }
     }
 }

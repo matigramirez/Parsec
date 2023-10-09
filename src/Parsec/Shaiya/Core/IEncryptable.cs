@@ -1,11 +1,13 @@
-﻿namespace Parsec.Shaiya.Core;
+﻿using Parsec.Serialization;
+
+namespace Parsec.Shaiya.Core;
 
 public interface IEncryptable
 {
     /// <summary>
     /// Decrypts the file's buffer
     /// </summary>
-    void DecryptBuffer(bool validateChecksum = false);
+    void DecryptBuffer(SBinaryReader binaryReader, bool validateChecksum = false);
 
     /// <summary>
     /// Gets the encrypted file bytes

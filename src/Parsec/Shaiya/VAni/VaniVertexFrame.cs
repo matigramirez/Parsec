@@ -1,26 +1,11 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.VAni;
+namespace Parsec.Shaiya.Vani;
 
-public sealed class VaniVertexFrame : IBinary
+public sealed class VaniVertexFrame : ISerializable
 {
-    [JsonConstructor]
-    public VaniVertexFrame()
-    {
-    }
-
-    public VaniVertexFrame(SBinaryReader binaryReader)
-    {
-        Coordinates = new Vector3(binaryReader);
-        Normal = new Vector3(binaryReader);
-        BoneId = binaryReader.Read<int>();
-        UV = new Vector2(binaryReader);
-    }
-
     /// <summary>
     /// The vertex coordinates in the 3d space
     /// </summary>
@@ -41,13 +26,19 @@ public sealed class VaniVertexFrame : IBinary
     /// </summary>
     public Vector2 UV { get; set; }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Read(SBinaryReader binaryReader)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(Coordinates.GetBytes());
-        buffer.AddRange(Normal.GetBytes());
-        buffer.AddRange(BoneId.GetBytes());
-        buffer.AddRange(UV.GetBytes());
-        return buffer;
+        Coordinates = binaryReader.Read<Vector3>();
+        Normal = binaryReader.Read<Vector3>();
+        BoneId = binaryReader.ReadInt32();
+        UV = binaryReader.Read<Vector2>();
+    }
+
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Coordinates);
+        binaryWriter.Write(Normal);
+        binaryWriter.Write(BoneId);
+        binaryWriter.Write(UV);
     }
 }

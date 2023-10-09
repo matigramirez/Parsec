@@ -1,78 +1,107 @@
-﻿using Newtonsoft.Json;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Readers;
-using Parsec.Shaiya.Common;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class Quest : IBinary
+public class Quest : ISerializable
 {
-    public short Id { get; set; }
-    public string Name { get; set; }
-    public string Summary { get; set; }
+    public ushort Id { get; set; }
+
+    public string Name { get; set; } = string.Empty;
+
+    public string Summary { get; set; } = string.Empty;
 
     public ushort MinLevel { get; set; }
+
     public ushort MaxLevel { get; set; }
-    public FactionByte Faction { get; set; }
+
+    public QuestFaction Faction { get; set; }
+
     public Mode Mode { get; set; }
 
     // Sex - 2 separate bool
     public bool MaleSex { get; set; }
+
     public bool FemaleSex { get; set; }
 
     // Job x6
     public byte Fighter { get; set; }
+
     public byte Defender { get; set; }
+
     public byte Ranger { get; set; }
+
     public byte Archer { get; set; }
+
     public byte Mage { get; set; }
+
     public byte Priest { get; set; }
 
     public ushort wHG { get; set; }
+
     public short shVG { get; set; }
+
     public byte byCG { get; set; }
+
     public byte byOG { get; set; }
+
     public byte byIG { get; set; }
 
     public ushort PreviousQuestId { get; set; }
+
     public bool RequireParty { get; set; }
 
     // Party Job x6
     public byte PartyFighter { get; set; }
+
     public byte PartyDefender { get; set; }
+
     public byte PartyRanger { get; set; }
+
     public byte PartyArcher { get; set; }
+
     public byte PartyMage { get; set; }
+
     public byte PartyPriest { get; set; }
 
     // Time values
     public uint MinimumTime { get; set; }
+
     public uint Time { get; set; }
+
     public uint TickStartTerm { get; set; }
+
     public uint TickKeepTime { get; set; }
+
     public uint TickReceiveCount { get; set; }
 
     public byte StartType { get; set; }
+
     public byte StartNpcType { get; set; }
+
     public ushort StartNpcId { get; set; }
+
     public byte StartItemType { get; set; }
+
     public byte StartItemId { get; set; }
 
     /// <summary>
     /// 3 for EP4 and EP5?
     /// </summary>
-    public List<QuestItem> RequiredItems { get; } = new();
+    public List<QuestItem> RequiredItems { get; set; } = new();
 
     public byte EndType { get; set; }
+
     public byte EndNpcType { get; set; }
+
     public short EndNpcId { get; set; }
 
     /// <summary>
     /// 3 for EP4 and EP5?
     /// </summary>
-    public List<QuestItem> FarmItems { get; } = new();
+    public List<QuestItem> FarmItems { get; set; } = new();
 
     /// <summary>
     /// byPCKillCount = pvp kills?
@@ -103,263 +132,220 @@ public class Quest : IBinary
     /// <summary>
     /// 3 for EP5 and below, 6 results for EP6 and above
     /// </summary>
-    public List<QuestResult> Results { get; } = new();
+    public List<QuestResult> Results { get; set; } = new();
 
-    public string InitialDescription { get; set; }
-    public string QuestWindowSummary { get; set; }
-    public string ReminderInstructions { get; set; }
-    public string AlternateResponse { get; set; }
+    public string InitialDescription { get; set; } = string.Empty;
 
-    [JsonConstructor]
-    public Quest()
+    public string QuestWindowSummary { get; set; } = string.Empty;
+
+    public string ReminderInstructions { get; set; } = string.Empty;
+
+    public string AlternateResponse { get; set; } = string.Empty;
+
+    private const int RequiredItemCount = 3;
+
+    private const int FarmItemCount = 3;
+
+    public void Read(SBinaryReader binaryReader)
     {
-    }
+        var episode = binaryReader.SerializationOptions.Episode;
 
-    public Quest(SBinaryReader binaryReader, Episode episode)
-    {
-        Id = binaryReader.Read<short>();
+        Id = binaryReader.ReadUInt16();
 
-        // In ep 8, messages are moved to separate translation files.
         if (episode < Episode.EP8)
         {
             Name = binaryReader.ReadString();
             Summary = binaryReader.ReadString();
         }
 
-        MinLevel = binaryReader.Read<ushort>();
-        MaxLevel = binaryReader.Read<ushort>();
-        Faction = (FactionByte)binaryReader.Read<byte>();
-        Mode = (Mode)binaryReader.Read<byte>();
+        MinLevel = binaryReader.ReadUInt16();
+        MaxLevel = binaryReader.ReadUInt16();
+        Faction = (QuestFaction)binaryReader.ReadByte();
+        Mode = (Mode)binaryReader.ReadByte();
 
         // Sex - 2 separate bool
-        MaleSex = binaryReader.Read<bool>();
-        FemaleSex = binaryReader.Read<bool>();
+        MaleSex = binaryReader.ReadBool();
+        FemaleSex = binaryReader.ReadBool();
 
         // Job x6
-        Fighter = binaryReader.Read<byte>();
-        Defender = binaryReader.Read<byte>();
-        Ranger = binaryReader.Read<byte>();
-        Archer = binaryReader.Read<byte>();
-        Mage = binaryReader.Read<byte>();
-        Priest = binaryReader.Read<byte>();
+        Fighter = binaryReader.ReadByte();
+        Defender = binaryReader.ReadByte();
+        Ranger = binaryReader.ReadByte();
+        Archer = binaryReader.ReadByte();
+        Mage = binaryReader.ReadByte();
+        Priest = binaryReader.ReadByte();
 
-        wHG = binaryReader.Read<ushort>();
-        shVG = binaryReader.Read<short>();
-        byCG = binaryReader.Read<byte>();
-        byOG = binaryReader.Read<byte>();
-        byIG = binaryReader.Read<byte>();
+        wHG = binaryReader.ReadUInt16();
+        shVG = binaryReader.ReadInt16();
+        byCG = binaryReader.ReadByte();
+        byOG = binaryReader.ReadByte();
+        byIG = binaryReader.ReadByte();
 
-        PreviousQuestId = binaryReader.Read<ushort>();
-        RequireParty = binaryReader.Read<bool>();
+        PreviousQuestId = binaryReader.ReadUInt16();
+        RequireParty = binaryReader.ReadBool();
 
         // Party Job x6
-        PartyFighter = binaryReader.Read<byte>();
-        PartyDefender = binaryReader.Read<byte>();
-        PartyRanger = binaryReader.Read<byte>();
-        PartyArcher = binaryReader.Read<byte>();
-        PartyMage = binaryReader.Read<byte>();
-        PartyPriest = binaryReader.Read<byte>();
+        PartyFighter = binaryReader.ReadByte();
+        PartyDefender = binaryReader.ReadByte();
+        PartyRanger = binaryReader.ReadByte();
+        PartyArcher = binaryReader.ReadByte();
+        PartyMage = binaryReader.ReadByte();
+        PartyPriest = binaryReader.ReadByte();
 
         // Time values
-        MinimumTime = binaryReader.Read<uint>();
-        Time = binaryReader.Read<uint>();
-        TickStartTerm = binaryReader.Read<uint>();
-        TickKeepTime = binaryReader.Read<uint>();
-        TickReceiveCount = binaryReader.Read<uint>();
+        MinimumTime = binaryReader.ReadUInt32();
+        Time = binaryReader.ReadUInt32();
+        TickStartTerm = binaryReader.ReadUInt32();
+        TickKeepTime = binaryReader.ReadUInt32();
+        TickReceiveCount = binaryReader.ReadUInt32();
 
-        StartType = binaryReader.Read<byte>();
-        StartNpcType = binaryReader.Read<byte>();
-        StartNpcId = binaryReader.Read<ushort>();
-        StartItemType = binaryReader.Read<byte>();
-        StartItemId = binaryReader.Read<byte>();
+        StartType = binaryReader.ReadByte();
+        StartNpcType = binaryReader.ReadByte();
+        StartNpcId = binaryReader.ReadUInt16();
+        StartItemType = binaryReader.ReadByte();
+        StartItemId = binaryReader.ReadByte();
 
-        for (int i = 0; i < 3; i++)
+        RequiredItems = binaryReader.ReadList<QuestItem>(RequiredItemCount).ToList();
+
+        EndType = binaryReader.ReadByte();
+        EndNpcType = binaryReader.ReadByte();
+        EndNpcId = binaryReader.ReadInt16();
+
+        FarmItems = binaryReader.ReadList<QuestItem>(FarmItemCount).ToList();
+
+        PvpKillCount = binaryReader.ReadByte();
+        RequiredMobId1 = binaryReader.ReadUInt16();
+        RequiredMobCount1 = binaryReader.ReadByte();
+        RequiredMobId2 = binaryReader.ReadUInt16();
+        RequiredMobCount2 = binaryReader.ReadByte();
+
+        ResultType = binaryReader.ReadByte();
+        ResultUserSelect = binaryReader.ReadByte();
+
+        var resultCount = GetResultCount(episode);
+
+        if (episode <= Episode.EP5)
         {
-            var requiredItem = new QuestItem(binaryReader);
-            RequiredItems.Add(requiredItem);
+            // Episodes 4 & 5 have 3 results and completion messages are read afterwards
+            Results = binaryReader.ReadList<QuestResult>(resultCount).ToList();
+
+            InitialDescription = binaryReader.ReadString(false);
+            QuestWindowSummary = binaryReader.ReadString(false);
+            ReminderInstructions = binaryReader.ReadString(false);
+            AlternateResponse = binaryReader.ReadString(false);
+
+            for (var i = 0; i < resultCount; i++)
+            {
+                Results[i].CompletionMessage = binaryReader.ReadString(false);
+            }
         }
-
-        EndType = binaryReader.Read<byte>();
-        EndNpcType = binaryReader.Read<byte>();
-        EndNpcId = binaryReader.Read<short>();
-
-        for (int i = 0; i < 3; i++)
+        else
         {
-            var farmItem = new QuestItem(binaryReader);
-            FarmItems.Add(farmItem);
-        }
+            // Episode 6 has 6 quest results and each result value is followed by its completion message
+            Results = binaryReader.ReadList<QuestResult>(resultCount).ToList();
 
-        PvpKillCount = binaryReader.Read<byte>();
-        RequiredMobId1 = binaryReader.Read<ushort>();
-        RequiredMobCount1 = binaryReader.Read<byte>();
-        RequiredMobId2 = binaryReader.Read<ushort>();
-        RequiredMobCount2 = binaryReader.Read<byte>();
-
-        ResultType = binaryReader.Read<byte>();
-        ResultUserSelect = binaryReader.Read<byte>();
-
-        switch (episode)
-        {
-            case <= Episode.EP5:
-                {
-                    // Episodes 4 & 5 have 3 results and completion messages are read afterwards
-                    for (int i = 0; i < 3; i++)
-                    {
-                        var result = new QuestResult(binaryReader, episode);
-                        Results.Add(result);
-                    }
-
-                    InitialDescription = binaryReader.ReadString(false);
-                    QuestWindowSummary = binaryReader.ReadString(false);
-                    ReminderInstructions = binaryReader.ReadString(false);
-                    AlternateResponse = binaryReader.ReadString(false);
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        Results[i].CompletionMessage = binaryReader.ReadString(false);
-                    }
-
-                    break;
-                }
-            case >= Episode.EP6:
-                {
-                    // Episode 6 has 6 quest results and each result value is followed by its completion message
-                    for (int i = 0; i < 6; i++)
-                    {
-                        var result = new QuestResult(binaryReader, episode);
-                        Results.Add(result);
-
-                        // Episode 8 doesn't have messages, they're part of the translation files
-                        if (episode < Episode.EP8)
-                            result.CompletionMessage = binaryReader.ReadString(false);
-                    }
-
-                    // Episode 8 doesn't have messages, they're part of the translation files
-                    if (episode < Episode.EP8)
-                    {
-                        InitialDescription = binaryReader.ReadString(false);
-                        QuestWindowSummary = binaryReader.ReadString(false);
-                        ReminderInstructions = binaryReader.ReadString(false);
-                        AlternateResponse = binaryReader.ReadString(false);
-                    }
-
-                    break;
-                }
+            if (episode < Episode.EP8)
+            {
+                InitialDescription = binaryReader.ReadString(false);
+                QuestWindowSummary = binaryReader.ReadString(false);
+                ReminderInstructions = binaryReader.ReadString(false);
+                AlternateResponse = binaryReader.ReadString(false);
+            }
         }
     }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        var episode = Episode.EP5;
+        var episode = binaryWriter.SerializationOptions.Episode;
 
-        if (options.Length > 0)
-            episode = (Episode)options[0];
+        binaryWriter.Write(Id);
 
-        var buffer = new List<byte>();
-
-        buffer.AddRange(Id.GetBytes());
-
-        if (episode < Episode.EP8) // In ep 8, messages are moved to separate translation files.
+        if (episode < Episode.EP8)
         {
-            buffer.AddRange(Name.GetLengthPrefixedBytes(false));
-            buffer.AddRange(Summary.GetLengthPrefixedBytes(false));
+            binaryWriter.Write(Name);
+            binaryWriter.Write(Summary);
         }
 
-        buffer.AddRange(MinLevel.GetBytes());
-        buffer.AddRange(MaxLevel.GetBytes());
-        buffer.Add((byte)Faction);
-        buffer.Add((byte)Mode);
-        buffer.AddRange(MaleSex.GetBytes());
-        buffer.AddRange(FemaleSex.GetBytes());
-        buffer.Add(Fighter);
-        buffer.Add(Defender);
-        buffer.Add(Ranger);
-        buffer.Add(Archer);
-        buffer.Add(Mage);
-        buffer.Add(Priest);
-        buffer.AddRange(wHG.GetBytes());
-        buffer.AddRange(shVG.GetBytes());
-        buffer.Add(byCG);
-        buffer.Add(byOG);
-        buffer.Add(byIG);
+        binaryWriter.Write(MinLevel);
+        binaryWriter.Write(MaxLevel);
+        binaryWriter.Write((byte)Faction);
+        binaryWriter.Write((byte)Mode);
+        binaryWriter.Write(MaleSex);
+        binaryWriter.Write(FemaleSex);
+        binaryWriter.Write(Fighter);
+        binaryWriter.Write(Defender);
+        binaryWriter.Write(Ranger);
+        binaryWriter.Write(Archer);
+        binaryWriter.Write(Mage);
+        binaryWriter.Write(Priest);
+        binaryWriter.Write(wHG);
+        binaryWriter.Write(shVG);
+        binaryWriter.Write(byCG);
+        binaryWriter.Write(byOG);
+        binaryWriter.Write(byIG);
+        binaryWriter.Write(PreviousQuestId);
+        binaryWriter.Write(RequireParty);
+        binaryWriter.Write(PartyFighter);
+        binaryWriter.Write(PartyDefender);
+        binaryWriter.Write(PartyRanger);
+        binaryWriter.Write(PartyArcher);
+        binaryWriter.Write(PartyMage);
+        binaryWriter.Write(PartyPriest);
+        binaryWriter.Write(MinimumTime);
+        binaryWriter.Write(Time);
+        binaryWriter.Write(TickStartTerm);
+        binaryWriter.Write(TickKeepTime);
+        binaryWriter.Write(TickReceiveCount);
+        binaryWriter.Write(StartType);
+        binaryWriter.Write(StartNpcType);
+        binaryWriter.Write(StartNpcId);
+        binaryWriter.Write(StartItemType);
+        binaryWriter.Write(StartItemId);
+        binaryWriter.Write(RequiredItems.Take(RequiredItemCount).ToSerializable(), lengthPrefixed: false);
+        binaryWriter.Write(EndType);
+        binaryWriter.Write(EndNpcType);
+        binaryWriter.Write(EndNpcId);
+        binaryWriter.Write(FarmItems.Take(FarmItemCount).ToSerializable(), lengthPrefixed: false);
+        binaryWriter.Write(PvpKillCount);
+        binaryWriter.Write(RequiredMobId1);
+        binaryWriter.Write(RequiredMobCount1);
+        binaryWriter.Write(RequiredMobId2);
+        binaryWriter.Write(RequiredMobCount2);
+        binaryWriter.Write(ResultType);
+        binaryWriter.Write(ResultUserSelect);
 
-        buffer.AddRange(PreviousQuestId.GetBytes());
-        buffer.AddRange(RequireParty.GetBytes());
+        var resultCount = GetResultCount(episode);
 
-        buffer.Add(PartyFighter);
-        buffer.Add(PartyDefender);
-        buffer.Add(PartyRanger);
-        buffer.Add(PartyArcher);
-        buffer.Add(PartyMage);
-        buffer.Add(PartyPriest);
-
-        buffer.AddRange(MinimumTime.GetBytes());
-        buffer.AddRange(Time.GetBytes());
-        buffer.AddRange(TickStartTerm.GetBytes());
-        buffer.AddRange(TickKeepTime.GetBytes());
-        buffer.AddRange(TickReceiveCount.GetBytes());
-
-        buffer.Add(StartType);
-        buffer.Add(StartNpcType);
-        buffer.AddRange(StartNpcId.GetBytes());
-        buffer.Add(StartItemType);
-        buffer.Add(StartItemId);
-
-        buffer.AddRange(RequiredItems.Take(3).GetBytes(false));
-
-        buffer.Add(EndType);
-        buffer.Add(EndNpcType);
-        buffer.AddRange(EndNpcId.GetBytes());
-
-        buffer.AddRange(FarmItems.Take(3).GetBytes(false));
-
-        buffer.Add(PvpKillCount);
-        buffer.AddRange(RequiredMobId1.GetBytes());
-        buffer.Add(RequiredMobCount1);
-        buffer.AddRange(RequiredMobId2.GetBytes());
-        buffer.Add(RequiredMobCount2);
-
-        buffer.Add(ResultType);
-        buffer.Add(ResultUserSelect);
-
-        switch (episode)
+        if (episode <= Episode.EP5)
         {
-            case <= Episode.EP5:
-                {
-                    buffer.AddRange(Results.Take(3).GetBytes(false));
-                    buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(false));
-                    buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(false));
-                    buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(false));
-                    buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(false));
-                    foreach (var result in Results.Take(3))
-                        buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(false));
+            binaryWriter.Write(Results.Take(resultCount).ToSerializable(), lengthPrefixed: false);
 
-                    break;
-                }
-            case >= Episode.EP6:
-                {
-                    foreach (var result in Results.Take(6))
-                    {
-                        buffer.AddRange(result.GetBytes(episode));
+            binaryWriter.Write(InitialDescription, includeStringTerminator: false);
+            binaryWriter.Write(QuestWindowSummary, includeStringTerminator: false);
+            binaryWriter.Write(ReminderInstructions, includeStringTerminator: false);
+            binaryWriter.Write(AlternateResponse, includeStringTerminator: false);
 
-                        if (episode < Episode.EP8)
-                        {
-                            buffer.AddRange(result.CompletionMessage.GetLengthPrefixedBytes(false));
-                        }
-                    }
-
-                    if (episode < Episode.EP8)
-                    {
-                        buffer.AddRange(InitialDescription.GetLengthPrefixedBytes(false));
-                        buffer.AddRange(QuestWindowSummary.GetLengthPrefixedBytes(false));
-                        buffer.AddRange(ReminderInstructions.GetLengthPrefixedBytes(false));
-                        buffer.AddRange(AlternateResponse.GetLengthPrefixedBytes(false));
-                    }
-
-                    break;
-                }
+            for (var i = 0; i < resultCount; i++)
+            {
+                binaryWriter.Write(Results[i].CompletionMessage, includeStringTerminator: false);
+            }
         }
+        else
+        {
+            binaryWriter.Write(Results.Take(resultCount).ToSerializable(), lengthPrefixed: false);
 
-        return buffer;
+            if (episode < Episode.EP8)
+            {
+                binaryWriter.Write(InitialDescription, includeStringTerminator: false);
+                binaryWriter.Write(QuestWindowSummary, includeStringTerminator: false);
+                binaryWriter.Write(ReminderInstructions, includeStringTerminator: false);
+                binaryWriter.Write(AlternateResponse, includeStringTerminator: false);
+            }
+        }
+    }
+
+    private int GetResultCount(Episode episode)
+    {
+        return episode <= Episode.EP5 ? 3 : 6;
     }
 }

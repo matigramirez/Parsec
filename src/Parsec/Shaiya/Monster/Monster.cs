@@ -1,39 +1,27 @@
 ﻿using System.Globalization;
 using System.Text;
 using CsvHelper;
-using Newtonsoft.Json;
 using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.Monster;
 
 public sealed class Monster : SData.SData, ICsv
 {
-    [JsonConstructor]
-    public Monster()
-    {
-    }
-
-    public Monster(List<MonsterRecord> records)
-    {
-        Records = records;
-    }
-
-    public List<MonsterRecord> Records { get; } = new();
+    public List<MonsterRecord> Records { get; set; } = new();
 
     public override string Extension => "SData";
 
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        int recordCount = _binaryReader.Read<int>();
-        for (int i = 0; i < recordCount; i++)
-        {
-            var record = new MonsterRecord(_binaryReader, Encoding);
-            Records.Add(record);
-        }
+        Records = binaryReader.ReadList<MonsterRecord>().ToList();
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Records.GetBytes();
+    protected override void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Records.ToSerializable());
+    }
 
     /// <summary>
     /// Reads the Monster.SData format from a csv file
@@ -41,7 +29,7 @@ public sealed class Monster : SData.SData, ICsv
     /// <param name="csvPath">csv file path</param>
     /// <param name="encoding">File encoding</param>
     /// <returns><see cref="Monster"/> instance</returns>
-    public static Monster ReadFromCsv(string csvPath, Encoding encoding = null)
+    public static Monster FromCsv(string csvPath, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
 
@@ -51,11 +39,11 @@ public sealed class Monster : SData.SData, ICsv
         var records = csvReader.GetRecords<MonsterRecord>().ToList();
 
         // Create monster instance
-        var monster = new Monster(records) { Encoding = encoding };
+        var monster = new Monster { Records = records, Encoding = encoding };
         return monster;
     }
 
-    public void WriteCsv(string outputPath, Encoding encoding = null)
+    public void WriteCsv(string outputPath, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
         using var writer = new StreamWriter(outputPath, false, encoding);

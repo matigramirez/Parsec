@@ -1,74 +1,58 @@
 ﻿using Newtonsoft.Json;
-using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Svmap;
 
 public sealed class Svmap : FileBase
 {
-    [JsonConstructor]
-    public Svmap()
-    {
-    }
-
     public int MapSize { get; set; }
-    public List<byte> MapHeight { get; private set; } = new();
+
+    public byte[] MapHeight { get; set; } = Array.Empty<byte>();
+
     public int CellSize { get; set; }
-    public List<Ladder> Ladders { get; } = new();
-    public List<MonsterArea> MonsterAreas { get; } = new();
-    public List<Npc> Npcs { get; } = new();
-    public List<Portal> Portals { get; } = new();
-    public List<Spawn> Spawns { get; } = new();
-    public List<NamedArea> NamedAreas { get; } = new();
+
+    public List<SvmapLadder> Ladders { get; set; } = new();
+
+    public List<SvmapMonsterSpawnArea> MonsterAreas { get; set; } = new();
+
+    public List<SvmapNpc> Npcs { get; set; } = new();
+
+    public List<SvmapPortal> Portals { get; set; } = new();
+
+    public List<SvmapSpawnArea> Spawns { get; set; } = new();
+
+    public List<SvmapNamedArea> NamedAreas { get; set; } = new();
 
     [JsonIgnore]
     public override string Extension => "svmap";
 
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        MapSize = _binaryReader.Read<int>();
-        int mapHeightCount = MapSize * MapSize / 8;
-        MapHeight = _binaryReader.ReadBytes(mapHeightCount).ToList();
-        CellSize = _binaryReader.Read<int>();
+        MapSize = binaryReader.ReadInt32();
+        var mapHeightCount = MapSize * MapSize / 8;
+        MapHeight = binaryReader.ReadBytes(mapHeightCount);
+        CellSize = binaryReader.ReadInt32();
 
-        int ladderCount = _binaryReader.Read<int>();
-        for (int i = 0; i < ladderCount; i++)
-            Ladders.Add(new Ladder(_binaryReader));
-
-        int monsterAreaCount = _binaryReader.Read<int>();
-        for (int i = 0; i < monsterAreaCount; i++)
-            MonsterAreas.Add(new MonsterArea(_binaryReader));
-
-        int npcCount = _binaryReader.Read<int>();
-        for (int i = 0; i < npcCount; i++)
-            Npcs.Add(new Npc(_binaryReader));
-
-        int portalCount = _binaryReader.Read<int>();
-        for (int i = 0; i < portalCount; i++)
-            Portals.Add(new Portal(_binaryReader));
-
-        int spawnCount = _binaryReader.Read<int>();
-        for (int i = 0; i < spawnCount; i++)
-            Spawns.Add(new Spawn(_binaryReader));
-
-        int namedAreaCount = _binaryReader.Read<int>();
-        for (int i = 0; i < namedAreaCount; i++)
-            NamedAreas.Add(new NamedArea(_binaryReader));
+        Ladders = binaryReader.ReadList<SvmapLadder>().ToList();
+        MonsterAreas = binaryReader.ReadList<SvmapMonsterSpawnArea>().ToList();
+        Npcs = binaryReader.ReadList<SvmapNpc>().ToList();
+        Portals = binaryReader.ReadList<SvmapPortal>().ToList();
+        Spawns = binaryReader.ReadList<SvmapSpawnArea>().ToList();
+        NamedAreas = binaryReader.ReadList<SvmapNamedArea>().ToList();
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown)
+    protected override void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(MapSize.GetBytes());
-        buffer.AddRange(MapHeight);
-        buffer.AddRange(CellSize.GetBytes());
-        buffer.AddRange(Ladders.GetBytes());
-        buffer.AddRange(MonsterAreas.GetBytes());
-        buffer.AddRange(Npcs.GetBytes());
-        buffer.AddRange(Portals.GetBytes());
-        buffer.AddRange(Spawns.GetBytes());
-        buffer.AddRange(NamedAreas.GetBytes());
-        return buffer;
+        binaryWriter.Write(MapSize);
+        binaryWriter.Write(MapHeight.ToArray());
+        binaryWriter.Write(CellSize);
+        binaryWriter.Write(Ladders.ToSerializable());
+        binaryWriter.Write(MonsterAreas.ToSerializable());
+        binaryWriter.Write(Npcs.ToSerializable());
+        binaryWriter.Write(Portals.ToSerializable());
+        binaryWriter.Write(Spawns.ToSerializable());
+        binaryWriter.Write(NamedAreas.ToSerializable());
     }
 }

@@ -1,28 +1,21 @@
 ﻿using System.Text;
-using Parsec.Attributes;
-using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common;
 
-public sealed class String256 : IBinary
+public sealed class String256 : ISerializable
 {
-    public String256()
-    {
-    }
+    public string Value { get; set; } = string.Empty;
 
-    public String256(string str)
-    {
-        Value = str;
-    }
+    public char PaddingChar { get; set; } = '\0';
 
-    public String256(SBinaryReader binaryReader)
+    public void Read(SBinaryReader binaryReader)
     {
-        byte[] unparsedBytes = binaryReader.ReadBytes(256);
-        int stringEndIndex = 0;
+        var unparsedBytes = binaryReader.ReadBytes(256);
+        var stringEndIndex = 0;
 
-        for (int i = 0; i < 256; i++)
+        for (var i = 0; i < 256; i++)
         {
             if (unparsedBytes[i] == 0)
             {
@@ -34,15 +27,15 @@ public sealed class String256 : IBinary
         Value = Encoding.ASCII.GetString(unparsedBytes, 0, stringEndIndex);
     }
 
-    [ShaiyaProperty]
-    [FixedLengthString(isString256: true)]
-    public string Value { get; set; }
-
-    public IEnumerable<byte> GetBytes(params object[] options) => Value.PadRight(256, '\0').GetBytes();
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        var value = Value.PadRight(256, PaddingChar);
+        binaryWriter.Write(value, isLengthPrefixed: false, includeStringTerminator: false);
+    }
 
     public override string ToString() => Value;
 
     public static implicit operator string(String256 string256) => string256.ToString();
 
-    public static implicit operator String256(string str) => new(str);
+    public static implicit operator String256(string str) => new() { Value = str };
 }

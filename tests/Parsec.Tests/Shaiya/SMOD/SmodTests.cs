@@ -6,7 +6,7 @@ public class SmodTests
     public void SmodReadWriteTest()
     {
         const string filePath = "Shaiya/SMOD/a2_Elf_House_01.SMOD";
-        var smod = Reader.ReadFromFile<Parsec.Shaiya.SMOD.SMOD>(filePath);
+        var smod = ParsecReader.FromFile<Parsec.Shaiya.Smod.Smod>(filePath);
 
         // Check original EFT values
         Assert.Single(smod.CollisionObjects);
@@ -15,7 +15,7 @@ public class SmodTests
         // Export to json
         const string jsonPath = "Shaiya/SMOD/a2_Elf_House_01.SMOD.json";
         smod.WriteJson(jsonPath);
-        var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
+        var smodFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Smod.Smod>(jsonPath);
 
         // Check fields
         Assert.Equal(smod.CollisionObjects.Count, smodFromJson.CollisionObjects.Count);
@@ -27,7 +27,7 @@ public class SmodTests
         const string newObjPath = "Shaiya/SMOD/a2_Elf_House_01.new.SMOD";
         smodFromJson.Write(newObjPath);
 
-        var newSmod = Reader.ReadFromFile<Parsec.Shaiya.SMOD.SMOD>(newObjPath);
+        var newSmod = ParsecReader.FromFile<Parsec.Shaiya.Smod.Smod>(newObjPath);
 
         // Check fields
         Assert.Equal(smod.CollisionObjects.Count, newSmod.CollisionObjects.Count);
@@ -54,15 +54,15 @@ public class SmodTests
         string jsonPath = $"Shaiya/SMOD/{fileName}.json";
         string newObjPath = $"Shaiya/SMOD/new_{fileName}";
 
-        var smod = Reader.ReadFromFile<Parsec.Shaiya.SMOD.SMOD>(filePath);
+        var smod = ParsecReader.FromFile<Parsec.Shaiya.Smod.Smod>(filePath);
         smod.WriteJson(jsonPath);
-        var smodFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.SMOD.SMOD>(jsonPath);
+        var smodFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Smod.Smod>(jsonPath);
 
         // Check bytes
         Assert.Equal(smod.GetBytes(), smodFromJson.GetBytes());
 
         smodFromJson.Write(newObjPath);
-        var newSmod = Reader.ReadFromFile<Parsec.Shaiya.SMOD.SMOD>(newObjPath);
+        var newSmod = ParsecReader.FromFile<Parsec.Shaiya.Smod.Smod>(newObjPath);
 
         // Check bytes
         Assert.Equal(smod.GetBytes(), newSmod.GetBytes());

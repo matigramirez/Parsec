@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Wld;
 
-public class WldUnknownBox : IBinary
+public class WldUnknownBox : ISerializable
 {
     public BoundingBox BoundingBox { get; set; }
 
@@ -15,22 +13,15 @@ public class WldUnknownBox : IBinary
     /// </summary>
     public float Radius { get; set; }
 
-    [JsonConstructor]
-    public WldUnknownBox()
+    public void Read(SBinaryReader binaryReader)
     {
+        BoundingBox = binaryReader.Read<BoundingBox>();
+        Radius = binaryReader.ReadSingle();
     }
 
-    public WldUnknownBox(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        BoundingBox = new BoundingBox(binaryReader);
-        Radius = binaryReader.Read<float>();
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var buffer = new List<byte>();
-        buffer.AddRange(BoundingBox.GetBytes());
-        buffer.AddRange(Radius.GetBytes());
-        return buffer;
+        binaryWriter.Write(BoundingBox);
+        binaryWriter.Write(Radius);
     }
 }

@@ -9,5 +9,5 @@ public interface ICsv
     /// </summary>
     /// <param name="outputPath">Export file path</param>
     /// <param name="encoding">File encoding</param>
-    void WriteCsv(string outputPath, Encoding encoding = null);
+    void WriteCsv(string outputPath, Encoding? encoding = null);
 }

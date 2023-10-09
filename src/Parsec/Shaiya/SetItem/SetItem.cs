@@ -1,18 +1,19 @@
-using Parsec.Common;
 using Parsec.Extensions;
+using Parsec.Serialization;
 
 namespace Parsec.Shaiya.SetItem;
 
 public sealed class SetItem : SData.SData
 {
-    public List<SetItemRecord> Records { get; } = new();
+    public List<SetItemRecord> Records { get; set; } = new();
 
-    public override void Read()
+    protected override void Read(SBinaryReader binaryReader)
     {
-        int recordCount = _binaryReader.Read<int>();
-        for (int i = 0; i < recordCount; i++)
-            Records.Add(new SetItemRecord(_binaryReader));
+        Records = binaryReader.ReadList<SetItemRecord>().ToList();
     }
 
-    public override IEnumerable<byte> GetBytes(Episode episode = Episode.Unknown) => Records.GetBytes();
+    protected override void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(Records.ToSerializable());
+    }
 }

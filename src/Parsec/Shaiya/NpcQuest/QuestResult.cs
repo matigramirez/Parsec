@@ -1,108 +1,118 @@
-﻿using Newtonsoft.Json;
-using Parsec.Common;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Common;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class QuestResult : IBinary
+public class QuestResult : ISerializable
 {
     public ushort NeedMobId { get; set; }
+
     public byte NeedMobCount { get; set; }
+
     public byte NeedItemId { get; set; }
+
     public byte NeedItemCount { get; set; }
+
     public uint NeedTime { get; set; }
+
     public ushort NeedHG { get; set; }
+
     public short NeedVG { get; set; }
+
     public byte NeedOG { get; set; }
+
     public uint Exp { get; set; }
+
     public uint Money { get; set; }
+
     public byte ItemType1 { get; set; }
+
     public byte ItemTypeId1 { get; set; }
+
     public byte ItemCount1 { get; set; }
+
     public byte ItemType2 { get; set; }
+
     public byte ItemTypeId2 { get; set; }
+
     public byte ItemCount2 { get; set; }
+
     public byte ItemType3 { get; set; }
+
     public byte ItemTypeId3 { get; set; }
+
     public byte ItemCount3 { get; set; }
+
     public ushort NextQuestId { get; set; }
 
     public string CompletionMessage { get; set; } = string.Empty;
 
-    public QuestResult(SBinaryReader binaryReader, Episode episode)
+    public void Read(SBinaryReader binaryReader)
     {
-        NeedMobId = binaryReader.Read<ushort>();
-        NeedMobCount = binaryReader.Read<byte>();
-        NeedItemId = binaryReader.Read<byte>();
-        NeedItemCount = binaryReader.Read<byte>();
-        NeedTime = binaryReader.Read<uint>();
-        NeedHG = binaryReader.Read<ushort>();
-        NeedVG = binaryReader.Read<short>();
-        NeedOG = binaryReader.Read<byte>();
-        Exp = binaryReader.Read<uint>();
-        Money = binaryReader.Read<uint>();
-        ItemType1 = binaryReader.Read<byte>();
-        ItemTypeId1 = binaryReader.Read<byte>();
+        NeedMobId = binaryReader.ReadUInt16();
+        NeedMobCount = binaryReader.ReadByte();
+        NeedItemId = binaryReader.ReadByte();
+        NeedItemCount = binaryReader.ReadByte();
+        NeedTime = binaryReader.ReadUInt32();
+        NeedHG = binaryReader.ReadUInt16();
+        NeedVG = binaryReader.ReadInt16();
+        NeedOG = binaryReader.ReadByte();
+        Exp = binaryReader.ReadUInt32();
+        Money = binaryReader.ReadUInt32();
+        ItemType1 = binaryReader.ReadByte();
+        ItemTypeId1 = binaryReader.ReadByte();
 
-        // Some extra values are read here for EP6+
-        if (episode > Episode.EP5)
+        if (binaryReader.SerializationOptions.Episode > Episode.EP5)
         {
-            ItemCount1 = binaryReader.Read<byte>();
-
-            ItemType2 = binaryReader.Read<byte>();
-            ItemTypeId2 = binaryReader.Read<byte>();
-            ItemCount2 = binaryReader.Read<byte>();
-
-            ItemType3 = binaryReader.Read<byte>();
-            ItemTypeId3 = binaryReader.Read<byte>();
-            ItemCount3 = binaryReader.Read<byte>();
+            ItemCount1 = binaryReader.ReadByte();
+            ItemType2 = binaryReader.ReadByte();
+            ItemTypeId2 = binaryReader.ReadByte();
+            ItemCount2 = binaryReader.ReadByte();
+            ItemType3 = binaryReader.ReadByte();
+            ItemTypeId3 = binaryReader.ReadByte();
+            ItemCount3 = binaryReader.ReadByte();
         }
 
-        NextQuestId = binaryReader.Read<ushort>();
-    }
+        NextQuestId = binaryReader.ReadUInt16();
 
-    [JsonConstructor]
-    public QuestResult()
-    {
-    }
-
-    public IEnumerable<byte> GetBytes(params object[] options)
-    {
-        var episode = Episode.EP5;
-
-        if (options.Length > 0)
-            episode = (Episode)options[0];
-
-        var buffer = new List<byte>();
-        buffer.AddRange(NeedMobId.GetBytes());
-        buffer.Add(NeedMobCount);
-        buffer.Add(NeedItemId);
-        buffer.Add(NeedItemCount);
-        buffer.AddRange(NeedTime.GetBytes());
-        buffer.AddRange(NeedHG.GetBytes());
-        buffer.AddRange(NeedVG.GetBytes());
-        buffer.Add(NeedOG);
-        buffer.AddRange(Exp.GetBytes());
-        buffer.AddRange(Money.GetBytes());
-        buffer.Add(ItemType1);
-        buffer.Add(ItemTypeId1);
-
-        if (episode > Episode.EP5)
+        if (binaryReader.SerializationOptions.Episode is > Episode.EP5 and < Episode.EP8)
         {
-            buffer.Add(ItemCount1);
+            CompletionMessage = binaryReader.ReadString();
+        }
+    }
 
-            buffer.Add(ItemType2);
-            buffer.Add(ItemTypeId2);
-            buffer.Add(ItemCount2);
+    public void Write(SBinaryWriter binaryWriter)
+    {
+        binaryWriter.Write(NeedMobId);
+        binaryWriter.Write(NeedMobCount);
+        binaryWriter.Write(NeedItemId);
+        binaryWriter.Write(NeedItemCount);
+        binaryWriter.Write(NeedTime);
+        binaryWriter.Write(NeedHG);
+        binaryWriter.Write(NeedVG);
+        binaryWriter.Write(NeedOG);
+        binaryWriter.Write(Exp);
+        binaryWriter.Write(Money);
+        binaryWriter.Write(ItemType1);
+        binaryWriter.Write(ItemTypeId1);
 
-            buffer.Add(ItemType3);
-            buffer.Add(ItemTypeId3);
-            buffer.Add(ItemCount3);
+        if (binaryWriter.SerializationOptions.Episode > Episode.EP5)
+        {
+            binaryWriter.Write(ItemCount1);
+            binaryWriter.Write(ItemType2);
+            binaryWriter.Write(ItemTypeId2);
+            binaryWriter.Write(ItemCount2);
+            binaryWriter.Write(ItemType3);
+            binaryWriter.Write(ItemTypeId3);
+            binaryWriter.Write(ItemCount3);
         }
 
-        buffer.AddRange(NextQuestId.GetBytes());
-        return buffer;
+        binaryWriter.Write(NextQuestId);
+
+        if (binaryWriter.SerializationOptions.Episode is > Episode.EP5 and < Episode.EP8)
+        {
+            binaryWriter.Write(CompletionMessage, includeStringTerminator: false);
+        }
     }
 }

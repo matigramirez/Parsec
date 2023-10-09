@@ -1,24 +1,19 @@
-﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.GuildHouse;
 
-public class GuildHouseNpc : IBinary
+public class GuildHouseNpc : ISerializable
 {
-    public int NpcId { get; set; }
+    public uint NpcId { get; set; }
 
-    [JsonConstructor]
-    public GuildHouseNpc()
+    public void Read(SBinaryReader binaryReader)
     {
+        NpcId = binaryReader.ReadUInt32();
     }
 
-    public GuildHouseNpc(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        NpcId = binaryReader.Read<int>();
+        binaryWriter.Write(NpcId);
     }
-
-    /// <inheritdoc />
-    public IEnumerable<byte> GetBytes(params object[] options) => NpcId.GetBytes();
 }

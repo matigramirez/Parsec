@@ -1,15 +1,14 @@
 ﻿using Newtonsoft.Json;
-using Parsec.Extensions;
-using Parsec.Readers;
+using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
-namespace Parsec.Shaiya.WLD;
+namespace Parsec.Shaiya.Wld;
 
 /// <summary>
 /// A rectangular area of the world in which music is played
 /// </summary>
-public sealed class WldMusicZone : IBinary
+public sealed class WldMusicZone : ISerializable
 {
     /// <summary>
     /// The rectangular area of the music zone
@@ -36,21 +35,19 @@ public sealed class WldMusicZone : IBinary
     {
     }
 
-    public WldMusicZone(SBinaryReader binaryReader)
+    public void Read(SBinaryReader binaryReader)
     {
-        BoundingBox = new BoundingBox(binaryReader);
-        Radius = binaryReader.Read<float>();
-        Id = binaryReader.Read<int>();
-        Unknown = binaryReader.Read<int>();
+        BoundingBox = binaryReader.Read<BoundingBox>();
+        Radius = binaryReader.ReadSingle();
+        Id = binaryReader.ReadInt32();
+        Unknown = binaryReader.ReadInt32();
     }
 
-    public IEnumerable<byte> GetBytes(params object[] options)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        var buffer = new List<byte>();
-        buffer.AddRange(BoundingBox.GetBytes());
-        buffer.AddRange(Radius.GetBytes());
-        buffer.AddRange(Id.GetBytes());
-        buffer.AddRange(Unknown.GetBytes());
-        return buffer;
+        binaryWriter.Write(BoundingBox);
+        binaryWriter.Write(Radius);
+        binaryWriter.Write(Id);
+        binaryWriter.Write(Unknown);
     }
 }

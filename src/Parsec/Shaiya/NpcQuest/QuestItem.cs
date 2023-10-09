@@ -1,26 +1,27 @@
-﻿using Newtonsoft.Json;
-using Parsec.Readers;
+﻿using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class QuestItem : IBinary
+public class QuestItem : ISerializable
 {
     public byte Type { get; set; }
+
     public byte TypeId { get; set; }
+
     public byte Count { get; set; }
 
-    [JsonConstructor]
-    public QuestItem()
+    public void Read(SBinaryReader binaryReader)
     {
+        Type = binaryReader.ReadByte();
+        TypeId = binaryReader.ReadByte();
+        Count = binaryReader.ReadByte();
     }
 
-    public QuestItem(SBinaryReader binaryReader)
+    public void Write(SBinaryWriter binaryWriter)
     {
-        Type = binaryReader.Read<byte>();
-        TypeId = binaryReader.Read<byte>();
-        Count = binaryReader.Read<byte>();
+        binaryWriter.Write(Type);
+        binaryWriter.Write(TypeId);
+        binaryWriter.Write(Count);
     }
-
-    public IEnumerable<byte> GetBytes(params object[] options) => new[] { Type, TypeId, Count };
 }

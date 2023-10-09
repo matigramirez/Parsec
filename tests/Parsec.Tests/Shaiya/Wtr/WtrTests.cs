@@ -15,15 +15,15 @@ public class WtrTests
         string jsonPath = $"Shaiya/Wtr/{fileName}.json";
         string newObjPath = $"Shaiya/Wtr/new_{fileName}";
 
-        var wtr = Reader.ReadFromFile<Parsec.Shaiya.Wtr.Wtr>(filePath);
+        var wtr = ParsecReader.FromFile<Parsec.Shaiya.Wtr.Wtr>(filePath);
         wtr.WriteJson(jsonPath);
-        var wtrFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.Wtr.Wtr>(jsonPath);
+        var wtrFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Wtr.Wtr>(jsonPath);
 
         // Check bytes
         Assert.Equal(wtr.GetBytes(), wtrFromJson.GetBytes());
 
         wtrFromJson.Write(newObjPath);
-        var newWtr = Reader.ReadFromFile<Parsec.Shaiya.Wtr.Wtr>(newObjPath);
+        var newWtr = ParsecReader.FromFile<Parsec.Shaiya.Wtr.Wtr>(newObjPath);
 
         // Check bytes
         Assert.Equal(wtr.GetBytes(), newWtr.GetBytes());

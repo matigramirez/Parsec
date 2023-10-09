@@ -20,15 +20,15 @@ public class MAniTests
         string jsonPath = $"Shaiya/MAni/{fileName}.json";
         string newObjPath = $"Shaiya/MAni/new_{fileName}";
 
-        var mani = Reader.ReadFromFile<Parsec.Shaiya.MAni.MAni>(filePath);
+        var mani = ParsecReader.FromFile<Parsec.Shaiya.Mani.Mani>(filePath);
         mani.WriteJson(jsonPath);
-        var maniFromJson = Reader.ReadFromJsonFile<Parsec.Shaiya.MAni.MAni>(jsonPath);
+        var maniFromJson = ParsecReader.FromJsonFile<Parsec.Shaiya.Mani.Mani>(jsonPath);
 
         // Check bytes
         Assert.Equal(mani.GetBytes(), maniFromJson.GetBytes());
 
         maniFromJson.Write(newObjPath);
-        var newMani = Reader.ReadFromFile<Parsec.Shaiya.MAni.MAni>(newObjPath);
+        var newMani = ParsecReader.FromFile<Parsec.Shaiya.Mani.Mani>(newObjPath);
 
         // Check bytes
         Assert.Equal(mani.GetBytes(), newMani.GetBytes());

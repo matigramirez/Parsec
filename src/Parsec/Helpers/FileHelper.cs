@@ -17,7 +17,7 @@ public static class FileHelper
     /// <param name="content">The file content</param>
     /// <param name="encoding">File encoding</param>
     /// <param name="backupIfExists">Makes a backup of the file if it already existed</param>
-    public static bool WriteFile(string path, string content, Encoding encoding = null, bool backupIfExists = false)
+    public static bool WriteFile(string path, string content, Encoding? encoding = null, bool backupIfExists = false)
     {
         encoding ??= Encoding.ASCII;
 
