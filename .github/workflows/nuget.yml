@@ -1,4 +1,4 @@
-name: nuget
+name: release
 
 on:
   push:
@@ -11,18 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v3
         with:
+          dotnet-version: "7.0.x"
           source-url: https://nuget.pkg.github.com/matigramirez/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and generate NuGet package
-        run: dotnet pack ./src/Parsec -c Release -o publish
+      - run: dotnet build ./src/Parsec
+      - name: Create NuGet package
+        run: dotnet pack ./src/Parsec --configuration Release
 
       - name: Publish NuGet package
-        run: dotnet nuget push ./publish/*.nupkg --skip-duplicate --no-symbols true
+        run: dotnet nuget push ./src/Parsec/bin/Release/*.nupkg
