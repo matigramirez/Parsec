@@ -3,7 +3,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class MerchantItem : ISerializable
+public class NpcQuestMerchantItem : ISerializable
 {
     public byte ItemType { get; set; }
 

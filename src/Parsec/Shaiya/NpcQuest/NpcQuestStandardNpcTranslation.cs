@@ -3,7 +3,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class NpcQuestTran : ISerializable
+public class NpcQuestStandardNpcTranslation : ISerializable
 {
     public string Name { get; set; } = string.Empty;
 

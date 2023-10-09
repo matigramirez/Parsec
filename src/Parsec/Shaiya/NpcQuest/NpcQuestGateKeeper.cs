@@ -4,15 +4,15 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class NpcQuestGateKeeper : BaseNpc, ISerializable
+public class NpcQuestGateKeeper : NpcQuestBaseNpc, ISerializable
 {
-    public List<GateTarget> GateTargets { get; set; } = new();
+    public List<NpcQuestGateTarget> GateTargets { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
         ReadBaseNpcFirstSegment(binaryReader);
         ReadBaseNpcSecondSegment(binaryReader);
-        GateTargets = binaryReader.ReadList<GateTarget>(3).ToList();
+        GateTargets = binaryReader.ReadList<NpcQuestGateTarget>(3).ToList();
         ReadBaseNpcThirdSegment(binaryReader);
     }
 

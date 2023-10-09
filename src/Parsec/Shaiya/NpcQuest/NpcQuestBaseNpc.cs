@@ -3,9 +3,9 @@ using Parsec.Serialization;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public abstract class BaseNpc
+public abstract class NpcQuestBaseNpc
 {
-    public NpcType NpcType { get; set; }
+    public NpcQuestNpcType NpcType { get; set; }
 
     public short NpcTypeId { get; set; }
 
@@ -34,7 +34,7 @@ public abstract class BaseNpc
 
     protected void ReadBaseNpcFirstSegment(SBinaryReader binaryReader)
     {
-        NpcType = (NpcType)binaryReader.ReadByte();
+        NpcType = (NpcQuestNpcType)binaryReader.ReadByte();
         NpcTypeId = binaryReader.ReadInt16();
     }
 

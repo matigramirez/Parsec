@@ -3,7 +3,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class GateKeeperQuestTran : ISerializable
+public class NpcQuestGatekeeperTranslation : ISerializable
 {
     public string Name { get; set; } = string.Empty;
 
@@ -26,10 +26,10 @@ public class GateKeeperQuestTran : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Name, false);
-        binaryWriter.Write(WelcomeMessage, false);
-        binaryWriter.Write(TeleportName1, false);
-        binaryWriter.Write(TeleportName2, false);
-        binaryWriter.Write(TeleportName3, false);
+        binaryWriter.Write(Name, includeStringTerminator: false);
+        binaryWriter.Write(WelcomeMessage, includeStringTerminator: false);
+        binaryWriter.Write(TeleportName1, includeStringTerminator: false);
+        binaryWriter.Write(TeleportName2, includeStringTerminator: false);
+        binaryWriter.Write(TeleportName3, includeStringTerminator: false);
     }
 }

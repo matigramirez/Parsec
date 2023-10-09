@@ -4,18 +4,18 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class Merchant : BaseNpc, ISerializable
+public class NpcQuestMerchant : NpcQuestBaseNpc, ISerializable
 {
     public MerchantType MerchantType { get; set; }
 
-    public List<MerchantItem> Items { get; set; } = new();
+    public List<NpcQuestMerchantItem> Items { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
         ReadBaseNpcFirstSegment(binaryReader);
         MerchantType = (MerchantType)binaryReader.ReadByte();
         ReadBaseNpcSecondSegment(binaryReader);
-        Items = binaryReader.ReadList<MerchantItem>().ToList();
+        Items = binaryReader.ReadList<NpcQuestMerchantItem>().ToList();
         ReadBaseNpcThirdSegment(binaryReader);
     }
 

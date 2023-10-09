@@ -4,33 +4,33 @@ namespace Parsec.Shaiya.NpcQuest;
 
 public class NpcQuestTrans : SData.SData
 {
-    public List<NpcQuestTran> Merchants { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> Merchants { get; set; } = new();
 
-    public List<GateKeeperQuestTran> GateKeepers { get; set; } = new();
+    public List<NpcQuestGatekeeperTranslation> GateKeepers { get; set; } = new();
 
-    public List<NpcQuestTran> Blacksmiths { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> Blacksmiths { get; set; } = new();
 
-    public List<NpcQuestTran> PvpManagers { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> PvpManagers { get; set; } = new();
 
-    public List<NpcQuestTran> GamblingHouses { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> GamblingHouses { get; set; } = new();
 
-    public List<NpcQuestTran> Warehouses { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> Warehouses { get; set; } = new();
 
-    public List<NpcQuestTran> NormalNpcs { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> NormalNpcs { get; set; } = new();
 
-    public List<NpcQuestTran> Guards { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> Guards { get; set; } = new();
 
-    public List<NpcQuestTran> Animals { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> Animals { get; set; } = new();
 
-    public List<NpcQuestTran> Apprentices { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> Apprentices { get; set; } = new();
 
-    public List<NpcQuestTran> GuildMasters { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> GuildMasters { get; set; } = new();
 
-    public List<NpcQuestTran> DeadNpcs { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> DeadNpcs { get; set; } = new();
 
-    public List<NpcQuestTran> CombatCommanders { get; set; } = new();
+    public List<NpcQuestStandardNpcTranslation> CombatCommanders { get; set; } = new();
 
-    public List<QuestTranslation> QuestTranslations { get; set; } = new();
+    public List<NpcQuestQuestTranslation> QuestTranslations { get; set; } = new();
 
     protected override void Read(SBinaryReader binaryReader)
     {

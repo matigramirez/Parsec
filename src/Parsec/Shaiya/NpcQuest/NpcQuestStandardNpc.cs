@@ -3,7 +3,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class StandardNpc : BaseNpc, ISerializable
+public class NpcQuestStandardNpc : NpcQuestBaseNpc, ISerializable
 {
     public void Read(SBinaryReader binaryReader)
     {

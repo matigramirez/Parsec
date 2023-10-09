@@ -5,7 +5,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.NpcQuest;
 
-public class GateTarget : ISerializable
+public class NpcQuestGateTarget : ISerializable
 {
     public ushort MapId { get; set; }
 

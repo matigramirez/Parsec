@@ -1,6 +1,6 @@
 ﻿namespace Parsec.Shaiya.NpcQuest;
 
-public enum NpcType
+public enum NpcQuestNpcType
 {
     Merchant = 1,
     GateKeeper,
