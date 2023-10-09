@@ -1,6 +1,6 @@
 # Parsec
 
-[![.NET](https://github.com/matigramirez/Parsec/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/matigramirez/Parsec/actions/workflows/dotnet.yml)
+[![.NET](https://github.com/matigramirez/Parsec/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/matigramirez/Parsec/actions/workflows/dotnet.yml)
 [![codecov](https://codecov.io/github/matigramirez/Parsec/branch/main/graph/badge.svg?token=XJSNSRDLTP)](https://codecov.io/github/matigramirez/Parsec)
 [![Nuget](https://img.shields.io/nuget/v/Parsec.svg)](https://www.nuget.org/packages/Parsec/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
