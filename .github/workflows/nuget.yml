@@ -17,13 +17,13 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7.0.x"
-          source-url: https://nuget.pkg.github.com/matigramirez/index.json
+          source-url: https://api.nuget.org/v3/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
       - run: dotnet build ./src/Parsec --configuration Release
       - name: Create NuGet package
         run: dotnet pack ./src/Parsec --configuration Release
 
       - name: Publish NuGet package
-        run: dotnet nuget push ./src/Parsec/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet nuget push ./src/Parsec/bin/Release/*.nupkg --api-key "$NUGET_API_KEY"
