@@ -104,7 +104,7 @@ public sealed class Sah : FileBase
         if (DirectoryIndex.TryGetValue(path, out var matchingFolder))
             return matchingFolder;
 
-        var pathFolders = path.Separate().ToList();
+        var pathFolders = path.Split('/').ToList();
         var currentFolder = RootDirectory;
 
         foreach (var folderName in pathFolders)
