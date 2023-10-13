@@ -45,7 +45,7 @@ public sealed class Monster : SData.SData, ICsv
 
     public void WriteCsv(string outputPath, Encoding? encoding = null)
     {
-        encoding ??= Encoding.ASCII;
+        encoding ??= Encoding;
         using var writer = new StreamWriter(outputPath, false, encoding);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
         csvWriter.WriteRecords(Records);
