@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
@@ -37,10 +36,24 @@ public sealed class Sah : FileBase
         FileCount = fileCount;
     }
 
+    private string _signature = "SAH";
+
     /// <summary>
     /// SAH signature, normally "SAH" but it can be changed. Read as char[3].
     /// </summary>
-    public string Signature { get; set; } = "SAH";
+    public string Signature
+    {
+        get => _signature;
+        set
+        {
+            if (value.Length != 3)
+            {
+                return;
+            }
+
+            _signature = value;
+        }
+    }
 
     /// <summary>
     /// 4 bytes after signature. Meaning isn't truly known but it's suspected that's used for versioning.
@@ -140,7 +153,7 @@ public sealed class Sah : FileBase
 
     protected override void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Signature.Take(3).ToString());
+        binaryWriter.Write(Signature, isLengthPrefixed: false, includeStringTerminator: false);
         binaryWriter.Write(Version);
         binaryWriter.Write(FileCount);
         binaryWriter.Write(new byte[40]); // Padding

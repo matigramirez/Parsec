@@ -61,4 +61,21 @@ public class SahTests
         Assert.NotNull(folder);
         Assert.NotNull(file);
     }
+
+    [Fact]
+    public void SahReadWriteTest()
+    {
+        var outputPath = "Shaiya/Data/sample_out.sah";
+        var patchOutputPath = "Shaiya/Data/sample_out_patch.sah";
+
+        var sah = ParsecReader.FromFile<Sah>("Shaiya/Data/sample.sah");
+        sah.Write(outputPath);
+        var patch = ParsecReader.FromFile<Sah>("Shaiya/Data/patch.sah");
+        patch.Write(patchOutputPath);
+
+        var sah2 = ParsecReader.FromFile<Sah>(outputPath);
+        var patch2 = ParsecReader.FromFile<Sah>(patchOutputPath);
+        Assert.Equal(sah.GetBytes(), sah2.GetBytes());
+        Assert.Equal(patch.GetBytes(), patch2.GetBytes());
+    }
 }
