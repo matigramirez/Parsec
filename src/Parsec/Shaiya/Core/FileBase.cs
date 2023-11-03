@@ -52,7 +52,7 @@ public abstract class FileBase : IJsonWritable<FileBase>
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
             DefaultValueHandling = DefaultValueHandling.Include,
-            StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
+            StringEscapeHandling = StringEscapeHandling.EscapeHtml,
             Formatting = Formatting.Indented
         };
 
