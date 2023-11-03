@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Newtonsoft.Json;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
@@ -8,6 +9,7 @@ public sealed class String256 : ISerializable
 {
     public string Value { get; set; } = string.Empty;
 
+    [JsonIgnore]
     public char PaddingChar { get; set; } = '\0';
 
     public void Read(SBinaryReader binaryReader)

@@ -46,6 +46,7 @@ public struct Vector3 : ISerializable
         binaryWriter.Write(Z);
     }
 
+    [JsonIgnore]
     public double Length => Math.Sqrt(X * X + Y * Y + Z * Z);
 
     public static Vector3 operator +(Vector3 vec1, Vector3 vec2) => new(vec1.X + vec2.X, vec1.Y + vec2.Y, vec1.Z + vec2.Z);
