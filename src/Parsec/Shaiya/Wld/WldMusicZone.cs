@@ -30,11 +30,6 @@ public sealed class WldMusicZone : ISerializable
     /// </summary>
     public int Unknown { get; set; }
 
-    [JsonConstructor]
-    public WldMusicZone()
-    {
-    }
-
     public void Read(SBinaryReader binaryReader)
     {
         BoundingBox = binaryReader.Read<BoundingBox>();
