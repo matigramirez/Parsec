@@ -47,6 +47,11 @@ public sealed class SBinaryReader : IDisposable
     }
 
     /// <summary>
+    /// Current position in the stream
+    /// </summary>
+    public long Position => _binaryReader.BaseStream.Position;
+
+    /// <summary>
     /// Length of the stream
     /// </summary>
     public long StreamLength => _binaryReader.BaseStream.Length;
