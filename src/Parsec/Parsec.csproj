@@ -4,9 +4,9 @@
     <LangVersion>10</LangVersion>
     <Platforms>AnyCPU;x86</Platforms>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Matias Ramirez</Authors>
-    <Copyright>Matias Ramirez 2022</Copyright>
+    <Copyright>Matias Ramirez 2021</Copyright>
     <PackageProjectUrl>https://github.com/matigramirez/Parsec</PackageProjectUrl>
     <RepositoryUrl>https://github.com/matigramirez/Parsec</RepositoryUrl>
     <PackageTags>csharp, shaiya, file, parser, dotnet</PackageTags>
