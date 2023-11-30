@@ -26,6 +26,7 @@ Unity's Mono and Godot.
 - `NpcSkill.SData`
 - `svmap`
 - `WLD`
+- `dg`
 - `ANI`
 - `3DC`
 - `3DO`
