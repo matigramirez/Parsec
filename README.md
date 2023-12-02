@@ -73,7 +73,7 @@ might not work with them.
 
 ### Prerequisites
 
-- `.NET 7 SDK (recommended)` or any `.NET Standard 2.0` compliant platform
+- `.NET 8 SDK (recommended)` or any `.NET Standard 2.0` compliant platform
 
 ## Documentation
 
