@@ -4,7 +4,7 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Dg;
 
-public class DgSegmentVertex : ISerializable
+public class DgMeshVertex : ISerializable
 {
     /// <summary>
     /// Vertex coordinates in the 3D space
@@ -24,20 +24,20 @@ public class DgSegmentVertex : ISerializable
     /// <summary>
     /// Texture mapping
     /// </summary>
-    public Vector2 UV { get; set; }
+    public Vector2 TextureUV { get; set; }
 
-    public float Unknown1 { get; set; }
-
-    public float Unknown2 { get; set; }
+    /// <summary>
+    /// Lightmap mapping
+    /// </summary>
+    public Vector2 LightmapUV { get; set; }
 
     public void Read(SBinaryReader binaryReader)
     {
         Coordinates = binaryReader.Read<Vector3>();
         Normal = binaryReader.Read<Vector3>();
         BoneId = binaryReader.ReadInt32();
-        UV = binaryReader.Read<Vector2>();
-        Unknown1 = binaryReader.ReadSingle();
-        Unknown2 = binaryReader.ReadSingle();
+        TextureUV = binaryReader.Read<Vector2>();
+        LightmapUV = binaryReader.Read<Vector2>();
     }
 
     public void Write(SBinaryWriter binaryWriter)
@@ -45,8 +45,7 @@ public class DgSegmentVertex : ISerializable
         binaryWriter.Write(Coordinates);
         binaryWriter.Write(Normal);
         binaryWriter.Write(BoneId);
-        binaryWriter.Write(UV);
-        binaryWriter.Write(Unknown1);
-        binaryWriter.Write(Unknown2);
+        binaryWriter.Write(TextureUV);
+        binaryWriter.Write(LightmapUV);
     }
 }

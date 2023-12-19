@@ -9,14 +9,14 @@ public class DgMesh : ISerializable
 {
     public AlphaBlendingMode AlphaBlendingMode { get; set; }
 
-    public List<DgSegmentVertex> Vertices { get; set; } = new();
+    public List<DgMeshVertex> Vertices { get; set; } = new();
 
     public List<MeshFace> Faces { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
         AlphaBlendingMode = (AlphaBlendingMode)binaryReader.ReadInt32();
-        Vertices = binaryReader.ReadList<DgSegmentVertex>().ToList();
+        Vertices = binaryReader.ReadList<DgMeshVertex>().ToList();
         Faces = binaryReader.ReadList<MeshFace>().ToList();
     }
 

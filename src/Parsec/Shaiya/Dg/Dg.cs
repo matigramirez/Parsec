@@ -13,7 +13,7 @@ public class Dg : FileBase
 
     public int UnknownInt32 { get; set; }
 
-    public List<DgNode> Nodes { get; set; } = new();
+    public List<DgNode?> Nodes { get; set; } = new();
 
     public override string Extension => "dg";
 
@@ -25,6 +25,11 @@ public class Dg : FileBase
 
         while (true)
         {
+            if (binaryReader.Position == binaryReader.StreamLength)
+            {
+                break;
+            }
+
             // When value is 1, node data follows, otherwise node reading must be skipped
             var value = binaryReader.ReadInt32();
 
@@ -33,10 +38,9 @@ public class Dg : FileBase
                 var node = binaryReader.Read<DgNode>();
                 Nodes.Add(node);
             }
-
-            if (binaryReader.Position == binaryReader.StreamLength)
+            else
             {
-                break;
+                Nodes.Add(null);
             }
         }
     }
@@ -49,6 +53,12 @@ public class Dg : FileBase
 
         foreach (var node in Nodes)
         {
+            if (node == null)
+            {
+                binaryWriter.Write(0);
+                continue;
+            }
+
             binaryWriter.Write(1);
             binaryWriter.Write(node);
         }
