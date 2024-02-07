@@ -20,28 +20,40 @@ public class ItemTests
     }
 
     [Fact]
-    public void ItemEp6CsvTest()
+    public void ItemEp5ReadWriteTest()
     {
-        const string filePath = "Shaiya/Item/ItemEp6.SData";
-        const string csvPath = "Shaiya/Item/ItemEp6.SData.csv";
+        const string filePath = "Shaiya/Item/ItemEp5.SData";
+        const string outputPath = "Shaiya/Item/ItemEp5.written.SData";
 
-        var item = ParsecReader.FromFile<Parsec.Shaiya.Item.Item>(filePath, Episode.EP6);
-        item.WriteCsv(csvPath);
-        var itemFromCsv = Parsec.Shaiya.Item.Item.FromCsv(csvPath, Episode.EP6);
-        Assert.Equal(item.GetBytes(Episode.EP6), itemFromCsv.GetBytes(Episode.EP6));
+        var item = ParsecReader.FromFile<Parsec.Shaiya.Item.Item>(filePath, Episode.EP5, TestEncodings.Encoding1252);
+        item.WriteEncrypted(outputPath);
+
+        Assert.Equal(FileHash.Checksum(filePath), FileHash.Checksum(outputPath));
     }
 
     [Fact]
-    public void ItemEp6Csv_EncodingTest()
+    public void ItemEp64CsvTest()
     {
-        const string filePath = "Shaiya/Item/ItemEp6_1251.SData";
-        const string csvPath = "Shaiya/Item/ItemEp6_1252.SData.csv";
+        const string filePath = "Shaiya/Item/Item_ES_ps0224.SData";
+        const string csvPath = "Shaiya/Item/Item_ES_ps0224.SData.csv";
+
+        var item = ParsecReader.FromFile<Parsec.Shaiya.Item.Item>(filePath, Episode.EP6_4, TestEncodings.Encoding1252);
+        item.WriteCsv(csvPath);
+        var itemFromCsv = Parsec.Shaiya.Item.Item.FromCsv(csvPath, Episode.EP6_4, TestEncodings.Encoding1252);
+        Assert.Equal(item.GetBytes(Episode.EP6_4, TestEncodings.Encoding1252), itemFromCsv.GetBytes(Episode.EP6_4, TestEncodings.Encoding1252));
+    }
+
+    [Fact]
+    public void ItemEp64Csv_EncodingTest()
+    {
+        const string filePath = "Shaiya/Item/ItemEp64_1251.SData";
+        const string csvPath = "Shaiya/Item/ItemEp64_1251.SData.csv";
 
         var encoding = TestEncodings.Encoding1251;
-        var item = ParsecReader.FromFile<Parsec.Shaiya.Item.Item>(filePath, Episode.EP6, encoding);
+        var item = ParsecReader.FromFile<Parsec.Shaiya.Item.Item>(filePath, Episode.EP6_4, encoding);
         item.WriteCsv(csvPath, encoding);
-        var itemFromCsv = Parsec.Shaiya.Item.Item.FromCsv(csvPath, Episode.EP6, encoding);
-        Assert.Equal(item.GetBytes(Episode.EP6), itemFromCsv.GetBytes(Episode.EP6));
+        var itemFromCsv = Parsec.Shaiya.Item.Item.FromCsv(csvPath, Episode.EP6_4, encoding);
+        Assert.Equal(item.GetBytes(Episode.EP6_4), itemFromCsv.GetBytes(Episode.EP6_4));
     }
 
     [Fact]
