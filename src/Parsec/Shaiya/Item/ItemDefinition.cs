@@ -55,11 +55,9 @@ public sealed class ItemDefinition : ISerializable
 
     public ushort ReqWis { get; set; }
 
-    public ushort ReqLuc { get; set; }
+    public uint ReqLuc { get; set; }
 
     public ushort ReqVg { get; set; }
-
-    public ushort Unknown { get; set; }
 
     public byte ReqOg { get; set; }
 
@@ -185,17 +183,19 @@ public sealed class ItemDefinition : ISerializable
         ReqRec = binaryReader.ReadUInt16();
         ReqInt = binaryReader.ReadUInt16();
         ReqWis = binaryReader.ReadUInt16();
-        ReqLuc = binaryReader.ReadUInt16();
 
-        if (episode >= Episode.EP6)
+        if (episode >= Episode.EP6_4)
         {
-            Unknown = binaryReader.ReadUInt16();
+            ReqLuc = binaryReader.ReadUInt32();
+        }
+        else
+        {
+            ReqLuc = binaryReader.ReadUInt16();
         }
 
         ReqVg = binaryReader.ReadUInt16();
         ReqOg = binaryReader.ReadByte();
         ReqIg = binaryReader.ReadByte();
-
 
         if (episode <= Episode.EP5)
         {
@@ -286,11 +286,14 @@ public sealed class ItemDefinition : ISerializable
         binaryWriter.Write(ReqRec);
         binaryWriter.Write(ReqInt);
         binaryWriter.Write(ReqWis);
-        binaryWriter.Write(ReqLuc);
 
-        if (episode >= Episode.EP6)
+        if (episode >= Episode.EP6_4)
         {
-            binaryWriter.Write(Unknown);
+            binaryWriter.Write(ReqLuc);
+        }
+        else
+        {
+            binaryWriter.Write((ushort)ReqLuc);
         }
 
         binaryWriter.Write(ReqVg);
