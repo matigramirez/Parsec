@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.Svmap;
 
 public sealed class SvmapNamedArea : ISerializable
 {
-    public BoundingBox Area { get; set; }
+    public BoundingBox Area { get; set; } = new();
 
     public int NameIdentifier1 { get; set; }
 

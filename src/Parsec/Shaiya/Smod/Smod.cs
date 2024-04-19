@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
@@ -19,7 +19,7 @@ public sealed class Smod : FileBase
     /// <summary>
     /// The center of the SMOD object as a whole (center of all objects)
     /// </summary>
-    public Vector3 Center { get; set; }
+    public Vector3 Center { get; set; } = new();
 
     /// <summary>
     /// The distance between the vertices of the <see cref="BoundingBox"/> and the <see cref="Center"/> of the SMOD object. Used for game calculations.
@@ -31,7 +31,7 @@ public sealed class Smod : FileBase
     /// It's used by the game to easily determine where there are objects present, so that the player view doesn't get obstructed
     /// (when the camera is placed in the position of an object, the view is zoomed to avoid having the object in the viewport).
     /// </summary>
-    public BoundingBox ViewBox { get; set; }
+    public BoundingBox ViewBox { get; set; } = new();
 
     /// <summary>
     /// List of textured objects
@@ -41,7 +41,7 @@ public sealed class Smod : FileBase
     /// <summary>
     /// Box that defines the area where collisions should take place. Collision objects that are outside this box are ignored.
     /// </summary>
-    public BoundingBox CollisionBox { get; set; }
+    public BoundingBox CollisionBox { get; set; } = new();
 
     /// <summary>
     /// List of texture-less objects used for collisions

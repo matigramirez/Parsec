@@ -9,12 +9,12 @@ public sealed class VaniVertexFrame : ISerializable
     /// <summary>
     /// The vertex coordinates in the 3d space
     /// </summary>
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Coordinates { get; set; } = new();
 
     /// <summary>
     /// The vertex normal
     /// </summary>
-    public Vector3 Normal { get; set; }
+    public Vector3 Normal { get; set; } = new();
 
     /// <summary>
     /// VAni's don't have bones, that's why this value is always -1.
@@ -24,7 +24,7 @@ public sealed class VaniVertexFrame : ISerializable
     /// <summary>
     /// Texture mapping
     /// </summary>
-    public Vector2 UV { get; set; }
+    public Vector2 UV { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

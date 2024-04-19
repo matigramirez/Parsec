@@ -15,19 +15,19 @@ public sealed class ZonRecord : ISerializable
     /// </summary>
     public byte P2 { get; set; }
 
-    public Vector3 Coordinates1 { get; set; }
+    public Vector3 Coordinates1 { get; set; } = new();
 
-    public Vector3 Coordinates2 { get; set; }
-
-    /// <summary>
-    /// Present only if Format > 2
-    /// </summary>
-    public Vector3 Coordinates3 { get; set; }
+    public Vector3 Coordinates2 { get; set; } = new();
 
     /// <summary>
     /// Present only if Format > 2
     /// </summary>
-    public Vector3 Coordinates4 { get; set; }
+    public Vector3 Coordinates3 { get; set; } = new();
+
+    /// <summary>
+    /// Present only if Format > 2
+    /// </summary>
+    public Vector3 Coordinates4 { get; set; } = new();
 
     /// <summary>
     /// Present only if Format > 2

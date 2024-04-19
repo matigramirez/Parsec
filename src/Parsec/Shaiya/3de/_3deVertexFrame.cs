@@ -9,13 +9,12 @@ public sealed class _3deVertexFrame : ISerializable
     /// <summary>
     /// The vertex coordinates
     /// </summary>
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Coordinates { get; set; } = new();
 
     /// <summary>
     /// The vertex UV mapping
     /// </summary>
-    public Vector2 UV { get; set; }
-
+    public Vector2 UV { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

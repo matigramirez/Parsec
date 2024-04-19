@@ -8,7 +8,7 @@ public sealed class AniRotationFrame : ISerializable
 {
     public uint Frame { get; set; }
 
-    public Quaternion Quaternion { get; set; }
+    public Quaternion Quaternion { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

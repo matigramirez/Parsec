@@ -9,7 +9,7 @@ public sealed class _3deVertex : ISerializable
     /// <summary>
     /// Vertex coordinates in the 3D space
     /// </summary>
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Coordinates { get; set; } = new();
 
     /// <summary>
     /// 3DE's don't have vertex groups like 3DC's, that's why this value is always -1.
@@ -19,7 +19,7 @@ public sealed class _3deVertex : ISerializable
     /// <summary>
     /// UV Texture mapping
     /// </summary>
-    public Vector2 UV { get; set; }
+    public Vector2 UV { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

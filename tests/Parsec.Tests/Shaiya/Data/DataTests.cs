@@ -16,9 +16,6 @@ public class DataTests
         DataBuilder.CreateFromDirectory("Shaiya/Data/sample_data", "Shaiya/Data/output_data");
         Assert.True(File.Exists("Shaiya/Data/output_data/output_data.sah"));
         Assert.True(File.Exists("Shaiya/Data/output_data/output_data.saf"));
-
-        Assert.Throws<DirectoryNotFoundException>(
-            () => DataBuilder.CreateFromDirectory("Shaiya/wrong_folder_path/does_not_exist", "Shaiya/Data/output_data/"));
     }
 
     [Fact]

@@ -8,7 +8,7 @@ public sealed class AniTranslationFrame : ISerializable
 {
     public uint Frame { get; set; }
 
-    public Vector3 Translation { get; set; }
+    public Vector3 Translation { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

@@ -17,7 +17,7 @@ public sealed class WldSpawn : ISerializable
     /// <summary>
     /// The spawn area
     /// </summary>
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
     /// BoundingBox Radius

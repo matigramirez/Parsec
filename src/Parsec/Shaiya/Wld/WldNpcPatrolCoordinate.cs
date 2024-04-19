@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.Wld;
 
 public sealed class WldNpcPatrolCoordinate : ISerializable
 {
-    public Vector3 Position { get; set; }
+    public Vector3 Position { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

@@ -1,9 +1,9 @@
 using System.Runtime.Serialization;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 using Parsec.Shaiya.Data;
@@ -155,7 +155,7 @@ public static class ParsecReader
         if (!type.GetBaseClassesAndInterfaces().Contains(typeof(FileBase)))
             throw new ArgumentException("Type must be a child of FileBase");
 
-        if (!FileHelper.FileExists(path))
+        if (!File.Exists(path))
             throw new FileNotFoundException($"File ${path} not found");
 
         if (Path.GetExtension(path) != ".json")
@@ -163,8 +163,13 @@ public static class ParsecReader
 
         encoding ??= Encoding.ASCII;
 
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+        };
+
         var jsonContent = File.ReadAllText(path, encoding);
-        var deserializedObject = JsonConvert.DeserializeObject(jsonContent, type);
+        var deserializedObject = JsonSerializer.Deserialize(jsonContent, type, options);
 
         if (deserializedObject == null)
         {
@@ -235,7 +240,7 @@ public static class ParsecReader
 
         encoding ??= Encoding.ASCII;
 
-        var deserializedObject = JsonConvert.DeserializeObject(jsonText, type);
+        var deserializedObject = JsonSerializer.Deserialize(jsonText, type);
 
         if (deserializedObject == null)
         {

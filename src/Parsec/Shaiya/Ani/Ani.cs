@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Serialization;

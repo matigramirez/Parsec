@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
@@ -20,12 +20,12 @@ public sealed class Wld : FileBase
     /// <summary>
     /// Map used for Y coordinate calculation based on X and Z
     /// </summary>
-    public byte[] Heightmap { get; set; }
+    public byte[] Heightmap { get; set; } = Array.Empty<byte>();
 
     /// <summary>
     /// Map used for texture usage based on X and Z
     /// </summary>
-    public byte[] TextureMap { get; set; }
+    public byte[] TextureMap { get; set; } = Array.Empty<byte>();
 
     public List<WldTexture> Textures { get; set; } = new();
 
@@ -148,11 +148,11 @@ public sealed class Wld : FileBase
 
     #endregion
 
-    public Vector3 Point1 { get; set; }
+    public Vector3 Point1 { get; set; } = new();
 
-    public Vector3 Point2 { get; set; }
+    public Vector3 Point2 { get; set; } = new();
 
-    public Vector3 Point3 { get; set; }
+    public Vector3 Point3 { get; set; } = new();
 
     public float Unknown5 { get; set; }
 

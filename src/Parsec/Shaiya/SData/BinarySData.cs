@@ -1,9 +1,11 @@
 ﻿using System.Globalization;
 using System.Text;
+using System.Text.Json.Serialization;
 using CsvHelper;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Serialization;
+using Parsec.Shaiya.NpcSkill;
 
 namespace Parsec.Shaiya.SData;
 

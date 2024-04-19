@@ -10,7 +10,7 @@ public sealed class _3dcVertex : ISerializable
     /// <summary>
     /// The vertex's 3d coordinates
     /// </summary>
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Coordinates { get; set; } = new();
 
     /// <summary>
     /// If the 3DC file's format is EP5 or inferior, this value is shared between <see cref="BoneVertexGroup1" /> and
@@ -52,13 +52,13 @@ public sealed class _3dcVertex : ISerializable
     /// <summary>
     /// Normal of this point, used for lighting computation.
     /// </summary>
-    public Vector3 Normal { get; set; }
+    public Vector3 Normal { get; set; } = new();
 
     /// <summary>
     /// UV mapping for the 2D texture. For more information visit
     /// <a href="https://en.wikipedia.org/wiki/UV_mapping">this link</a>.
     /// </summary>
-    public Vector2 UV { get; set; }
+    public Vector2 UV { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

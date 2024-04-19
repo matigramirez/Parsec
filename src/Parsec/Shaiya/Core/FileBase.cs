@@ -1,15 +1,61 @@
 ﻿using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Parsec.Common;
 using Parsec.Extensions;
-using Parsec.Helpers;
 using Parsec.Serialization;
 using Parsec.Shaiya.Data;
 
 namespace Parsec.Shaiya.Core;
 
+[JsonDerivedType(typeof(_3dc._3dc))]
+[JsonDerivedType(typeof(_3dc.Static3dc))]
+[JsonDerivedType(typeof(_3de._3de))]
+[JsonDerivedType(typeof(_3do._3do))]
+[JsonDerivedType(typeof(Alt.Alt))]
+[JsonDerivedType(typeof(Ani.Ani))]
+[JsonDerivedType(typeof(Cash.Cash))]
+[JsonDerivedType(typeof(Cash.DBItemSellData))]
+[JsonDerivedType(typeof(Cash.DBItemSellText))]
+[JsonDerivedType(typeof(Cloak.ClothTexture.Ctl))]
+[JsonDerivedType(typeof(Cloak.Emblem.EmblemDat))]
+[JsonDerivedType(typeof(Data.Sah))]
+[JsonDerivedType(typeof(Dg.Dg))]
+[JsonDerivedType(typeof(DualLayerClothes.DualLayerClothes))]
+[JsonDerivedType(typeof(DualLayerClothes.DBDualLayerClothesData))]
+[JsonDerivedType(typeof(Eft.Eft))]
+[JsonDerivedType(typeof(GuildHouse.GuildHouse))]
+[JsonDerivedType(typeof(Item.Item))]
+[JsonDerivedType(typeof(Item.DBItemData))]
+[JsonDerivedType(typeof(Item.DBItemText))]
+[JsonDerivedType(typeof(Itm.Itm))]
+[JsonDerivedType(typeof(KillStatus.KillStatus))]
+[JsonDerivedType(typeof(Mani.Mani))]
+[JsonDerivedType(typeof(Mlt.Mlt))]
+[JsonDerivedType(typeof(Mlx.Mlx))]
+[JsonDerivedType(typeof(Mon.Mon))]
+[JsonDerivedType(typeof(Monster.Monster))]
+[JsonDerivedType(typeof(Monster.DBMonsterData))]
+[JsonDerivedType(typeof(Monster.DBMonsterText))]
+[JsonDerivedType(typeof(NpcQuest.NpcQuest))]
+[JsonDerivedType(typeof(NpcQuest.NpcQuestTrans))]
+[JsonDerivedType(typeof(NpcSkill.DBNpcSkillData))]
+[JsonDerivedType(typeof(NpcSkill.DBNpcSkillText))]
+[JsonDerivedType(typeof(Seff.Seff))]
+[JsonDerivedType(typeof(SetItem.SetItem))]
+[JsonDerivedType(typeof(SetItem.DBSetItemData))]
+[JsonDerivedType(typeof(SetItem.DBSetItemText))]
+[JsonDerivedType(typeof(Skill.Skill))]
+[JsonDerivedType(typeof(Skill.DBSkillData))]
+[JsonDerivedType(typeof(Skill.DBSkillText))]
+[JsonDerivedType(typeof(Smod.Smod))]
+[JsonDerivedType(typeof(Svmap.Svmap))]
+[JsonDerivedType(typeof(TransformModel.DBTransformModelData))]
+[JsonDerivedType(typeof(TransformModel.DBTransformWeaponModelData))]
+[JsonDerivedType(typeof(Vani.Vani))]
+[JsonDerivedType(typeof(Wld.Wld))]
+[JsonDerivedType(typeof(Wtr.Wtr))]
+[JsonDerivedType(typeof(Zon.Zon))]
 public abstract class FileBase : IJsonWritable<FileBase>
 {
     /// <summary>
@@ -41,24 +87,18 @@ public abstract class FileBase : IJsonWritable<FileBase>
     /// <inheritdoc/>
     public void WriteJson(string path, params string[] ignoredPropertyNames)
     {
-        FileHelper.WriteFile(path, JsonSerialize(this, ignoredPropertyNames), Encoding);
+        File.WriteAllText(path, JsonSerialize(this, ignoredPropertyNames), Encoding);
     }
 
     /// <inheritdoc/>
     public virtual string JsonSerialize(FileBase obj, params string[] ignoredPropertyNames)
     {
-        // Create settings with contract resolver to ignore certain properties
-        var settings = new JsonSerializerSettings
+        var options = new JsonSerializerOptions
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DefaultValueHandling = DefaultValueHandling.Include,
-            StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-            Formatting = Formatting.Indented
+            WriteIndented = true
         };
 
-        // Add enum to string converter
-        settings.Converters.Add(new StringEnumConverter());
-        return JsonConvert.SerializeObject(obj, settings);
+        return JsonSerializer.Serialize(obj, options);
     }
 
     protected abstract void Read(SBinaryReader binaryReader);

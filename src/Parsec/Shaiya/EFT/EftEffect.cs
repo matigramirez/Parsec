@@ -48,19 +48,19 @@ public class EftEffect : ISerializable
 
     public float Unknown18 { get; set; }
 
-    public Vector3 UnknownVec1 { get; set; }
+    public Vector3 UnknownVec1 { get; set; } = new();
 
-    public Vector3 UnknownVec2 { get; set; }
+    public Vector3 UnknownVec2 { get; set; } = new();
 
     /// <summary>
     /// The position where the effect should be rendered, relative to the effect's origin.
     /// In the case of mob effects, the origin is the bone to which the effect is attached to.
     /// </summary>
-    public Vector3 Position { get; set; }
+    public Vector3 Position { get; set; } = new();
 
-    public Vector3 UnknownVec4 { get; set; }
+    public Vector3 UnknownVec4 { get; set; } = new();
 
-    public Vector3 UnknownVec5 { get; set; }
+    public Vector3 UnknownVec5 { get; set; } = new();
 
     public int Unknown19 { get; set; }
 
@@ -68,7 +68,7 @@ public class EftEffect : ISerializable
 
     public int Unknown21 { get; set; }
 
-    public Vector3 UnknownVec6 { get; set; }
+    public Vector3 UnknownVec6 { get; set; } = new();
 
     public float Unknown22 { get; set; }
 

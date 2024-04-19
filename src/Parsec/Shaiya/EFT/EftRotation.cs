@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.Eft;
 
 public sealed class EftRotation : ISerializable
 {
-    public Quaternion Quaternion { get; set; }
+    public Quaternion Quaternion { get; set; } = new();
 
     public float Time { get; set; }
 

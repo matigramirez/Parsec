@@ -31,7 +31,7 @@ public class NpcQuest : SData.SData
 
     public List<NpcQuestStandardNpc> CombatCommanders { get; set; } = new();
 
-    public byte[]? UnknownArray { get; set; }
+    public byte[] UnknownArray { get; set; } = Array.Empty<byte>();
 
     public List<Quest> Quests { get; set; } = new();
 

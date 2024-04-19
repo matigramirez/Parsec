@@ -18,7 +18,7 @@ public sealed class AniBone : ISerializable
     /// <summary>
     /// The transformation matrix for the initial position of the bone
     /// </summary>
-    public Matrix4x4 Matrix { get; set; }
+    public Matrix4x4 Matrix { get; set; } = new();
 
     /// <summary>
     /// List of rotations for each keyframe

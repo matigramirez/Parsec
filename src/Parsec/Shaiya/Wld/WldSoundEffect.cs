@@ -17,7 +17,7 @@ public sealed class WldSoundEffect : ISerializable
     /// <summary>
     /// The center point of the circle
     /// </summary>
-    public Vector3 Center { get; set; }
+    public Vector3 Center { get; set; } = new();
 
     /// <summary>
     /// The radius of the circle

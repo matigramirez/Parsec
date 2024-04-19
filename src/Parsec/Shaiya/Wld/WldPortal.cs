@@ -12,7 +12,7 @@ public sealed class WldPortal : ISerializable
     /// <summary>
     /// The area of the portal
     /// </summary>
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
     /// BoundingBox Radius
@@ -47,7 +47,7 @@ public sealed class WldPortal : ISerializable
     /// <summary>
     /// The destination position
     /// </summary>
-    public Vector3 DestinationPosition { get; set; }
+    public Vector3 DestinationPosition { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.Svmap;
 
 public sealed class SvmapPortal : ISerializable
 {
-    public Vector3 PortalPosition { get; set; }
+    public Vector3 PortalPosition { get; set; } = new();
 
     public int FactionOrPortalId { get; set; }
 
@@ -16,7 +16,7 @@ public sealed class SvmapPortal : ISerializable
 
     public uint TargetMapId { get; set; }
 
-    public Vector3 TargetMapPosition { get; set; }
+    public Vector3 TargetMapPosition { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

@@ -1,6 +1,4 @@
-﻿using Parsec.Helpers;
-
-namespace Parsec.Shaiya.Data;
+﻿namespace Parsec.Shaiya.Data;
 
 public class Data
 {
@@ -12,12 +10,12 @@ public class Data
 
     public Data(string sahPath, string safPath)
     {
-        if (!FileHelper.FileExists(sahPath))
+        if (!File.Exists(sahPath))
         {
             throw new FileNotFoundException($"data.sah file not found at {sahPath}");
         }
 
-        if (!FileHelper.FileExists(safPath))
+        if (!File.Exists(safPath))
         {
             throw new FileNotFoundException($"data.saf file not found at {safPath}");
         }
@@ -100,8 +98,7 @@ public class Data
         if (directory != Sah.RootDirectory)
             extractionPath = Path.Combine(extractionDirectory, directory.RelativePath);
 
-        if (!FileHelper.CreateDirectory(extractionPath))
-            return;
+        Directory.CreateDirectory(extractionPath);
 
         foreach (var file in directory.Files)
             Extract(file, extractionPath);
@@ -118,7 +115,7 @@ public class Data
     public void Extract(SFile file, string extractionDirectory)
     {
         var fileBytes = Saf.ReadBytes(file.Offset, file.Length);
-        FileHelper.WriteFile(Path.Combine(extractionDirectory, file.Name), fileBytes);
+        File.WriteAllBytes(Path.Combine(extractionDirectory, file.Name), fileBytes);
     }
 
     /// <summary>

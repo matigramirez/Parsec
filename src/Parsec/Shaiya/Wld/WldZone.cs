@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.Wld;
 
 public sealed class WldZone : ISerializable
 {
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     public List<WldZoneIdentifier> Identifiers { get; set; } = new();
 

@@ -7,35 +7,27 @@ namespace Parsec.Shaiya.Common;
 /// A structure encapsulating a four-dimensional vector (x,y,z,w),
 /// which is used to efficiently rotate an object about the (x,y,z) vector by the angle theta, where w = cos(theta/2).
 /// </summary>
-public struct Quaternion : ISerializable
+public class Quaternion : ISerializable
 {
     /// <summary>
     /// Specifies the X-value of the vector component of the Quaternion.
     /// </summary>
-    public float X;
+    public float X { get; set; }
 
     /// <summary>
     /// Specifies the Y-value of the vector component of the Quaternion.
     /// </summary>
-    public float Y;
+    public float Y { get; set; }
 
     /// <summary>
     /// Specifies the Z-value of the vector component of the Quaternion.
     /// </summary>
-    public float Z;
+    public float Z { get; set; }
 
     /// <summary>
     /// Specifies the rotation component of the Quaternion.
     /// </summary>
-    public float W;
-
-    public Quaternion(float x, float y, float z, float w)
-    {
-        X = x;
-        Y = y;
-        Z = z;
-        W = w;
-    }
+    public float W { get; set; }
 
     public void Read(SBinaryReader binaryReader)
     {

@@ -12,17 +12,17 @@ public sealed class WldEffect : ISerializable
     /// <summary>
     /// Effect's position
     /// </summary>
-    public Vector3 Position { get; set; }
+    public Vector3 Position { get; set; } = new();
 
     /// <summary>
     /// Rotation about the forward vector
     /// </summary>
-    public Vector3 RotationForward { get; set; }
+    public Vector3 RotationForward { get; set; } = new();
 
     /// <summary>
     /// Rotation about the up vector
     /// </summary>
-    public Vector3 RotationUp { get; set; }
+    public Vector3 RotationUp { get; set; } = new();
 
     /// <summary>
     /// Identifier of the effect from the linked .eft file

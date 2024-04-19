@@ -1,6 +1,4 @@
-﻿using Parsec.Helpers;
-
-namespace Parsec.Shaiya.Data;
+﻿namespace Parsec.Shaiya.Data;
 
 public class DataPatcher : IDisposable
 {
@@ -27,7 +25,7 @@ public class DataPatcher : IDisposable
         PatchFiles(targetData, patchData, filePatchedCallback);
 
         // Delete previous sah and save the new one
-        FileHelper.DeleteFile(targetData.Sah.Path);
+        File.Delete(targetData.Sah.Path);
         targetData.Sah.Write(targetData.Sah.Path);
 
         Dispose();

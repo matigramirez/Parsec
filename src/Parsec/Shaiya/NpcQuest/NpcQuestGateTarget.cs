@@ -9,7 +9,7 @@ public class NpcQuestGateTarget : ISerializable
 {
     public ushort MapId { get; set; }
 
-    public Vector3 Position { get; set; }
+    public Vector3 Position { get; set; } = new();
 
     public string TargetName { get; set; } = string.Empty;
 

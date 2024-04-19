@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.Wld;
 
 public class WldUnknownBox : ISerializable
 {
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
     /// BoundingBox Radius

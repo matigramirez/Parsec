@@ -1,8 +1,7 @@
 ﻿using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Parsec.Common;
 using Parsec.Cryptography;
-using Parsec.Helpers;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
@@ -64,7 +63,7 @@ public abstract class SData : FileBase, IEncryptable
     public void WriteEncrypted(string path)
     {
         var encryptedBuffer = GetEncryptedBytes();
-        FileHelper.WriteFile(path, encryptedBuffer);
+        File.WriteAllBytes(path, encryptedBuffer);
     }
 
     /// <inheritdoc />
@@ -188,15 +187,15 @@ public abstract class SData : FileBase, IEncryptable
 
     public static void EncryptFile(string inputFilePath, string outputFilePath, SDataVersion sDataVersion = SDataVersion.Regular)
     {
-        var fileData = FileHelper.ReadBytes(inputFilePath);
+        var fileData = File.ReadAllBytes(inputFilePath);
         var encryptedData = Encrypt(fileData, sDataVersion);
-        FileHelper.WriteFile(outputFilePath, encryptedData);
+        File.WriteAllBytes(outputFilePath, encryptedData);
     }
 
     public static void DecryptFile(string inputFilePath, string outputFilePath, bool validateChecksum = false)
     {
-        var fileData = FileHelper.ReadBytes(inputFilePath);
+        var fileData = File.ReadAllBytes(inputFilePath);
         var decryptedData = Decrypt(fileData, validateChecksum);
-        FileHelper.WriteFile(outputFilePath, decryptedData);
+        File.WriteAllBytes(outputFilePath, decryptedData);
     }
 }

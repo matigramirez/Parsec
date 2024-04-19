@@ -18,7 +18,7 @@ public sealed class WldNamedArea : ISerializable
     /// <summary>
     /// The BoundingBox where this Named Area applies
     /// </summary>
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
     /// BoundingBox Radius

@@ -12,7 +12,7 @@ public sealed class SvmapSpawnArea : ISerializable
 
     public int Unknown2 { get; set; }
 
-    public BoundingBox Area { get; set; }
+    public BoundingBox Area { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

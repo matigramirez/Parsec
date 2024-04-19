@@ -12,12 +12,12 @@ public sealed class SmodVertex : ISerializable
     /// <summary>
     /// Vertex coordinates in the 3D space
     /// </summary>
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Coordinates { get; set; } = new();
 
     /// <summary>
     /// Vertex normal used for lighting
     /// </summary>
-    public Vector3 Normal { get; set; }
+    public Vector3 Normal { get; set; } = new();
 
     /// <summary>
     /// SMODs don't have bones, that's why this value is always -1.
@@ -27,7 +27,7 @@ public sealed class SmodVertex : ISerializable
     /// <summary>
     /// Texture mapping
     /// </summary>
-    public Vector2 UV { get; set; }
+    public Vector2 UV { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

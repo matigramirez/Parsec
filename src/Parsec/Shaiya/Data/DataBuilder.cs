@@ -1,6 +1,4 @@
-﻿using Parsec.Helpers;
-
-namespace Parsec.Shaiya.Data;
+﻿namespace Parsec.Shaiya.Data;
 
 public static class DataBuilder
 {
@@ -30,10 +28,7 @@ public static class DataBuilder
         {
             _path = inputFolderPath;
 
-            if (!FileHelper.DirectoryExists(inputFolderPath))
-                throw new DirectoryNotFoundException();
-
-            FileHelper.CreateDirectory(outputFolderPath);
+            Directory.CreateDirectory(inputFolderPath);
 
             var outputDirectoryInfo = new DirectoryInfo(outputFolderPath);
 

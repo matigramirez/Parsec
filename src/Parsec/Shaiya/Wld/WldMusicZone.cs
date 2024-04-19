@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -13,7 +13,7 @@ public sealed class WldMusicZone : ISerializable
     /// <summary>
     /// The rectangular area of the music zone
     /// </summary>
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
     /// BoundingBox Radius

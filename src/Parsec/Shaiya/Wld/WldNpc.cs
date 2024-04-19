@@ -11,7 +11,7 @@ public sealed class WldNpc : ISerializable
 
     public int TypeId { get; set; }
 
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Coordinates { get; set; } = new();
 
     public float Orientation { get; set; }
 

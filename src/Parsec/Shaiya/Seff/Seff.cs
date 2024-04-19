@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
@@ -9,7 +9,7 @@ public sealed class Seff : FileBase
 {
     public int Format { get; set; }
 
-    public SeffTimeStamp TimeStamp;
+    public SeffTimeStamp TimeStamp { get; set; } = new();
 
     public List<SeffRecord> Records { get; set; } = new();
 

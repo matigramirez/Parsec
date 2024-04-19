@@ -6,7 +6,7 @@ namespace Parsec.Shaiya.Svmap;
 
 public sealed class SvmapNpcPosition : ISerializable
 {
-    public Vector3 Position { get; set; }
+    public Vector3 Position { get; set; } = new();
 
     public float Yaw { get; set; }
 

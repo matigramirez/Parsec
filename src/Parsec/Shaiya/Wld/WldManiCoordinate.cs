@@ -22,17 +22,17 @@ public sealed class WldManiCoordinate : ISerializable
     /// <summary>
     /// World position where to place the model
     /// </summary>
-    public Vector3 Position { get; set; }
+    public Vector3 Position { get; set; } = new();
 
     /// <summary>
     /// Rotation about the forward vector
     /// </summary>
-    public Vector3 RotationForward { get; set; }
+    public Vector3 RotationForward { get; set; } = new();
 
     /// <summary>
     /// Rotation about the up vector
     /// </summary>
-    public Vector3 RotationUp { get; set; }
+    public Vector3 RotationUp { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {

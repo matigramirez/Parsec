@@ -10,7 +10,7 @@ public sealed class Vani : FileBase
     /// <summary>
     /// Coordinates of the center of the 3d object
     /// </summary>
-    public Vector3 Center { get; set; }
+    public Vector3 Center { get; set; } = new();
 
     /// <summary>
     /// The distance between the vertices of the <see cref="BoundingBox"/> and the <see cref="Center"/> of the VAni object. Used for game calculations.
@@ -20,7 +20,7 @@ public sealed class Vani : FileBase
     /// <summary>
     /// Rectangular bounding box
     /// </summary>
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
     /// Amount of frames
@@ -34,7 +34,7 @@ public sealed class Vani : FileBase
 
     public List<VaniMesh> Meshes { get; set; } = new();
 
-    public BoundingBox BoundingBox2 { get; set; }
+    public BoundingBox BoundingBox2 { get; set; } = new();
 
     /// <summary>
     /// Always 00?

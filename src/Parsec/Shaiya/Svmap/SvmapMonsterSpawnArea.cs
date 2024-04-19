@@ -10,7 +10,7 @@ namespace Parsec.Shaiya.Svmap;
 /// </summary>
 public sealed class SvmapMonsterSpawnArea : ISerializable
 {
-    public BoundingBox Area { get; set; }
+    public BoundingBox Area { get; set; } = new();
 
     public List<SvmapMonsterSpawn> Monsters { get; set; } = new();
 

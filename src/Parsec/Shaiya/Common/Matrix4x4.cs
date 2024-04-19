@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
@@ -7,14 +7,30 @@ namespace Parsec.Shaiya.Common;
 /// <summary>
 /// A structure encapsulating a 4x4 matrix.
 /// </summary>
-public struct Matrix4x4 : ISerializable
+public class Matrix4x4 : ISerializable
 {
     /// <summary>
     /// The matrix's data serialized into an array of float arrays
     /// </summary>
+    [JsonIgnore]
     public float[,] Data
     {
-        get => new float[4, 4] { { M11, M12, M13, M14 }, { M21, M22, M23, M24 }, { M31, M32, M33, M34 }, { M41, M42, M43, M44 } };
+        get =>
+            new float[4, 4]
+            {
+                {
+                    M11, M12, M13, M14
+                },
+                {
+                    M21, M22, M23, M24
+                },
+                {
+                    M31, M32, M33, M34
+                },
+                {
+                    M41, M42, M43, M44
+                }
+            };
         set
         {
             if (value.Length < 16)
@@ -42,98 +58,86 @@ public struct Matrix4x4 : ISerializable
     /// <summary>
     /// Value at row 1, column 1 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M11;
+    public float M11 { get; set; }
 
     /// <summary>
     /// Value at row 1, column 2 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M12;
+    public float M12 { get; set; }
 
     /// <summary>
     /// Value at row 1, column 3 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M13;
+    public float M13 { get; set; }
 
     /// <summary>
     /// Value at row 1, column 4 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M14;
+    public float M14 { get; set; }
 
     /// <summary>
     /// Value at row 2, column 1 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M21;
+    public float M21 { get; set; }
 
     /// <summary>
     /// Value at row 2, column 2 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M22;
+    public float M22 { get; set; }
 
     /// <summary>
     /// Value at row 2, column 3 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M23;
+    public float M23 { get; set; }
 
     /// <summary>
     /// Value at row 2, column 4 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M24;
+    public float M24 { get; set; }
 
     /// <summary>
     /// Value at row 3, column 1 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M31;
+    public float M31 { get; set; }
 
     /// <summary>
     /// Value at row 3, column 2 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M32;
+    public float M32 { get; set; }
 
     /// <summary>
     /// Value at row 3, column 3 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M33;
+    public float M33 { get; set; }
 
     /// <summary>
     /// Value at row 3, column 4 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M34;
+    public float M34 { get; set; }
 
     /// <summary>
     /// Value at row 4, column 1 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M41;
+    public float M41 { get; set; }
 
     /// <summary>
     /// Value at row 4, column 2 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M42;
+    public float M42 { get; set; }
 
     /// <summary>
     /// Value at row 4, column 3 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M43;
+    public float M43 { get; set; }
 
     /// <summary>
     /// Value at row 4, column 4 of the matrix.
     /// </summary>
-    [JsonIgnore]
-    public float M44;
+    public float M44 { get; set; }
+
+    public Matrix4x4()
+    {
+    }
 
     /// <summary>
     /// Constructs a Matrix4x4 from the given components.

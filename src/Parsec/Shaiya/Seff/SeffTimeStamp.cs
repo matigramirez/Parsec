@@ -3,19 +3,19 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Seff;
 
-public struct SeffTimeStamp : ISerializable
+public class SeffTimeStamp : ISerializable
 {
-    public short Year;
+    public short Year { get; set; }
 
-    public short Month;
+    public short Month { get; set; }
 
-    public short Day;
+    public short Day { get; set; }
 
-    public short Hour;
+    public short Hour { get; set; }
 
-    public short Minute;
+    public short Minute { get; set; }
 
-    public short Second;
+    public short Second { get; set; }
 
     public void Read(SBinaryReader binaryReader)
     {

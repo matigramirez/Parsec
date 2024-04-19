@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 

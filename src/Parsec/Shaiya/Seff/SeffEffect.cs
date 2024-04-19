@@ -37,7 +37,7 @@ public sealed class SeffEffect : ISerializable
 
     public byte Blue { get; set; }
 
-    public Vector3 ParticleStartPosition { get; set; }
+    public Vector3 ParticleStartPosition { get; set; } = new();
 
     public float Unknown10 { get; set; }
 

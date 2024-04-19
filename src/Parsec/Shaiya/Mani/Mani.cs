@@ -17,7 +17,7 @@ public sealed class Mani : FileBase
 
     public int Unknown1 { get; set; }
 
-    public Vector3 UnknownVec1 { get; set; }
+    public Vector3 UnknownVec1 { get; set; } = new();
 
     public float Unknown2 { get; set; }
 
@@ -29,7 +29,7 @@ public sealed class Mani : FileBase
 
     public int Unknown6 { get; set; }
 
-    public Vector3 UnknownVec2 { get; set; }
+    public Vector3 UnknownVec2 { get; set; } = new();
 
     public float Unknown7 { get; set; }
 
@@ -43,7 +43,7 @@ public sealed class Mani : FileBase
     /// <summary>
     /// Indicates the axis of rotation of the object, -1f or 1f values should be used
     /// </summary>
-    public Vector3 Rotation { get; set; }
+    public Vector3 Rotation { get; set; } = new();
 
     /// <summary>
     /// Animation Speed [0.0f, 1.0f]
@@ -54,7 +54,7 @@ public sealed class Mani : FileBase
 
     public short UnknownShort2 { get; set; }
 
-    public Vector3 UnknownVec4 { get; set; }
+    public Vector3 UnknownVec4 { get; set; } = new();
 
     public float Unknown11 { get; set; }
 

@@ -7,14 +7,11 @@ namespace Parsec.Shaiya.Dg;
 
 public class DgNode : ISerializable
 {
-    // TODO: Check
-    public Vector3 Center { get; set; }
+    public Vector3 Center { get; set; } = new();
 
-    // TODO: Check
-    public BoundingBox ViewBox { get; set; }
+    public BoundingBox ViewBox { get; set; } = new();
 
-    // TODO: Check
-    public BoundingBox CollisionBox { get; set; }
+    public BoundingBox CollisionBox { get; set; } = new();
 
     public List<DgObject> Objects { get; set; } = new();
 

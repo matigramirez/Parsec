@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.Dg;
 
 public class Dg : FileBase
 {
-    public BoundingBox BoundingBox { get; set; }
+    public BoundingBox BoundingBox { get; set; } = new();
 
     public List<String256> TextureNames { get; set; } = new();
 

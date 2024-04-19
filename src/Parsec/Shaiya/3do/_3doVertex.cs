@@ -6,11 +6,11 @@ namespace Parsec.Shaiya._3do;
 
 public sealed class _3doVertex : ISerializable
 {
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Coordinates { get; set; } = new();
 
-    public Vector3 Normal { get; set; }
+    public Vector3 Normal { get; set; } = new();
 
-    public Vector2 UV { get; set; }
+    public Vector2 UV { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
