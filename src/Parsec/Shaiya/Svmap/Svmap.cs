@@ -25,9 +25,6 @@ public sealed class Svmap : FileBase
 
     public List<SvmapNamedArea> NamedAreas { get; set; } = new();
 
-    [JsonIgnore]
-    public override string Extension => "svmap";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         MapSize = binaryReader.ReadInt32();

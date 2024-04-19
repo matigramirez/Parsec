@@ -13,7 +13,6 @@ public class SahTests
     public void SahFileExistenceTest(string folderName, string fileName)
     {
         var sah = ParsecReader.FromFile<Sah>("Shaiya/Data/sample.sah");
-        Assert.Equal("sah", sah.Extension);
 
         // Add folder to sah
         var newFolder = sah.AddFolder(folderName);

@@ -13,8 +13,6 @@ public sealed class Mlx : FileBase
 
     public List<MlxRecord> Records { get; set; } = new();
 
-    public override string Extension => "MLX";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         // Some MLX files are empty

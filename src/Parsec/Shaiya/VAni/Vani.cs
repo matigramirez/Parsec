@@ -41,8 +41,6 @@ public sealed class Vani : FileBase
     /// </summary>
     public int Unknown2 { get; set; }
 
-    public override string Extension => "VANI";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Center = binaryReader.Read<Vector3>();

@@ -36,8 +36,6 @@ public sealed class _3de : FileBase
     /// </summary>
     public List<_3deFrame> Frames { get; set; } = new();
 
-    public override string Extension => "3DE";
-
     /// <summary>
     /// Reads the .3DE file from the file buffer. This format requires a manually defined Read method because of its "complexity" when
     /// dealing with the vertex translation frames.

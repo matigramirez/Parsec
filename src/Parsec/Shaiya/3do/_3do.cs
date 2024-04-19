@@ -17,9 +17,6 @@ public sealed class _3do : FileBase
 
     public List<MeshFace> Faces { get; set; } = new();
 
-    [JsonIgnore]
-    public override string Extension => "3DO";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         TextureName = binaryReader.ReadString();

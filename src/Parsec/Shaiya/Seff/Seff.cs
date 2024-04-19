@@ -13,9 +13,6 @@ public sealed class Seff : FileBase
 
     public List<SeffRecord> Records { get; set; } = new();
 
-    [JsonIgnore]
-    public override string Extension => "seff";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Format = binaryReader.ReadInt32();

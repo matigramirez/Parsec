@@ -26,8 +26,6 @@ public sealed class Mlt : FileBase
     /// </summary>
     public List<MltRecord> Records { get; set; } = new();
 
-    public override string Extension => "MLT";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Signature = binaryReader.ReadString(3);

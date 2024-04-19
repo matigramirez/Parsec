@@ -72,9 +72,6 @@ public sealed class Sah : FileBase
     [DataMember]
     public SDirectory RootDirectory { get; set; }
 
-    [JsonIgnore]
-    public override string Extension => "sah";
-
     /// <inheritdoc />
     protected override void Read(SBinaryReader binaryReader)
     {

@@ -27,9 +27,6 @@ public abstract class SData : FileBase, IEncryptable
     [JsonIgnore]
     private const int SeedHeaderSize = 64;
 
-    [JsonIgnore]
-    public override string Extension => "SData";
-
     /// <inheritdoc />
     public void DecryptBuffer(SBinaryReader binaryReader, bool validateChecksum = false)
     {

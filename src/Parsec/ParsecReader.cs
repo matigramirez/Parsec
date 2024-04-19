@@ -1,7 +1,6 @@
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Parsec.Common;
 using Parsec.Extensions;
 using Parsec.Serialization;
@@ -177,14 +176,7 @@ public static class ParsecReader
         }
 
         var fileBase = (FileBase)deserializedObject;
-        var fileNameWithoutJsonExtension = Path.GetFileNameWithoutExtension(path);
-
         fileBase.Encoding = encoding;
-        var objectExtension = fileBase.Extension;
-        if (Path.GetExtension(fileNameWithoutJsonExtension) != objectExtension)
-        {
-            fileBase.Path = $"{fileNameWithoutJsonExtension}.{objectExtension}";
-        }
 
         return fileBase;
     }

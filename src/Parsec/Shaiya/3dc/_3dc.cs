@@ -30,9 +30,6 @@ public sealed class _3dc : FileBase
     /// </summary>
     public List<MeshFace> Faces { get; set; } = new();
 
-    [JsonIgnore]
-    public override string Extension => "3DC";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         var version = binaryReader.ReadInt32();

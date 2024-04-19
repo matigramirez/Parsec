@@ -15,8 +15,6 @@ public sealed class Mon : FileBase
 
     public List<MonRecord> Records { get; set; } = new();
 
-    public override string Extension => "MON";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Signature = binaryReader.ReadString(3);

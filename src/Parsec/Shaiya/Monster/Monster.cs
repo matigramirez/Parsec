@@ -11,8 +11,6 @@ public sealed class Monster : SData.SData, ICsv
 {
     public List<MonsterRecord> Records { get; set; } = new();
 
-    public override string Extension => "SData";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Records = binaryReader.ReadList<MonsterRecord>().ToList();

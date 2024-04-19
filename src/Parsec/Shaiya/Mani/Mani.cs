@@ -62,8 +62,6 @@ public sealed class Mani : FileBase
 
     public int Unknown13 { get; set; }
 
-    public override string Extension => "mani";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Version = binaryReader.ReadInt32();

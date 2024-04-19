@@ -18,9 +18,6 @@ public sealed class Eft : FileBase
 
     public List<EftEffectSequence> EffectSequences { get; set; } = new();
 
-    [JsonIgnore]
-    public override string Extension => "EFT";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         var signature = binaryReader.ReadString(3);

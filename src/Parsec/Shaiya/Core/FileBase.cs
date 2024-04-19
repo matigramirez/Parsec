@@ -62,10 +62,7 @@ public abstract class FileBase : IJsonWritable<FileBase>
     /// Full path to the file
     /// </summary>
     [JsonIgnore]
-    public string Path { get; set; } = "";
-
-    [JsonIgnore]
-    public abstract string Extension { get; }
+    public string Path { get; set; } = string.Empty;
 
     public Episode Episode { get; set; } = Episode.Unknown;
 

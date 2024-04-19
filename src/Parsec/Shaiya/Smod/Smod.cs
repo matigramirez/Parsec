@@ -13,9 +13,6 @@ namespace Parsec.Shaiya.Smod;
 /// </summary>
 public sealed class Smod : FileBase
 {
-    [JsonIgnore]
-    public override string Extension => "SMOD";
-
     /// <summary>
     /// The center of the SMOD object as a whole (center of all objects)
     /// </summary>

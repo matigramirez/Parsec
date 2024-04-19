@@ -26,9 +26,6 @@ public sealed class Ani : FileBase
     /// </summary>
     public List<AniBone> Bones { get; set; } = new();
 
-    [JsonIgnore]
-    public override string Extension => "ANI";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         var signature = binaryReader.ReadString(6);

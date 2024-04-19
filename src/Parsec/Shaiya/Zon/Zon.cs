@@ -10,8 +10,6 @@ public sealed class Zon : FileBase
 
     public List<ZonRecord> Records { get; set; } = new();
 
-    public override string Extension => "zon";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Format = binaryReader.ReadInt32();

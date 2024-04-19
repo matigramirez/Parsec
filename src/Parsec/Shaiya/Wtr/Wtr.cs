@@ -18,8 +18,6 @@ public sealed class Wtr : FileBase
     /// </summary>
     public List<String256> Textures { get; set; } = new();
 
-    public override string Extension => "wtr";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Unknown1 = binaryReader.ReadSingle();

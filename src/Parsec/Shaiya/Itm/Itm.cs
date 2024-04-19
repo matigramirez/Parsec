@@ -30,9 +30,6 @@ public sealed class Itm : FileBase
     /// </summary>
     public List<ItmRecord> Records { get; set; } = new();
 
-    [JsonIgnore]
-    public override string Extension => "ITM";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         Signature = binaryReader.ReadString(3);

@@ -160,9 +160,6 @@ public sealed class Wld : FileBase
 
     // This structure is incomplete, there's a bunch of unknown fields missing
 
-    [JsonIgnore]
-    public override string Extension => "wld";
-
     protected override void Read(SBinaryReader binaryReader)
     {
         var typeStr = binaryReader.ReadString(4);

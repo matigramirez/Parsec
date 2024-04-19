@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using System.Text.Json.Serialization;
+using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -14,8 +15,6 @@ public class Dg : FileBase
     public int UnknownInt32 { get; set; }
 
     public List<DgNode?> Nodes { get; set; } = new();
-
-    public override string Extension => "dg";
 
     protected override void Read(SBinaryReader binaryReader)
     {
