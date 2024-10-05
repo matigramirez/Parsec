@@ -8,8 +8,8 @@
 `Parsec` is a simple .NET parsing library for `Shaiya` file formats which provides easy to use APIs
 for serialization and deserialization of the game's file formats, including JSON and CSV support.
 
-Parsec works on any .NET Standard 2.0 compliant platform, including .NET 7.0, .NET Framework 4.6.1+, .NET Core 2.0+,
-Unity's Mono and Godot.
+Parsec works on any .NET Standard 2.0 compliant platform, including .NET 5+, .NET Framework 4.6.1+, .NET Core 2.0+,
+Unity and Godot.
 
 ## Supported file formats
 
