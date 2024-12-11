@@ -1,4 +1,5 @@
-﻿using Parsec.Serialization;
+﻿using Newtonsoft.Json;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common;
@@ -19,6 +20,7 @@ public struct BoundingBox : ISerializable
     /// </summary>
     public Vector3 UpperLimit { get; set; }
 
+    [JsonIgnore]
     public double Radius
     {
         get

@@ -30,6 +30,11 @@ public sealed class Item : SData.SData, ICsv
     /// <returns><see cref="Item"/> instance</returns>
     public static Item FromCsv(string csvPath, Episode episode, Encoding? encoding = null)
     {
+        if (episode >= Episode.EP8)
+        {
+            throw new Exception("Item format is not supported for EP8 and above, use ItemData instead.");
+        }
+
         encoding ??= Encoding.ASCII;
 
         // Read item definitions from csv
@@ -60,7 +65,7 @@ public sealed class Item : SData.SData, ICsv
 
     public void WriteCsv(string outputPath, Encoding? encoding = null)
     {
-        encoding = Encoding;
+        encoding ??= Encoding;
         using var writer = new StreamWriter(outputPath, false, encoding);
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
 

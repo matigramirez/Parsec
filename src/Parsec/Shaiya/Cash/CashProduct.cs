@@ -10,7 +10,7 @@ public sealed class CashProduct : ISerializable
 
     public uint Bag { get; set; }
 
-    public uint Unknown { get; set; }
+    public uint Icon { get; set; }
 
     public uint Cost { get; set; }
 
@@ -26,7 +26,7 @@ public sealed class CashProduct : ISerializable
     {
         Index = binaryReader.ReadUInt32();
         Bag = binaryReader.ReadUInt32();
-        Unknown = binaryReader.ReadUInt32();
+        Icon = binaryReader.ReadUInt32();
         Cost = binaryReader.ReadUInt32();
         Items = binaryReader.ReadList<CashProductItem>(24).ToList();
         ProductName = binaryReader.ReadString();
@@ -43,7 +43,7 @@ public sealed class CashProduct : ISerializable
     {
         binaryWriter.Write(Index);
         binaryWriter.Write(Bag);
-        binaryWriter.Write(Unknown);
+        binaryWriter.Write(Icon);
         binaryWriter.Write(Cost);
         binaryWriter.Write(Items.Take(24).ToSerializable(), lengthPrefixed: false);
 

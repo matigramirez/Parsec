@@ -4,24 +4,24 @@
     <LangVersion>10</LangVersion>
     <Platforms>AnyCPU;x86</Platforms>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.1.1</Version>
     <Authors>Matias Ramirez</Authors>
-    <Copyright>Matias Ramirez 2022</Copyright>
+    <Copyright>Matias Ramirez 2021</Copyright>
     <PackageProjectUrl>https://github.com/matigramirez/Parsec</PackageProjectUrl>
     <RepositoryUrl>https://github.com/matigramirez/Parsec</RepositoryUrl>
     <PackageTags>csharp, shaiya, file, parser, dotnet</PackageTags>
     <Description>Parsec is a simple file parsing library for Shaiya file formats built with C# and .NET Standard 2.0. Its goal is to make reading and manipulating the game's file formats with ease.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="30.0.1" />
+    <PackageReference Include="CsvHelper" Version="30.1.0"/>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0"/>
   </ItemGroup>
 
 </Project>

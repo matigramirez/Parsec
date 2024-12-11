@@ -2,10 +2,17 @@
 
 public enum Episode
 {
-    Unknown,
-    EP4,
-    EP5,
-    EP6,
-    EP7,
-    EP8
+    Unknown = 0,
+
+    EP4 = 40,
+
+    EP5 = 50,
+
+    EP6 = 60,
+
+    EP6_4 = 64,
+
+    EP7 = 70,
+
+    EP8 = 80
 }
