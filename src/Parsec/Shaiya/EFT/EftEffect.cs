@@ -15,13 +15,13 @@ public class EftEffect : ISerializable
 
     public int Unknown3 { get; set; }
 
-    public int Unknown4 { get; set; }
+    public int Loop { get; set; }
 
-    public int Unknown5 { get; set; }
+    public int SrcBlend { get; set; }
 
     public int Unknown6 { get; set; }
 
-    public int Unknown7 { get; set; }
+    public int DestBlend { get; set; }
 
     public int Unknown8 { get; set; }
 
@@ -32,7 +32,7 @@ public class EftEffect : ISerializable
 
     public int Unknown10 { get; set; }
 
-    public float Unknown11 { get; set; }
+    public float DelayPerFrame { get; set; }
 
     public float Unknown12 { get; set; }
 
@@ -40,7 +40,7 @@ public class EftEffect : ISerializable
 
     public float Unknown14 { get; set; }
 
-    public float Unknown15 { get; set; }
+    public float InitialDelay { get; set; }
 
     public float Unknown16 { get; set; }
 
@@ -48,9 +48,9 @@ public class EftEffect : ISerializable
 
     public float Unknown18 { get; set; }
 
-    public Vector3 UnknownVec1 { get; set; }
+    public Vector3 OffsetFrame { get; set; }
 
-    public Vector3 UnknownVec2 { get; set; }
+    public Vector3 Trembling { get; set; }
 
     /// <summary>
     /// The position where the effect should be rendered, relative to the effect's origin.
@@ -58,11 +58,11 @@ public class EftEffect : ISerializable
     /// </summary>
     public Vector3 Position { get; set; }
 
-    public Vector3 UnknownVec4 { get; set; }
+    public Vector3 Move { get; set; }
 
-    public Vector3 UnknownVec5 { get; set; }
+    public Vector3 Move2 { get; set; }
 
-    public int Unknown19 { get; set; }
+    public int BaseAxis { get; set; }
 
     public int Unknown20 { get; set; }
 
@@ -70,15 +70,15 @@ public class EftEffect : ISerializable
 
     public Vector3 UnknownVec6 { get; set; }
 
-    public float Unknown22 { get; set; }
+    public float RotationSpeedMin { get; set; }
 
-    public int Unknown23 { get; set; }
+    public int RotationRandomEnabled { get; set; }
 
-    public int Unknown24 { get; set; }
+    public int RotationEnabled { get; set; }
 
-    public float Unknown25 { get; set; }
+    public float RotationSpeedMax { get; set; }
 
-    public int Unknown26 { get; set; }
+    public int RotationAxis { get; set; }
 
     /// <summary>
     /// Only present in EF3
@@ -119,40 +119,40 @@ public class EftEffect : ISerializable
         Unknown1 = binaryReader.ReadInt32();
         Unknown2 = binaryReader.ReadInt32();
         Unknown3 = binaryReader.ReadInt32();
-        Unknown4 = binaryReader.ReadInt32();
-        Unknown5 = binaryReader.ReadInt32();
+        Loop = binaryReader.ReadInt32();
+        SrcBlend = binaryReader.ReadInt32();
         Unknown6 = binaryReader.ReadInt32();
-        Unknown7 = binaryReader.ReadInt32();
+        DestBlend = binaryReader.ReadInt32();
         Unknown8 = binaryReader.ReadInt32();
         MeshIndex = binaryReader.ReadInt32();
         Unknown10 = binaryReader.ReadInt32();
 
-        Unknown11 = binaryReader.ReadSingle();
+        DelayPerFrame = binaryReader.ReadSingle();
         Unknown12 = binaryReader.ReadSingle();
         Unknown13 = binaryReader.ReadSingle();
         Unknown14 = binaryReader.ReadSingle();
-        Unknown15 = binaryReader.ReadSingle();
+        InitialDelay = binaryReader.ReadSingle();
         Unknown16 = binaryReader.ReadSingle();
         Unknown17 = binaryReader.ReadSingle();
         Unknown18 = binaryReader.ReadSingle();
 
-        UnknownVec1 = binaryReader.Read<Vector3>();
-        UnknownVec2 = binaryReader.Read<Vector3>();
+        OffsetFrame = binaryReader.Read<Vector3>();
+        Trembling = binaryReader.Read<Vector3>();
         Position = binaryReader.Read<Vector3>();
-        UnknownVec4 = binaryReader.Read<Vector3>();
-        UnknownVec5 = binaryReader.Read<Vector3>();
+        Move = binaryReader.Read<Vector3>();
+        Move2 = binaryReader.Read<Vector3>();
 
-        Unknown19 = binaryReader.ReadInt32();
+        BaseAxis = binaryReader.ReadInt32();
         Unknown20 = binaryReader.ReadInt32();
         Unknown21 = binaryReader.ReadInt32();
 
         UnknownVec6 = binaryReader.Read<Vector3>();
 
-        Unknown22 = binaryReader.ReadSingle();
-        Unknown23 = binaryReader.ReadInt32();
-        Unknown24 = binaryReader.ReadInt32();
-        Unknown25 = binaryReader.ReadSingle();
-        Unknown26 = binaryReader.ReadInt32();
+        RotationSpeedMin = binaryReader.ReadSingle();
+        RotationRandomEnabled = binaryReader.ReadInt32();
+        RotationEnabled = binaryReader.ReadInt32();
+        RotationSpeedMax = binaryReader.ReadSingle();
+        RotationAxis = binaryReader.ReadInt32();
 
         if (format == EftFormat.EF3)
         {
@@ -185,39 +185,39 @@ public class EftEffect : ISerializable
         binaryWriter.Write(Unknown1);
         binaryWriter.Write(Unknown2);
         binaryWriter.Write(Unknown3);
-        binaryWriter.Write(Unknown4);
-        binaryWriter.Write(Unknown5);
+        binaryWriter.Write(Loop);
+        binaryWriter.Write(SrcBlend);
         binaryWriter.Write(Unknown6);
-        binaryWriter.Write(Unknown7);
+        binaryWriter.Write(DestBlend);
         binaryWriter.Write(Unknown8);
         binaryWriter.Write(MeshIndex);
         binaryWriter.Write(Unknown10);
-        binaryWriter.Write(Unknown11);
+        binaryWriter.Write(DelayPerFrame);
         binaryWriter.Write(Unknown12);
         binaryWriter.Write(Unknown13);
         binaryWriter.Write(Unknown14);
-        binaryWriter.Write(Unknown15);
+        binaryWriter.Write(InitialDelay);
         binaryWriter.Write(Unknown16);
         binaryWriter.Write(Unknown17);
         binaryWriter.Write(Unknown18);
 
-        binaryWriter.Write(UnknownVec1);
-        binaryWriter.Write(UnknownVec2);
+        binaryWriter.Write(OffsetFrame);
+        binaryWriter.Write(Trembling);
         binaryWriter.Write(Position);
-        binaryWriter.Write(UnknownVec4);
-        binaryWriter.Write(UnknownVec5);
+        binaryWriter.Write(Move);
+        binaryWriter.Write(Move2);
 
-        binaryWriter.Write(Unknown19);
+        binaryWriter.Write(BaseAxis);
         binaryWriter.Write(Unknown20);
         binaryWriter.Write(Unknown21);
 
         binaryWriter.Write(UnknownVec6);
 
-        binaryWriter.Write(Unknown22);
-        binaryWriter.Write(Unknown23);
-        binaryWriter.Write(Unknown24);
-        binaryWriter.Write(Unknown25);
-        binaryWriter.Write(Unknown26);
+        binaryWriter.Write(RotationSpeedMin);
+        binaryWriter.Write(RotationRandomEnabled);
+        binaryWriter.Write(RotationEnabled);
+        binaryWriter.Write(RotationSpeedMax);
+        binaryWriter.Write(RotationAxis);
 
         if (format == EftFormat.EF3)
         {
