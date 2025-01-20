@@ -111,7 +111,7 @@ public sealed class DBItemSellRecord : IBinarySDataRecord
 
     public long ItemCount24 { get; set; }
 
-    public long Category { get; set; }
+    public long Type { get; set; }
 
     public long Icon { get; set; }
 
@@ -170,7 +170,7 @@ public sealed class DBItemSellRecord : IBinarySDataRecord
         ItemCount23 = binaryReader.ReadInt64();
         ItemID24 = binaryReader.ReadInt64();
         ItemCount24 = binaryReader.ReadInt64();
-        Category = binaryReader.ReadInt64();
+        Type = binaryReader.ReadInt64();
         Icon = binaryReader.ReadInt64();
     }
 
@@ -228,7 +228,7 @@ public sealed class DBItemSellRecord : IBinarySDataRecord
         binaryWriter.Write(ItemCount23);
         binaryWriter.Write(ItemID24);
         binaryWriter.Write(ItemCount24);
-        binaryWriter.Write(Category);
+        binaryWriter.Write(Type);
         binaryWriter.Write(Icon);
     }
 }
