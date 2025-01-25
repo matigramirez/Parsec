@@ -148,17 +148,21 @@ public sealed class Wld : FileBase
 
     #endregion
 
-    public Vector3 Point1 { get; set; }
+    /// <summary>
+    /// Color field that always has its value set to (255, 255, 255) but it's not used in any way by the game client
+    /// </summary>
+    public Color UnusedColor1 { get; set; }
 
-    public Vector3 Point2 { get; set; }
+    /// <summary>
+    /// Color field that always has its value set to (128, 128, 128) but it's not used in any way by the game client
+    /// </summary>
+    public Color UnusedColor2 { get; set; }
 
-    public Vector3 Point3 { get; set; }
+    public Color FogColor { get; set; }
 
-    public float Unknown5 { get; set; }
+    public float FogStartDistance { get; set; }
 
-    public float Unknown6 { get; set; }
-
-    // This structure is incomplete, there's a bunch of unknown fields missing
+    public float FogEndDistance { get; set; }
 
     [JsonIgnore]
     public override string Extension => "wld";
@@ -234,12 +238,12 @@ public sealed class Wld : FileBase
             CloudsName2 = binaryReader.Read<String256>();
         }
 
-        Point1 = binaryReader.Read<Vector3>();
-        Point2 = binaryReader.Read<Vector3>();
-        Point3 = binaryReader.Read<Vector3>();
+        UnusedColor1 = binaryReader.Read<Color>();
+        UnusedColor2 = binaryReader.Read<Color>();
+        FogColor = binaryReader.Read<Color>();
 
-        Unknown5 = binaryReader.ReadSingle();
-        Unknown6 = binaryReader.ReadSingle();
+        FogStartDistance = binaryReader.ReadSingle();
+        FogEndDistance = binaryReader.ReadSingle();
     }
 
     private void ReadNames(SBinaryReader binaryReader, ICollection<String256> namesList)
@@ -253,7 +257,7 @@ public sealed class Wld : FileBase
     }
 
     private void ReadNamesAndCoordinates(SBinaryReader binaryReader, ICollection<String256> namesList,
-        ICollection<WldCoordinate> coordinatesList)
+                                         ICollection<WldCoordinate> coordinatesList)
     {
         ReadNames(binaryReader, namesList);
 
@@ -331,11 +335,11 @@ public sealed class Wld : FileBase
             binaryWriter.Write(CloudsName2);
         }
 
-        binaryWriter.Write(Point1);
-        binaryWriter.Write(Point2);
-        binaryWriter.Write(Point3);
+        binaryWriter.Write(UnusedColor1);
+        binaryWriter.Write(UnusedColor2);
+        binaryWriter.Write(FogColor);
 
-        binaryWriter.Write(Unknown5);
-        binaryWriter.Write(Unknown6);
+        binaryWriter.Write(FogStartDistance);
+        binaryWriter.Write(FogEndDistance);
     }
 }
