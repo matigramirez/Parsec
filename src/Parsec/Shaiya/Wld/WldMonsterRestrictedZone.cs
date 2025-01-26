@@ -13,7 +13,7 @@ public class WldMonsterRestrictedZone : ISerializable
     public BoundingBox BoundingBox { get; set; }
 
     /// <summary>
-    /// This is supposed to be the BoundingBox Radius, but it's unused and its value is always 0.
+    /// <see cref="BoundingBox"/> radius
     /// </summary>
     public float Radius { get; set; }
 
