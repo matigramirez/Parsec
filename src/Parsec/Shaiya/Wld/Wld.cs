@@ -128,7 +128,7 @@ public sealed class Wld : FileBase
 
     public List<WldSoundEffect> SoundEffects { get; set; } = new();
 
-    public List<WldUnknownBox> UnknownBoundingBoxes { get; set; } = new();
+    public List<WldMonsterRestrictedZone> WldMonsterRestrictedZones { get; set; } = new();
 
     public List<WldPortal> Portals { get; set; } = new();
 
@@ -215,7 +215,7 @@ public sealed class Wld : FileBase
 
         Zones = binaryReader.ReadList<WldZone>().ToList();
         SoundEffects = binaryReader.ReadList<WldSoundEffect>().ToList();
-        UnknownBoundingBoxes = binaryReader.ReadList<WldUnknownBox>().ToList();
+        WldMonsterRestrictedZones = binaryReader.ReadList<WldMonsterRestrictedZone>().ToList();
         Portals = binaryReader.ReadList<WldPortal>().ToList();
         Spawns = binaryReader.ReadList<WldSpawn>().ToList();
         NamedAreas = binaryReader.ReadList<WldNamedArea>().ToList();
@@ -315,7 +315,7 @@ public sealed class Wld : FileBase
         binaryWriter.Write(SoundEffectNames.ToSerializable());
         binaryWriter.Write(Zones.ToSerializable());
         binaryWriter.Write(SoundEffects.ToSerializable());
-        binaryWriter.Write(UnknownBoundingBoxes.ToSerializable());
+        binaryWriter.Write(WldMonsterRestrictedZones.ToSerializable());
         binaryWriter.Write(Portals.ToSerializable());
         binaryWriter.Write(Spawns.ToSerializable());
         binaryWriter.Write(NamedAreas.ToSerializable());
