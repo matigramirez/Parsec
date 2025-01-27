@@ -1,4 +1,5 @@
-﻿using Parsec.Extensions;
+﻿using System.Text.Json.Serialization;
+using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -7,6 +8,7 @@ namespace Parsec.Shaiya.Dg;
 
 public class DgNode : ISerializable
 {
+    [JsonIgnore]
     private const int NodeChildCount = 8;
 
     public Vector3 Center { get; set; }

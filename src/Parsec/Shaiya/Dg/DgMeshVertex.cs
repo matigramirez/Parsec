@@ -9,12 +9,12 @@ public class DgMeshVertex : ISerializable
     /// <summary>
     /// Vertex coordinates in the 3D space
     /// </summary>
-    public Vector3 Coordinates { get; set; } = new();
+    public Vector3 Coordinates { get; set; }
 
     /// <summary>
     /// Vertex normal used for lighting
     /// </summary>
-    public Vector3 Normal { get; set; } = new();
+    public Vector3 Normal { get; set; }
 
     /// <summary>
     /// SMODs don't have bones, that's why this value is always -1.
@@ -24,12 +24,12 @@ public class DgMeshVertex : ISerializable
     /// <summary>
     /// Texture mapping
     /// </summary>
-    public Vector2 TextureUV { get; set; } = new();
+    public Vector2 TextureUV { get; set; }
 
     /// <summary>
     /// Lightmap mapping
     /// </summary>
-    public Vector2 LightmapUV { get; set; } = new();
+    public Vector2 LightmapUV { get; set; }
 
     public void Read(SBinaryReader binaryReader)
     {

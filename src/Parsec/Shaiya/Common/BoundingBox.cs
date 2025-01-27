@@ -8,17 +8,17 @@ namespace Parsec.Shaiya.Common;
 /// Cube formed by the volume between 2 points which form its diagonal.
 /// The cube is unique; it doesn't form any angle with the x and y axis.
 /// </summary>
-public class BoundingBox : ISerializable
+public struct BoundingBox : ISerializable
 {
     /// <summary>
     /// Point used as reference for the rectangle
     /// </summary>
-    public Vector3 LowerLimit { get; set; } = new();
+    public Vector3 LowerLimit { get; set; }
 
     /// <summary>
     /// Point used as reference for the rectangle
     /// </summary>
-    public Vector3 UpperLimit { get; set; } = new();
+    public Vector3 UpperLimit { get; set; }
 
     [JsonIgnore]
     public double Radius

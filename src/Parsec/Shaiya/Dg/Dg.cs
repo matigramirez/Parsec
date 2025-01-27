@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
@@ -8,7 +7,7 @@ namespace Parsec.Shaiya.Dg;
 
 public class Dg : FileBase
 {
-    public BoundingBox BoundingBox { get; set; } = new();
+    public BoundingBox BoundingBox { get; set; }
 
     public List<String256> TextureNames { get; set; } = new();
 
