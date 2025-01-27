@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.Common;
 /// <summary>
 /// A structure encapsulating a 4x4 matrix.
 /// </summary>
-public class Matrix4x4 : ISerializable
+public struct Matrix4x4 : ISerializable
 {
     /// <summary>
     /// The matrix's data serialized into an array of float arrays
@@ -134,10 +134,6 @@ public class Matrix4x4 : ISerializable
     /// Value at row 4, column 4 of the matrix.
     /// </summary>
     public float M44 { get; set; }
-
-    public Matrix4x4()
-    {
-    }
 
     /// <summary>
     /// Constructs a Matrix4x4 from the given components.

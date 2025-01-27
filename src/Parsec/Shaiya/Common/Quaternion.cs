@@ -1,4 +1,5 @@
-﻿using Parsec.Serialization;
+﻿using System.Text.Json.Serialization;
+using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Common;
@@ -7,7 +8,7 @@ namespace Parsec.Shaiya.Common;
 /// A structure encapsulating a four-dimensional vector (x,y,z,w),
 /// which is used to efficiently rotate an object about the (x,y,z) vector by the angle theta, where w = cos(theta/2).
 /// </summary>
-public class Quaternion : ISerializable
+public struct Quaternion : ISerializable
 {
     /// <summary>
     /// Specifies the X-value of the vector component of the Quaternion.
@@ -28,6 +29,15 @@ public class Quaternion : ISerializable
     /// Specifies the rotation component of the Quaternion.
     /// </summary>
     public float W { get; set; }
+
+    [JsonConstructor]
+    public Quaternion(float x, float y, float z, float w)
+    {
+        X = x;
+        Y = y;
+        Z = z;
+        W = w;
+    }
 
     public void Read(SBinaryReader binaryReader)
     {

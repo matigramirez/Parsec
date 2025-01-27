@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.Common;
 /// <summary>
 /// Represents a vector in a 3-dimensional space
 /// </summary>
-public class Vector3 : ISerializable
+public struct Vector3 : ISerializable
 {
     private float _x;
 
@@ -21,7 +21,7 @@ public class Vector3 : ISerializable
     public float X
     {
         get => _x;
-        set => _x = float.IsNaN(value) ? default : value;
+        set => _x = float.IsNaN(value) ? 0 : value;
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ public class Vector3 : ISerializable
     public float Y
     {
         get => _y;
-        set => _y = float.IsNaN(value) ? default : value;
+        set => _y = float.IsNaN(value) ? 0 : value;
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class Vector3 : ISerializable
     public float Z
     {
         get => _z;
-        set => _z = float.IsNaN(value) ? default : value;
+        set => _z = float.IsNaN(value) ? 0 : value;
     }
 
     public void Read(SBinaryReader binaryReader)
