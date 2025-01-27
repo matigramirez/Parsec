@@ -24,7 +24,7 @@ public sealed class Smod : FileBase
     /// <summary>
     /// The distance between the vertices of the <see cref="BoundingBox"/> and the <see cref="Center"/> of the SMOD object. Used for game calculations.
     /// </summary>
-    public float DistanceToCenter { get; set; }
+    public float Radius { get; set; }
 
     /// <summary>
     /// Box that surrounds the textured objects. Used for game calculations.
@@ -52,7 +52,7 @@ public sealed class Smod : FileBase
     protected override void Read(SBinaryReader binaryReader)
     {
         Center = binaryReader.Read<Vector3>();
-        DistanceToCenter = binaryReader.ReadSingle();
+        Radius = binaryReader.ReadSingle();
         ViewBox = binaryReader.Read<BoundingBox>();
         TexturedObjects = binaryReader.ReadList<SmodMesh>().ToList();
         CollisionBox = binaryReader.Read<BoundingBox>();
@@ -62,7 +62,7 @@ public sealed class Smod : FileBase
     protected override void Write(SBinaryWriter binaryWriter)
     {
         binaryWriter.Write(Center);
-        binaryWriter.Write(DistanceToCenter);
+        binaryWriter.Write(Radius);
         binaryWriter.Write(ViewBox);
         binaryWriter.Write(TexturedObjects.ToSerializable());
         binaryWriter.Write(CollisionBox);

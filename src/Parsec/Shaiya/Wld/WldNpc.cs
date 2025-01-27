@@ -11,27 +11,27 @@ public sealed class WldNpc : ISerializable
 
     public int TypeId { get; set; }
 
-    public Vector3 Coordinates { get; set; }
+    public Vector3 Position { get; set; }
 
     public float Orientation { get; set; }
 
-    public List<WldNpcPatrolCoordinate> PatrolCoordinates { get; set; } = new();
+    public List<Vector3> PatrolPositions { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
         Type = binaryReader.ReadInt32();
         TypeId = binaryReader.ReadInt32();
-        Coordinates = binaryReader.Read<Vector3>();
+        Position = binaryReader.Read<Vector3>();
         Orientation = binaryReader.ReadSingle();
-        PatrolCoordinates = binaryReader.ReadList<WldNpcPatrolCoordinate>().ToList();
+        PatrolPositions = binaryReader.ReadList<Vector3>().ToList();
     }
 
     public void Write(SBinaryWriter binaryWriter)
     {
         binaryWriter.Write(Type);
         binaryWriter.Write(TypeId);
-        binaryWriter.Write(Coordinates);
+        binaryWriter.Write(Position);
         binaryWriter.Write(Orientation);
-        binaryWriter.Write(PatrolCoordinates.ToSerializable());
+        binaryWriter.Write(PatrolPositions.ToSerializable());
     }
 }

@@ -21,12 +21,12 @@ public sealed class WldMusicZone : ISerializable
     public float Radius { get; set; }
 
     /// <summary>
-    /// Id of the wav file (from the linked name list of files)
+    /// Id of the music asset from the MusicAssets list
     /// </summary>
-    public int Id { get; set; }
+    public int MusicAssetId { get; set; }
 
     /// <summary>
-    /// Usually 0L
+    /// Usually 0
     /// </summary>
     public int Unknown { get; set; }
 
@@ -34,7 +34,7 @@ public sealed class WldMusicZone : ISerializable
     {
         BoundingBox = binaryReader.Read<BoundingBox>();
         Radius = binaryReader.ReadSingle();
-        Id = binaryReader.ReadInt32();
+        MusicAssetId = binaryReader.ReadInt32();
         Unknown = binaryReader.ReadInt32();
     }
 
@@ -42,7 +42,7 @@ public sealed class WldMusicZone : ISerializable
     {
         binaryWriter.Write(BoundingBox);
         binaryWriter.Write(Radius);
-        binaryWriter.Write(Id);
+        binaryWriter.Write(MusicAssetId);
         binaryWriter.Write(Unknown);
     }
 }

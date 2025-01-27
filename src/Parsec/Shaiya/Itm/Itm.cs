@@ -8,11 +8,10 @@ namespace Parsec.Shaiya.Itm;
 public sealed class Itm : FileBase
 {
     /// <summary>
-    /// File Signature. Read as char[3]. "ITM" or "IT2"
+    /// File header (char[3]). "ITM" or "IT2"
     /// </summary>
-    public string Signature { get; set; } = string.Empty;
+    public string Header { get; set; } = string.Empty;
 
-    [JsonIgnore]
     public ItmFormat Format { get; set; }
 
     /// <summary>
@@ -35,13 +34,13 @@ public sealed class Itm : FileBase
 
     protected override void Read(SBinaryReader binaryReader)
     {
-        Signature = binaryReader.ReadString(3);
+        Header = binaryReader.ReadString(3);
 
-        Format = Signature switch
+        Format = Header switch
         {
             "ITM" => ItmFormat.ITM,
             "IT2" => ItmFormat.IT2,
-            _ => ItmFormat.Unknown
+            _     => ItmFormat.Unknown
         };
 
         // Records expect the format to be set on the serialization options ExtraOption property
@@ -73,7 +72,7 @@ public sealed class Itm : FileBase
         {
             ItmFormat.ITM => "ITM",
             ItmFormat.IT2 => "IT2",
-            _ => "ITM"
+            _             => "ITM"
         };
 
         binaryWriter.Write(signature, isLengthPrefixed: false, includeStringTerminator: false);

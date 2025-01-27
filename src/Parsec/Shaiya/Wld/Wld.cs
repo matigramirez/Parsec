@@ -8,96 +8,95 @@ namespace Parsec.Shaiya.Wld;
 
 public sealed class Wld : FileBase
 {
-    public WldType WldType { get; set; } = WldType.FLD;
-
-    #region FLD Only fields
+    public WldType WldType { get; set; } = WldType.Field;
 
     /// <summary>
-    /// Map Size, must be a power of 2 (1024 or 2048)
+    /// Map side size
     /// </summary>
     public uint MapSize { get; set; }
 
     /// <summary>
     /// Map used for Y coordinate calculation based on X and Z
     /// </summary>
-    public byte[] Heightmap { get; set; }
+    public byte[] TerrainHeightMap { get; set; }
 
     /// <summary>
-    /// Map used for texture usage based on X and Z
+    /// Terrain mappings for <see cref="TerrainLayers"/>
     /// </summary>
-    public byte[] TextureMap { get; set; }
+    public byte[] TerrainTextureMap { get; set; }
 
-    public List<WldTexture> Textures { get; set; } = new();
-
-    #endregion
+    public List<WldTerrainLayer> TerrainLayers { get; set; } = new();
 
     /// <summary>
-    /// Fixed length string, length = 256. "inner layout", ".wtr" (water) for a field, ".dg" for a dungeon
+    /// Defines the name of a water file (.wtr) for worlds of type "Field" and the name of a dungeon file (.dg) for worlds of type "Dungeon"
     /// </summary>
-    public String256 InnerLayout { get; set; } = string.Empty;
+    public String256 LayoutName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Files from Entity/Building
+    /// List of assets from Entity/Building
     /// </summary>
-    public List<String256> BuildingNames { get; set; } = new();
+    public List<String256> BuildingAssets { get; set; } = new();
 
-    public List<WldCoordinate> BuildingCoordinates { get; set; } = new();
+    public List<WldObjectInstance> BuildingInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Entity/Shape
+    /// List of assets from Entity/Shape
     /// </summary>
-    public List<String256> ShapeNames { get; set; } = new();
+    public List<String256> ShapeAssets { get; set; } = new();
 
-    public List<WldCoordinate> ShapeCoordinates { get; set; } = new();
+    public List<WldObjectInstance> ShapeInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Entity/Tree
+    /// List of assets from Entity/Tree
     /// </summary>
-    public List<String256> TreeNames { get; set; } = new();
+    public List<String256> TreeAssets { get; set; } = new();
 
-    public List<WldCoordinate> TreeCoordinates { get; set; } = new();
+    public List<WldObjectInstance> TreeInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Entity/Grass
+    /// List of assets from Entity/Grass
     /// </summary>
-    public List<String256> GrassNames { get; set; } = new();
+    public List<String256> GrassAssets { get; set; } = new();
 
-    public List<WldCoordinate> GrassCoordinates { get; set; } = new();
+    public List<WldObjectInstance> GrassInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Entity/VAni
+    /// List of assets from Entity/VAni
     /// </summary>
-    public List<String256> VAniNames1 { get; set; } = new();
+    public List<String256> PrimaryVaniAssets { get; set; } = new();
 
-    public List<WldCoordinate> VAniCoordinates1 { get; set; } = new();
+    public List<WldObjectInstance> PrimaryVaniInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Entity/VAni
+    /// List of assets from Entity/VAni
     /// </summary>
-    public List<String256> VAniNames2 { get; set; } = new();
+    public List<String256> SecondaryVaniAssets { get; set; } = new();
 
-    public List<WldCoordinate> VAniCoordinates2 { get; set; } = new();
+    public List<WldObjectInstance> SecondaryVaniInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from World/dungeon
+    /// List of assets from World/dungeon
     /// </summary>
-    public List<String256> DungeonNames { get; set; } = new();
+    public List<String256> DungeonAssets { get; set; } = new();
 
-    public List<WldCoordinate> DungeonCoordinates { get; set; } = new();
+    public List<WldObjectInstance> DungeonInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Entity/MAni
+    /// List of assets from data/Entity/MAni
     /// </summary>
-    public List<String256> MAniNames { get; set; } = new();
+    public List<String256> ManiAssets { get; set; } = new();
 
-    public List<WldManiCoordinate> MAniCoordinates { get; set; } = new();
-
-    public String256 EffectName { get; set; } = string.Empty;
+    public List<WldManiCoordinate> ManiInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Effect/
+    /// Name of the EFT file that is used by the world
     /// </summary>
-    public List<WldEffect> Effects { get; set; } = new();
+    public String256 EffectFileName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// List of effects that are available in <see cref="EffectFileName"/>
+    /// </summary>
+    public List<WldEffectInstance> EffectInstances { get; set; } = new();
 
     public int Unknown1 { get; set; }
 
@@ -106,115 +105,115 @@ public sealed class Wld : FileBase
     public int Unknown3 { get; set; }
 
     /// <summary>
-    /// Files from Entity/Object
+    /// List of assets from data/Entity/Object
     /// </summary>
-    public List<String256> ObjectNames { get; set; } = new();
+    public List<String256> ObjectAssets { get; set; } = new();
 
-    public List<WldCoordinate> ObjectCoordinates { get; set; } = new();
+    public List<WldObjectInstance> ObjectInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Sound/Music
+    /// List of assets from data/Sound/Music
     /// </summary>
-    public List<String256> MusicNames { get; set; } = new();
+    public List<String256> MusicAssets { get; set; } = new();
 
-    public List<WldMusicZone> MusicZones { get; set; } = new();
+    public List<WldMusicZone> MusicZoneInstances { get; set; } = new();
 
     /// <summary>
-    /// Files from Sound/Music
+    /// List of assets from data/Sound
     /// </summary>
-    public List<String256> SoundEffectNames { get; set; } = new();
+    public List<String256> SoundEffectAssets { get; set; } = new();
 
     public List<WldZone> Zones { get; set; } = new();
 
-    public List<WldSoundEffect> SoundEffects { get; set; } = new();
+    public List<WldSoundEffect> SoundEffectInstances { get; set; } = new();
 
-    public List<WldUnknownBox> UnknownBoundingBoxes { get; set; } = new();
+    public List<WldMonsterRestrictedZone> WldMonsterRestrictedZones { get; set; } = new();
 
-    public List<WldPortal> Portals { get; set; } = new();
+    public List<WldPortal> PortalInstances { get; set; } = new();
 
-    public List<WldSpawn> Spawns { get; set; } = new();
+    public List<WldSpawn> SpawnInstances { get; set; } = new();
 
-    public List<WldNamedArea> NamedAreas { get; set; } = new();
+    public List<WldNamedArea> NamedAreaInstances { get; set; } = new();
 
-    public List<WldNpc> Npcs { get; set; } = new();
+    public List<WldNpc> NpcInstances { get; set; } = new();
 
-    #region FLD Only fields
+    public String256 SkyFileName { get; set; } = string.Empty;
 
-    public String256 SkyName { get; set; } = string.Empty;
+    public String256 PrimaryCloudFileName { get; set; } = string.Empty;
 
-    public String256 CloudsName1 { get; set; } = string.Empty;
+    public String256 SecondaryCloudFileName { get; set; } = string.Empty;
 
-    public String256 CloudsName2 { get; set; } = string.Empty;
+    /// <summary>
+    /// Color field that always has its value set to (255, 255, 255) but it's not used in any way by the game client
+    /// </summary>
+    public Color UnusedColor1 { get; set; }
 
-    #endregion
+    /// <summary>
+    /// Color field that always has its value set to (128, 128, 128) but it's not used in any way by the game client
+    /// </summary>
+    public Color UnusedColor2 { get; set; }
 
-    public Vector3 Point1 { get; set; }
+    public Color FogColor { get; set; }
 
-    public Vector3 Point2 { get; set; }
+    public float FogStartDistance { get; set; }
 
-    public Vector3 Point3 { get; set; }
-
-    public float Unknown5 { get; set; }
-
-    public float Unknown6 { get; set; }
-
-    // This structure is incomplete, there's a bunch of unknown fields missing
+    public float FogEndDistance { get; set; }
 
     [JsonIgnore]
     public override string Extension => "wld";
 
     protected override void Read(SBinaryReader binaryReader)
     {
-        var typeStr = binaryReader.ReadString(4);
+        var worldType = binaryReader.ReadString(4);
 
-        if (typeStr == "DUN")
+        if (worldType == "DUN")
         {
-            WldType = WldType.DUN;
+            WldType = WldType.Dungeon;
         }
 
         // FLD only fields
-        if (WldType == WldType.FLD)
+        if (WldType == WldType.Field)
         {
             MapSize = binaryReader.ReadUInt32();
 
             var mappingSize = (int)Math.Pow(MapSize / 2f + 1, 2);
-            Heightmap = binaryReader.ReadBytes(mappingSize * 2);
-            TextureMap = binaryReader.ReadBytes(mappingSize);
-            Textures = binaryReader.ReadList<WldTexture>().ToList();
+            TerrainHeightMap = binaryReader.ReadBytes(mappingSize * 2);
+            TerrainTextureMap = binaryReader.ReadBytes(mappingSize);
+            TerrainLayers = binaryReader.ReadList<WldTerrainLayer>().ToList();
         }
 
-        InnerLayout = binaryReader.Read<String256>();
+        LayoutName = binaryReader.Read<String256>();
 
-        ReadNamesAndCoordinates(binaryReader, BuildingNames, BuildingCoordinates);
-        ReadNamesAndCoordinates(binaryReader, ShapeNames, ShapeCoordinates);
-        ReadNamesAndCoordinates(binaryReader, TreeNames, TreeCoordinates);
-        ReadNamesAndCoordinates(binaryReader, GrassNames, GrassCoordinates);
-        ReadNamesAndCoordinates(binaryReader, VAniNames1, VAniCoordinates1);
-        ReadNamesAndCoordinates(binaryReader, VAniNames2, VAniCoordinates2);
-        ReadNamesAndCoordinates(binaryReader, DungeonNames, DungeonCoordinates);
-        ReadNames(binaryReader, MAniNames);
+        ReadNamesAndCoordinates(binaryReader, BuildingAssets, BuildingInstances);
+        ReadNamesAndCoordinates(binaryReader, ShapeAssets, ShapeInstances);
+        ReadNamesAndCoordinates(binaryReader, TreeAssets, TreeInstances);
+        ReadNamesAndCoordinates(binaryReader, GrassAssets, GrassInstances);
+        ReadNamesAndCoordinates(binaryReader, PrimaryVaniAssets, PrimaryVaniInstances);
+        ReadNamesAndCoordinates(binaryReader, SecondaryVaniAssets, SecondaryVaniInstances);
+        ReadNamesAndCoordinates(binaryReader, DungeonAssets, DungeonInstances);
+        ReadNames(binaryReader, ManiAssets);
 
-        MAniCoordinates = binaryReader.ReadList<WldManiCoordinate>().ToList();
-        EffectName = binaryReader.Read<String256>();
-        Effects = binaryReader.ReadList<WldEffect>().ToList();
+        ManiInstances = binaryReader.ReadList<WldManiCoordinate>().ToList();
+        EffectFileName = binaryReader.Read<String256>();
+        EffectInstances = binaryReader.ReadList<WldEffectInstance>().ToList();
 
         Unknown1 = binaryReader.ReadInt32();
         Unknown2 = binaryReader.ReadInt32();
         Unknown3 = binaryReader.ReadInt32();
 
-        ReadNamesAndCoordinates(binaryReader, ObjectNames, ObjectCoordinates);
-        ReadNames(binaryReader, MusicNames);
+        ReadNamesAndCoordinates(binaryReader, ObjectAssets, ObjectInstances);
+        ReadNames(binaryReader, MusicAssets);
 
-        MusicZones = binaryReader.ReadList<WldMusicZone>().ToList();
+        MusicZoneInstances = binaryReader.ReadList<WldMusicZone>().ToList();
 
-        ReadNames(binaryReader, SoundEffectNames);
+        ReadNames(binaryReader, SoundEffectAssets);
 
         Zones = binaryReader.ReadList<WldZone>().ToList();
-        SoundEffects = binaryReader.ReadList<WldSoundEffect>().ToList();
-        UnknownBoundingBoxes = binaryReader.ReadList<WldUnknownBox>().ToList();
-        Portals = binaryReader.ReadList<WldPortal>().ToList();
-        Spawns = binaryReader.ReadList<WldSpawn>().ToList();
-        NamedAreas = binaryReader.ReadList<WldNamedArea>().ToList();
+        SoundEffectInstances = binaryReader.ReadList<WldSoundEffect>().ToList();
+        WldMonsterRestrictedZones = binaryReader.ReadList<WldMonsterRestrictedZone>().ToList();
+        PortalInstances = binaryReader.ReadList<WldPortal>().ToList();
+        SpawnInstances = binaryReader.ReadList<WldSpawn>().ToList();
+        NamedAreaInstances = binaryReader.ReadList<WldNamedArea>().ToList();
 
         // NOTE: npcCount is the real npc count + the patrol coordinates count
         var npcCount = binaryReader.ReadInt32();
@@ -222,24 +221,24 @@ public sealed class Wld : FileBase
         while (npcCount > 0)
         {
             var npc = binaryReader.Read<WldNpc>();
-            Npcs.Add(npc);
-            npcCount -= npc.PatrolCoordinates.Count;
+            NpcInstances.Add(npc);
+            npcCount -= npc.PatrolPositions.Count;
             npcCount--;
         }
 
-        if (WldType == WldType.FLD)
+        if (WldType == WldType.Field)
         {
-            SkyName = binaryReader.Read<String256>();
-            CloudsName1 = binaryReader.Read<String256>();
-            CloudsName2 = binaryReader.Read<String256>();
+            SkyFileName = binaryReader.Read<String256>();
+            PrimaryCloudFileName = binaryReader.Read<String256>();
+            SecondaryCloudFileName = binaryReader.Read<String256>();
         }
 
-        Point1 = binaryReader.Read<Vector3>();
-        Point2 = binaryReader.Read<Vector3>();
-        Point3 = binaryReader.Read<Vector3>();
+        UnusedColor1 = binaryReader.Read<Color>();
+        UnusedColor2 = binaryReader.Read<Color>();
+        FogColor = binaryReader.Read<Color>();
 
-        Unknown5 = binaryReader.ReadSingle();
-        Unknown6 = binaryReader.ReadSingle();
+        FogStartDistance = binaryReader.ReadSingle();
+        FogEndDistance = binaryReader.ReadSingle();
     }
 
     private void ReadNames(SBinaryReader binaryReader, ICollection<String256> namesList)
@@ -253,89 +252,89 @@ public sealed class Wld : FileBase
     }
 
     private void ReadNamesAndCoordinates(SBinaryReader binaryReader, ICollection<String256> namesList,
-        ICollection<WldCoordinate> coordinatesList)
+                                         ICollection<WldObjectInstance> coordinatesList)
     {
         ReadNames(binaryReader, namesList);
 
         var coordinatesCount = binaryReader.ReadInt32();
         for (var i = 0; i < coordinatesCount; i++)
         {
-            var coordinate = binaryReader.Read<WldCoordinate>();
+            var coordinate = binaryReader.Read<WldObjectInstance>();
             coordinatesList.Add(coordinate);
         }
     }
 
     protected override void Write(SBinaryWriter binaryWriter)
     {
-        var typeStr = WldType == WldType.FLD ? "FLD" : "DUN";
+        var typeStr = WldType == WldType.Field ? "FLD" : "DUN";
         binaryWriter.Write(typeStr, isLengthPrefixed: false, includeStringTerminator: true);
 
         // FLD only fields
-        if (WldType == WldType.FLD)
+        if (WldType == WldType.Field)
         {
             binaryWriter.Write(MapSize);
-            binaryWriter.Write(Heightmap);
-            binaryWriter.Write(TextureMap);
-            binaryWriter.Write(Textures.ToSerializable());
+            binaryWriter.Write(TerrainHeightMap);
+            binaryWriter.Write(TerrainTextureMap);
+            binaryWriter.Write(TerrainLayers.ToSerializable());
         }
 
-        binaryWriter.Write(InnerLayout);
+        binaryWriter.Write(LayoutName);
 
-        binaryWriter.Write(BuildingNames.ToSerializable());
-        binaryWriter.Write(BuildingCoordinates.ToSerializable());
-        binaryWriter.Write(ShapeNames.ToSerializable());
-        binaryWriter.Write(ShapeCoordinates.ToSerializable());
-        binaryWriter.Write(TreeNames.ToSerializable());
-        binaryWriter.Write(TreeCoordinates.ToSerializable());
-        binaryWriter.Write(GrassNames.ToSerializable());
-        binaryWriter.Write(GrassCoordinates.ToSerializable());
-        binaryWriter.Write(VAniNames1.ToSerializable());
-        binaryWriter.Write(VAniCoordinates1.ToSerializable());
-        binaryWriter.Write(VAniNames2.ToSerializable());
-        binaryWriter.Write(VAniCoordinates2.ToSerializable());
-        binaryWriter.Write(DungeonNames.ToSerializable());
-        binaryWriter.Write(DungeonCoordinates.ToSerializable());
-        binaryWriter.Write(MAniNames.ToSerializable());
-        binaryWriter.Write(MAniCoordinates.ToSerializable());
-        binaryWriter.Write(EffectName);
-        binaryWriter.Write(Effects.ToSerializable());
+        binaryWriter.Write(BuildingAssets.ToSerializable());
+        binaryWriter.Write(BuildingInstances.ToSerializable());
+        binaryWriter.Write(ShapeAssets.ToSerializable());
+        binaryWriter.Write(ShapeInstances.ToSerializable());
+        binaryWriter.Write(TreeAssets.ToSerializable());
+        binaryWriter.Write(TreeInstances.ToSerializable());
+        binaryWriter.Write(GrassAssets.ToSerializable());
+        binaryWriter.Write(GrassInstances.ToSerializable());
+        binaryWriter.Write(PrimaryVaniAssets.ToSerializable());
+        binaryWriter.Write(PrimaryVaniInstances.ToSerializable());
+        binaryWriter.Write(SecondaryVaniAssets.ToSerializable());
+        binaryWriter.Write(SecondaryVaniInstances.ToSerializable());
+        binaryWriter.Write(DungeonAssets.ToSerializable());
+        binaryWriter.Write(DungeonInstances.ToSerializable());
+        binaryWriter.Write(ManiAssets.ToSerializable());
+        binaryWriter.Write(ManiInstances.ToSerializable());
+        binaryWriter.Write(EffectFileName);
+        binaryWriter.Write(EffectInstances.ToSerializable());
 
         binaryWriter.Write(Unknown1);
         binaryWriter.Write(Unknown2);
         binaryWriter.Write(Unknown3);
 
-        binaryWriter.Write(ObjectNames.ToSerializable());
-        binaryWriter.Write(ObjectCoordinates.ToSerializable());
-        binaryWriter.Write(MusicNames.ToSerializable());
-        binaryWriter.Write(MusicZones.ToSerializable());
-        binaryWriter.Write(SoundEffectNames.ToSerializable());
+        binaryWriter.Write(ObjectAssets.ToSerializable());
+        binaryWriter.Write(ObjectInstances.ToSerializable());
+        binaryWriter.Write(MusicAssets.ToSerializable());
+        binaryWriter.Write(MusicZoneInstances.ToSerializable());
+        binaryWriter.Write(SoundEffectAssets.ToSerializable());
         binaryWriter.Write(Zones.ToSerializable());
-        binaryWriter.Write(SoundEffects.ToSerializable());
-        binaryWriter.Write(UnknownBoundingBoxes.ToSerializable());
-        binaryWriter.Write(Portals.ToSerializable());
-        binaryWriter.Write(Spawns.ToSerializable());
-        binaryWriter.Write(NamedAreas.ToSerializable());
+        binaryWriter.Write(SoundEffectInstances.ToSerializable());
+        binaryWriter.Write(WldMonsterRestrictedZones.ToSerializable());
+        binaryWriter.Write(PortalInstances.ToSerializable());
+        binaryWriter.Write(SpawnInstances.ToSerializable());
+        binaryWriter.Write(NamedAreaInstances.ToSerializable());
 
-        var npcCount = Npcs.Count + Npcs.Sum(npc => npc.PatrolCoordinates.Count);
+        var npcCount = NpcInstances.Count + NpcInstances.Sum(npc => npc.PatrolPositions.Count);
         binaryWriter.Write(npcCount);
 
-        foreach (var npc in Npcs)
+        foreach (var npc in NpcInstances)
         {
             binaryWriter.Write(npc);
         }
 
-        if (WldType == WldType.FLD)
+        if (WldType == WldType.Field)
         {
-            binaryWriter.Write(SkyName);
-            binaryWriter.Write(CloudsName1);
-            binaryWriter.Write(CloudsName2);
+            binaryWriter.Write(SkyFileName);
+            binaryWriter.Write(PrimaryCloudFileName);
+            binaryWriter.Write(SecondaryCloudFileName);
         }
 
-        binaryWriter.Write(Point1);
-        binaryWriter.Write(Point2);
-        binaryWriter.Write(Point3);
+        binaryWriter.Write(UnusedColor1);
+        binaryWriter.Write(UnusedColor2);
+        binaryWriter.Write(FogColor);
 
-        binaryWriter.Write(Unknown5);
-        binaryWriter.Write(Unknown6);
+        binaryWriter.Write(FogStartDistance);
+        binaryWriter.Write(FogEndDistance);
     }
 }

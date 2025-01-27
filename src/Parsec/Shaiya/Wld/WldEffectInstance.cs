@@ -7,7 +7,7 @@ namespace Parsec.Shaiya.Wld;
 /// <summary>
 /// Represents an effect in the world
 /// </summary>
-public sealed class WldEffect : ISerializable
+public sealed class WldEffectInstance : ISerializable
 {
     /// <summary>
     /// Effect's position

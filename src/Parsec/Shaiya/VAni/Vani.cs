@@ -15,7 +15,7 @@ public sealed class Vani : FileBase
     /// <summary>
     /// The distance between the vertices of the <see cref="BoundingBox"/> and the <see cref="Center"/> of the VAni object. Used for game calculations.
     /// </summary>
-    public float DistanceToCenter { get; set; }
+    public float Radius { get; set; }
 
     /// <summary>
     /// Rectangular bounding box
@@ -46,7 +46,7 @@ public sealed class Vani : FileBase
     protected override void Read(SBinaryReader binaryReader)
     {
         Center = binaryReader.Read<Vector3>();
-        DistanceToCenter = binaryReader.ReadSingle();
+        Radius = binaryReader.ReadSingle();
         BoundingBox = binaryReader.Read<BoundingBox>();
         var meshCount = binaryReader.ReadInt32();
         FrameCount = binaryReader.ReadInt32();
@@ -63,7 +63,7 @@ public sealed class Vani : FileBase
     protected override void Write(SBinaryWriter binaryWriter)
     {
         binaryWriter.Write(Center);
-        binaryWriter.Write(DistanceToCenter);
+        binaryWriter.Write(Radius);
         binaryWriter.Write(BoundingBox);
         binaryWriter.Write(Meshes.Count);
         binaryWriter.Write(FrameCount);

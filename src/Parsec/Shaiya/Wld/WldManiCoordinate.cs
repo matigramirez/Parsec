@@ -10,14 +10,14 @@ namespace Parsec.Shaiya.Wld;
 public sealed class WldManiCoordinate : ISerializable
 {
     /// <summary>
-    /// Id of the building that should be animated using this MAni file
+    /// Id of the building from BuildingAssets that should be animated using this MAni file
     /// </summary>
-    public int WorldBuildingId { get; set; }
+    public int BuildingAssetId { get; set; }
 
     /// <summary>
-    /// Id of a 3D Model
+    /// Id of the asset from ManiAssets
     /// </summary>
-    public int Id { get; set; }
+    public int ManiAssetIndex { get; set; }
 
     /// <summary>
     /// World position where to place the model
@@ -36,8 +36,8 @@ public sealed class WldManiCoordinate : ISerializable
 
     public void Read(SBinaryReader binaryReader)
     {
-        WorldBuildingId = binaryReader.ReadInt32();
-        Id = binaryReader.ReadInt32();
+        BuildingAssetId = binaryReader.ReadInt32();
+        ManiAssetIndex = binaryReader.ReadInt32();
         Position = binaryReader.Read<Vector3>();
         RotationForward = binaryReader.Read<Vector3>();
         RotationUp = binaryReader.Read<Vector3>();
@@ -45,8 +45,8 @@ public sealed class WldManiCoordinate : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(WorldBuildingId);
-        binaryWriter.Write(Id);
+        binaryWriter.Write(BuildingAssetId);
+        binaryWriter.Write(ManiAssetIndex);
         binaryWriter.Write(Position);
         binaryWriter.Write(RotationForward);
         binaryWriter.Write(RotationUp);
