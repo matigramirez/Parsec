@@ -58,9 +58,9 @@ public class EftEffect : ISerializable
     /// </summary>
     public Vector3 Position { get; set; }
 
-    public Vector3 Move { get; set; }
+    public Vector3 Spread1 { get; set; }
 
-    public Vector3 Move2 { get; set; }
+    public Vector3 Spread2 { get; set; }
 
     public int BaseAxis { get; set; }
 
@@ -90,7 +90,7 @@ public class EftEffect : ISerializable
     /// </summary>
     public float Unknown28 { get; set; }
 
-    public List<EftRotation> Rotations { get; set; } = new();
+    public List<EftColorFrame> ColorFrames { get; set; } = new();
 
     public List<EftOpacityFrame> OpacityFrames { get; set; } = new();
 
@@ -139,8 +139,8 @@ public class EftEffect : ISerializable
         OffsetFrame = binaryReader.Read<Vector3>();
         Trembling = binaryReader.Read<Vector3>();
         Position = binaryReader.Read<Vector3>();
-        Move = binaryReader.Read<Vector3>();
-        Move2 = binaryReader.Read<Vector3>();
+        Spread1 = binaryReader.Read<Vector3>();
+        Spread2 = binaryReader.Read<Vector3>();
 
         BaseAxis = binaryReader.ReadInt32();
         Unknown20 = binaryReader.ReadInt32();
@@ -160,7 +160,7 @@ public class EftEffect : ISerializable
             Unknown28 = binaryReader.ReadSingle();
         }
 
-        Rotations = binaryReader.ReadList<EftRotation>().ToList();
+        ColorFrames = binaryReader.ReadList<EftColorFrame>().ToList();
         OpacityFrames = binaryReader.ReadList<EftOpacityFrame>().ToList();
         EffectSub3List = binaryReader.ReadList<EftEffectSub3>().ToList();
 
@@ -204,8 +204,8 @@ public class EftEffect : ISerializable
         binaryWriter.Write(OffsetFrame);
         binaryWriter.Write(Trembling);
         binaryWriter.Write(Position);
-        binaryWriter.Write(Move);
-        binaryWriter.Write(Move2);
+        binaryWriter.Write(Spread1);
+        binaryWriter.Write(Spread2);
 
         binaryWriter.Write(BaseAxis);
         binaryWriter.Write(Unknown20);
@@ -225,7 +225,7 @@ public class EftEffect : ISerializable
             binaryWriter.Write(Unknown28);
         }
 
-        binaryWriter.Write(Rotations.ToSerializable());
+        binaryWriter.Write(ColorFrames.ToSerializable());
         binaryWriter.Write(OpacityFrames.ToSerializable());
         binaryWriter.Write(EffectSub3List.ToSerializable());
 
