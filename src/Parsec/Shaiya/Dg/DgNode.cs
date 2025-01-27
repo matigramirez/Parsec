@@ -7,17 +7,21 @@ namespace Parsec.Shaiya.Dg;
 
 public class DgNode : ISerializable
 {
-    public Vector3 Center { get; set; } = new();
+    private const int NodeChildCount = 8;
 
-    public BoundingBox ViewBox { get; set; } = new();
+    public Vector3 Center { get; set; }
 
-    public BoundingBox CollisionBox { get; set; } = new();
+    public BoundingBox ViewBox { get; set; }
+
+    public BoundingBox CollisionBox { get; set; }
 
     public List<DgObject> Objects { get; set; } = new();
 
     public DgMeshCollisionType CollisionType { get; set; }
 
     public DgCollisionMesh CollisionMesh { get; set; } = new();
+
+    public List<DgNode> ChildNodes { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
@@ -34,6 +38,17 @@ public class DgNode : ISerializable
             // Read extra node info
             CollisionMesh = binaryReader.Read<DgCollisionMesh>();
         }
+
+        for (var i = 0; i < NodeChildCount; i++)
+        {
+            var value = binaryReader.ReadInt32();
+
+            if (value > 0)
+            {
+                var node = binaryReader.Read<DgNode>();
+                ChildNodes.Add(node);
+            }
+        }
     }
 
     public void Write(SBinaryWriter binaryWriter)
@@ -47,6 +62,19 @@ public class DgNode : ISerializable
         if (CollisionType == DgMeshCollisionType.Collision)
         {
             binaryWriter.Write(CollisionMesh);
+        }
+
+        for (var i = 0; i < NodeChildCount; i++)
+        {
+            if (ChildNodes.Count > i)
+            {
+                binaryWriter.Write(1);
+                binaryWriter.Write(ChildNodes[i]);
+            }
+            else
+            {
+                binaryWriter.Write(0);
+            }
         }
     }
 }

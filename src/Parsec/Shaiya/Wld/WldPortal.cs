@@ -10,12 +10,12 @@ namespace Parsec.Shaiya.Wld;
 public sealed class WldPortal : ISerializable
 {
     /// <summary>
-    /// The area of the portal
+    /// BoundingBox that defines the collision of the portal
     /// </summary>
     public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
-    /// BoundingBox Radius
+    /// <see cref="BoundingBox"/> radius
     /// </summary>
     public float Radius { get; set; }
 
@@ -40,7 +40,7 @@ public sealed class WldPortal : ISerializable
     public WldFaction Faction { get; set; }
 
     /// <summary>
-    /// Almost always 0L
+    /// Almost always 0
     /// </summary>
     public byte Unknown { get; set; }
 

@@ -10,9 +10,9 @@ namespace Parsec.Shaiya.Wld;
 public sealed class WldSoundEffect : ISerializable
 {
     /// <summary>
-    /// Id of the wav file (from the linked name list of files)
+    /// Id of the sound asset from the SoundEffectAssets list
     /// </summary>
-    public int Id { get; set; }
+    public int SoundEffectAssetId { get; set; }
 
     /// <summary>
     /// The center point of the circle
@@ -26,14 +26,14 @@ public sealed class WldSoundEffect : ISerializable
 
     public void Read(SBinaryReader binaryReader)
     {
-        Id = binaryReader.ReadInt32();
+        SoundEffectAssetId = binaryReader.ReadInt32();
         Center = binaryReader.Read<Vector3>();
         Radius = binaryReader.ReadSingle();
     }
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Id);
+        binaryWriter.Write(SoundEffectAssetId);
         binaryWriter.Write(Center);
         binaryWriter.Write(Radius);
     }

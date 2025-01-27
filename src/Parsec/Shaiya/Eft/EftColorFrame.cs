@@ -1,24 +1,23 @@
 ﻿using Parsec.Serialization;
-using Parsec.Shaiya.Common;
 using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Eft;
 
-public sealed class EftRotation : ISerializable
+public sealed class EftColorFrame : ISerializable
 {
-    public Quaternion Quaternion { get; set; } = new();
+    public EftColor Color { get; set; }
 
     public float Time { get; set; }
 
     public void Read(SBinaryReader binaryReader)
     {
-        Quaternion = binaryReader.Read<Quaternion>();
+        Color = binaryReader.Read<EftColor>();
         Time = binaryReader.ReadSingle();
     }
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Quaternion);
+        binaryWriter.Write(Color);
         binaryWriter.Write(Time);
     }
 }

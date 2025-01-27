@@ -20,7 +20,7 @@ public sealed class WldSpawn : ISerializable
     public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
-    /// BoundingBox Radius
+    /// <see cref="BoundingBox"/> Radius
     /// </summary>
     public float Radius { get; set; }
 

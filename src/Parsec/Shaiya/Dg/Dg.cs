@@ -14,7 +14,7 @@ public class Dg : FileBase
 
     public int UnknownInt32 { get; set; }
 
-    public List<DgNode?> Nodes { get; set; } = new();
+    public DgNode RootNode { get; set; } = new();
 
     protected override void Read(SBinaryReader binaryReader)
     {
@@ -22,25 +22,11 @@ public class Dg : FileBase
         TextureNames = binaryReader.ReadList<String256>().ToList();
         UnknownInt32 = binaryReader.ReadInt32();
 
-        while (true)
+        var value = binaryReader.ReadInt32();
+
+        if (value > 0)
         {
-            if (binaryReader.Position == binaryReader.StreamLength)
-            {
-                break;
-            }
-
-            // When value is 1, node data follows, otherwise node reading must be skipped
-            var value = binaryReader.ReadInt32();
-
-            if (value > 0)
-            {
-                var node = binaryReader.Read<DgNode>();
-                Nodes.Add(node);
-            }
-            else
-            {
-                Nodes.Add(null);
-            }
+            RootNode = binaryReader.Read<DgNode>();
         }
     }
 
@@ -50,16 +36,7 @@ public class Dg : FileBase
         binaryWriter.Write(TextureNames.ToSerializable());
         binaryWriter.Write(UnknownInt32);
 
-        foreach (var node in Nodes)
-        {
-            if (node == null)
-            {
-                binaryWriter.Write(0);
-                continue;
-            }
-
-            binaryWriter.Write(1);
-            binaryWriter.Write(node);
-        }
+        binaryWriter.Write(1);
+        binaryWriter.Write(RootNode);
     }
 }

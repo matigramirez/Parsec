@@ -2,6 +2,6 @@
 
 public enum WldType
 {
-    FLD,
-    DUN
+    Field,
+    Dungeon
 }

@@ -5,14 +5,14 @@ using Parsec.Shaiya.Core;
 namespace Parsec.Shaiya.Wld;
 
 /// <summary>
-/// Coordinates to place a 3D model in the world
+/// Represents a world object
 /// </summary>
-public sealed class WldCoordinate : ISerializable
+public sealed class WldObjectInstance : ISerializable
 {
     /// <summary>
-    /// Id of a 3D Model
+    /// Index of the 3d model in its corresponding category list
     /// </summary>
-    public int Id { get; set; }
+    public int AssetIndex { get; set; }
 
     /// <summary>
     /// World position where to place the model
@@ -29,10 +29,9 @@ public sealed class WldCoordinate : ISerializable
     /// </summary>
     public Vector3 RotationUp { get; set; } = new();
 
-
     public void Read(SBinaryReader binaryReader)
     {
-        Id = binaryReader.ReadInt32();
+        AssetIndex = binaryReader.ReadInt32();
         Position = binaryReader.Read<Vector3>();
         RotationForward = binaryReader.Read<Vector3>();
         RotationUp = binaryReader.Read<Vector3>();
@@ -40,7 +39,7 @@ public sealed class WldCoordinate : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Id);
+        binaryWriter.Write(AssetIndex);
         binaryWriter.Write(Position);
         binaryWriter.Write(RotationForward);
         binaryWriter.Write(RotationUp);

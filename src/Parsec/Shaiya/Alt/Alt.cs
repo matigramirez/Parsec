@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Parsec.Extensions;
+﻿using Parsec.Extensions;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
 
@@ -10,19 +9,19 @@ namespace Parsec.Shaiya.Alt;
 /// </summary>
 public sealed class Alt : FileBase
 {
-    public string Signature { get; set; } = string.Empty;
+    public string Header { get; set; } = string.Empty;
 
     public List<AltAnimation> Animations { get; set; } = new();
 
     protected override void Read(SBinaryReader binaryReader)
     {
-        Signature = binaryReader.ReadString(3);
+        Header = binaryReader.ReadString(3);
         Animations = binaryReader.ReadList<AltAnimation>().ToList();
     }
 
     protected override void Write(SBinaryWriter binaryWriter)
     {
-        binaryWriter.Write(Signature, isLengthPrefixed: false, includeStringTerminator: false);
+        binaryWriter.Write(Header, isLengthPrefixed: false, includeStringTerminator: false);
         binaryWriter.Write(Animations.ToSerializable());
     }
 }

@@ -4,12 +4,16 @@ using Parsec.Shaiya.Core;
 
 namespace Parsec.Shaiya.Wld;
 
-public class WldUnknownBox : ISerializable
+/// <summary>
+/// Represents a box where monsters can't attack players. This is used only in dungeons to prevent attack exploits from players.
+/// Even though this information is present in the world file they have no effect as they are hard-coded in the server files.
+/// </summary>
+public class WldMonsterRestrictedZone : ISerializable
 {
     public BoundingBox BoundingBox { get; set; } = new();
 
     /// <summary>
-    /// BoundingBox Radius
+    /// <see cref="BoundingBox"/> radius
     /// </summary>
     public float Radius { get; set; }
 
