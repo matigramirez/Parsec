@@ -664,10 +664,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Shaiya\Data\sample.enc0x55.saf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Shaiya\Data\sample.enc0x55.sah">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Shaiya\Skill\SkillEp5.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -818,6 +818,9 @@
     </None>
     <None Update="Shaiya\Item\Item_US_ps0216.SData">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaiya\Data\AutoStat_Mode.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

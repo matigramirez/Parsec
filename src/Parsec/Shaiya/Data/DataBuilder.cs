@@ -28,8 +28,7 @@ public static class DataBuilder
         {
             _path = inputFolderPath;
 
-            Directory.CreateDirectory(inputFolderPath);
-
+            Directory.CreateDirectory(outputFolderPath);
             var outputDirectoryInfo = new DirectoryInfo(outputFolderPath);
 
             var safPath = Path.Combine(outputFolderPath, $"{outputDirectoryInfo.Name}.saf");

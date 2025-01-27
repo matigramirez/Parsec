@@ -69,6 +69,8 @@ public class DataTests
         if (file1 == null || file2 == null)
             throw new XunitException("File not found in FileIndex");
 
+        Directory.CreateDirectory(extractionDirectory);
+
         data.Extract(file1, extractionDirectory);
         Assert.True(File.Exists($"{extractionDirectory}/{file1.Name}"));
 
