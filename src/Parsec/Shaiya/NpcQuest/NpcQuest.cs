@@ -31,7 +31,7 @@ public class NpcQuest : SData.SData
 
     public List<NpcQuestStandardNpc> CombatCommanders { get; set; } = new();
 
-    public byte[]? UnknownArray { get; set; }
+    public List<QuestItemLink> QuestLinks { get; set; } = new();
 
     public List<Quest> Quests { get; set; } = new();
 
@@ -50,33 +50,17 @@ public class NpcQuest : SData.SData
         GuildMasters = binaryReader.ReadList<NpcQuestStandardNpc>().ToList();
         DeadNpcs = binaryReader.ReadList<NpcQuestStandardNpc>().ToList();
         CombatCommanders = binaryReader.ReadList<NpcQuestStandardNpc>().ToList();
-        ReadUnknownArray(binaryReader);
-        Quests = binaryReader.ReadList<Quest>().ToList();
-    }
 
-    private void ReadUnknownArray(SBinaryReader binaryReader)
-    {
-        var unknownBuffer = new List<byte>();
-
-        for (var i = 0; i < 256; i++)
+        for (byte itemType = 0; itemType < byte.MaxValue; itemType++)
         {
-            for (var j = 0; j < 256; j++)
+            for (byte itemTypeId = 0; itemTypeId < byte.MaxValue; itemTypeId++)
             {
-                var value1 = binaryReader.ReadInt32();
-                var array1 = binaryReader.ReadBytes(2 * value1);
-
-                unknownBuffer.AddRange(BitConverter.GetBytes(value1));
-                unknownBuffer.AddRange(array1);
-
-                var value2 = binaryReader.ReadInt32();
-                var array2 = binaryReader.ReadBytes(2 * value2);
-
-                unknownBuffer.AddRange(BitConverter.GetBytes(value2));
-                unknownBuffer.AddRange(array2);
+                var questLink = binaryReader.Read<QuestItemLink>();
+                QuestLinks.Add(questLink);
             }
         }
 
-        UnknownArray = unknownBuffer.ToArray();
+        Quests = binaryReader.ReadList<Quest>().ToList();
     }
 
     protected override void Write(SBinaryWriter binaryWriter)
@@ -94,7 +78,24 @@ public class NpcQuest : SData.SData
         binaryWriter.Write(GuildMasters.ToSerializable());
         binaryWriter.Write(DeadNpcs.ToSerializable());
         binaryWriter.Write(CombatCommanders.ToSerializable());
-        binaryWriter.Write(UnknownArray);
+
+        for (byte itemType = 0; itemType < byte.MaxValue; itemType++)
+        {
+            for (byte itemTypeId = 0; itemTypeId < byte.MaxValue; itemTypeId++)
+            {
+                var questLinksIndex = itemType * byte.MaxValue + itemTypeId;
+
+                if (questLinksIndex >= QuestLinks.Count)
+                {
+                    binaryWriter.Write(new QuestItemLink());
+                }
+                else
+                {
+                    binaryWriter.Write(QuestLinks[questLinksIndex]);
+                }
+            }
+        }
+
         binaryWriter.Write(Quests.ToSerializable());
     }
 }

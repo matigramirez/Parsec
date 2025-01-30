@@ -39,15 +39,15 @@ public class Quest : ISerializable
 
     public byte Priest { get; set; }
 
-    public ushort wHG { get; set; }
+    public ushort HG { get; set; }
 
-    public short shVG { get; set; }
+    public short VG { get; set; }
 
-    public byte byCG { get; set; }
+    public byte CG { get; set; }
 
-    public byte byOG { get; set; }
+    public byte OG { get; set; }
 
-    public byte byIG { get; set; }
+    public byte IG { get; set; }
 
     public ushort PreviousQuestId { get; set; }
 
@@ -175,11 +175,11 @@ public class Quest : ISerializable
         Mage = binaryReader.ReadByte();
         Priest = binaryReader.ReadByte();
 
-        wHG = binaryReader.ReadUInt16();
-        shVG = binaryReader.ReadInt16();
-        byCG = binaryReader.ReadByte();
-        byOG = binaryReader.ReadByte();
-        byIG = binaryReader.ReadByte();
+        HG = binaryReader.ReadUInt16();
+        VG = binaryReader.ReadInt16();
+        CG = binaryReader.ReadByte();
+        OG = binaryReader.ReadByte();
+        IG = binaryReader.ReadByte();
 
         PreviousQuestId = binaryReader.ReadUInt16();
         RequireParty = binaryReader.ReadBool();
@@ -278,11 +278,11 @@ public class Quest : ISerializable
         binaryWriter.Write(Archer);
         binaryWriter.Write(Mage);
         binaryWriter.Write(Priest);
-        binaryWriter.Write(wHG);
-        binaryWriter.Write(shVG);
-        binaryWriter.Write(byCG);
-        binaryWriter.Write(byOG);
-        binaryWriter.Write(byIG);
+        binaryWriter.Write(HG);
+        binaryWriter.Write(VG);
+        binaryWriter.Write(CG);
+        binaryWriter.Write(OG);
+        binaryWriter.Write(IG);
         binaryWriter.Write(PreviousQuestId);
         binaryWriter.Write(RequireParty);
         binaryWriter.Write(PartyFighter);
