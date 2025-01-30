@@ -51,9 +51,9 @@ public class NpcQuest : SData.SData
         DeadNpcs = binaryReader.ReadList<NpcQuestStandardNpc>().ToList();
         CombatCommanders = binaryReader.ReadList<NpcQuestStandardNpc>().ToList();
 
-        for (byte itemType = 0; itemType < byte.MaxValue; itemType++)
+        for (var itemType = 0; itemType <= byte.MaxValue; itemType++)
         {
-            for (byte itemTypeId = 0; itemTypeId < byte.MaxValue; itemTypeId++)
+            for (var itemTypeId = 0; itemTypeId <= byte.MaxValue; itemTypeId++)
             {
                 var questLink = binaryReader.Read<QuestItemLink>();
                 QuestLinks.Add(questLink);
@@ -79,9 +79,9 @@ public class NpcQuest : SData.SData
         binaryWriter.Write(DeadNpcs.ToSerializable());
         binaryWriter.Write(CombatCommanders.ToSerializable());
 
-        for (byte itemType = 0; itemType < byte.MaxValue; itemType++)
+        for (var itemType = 0; itemType <= byte.MaxValue; itemType++)
         {
-            for (byte itemTypeId = 0; itemTypeId < byte.MaxValue; itemTypeId++)
+            for (var itemTypeId = 0; itemTypeId <= byte.MaxValue; itemTypeId++)
             {
                 var questLinksIndex = itemType * byte.MaxValue + itemTypeId;
 
