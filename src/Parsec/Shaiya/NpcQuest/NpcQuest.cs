@@ -78,24 +78,7 @@ public class NpcQuest : SData.SData
         binaryWriter.Write(GuildMasters.ToSerializable());
         binaryWriter.Write(DeadNpcs.ToSerializable());
         binaryWriter.Write(CombatCommanders.ToSerializable());
-
-        for (var itemType = 0; itemType <= byte.MaxValue; itemType++)
-        {
-            for (var itemTypeId = 0; itemTypeId <= byte.MaxValue; itemTypeId++)
-            {
-                var questLinksIndex = itemType * byte.MaxValue + itemTypeId;
-
-                if (questLinksIndex >= QuestLinks.Count)
-                {
-                    binaryWriter.Write(new QuestItemLink());
-                }
-                else
-                {
-                    binaryWriter.Write(QuestLinks[questLinksIndex]);
-                }
-            }
-        }
-
+        binaryWriter.Write(QuestLinks.ToSerializable(), lengthPrefixed: false);
         binaryWriter.Write(Quests.ToSerializable());
     }
 }
