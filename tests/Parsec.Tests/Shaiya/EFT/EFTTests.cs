@@ -10,7 +10,7 @@ public class EftTests
 
         // Check original EFT values
         Assert.Empty(eft.Meshes);
-        Assert.Equal(111, eft.Textures.Count);
+        Assert.Equal(111, eft.Sprites.Count);
         Assert.Equal(294, eft.Effects.Count);
         Assert.Empty(eft.EffectSequences);
 
@@ -21,7 +21,7 @@ public class EftTests
 
         // Check fields
         Assert.Equal(eft.Meshes.Count, eftFromJson.Meshes.Count);
-        Assert.Equal(eft.Textures.Count, eftFromJson.Textures.Count);
+        Assert.Equal(eft.Sprites.Count, eftFromJson.Sprites.Count);
         Assert.Equal(eft.Effects.Count, eftFromJson.Effects.Count);
         Assert.Equal(eft.EffectSequences.Count, eftFromJson.EffectSequences.Count);
 
@@ -32,7 +32,7 @@ public class EftTests
 
         // Check fields
         Assert.Equal(eft.Meshes.Count, newEft.Meshes.Count);
-        Assert.Equal(eft.Textures.Count, newEft.Textures.Count);
+        Assert.Equal(eft.Sprites.Count, newEft.Sprites.Count);
         Assert.Equal(eft.Effects.Count, newEft.Effects.Count);
         Assert.Equal(eft.EffectSequences.Count, newEft.EffectSequences.Count);
     }
@@ -77,7 +77,7 @@ public class EftTests
         // Since EFTs use different encodings on texts, the EFT -> JSON -> EFT conversion will modify the strings,
         // so a checksum can't be done here, that's why only list lengths will be compared
         Assert.Equal(eft.Meshes.Count, newEft.Meshes.Count);
-        Assert.Equal(eft.Textures.Count, newEft.Textures.Count);
+        Assert.Equal(eft.Sprites.Count, newEft.Sprites.Count);
         Assert.Equal(eft.Effects.Count, newEft.Effects.Count);
         Assert.Equal(eft.EffectSequences.Count, newEft.EffectSequences.Count);
     }

@@ -9,20 +9,35 @@ public class EftEffect : ISerializable
 {
     public string Name { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown1 { get; set; }
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown2 { get; set; }
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown3 { get; set; }
 
     public int Loop { get; set; }
 
     public int SrcBlend { get; set; }
 
+    /// <summary>
+    /// Values 0 to 3. Likely to be an enum
+    /// </summary>
     public int Unknown6 { get; set; }
 
     public int DestBlend { get; set; }
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown8 { get; set; }
 
     /// <summary>
@@ -30,22 +45,43 @@ public class EftEffect : ISerializable
     /// </summary>
     public int MeshIndex { get; set; }
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown10 { get; set; }
 
     public float DelayPerFrame { get; set; }
 
+    /// <summary>
+    /// Values between 0.0f 6000.0f
+    /// </summary>
     public float Unknown12 { get; set; }
 
+    /// <summary>
+    /// Values between 0.0f 10000.0f
+    /// </summary>
     public float Unknown13 { get; set; }
 
+    /// <summary>
+    /// Values between 0.0f 6000.0f
+    /// </summary>
     public float Unknown14 { get; set; }
 
     public float InitialDelay { get; set; }
 
+    /// <summary>
+    /// Values between 0.0f 34.0f
+    /// </summary>
     public float Unknown16 { get; set; }
 
+    /// <summary>
+    /// Values between -100.0f and 100.0f
+    /// </summary>
     public float Unknown17 { get; set; }
 
+    /// <summary>
+    /// Values between 0.0f and 3.0f
+    /// </summary>
     public float Unknown18 { get; set; }
 
     public Vector3 OffsetFrame { get; set; }
@@ -58,14 +94,21 @@ public class EftEffect : ISerializable
     /// </summary>
     public Vector3 Position { get; set; }
 
-    public Vector3 Spread1 { get; set; }
+    public BoundingBox BoundingBox { get; set; }
 
-    public Vector3 Spread2 { get; set; }
-
+    /// <summary>
+    /// Values 0 to 3. Likely to be an enum
+    /// </summary>
     public int BaseAxis { get; set; }
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown20 { get; set; }
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown21 { get; set; }
 
     public Vector3 UnknownVec6 { get; set; }
@@ -78,6 +121,9 @@ public class EftEffect : ISerializable
 
     public float RotationSpeedMax { get; set; }
 
+    /// <summary>
+    /// Value between 1 and 3. Probably an enum
+    /// </summary>
     public int RotationAxis { get; set; }
 
     /// <summary>
@@ -92,16 +138,28 @@ public class EftEffect : ISerializable
 
     public List<EftColorFrame> ColorFrames { get; set; } = new();
 
-    public List<EftOpacityFrame> OpacityFrames { get; set; } = new();
+    public List<EftRotationFrame> RotationFrames { get; set; } = new();
 
-    public List<EftEffectSub3> EffectSub3List { get; set; } = new();
+    public List<EftSizeFrame> SizeFrames { get; set; } = new();
 
+    /// <summary>
+    /// Boolean
+    /// </summary>
     public int Unknown29 { get; set; }
 
+    /// <summary>
+    /// Value between 1 and 3. Probably an enum
+    /// </summary>
     public int Unknown30 { get; set; }
 
+    /// <summary>
+    /// Value between -360 and 364
+    /// </summary>
     public int Unknown31 { get; set; }
 
+    /// <summary>
+    /// Value between -360 and 720. Probably an angle
+    /// </summary>
     public int Unknown32 { get; set; }
 
     public List<EftEffectTexture> Textures { get; set; } = new();
@@ -139,8 +197,7 @@ public class EftEffect : ISerializable
         OffsetFrame = binaryReader.Read<Vector3>();
         Trembling = binaryReader.Read<Vector3>();
         Position = binaryReader.Read<Vector3>();
-        Spread1 = binaryReader.Read<Vector3>();
-        Spread2 = binaryReader.Read<Vector3>();
+        BoundingBox = binaryReader.Read<BoundingBox>();
 
         BaseAxis = binaryReader.ReadInt32();
         Unknown20 = binaryReader.ReadInt32();
@@ -161,8 +218,8 @@ public class EftEffect : ISerializable
         }
 
         ColorFrames = binaryReader.ReadList<EftColorFrame>().ToList();
-        OpacityFrames = binaryReader.ReadList<EftOpacityFrame>().ToList();
-        EffectSub3List = binaryReader.ReadList<EftEffectSub3>().ToList();
+        RotationFrames = binaryReader.ReadList<EftRotationFrame>().ToList();
+        SizeFrames = binaryReader.ReadList<EftSizeFrame>().ToList();
 
         Unknown29 = binaryReader.ReadInt32();
         Unknown30 = binaryReader.ReadInt32();
@@ -204,8 +261,7 @@ public class EftEffect : ISerializable
         binaryWriter.Write(OffsetFrame);
         binaryWriter.Write(Trembling);
         binaryWriter.Write(Position);
-        binaryWriter.Write(Spread1);
-        binaryWriter.Write(Spread2);
+        binaryWriter.Write(BoundingBox);
 
         binaryWriter.Write(BaseAxis);
         binaryWriter.Write(Unknown20);
@@ -226,8 +282,8 @@ public class EftEffect : ISerializable
         }
 
         binaryWriter.Write(ColorFrames.ToSerializable());
-        binaryWriter.Write(OpacityFrames.ToSerializable());
-        binaryWriter.Write(EffectSub3List.ToSerializable());
+        binaryWriter.Write(RotationFrames.ToSerializable());
+        binaryWriter.Write(SizeFrames.ToSerializable());
 
         binaryWriter.Write(Unknown29);
         binaryWriter.Write(Unknown30);

@@ -12,7 +12,7 @@ public sealed class Eft : FileBase
 
     public List<EftEffectMesh> Meshes { get; set; } = new();
 
-    public List<EftTexture> Textures { get; set; } = new();
+    public List<EftSprite> Sprites { get; set; } = new();
 
     public List<EftEffect> Effects { get; set; } = new();
 
@@ -37,7 +37,7 @@ public sealed class Eft : FileBase
         binaryReader.SerializationOptions.ExtraOption = Format;
 
         Meshes = binaryReader.ReadList<EftEffectMesh>().ToList();
-        Textures = binaryReader.ReadList<EftTexture>().ToList();
+        Sprites = binaryReader.ReadList<EftSprite>().ToList();
         Effects = binaryReader.ReadList<EftEffect>().ToList();
         EffectSequences = binaryReader.ReadList<EftEffectSequence>().ToList();
     }
@@ -57,7 +57,7 @@ public sealed class Eft : FileBase
 
         binaryWriter.Write(signature, isLengthPrefixed: false, includeStringTerminator: false);
         binaryWriter.Write(Meshes.ToSerializable());
-        binaryWriter.Write(Textures.ToSerializable());
+        binaryWriter.Write(Sprites.ToSerializable());
         binaryWriter.Write(Effects.ToSerializable());
         binaryWriter.Write(EffectSequences.ToSerializable());
     }
