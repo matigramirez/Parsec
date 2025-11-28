@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Shaiya\3DC\mob_rend_01_a.3DC">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Shaiya\EFT\Monster.EFT">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
