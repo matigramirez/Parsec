@@ -12,11 +12,11 @@ public sealed class Eft : FileBase
 
     public List<EftEffectMesh> Meshes { get; set; } = new();
 
-    public List<EftSprite> Sprites { get; set; } = new();
+    public List<EftTexture> Textures { get; set; } = new();
 
     public List<EftEffect> Effects { get; set; } = new();
 
-    public List<EftEffectSequence> EffectSequences { get; set; } = new();
+    public List<EftEffectGroup> EffectGroups { get; set; } = new();
 
     [JsonIgnore]
     public override string Extension => "EFT";
@@ -30,16 +30,16 @@ public sealed class Eft : FileBase
             "EFT" => EftFormat.EFT,
             "EF2" => EftFormat.EF2,
             "EF3" => EftFormat.EF3,
-            _ => EftFormat.Unknown
+            _     => EftFormat.Unknown
         };
 
         // Effect instances expect the Format to be set as the ExtraOption property on the serialization settings
         binaryReader.SerializationOptions.ExtraOption = Format;
 
         Meshes = binaryReader.ReadList<EftEffectMesh>().ToList();
-        Sprites = binaryReader.ReadList<EftSprite>().ToList();
+        Textures = binaryReader.ReadList<EftTexture>().ToList();
         Effects = binaryReader.ReadList<EftEffect>().ToList();
-        EffectSequences = binaryReader.ReadList<EftEffectSequence>().ToList();
+        EffectGroups = binaryReader.ReadList<EftEffectGroup>().ToList();
     }
 
     protected override void Write(SBinaryWriter binaryWriter)
@@ -49,7 +49,7 @@ public sealed class Eft : FileBase
             EftFormat.EFT => "EFT",
             EftFormat.EF2 => "EF2",
             EftFormat.EF3 => "EF3",
-            _ => "EFT"
+            _             => "EFT"
         };
 
         // Effect instances expect the Format to be set as the ExtraOption property on the serialization settings
@@ -57,8 +57,8 @@ public sealed class Eft : FileBase
 
         binaryWriter.Write(signature, isLengthPrefixed: false, includeStringTerminator: false);
         binaryWriter.Write(Meshes.ToSerializable());
-        binaryWriter.Write(Sprites.ToSerializable());
+        binaryWriter.Write(Textures.ToSerializable());
         binaryWriter.Write(Effects.ToSerializable());
-        binaryWriter.Write(EffectSequences.ToSerializable());
+        binaryWriter.Write(EffectGroups.ToSerializable());
     }
 }

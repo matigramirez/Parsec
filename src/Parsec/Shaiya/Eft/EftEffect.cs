@@ -67,7 +67,7 @@ public class EftEffect : ISerializable
     /// </summary>
     public float Unknown14 { get; set; }
 
-    public float InitialDelay { get; set; }
+    public float StartDelay { get; set; }
 
     /// <summary>
     /// Values between 0.0f 34.0f
@@ -94,7 +94,9 @@ public class EftEffect : ISerializable
     /// </summary>
     public Vector3 Position { get; set; }
 
-    public BoundingBox BoundingBox { get; set; }
+    public Vector3 Spread1 { get; set; }
+
+    public Vector3 Spread2 { get; set; }
 
     /// <summary>
     /// Values 0 to 3. Likely to be an enum
@@ -162,7 +164,7 @@ public class EftEffect : ISerializable
     /// </summary>
     public int Unknown32 { get; set; }
 
-    public List<EftEffectTexture> Textures { get; set; } = new();
+    public List<EftEffectTexture> Sprites { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
@@ -189,7 +191,7 @@ public class EftEffect : ISerializable
         Unknown12 = binaryReader.ReadSingle();
         Unknown13 = binaryReader.ReadSingle();
         Unknown14 = binaryReader.ReadSingle();
-        InitialDelay = binaryReader.ReadSingle();
+        StartDelay = binaryReader.ReadSingle();
         Unknown16 = binaryReader.ReadSingle();
         Unknown17 = binaryReader.ReadSingle();
         Unknown18 = binaryReader.ReadSingle();
@@ -197,7 +199,8 @@ public class EftEffect : ISerializable
         OffsetFrame = binaryReader.Read<Vector3>();
         Trembling = binaryReader.Read<Vector3>();
         Position = binaryReader.Read<Vector3>();
-        BoundingBox = binaryReader.Read<BoundingBox>();
+        Spread1 = binaryReader.Read<Vector3>();
+        Spread2 = binaryReader.Read<Vector3>();
 
         BaseAxis = binaryReader.ReadInt32();
         Unknown20 = binaryReader.ReadInt32();
@@ -226,7 +229,7 @@ public class EftEffect : ISerializable
         Unknown31 = binaryReader.ReadInt32();
         Unknown32 = binaryReader.ReadInt32();
 
-        Textures = binaryReader.ReadList<EftEffectTexture>().ToList();
+        Sprites = binaryReader.ReadList<EftEffectTexture>().ToList();
     }
 
     public void Write(SBinaryWriter binaryWriter)
@@ -253,7 +256,7 @@ public class EftEffect : ISerializable
         binaryWriter.Write(Unknown12);
         binaryWriter.Write(Unknown13);
         binaryWriter.Write(Unknown14);
-        binaryWriter.Write(InitialDelay);
+        binaryWriter.Write(StartDelay);
         binaryWriter.Write(Unknown16);
         binaryWriter.Write(Unknown17);
         binaryWriter.Write(Unknown18);
@@ -261,7 +264,8 @@ public class EftEffect : ISerializable
         binaryWriter.Write(OffsetFrame);
         binaryWriter.Write(Trembling);
         binaryWriter.Write(Position);
-        binaryWriter.Write(BoundingBox);
+        binaryWriter.Write(Spread1);
+        binaryWriter.Write(Spread2);
 
         binaryWriter.Write(BaseAxis);
         binaryWriter.Write(Unknown20);
@@ -290,6 +294,6 @@ public class EftEffect : ISerializable
         binaryWriter.Write(Unknown31);
         binaryWriter.Write(Unknown32);
 
-        binaryWriter.Write(Textures.ToSerializable());
+        binaryWriter.Write(Sprites.ToSerializable());
     }
 }
