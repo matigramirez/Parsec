@@ -30,7 +30,7 @@ public sealed class ItmRecord : ISerializable
     /// <summary>
     /// Present if <see cref="RecordFormat"/> is Extended.
     /// </summary>
-    public uint RGBA { get; set; }
+    public ItmColor Color { get; set; }
 
     /// <summary>
     /// Present if <see cref="RecordFormat"/> is Extended.
@@ -60,15 +60,16 @@ public sealed class ItmRecord : ISerializable
         AlphaBlendingMode = (AlphaBlendingMode)binaryReader.ReadInt32();
         Unknown1 = binaryReader.ReadInt32();
         RecordFormat = (ItmRecordFormat)binaryReader.ReadInt32();
-        Unknown2 = binaryReader.ReadInt32();
 
         if (RecordFormat == ItmRecordFormat.Extended)
         {
-            RGBA = binaryReader.ReadUInt32();
+            Unknown2 = binaryReader.ReadInt32();
+            Color = binaryReader.Read<ItmColor>();
             Rotation = binaryReader.ReadSingle();
             Scale = binaryReader.ReadSingle();
-            Unknown3 = binaryReader.ReadInt32();
         }
+
+        Unknown3 = binaryReader.ReadInt32();
 
         if (binaryReader.SerializationOptions.ExtraOption is ItmFormat.IT2)
         {
@@ -83,15 +84,16 @@ public sealed class ItmRecord : ISerializable
         binaryWriter.Write((int)AlphaBlendingMode);
         binaryWriter.Write(Unknown1);
         binaryWriter.Write((int)RecordFormat);
-        binaryWriter.Write(Unknown2);
 
         if (RecordFormat == ItmRecordFormat.Extended)
         {
-            binaryWriter.Write(RGBA);
+            binaryWriter.Write(Unknown2);
+            binaryWriter.Write(Color);
             binaryWriter.Write(Rotation);
             binaryWriter.Write(Scale);
-            binaryWriter.Write(Unknown3);
         }
+
+        binaryWriter.Write(Unknown3);
 
         if (binaryWriter.SerializationOptions.ExtraOption is ItmFormat.IT2)
         {
