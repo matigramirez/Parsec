@@ -95,6 +95,7 @@ public class _3DCTests
     [InlineData("vehicle_El_06.3DC")]
     [InlineData("WhiteWing.3DC")]
     [InlineData("Wing_01.3DC")]
+    [InlineData("mob_rend_01_a.3dc")]
     public void _3DCMultipleReadWriteTest(string fileName)
     {
         var filePath = $"Shaiya/3DC/{fileName}";

@@ -14,6 +14,11 @@ namespace Parsec.Shaiya._3dc;
 public sealed class _3dc : FileBase
 {
     /// <summary>
+    /// Some mob files store TGA name.
+    /// </summary>
+    public string Icon { get; set; } = "";
+
+    /// <summary>
     /// List of bones linked to this 3d model. Although a model might be linked to a few bones (for example boots models), the
     /// 3DC file contains the definitions for all the bones in the whole skeleton.
     /// </summary>
@@ -30,15 +35,17 @@ public sealed class _3dc : FileBase
     /// </summary>
     public List<MeshFace> Faces { get; set; } = new();
 
+    private const int Ep6Flag = 444;
+
     [JsonIgnore]
     public override string Extension => "3DC";
 
     protected override void Read(SBinaryReader binaryReader)
     {
-        var version = binaryReader.ReadInt32();
+        var versionOrTGALength = binaryReader.ReadInt32();
         Episode = Episode.EP5;
 
-        if (version == 444)
+        if (versionOrTGALength == Ep6Flag)
         {
             Episode = Episode.EP6;
         }
@@ -46,6 +53,8 @@ public sealed class _3dc : FileBase
         // Vertex instances expect the episode to be set on the serialization options
         binaryReader.SerializationOptions.Episode = Episode;
 
+        if (versionOrTGALength > 0 && versionOrTGALength != Ep6Flag)
+            Icon = binaryReader.ReadString(versionOrTGALength);
         Bones = binaryReader.ReadList<_3dcBone>().ToList();
         Vertices = binaryReader.ReadList<_3dcVertex>().ToList();
         Faces = binaryReader.ReadList<MeshFace>().ToList();
@@ -57,13 +66,16 @@ public sealed class _3dc : FileBase
 
         if (Episode >= Episode.EP6)
         {
-            version = 444;
+            version = Ep6Flag;
         }
 
         // Vertex instances expect the episode to be set on the serialization options
         binaryWriter.SerializationOptions.Episode = Episode;
 
-        binaryWriter.Write(version);
+        if (string.IsNullOrEmpty(Icon) || version == Ep6Flag)
+            binaryWriter.Write(version);
+        else
+            binaryWriter.Write(Icon);
         binaryWriter.Write(Bones.ToSerializable());
         binaryWriter.Write(Vertices.ToSerializable());
         binaryWriter.Write(Faces.ToSerializable());
