@@ -1,12 +1,17 @@
-﻿using System.Globalization;
 using System.Text;
-using CsvHelper;
 using Parsec.Common;
 using Parsec.Serialization;
+#if INCLUDE_CSV
+using System.Globalization;
+using CsvHelper;
+#endif
 
 namespace Parsec.Shaiya.DualLayerClothes;
 
-public sealed class DualLayerClothes : SData.SData, ICsv
+public sealed class DualLayerClothes : SData.SData
+#if INCLUDE_CSV
+                                       , ICsv
+#endif
 {
     public List<DualLayerClothesRecord> Records { get; set; } = new();
 
@@ -20,6 +25,7 @@ public sealed class DualLayerClothes : SData.SData, ICsv
         binaryWriter.Write(Records);
     }
 
+#if INCLUDE_CSV
     public static DualLayerClothes FromCsv(string csvPath, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
@@ -43,4 +49,5 @@ public sealed class DualLayerClothes : SData.SData, ICsv
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
         csvWriter.WriteRecords(Records);
     }
+#endif
 }

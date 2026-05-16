@@ -1,12 +1,18 @@
-﻿using System.Globalization;
-using System.Text;
-using CsvHelper;
+﻿using System.Text;
 using Parsec.Common;
 using Parsec.Serialization;
+#if INCLUDE_CSV
+using System.Globalization;
+using CsvHelper;
+#endif
 
 namespace Parsec.Shaiya.SData;
 
-public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinarySDataRecord, new()
+public abstract class BinarySData<TRecord> : SData
+#if INCLUDE_CSV
+                                             , ICsv
+#endif
+    where TRecord : IBinarySDataRecord, new()
 {
     /// <summary>
     /// 128-byte header unused by the game itself. It looks like a file signature + metadata
@@ -39,6 +45,8 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         binaryWriter.Write(Records);
     }
 
+#if INCLUDE_CSV
+
     public static T FromCsv<T>(string csvPath, Encoding? encoding = null) where T : BinarySData<TRecord>, new()
     {
         encoding ??= Encoding.ASCII;
@@ -55,7 +63,12 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
 
         // Read headers
         var fields = csvReader.HeaderRecord.Select(column => (BinarySDataField)column.ToLower()).ToList();
-        var binarySData = new T { Fields = fields, Records = records, Encoding = encoding };
+        var binarySData = new T
+        {
+            Fields = fields,
+            Records = records,
+            Encoding = encoding
+        };
         return binarySData;
     }
 
@@ -66,4 +79,5 @@ public abstract class BinarySData<TRecord> : SData, ICsv where TRecord : IBinary
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
         csvWriter.WriteRecords(Records);
     }
+#endif
 }

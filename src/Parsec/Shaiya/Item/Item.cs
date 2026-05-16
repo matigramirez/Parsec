@@ -1,12 +1,17 @@
-﻿using System.Globalization;
 using System.Text;
-using CsvHelper;
 using Parsec.Common;
 using Parsec.Serialization;
+#if INCLUDE_CSV
+using System.Globalization;
+using CsvHelper;
+#endif
 
 namespace Parsec.Shaiya.Item;
 
-public sealed class Item : SData.SData, ICsv
+public sealed class Item : SData.SData
+#if INCLUDE_CSV
+                           , ICsv
+#endif
 {
     public List<ItemGroup> ItemGroups { get; set; } = new();
 
@@ -20,6 +25,7 @@ public sealed class Item : SData.SData, ICsv
         binaryWriter.Write(ItemGroups);
     }
 
+#if INCLUDE_CSV
     /// <summary>
     /// Reads the Item.SData format from a csv file
     /// </summary>
@@ -42,7 +48,11 @@ public sealed class Item : SData.SData, ICsv
         var csvItemRecords = csvReader.GetRecords<ItemDefinition>().ToList();
 
         var groups = csvItemRecords.GroupBy(x => x.ItemType).ToList();
-        var item = new Item { Episode = episode, Encoding = encoding };
+        var item = new Item
+        {
+            Episode = episode,
+            Encoding = encoding
+        };
 
         var maxGroupId = groups.Max(x => x.Key);
 
@@ -73,4 +83,5 @@ public sealed class Item : SData.SData, ICsv
             csvWriter.WriteRecords(itemGroup.ItemDefinitions);
         }
     }
+#endif
 }

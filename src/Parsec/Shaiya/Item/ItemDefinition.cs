@@ -1,22 +1,32 @@
-﻿using CsvHelper.Configuration.Attributes;
-using Parsec.Common;
+﻿using Parsec.Common;
 using Parsec.Serialization;
 using Parsec.Shaiya.Core;
+#if INCLUDE_CSV
+using CsvHelper.Configuration.Attributes;
+#endif
 
 namespace Parsec.Shaiya.Item;
 
 public sealed class ItemDefinition : ISerializable
 {
+#if INCLUDE_CSV
     [Index(2)]
+#endif
     public string Name { get; set; } = string.Empty;
 
+#if INCLUDE_CSV
     [Index(3)]
+#endif
     public string Description { get; set; } = string.Empty;
 
+#if INCLUDE_CSV
     [Index(0)]
+#endif
     public byte ItemType { get; set; }
 
+#if INCLUDE_CSV
     [Index(1)]
+#endif
     public byte ItemTypeId { get; set; }
 
     public byte Model { get; set; }

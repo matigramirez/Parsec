@@ -1,12 +1,17 @@
-﻿using System.Globalization;
 using System.Text;
-using CsvHelper;
 using Parsec.Common;
 using Parsec.Serialization;
+#if INCLUDE_CSV
+using System.Globalization;
+using CsvHelper;
+#endif
 
 namespace Parsec.Shaiya.Monster;
 
-public sealed class Monster : SData.SData, ICsv
+public sealed class Monster : SData.SData
+#if INCLUDE_CSV
+                              , ICsv
+#endif
 {
     public List<MonsterRecord> Records { get; set; } = new();
 
@@ -22,6 +27,7 @@ public sealed class Monster : SData.SData, ICsv
         binaryWriter.Write(Records);
     }
 
+#if INCLUDE_CSV
     /// <summary>
     /// Reads the Monster.SData format from a csv file
     /// </summary>
@@ -38,7 +44,11 @@ public sealed class Monster : SData.SData, ICsv
         var records = csvReader.GetRecords<MonsterRecord>().ToList();
 
         // Create monster instance
-        var monster = new Monster { Records = records, Encoding = encoding };
+        var monster = new Monster
+        {
+            Records = records,
+            Encoding = encoding
+        };
         return monster;
     }
 
@@ -49,4 +59,5 @@ public sealed class Monster : SData.SData, ICsv
         using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
         csvWriter.WriteRecords(Records);
     }
+#endif
 }

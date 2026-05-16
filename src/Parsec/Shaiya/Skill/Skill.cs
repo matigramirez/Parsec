@@ -1,12 +1,17 @@
-﻿using System.Globalization;
 using System.Text;
-using CsvHelper;
 using Parsec.Common;
 using Parsec.Serialization;
+#if INCLUDE_CSV
+using System.Globalization;
+using CsvHelper;
+#endif
 
 namespace Parsec.Shaiya.Skill;
 
-public sealed class Skill : SData.SData, ICsv
+public sealed class Skill : SData.SData
+#if INCLUDE_CSV
+    , ICsv
+#endif
 {
     public List<SkillGroup> SkillGroups { get; set; } = new();
 
@@ -27,6 +32,7 @@ public sealed class Skill : SData.SData, ICsv
         binaryWriter.Write(SkillGroups);
     }
 
+#if INCLUDE_CSV
     public static Skill FromCsv(string csvFilePath, Episode episode = Episode.EP5, Encoding? encoding = null)
     {
         encoding ??= Encoding.ASCII;
@@ -58,4 +64,5 @@ public sealed class Skill : SData.SData, ICsv
             csvWriter.WriteRecords(skillGroup.SkillDefinitions);
         }
     }
+#endif
 }
