@@ -39,6 +39,7 @@ public sealed class PcMeshReference : ISerializable
         }
 
         FileName = binaryReader.SerializationOptions.Encoding.GetString(buffer, 0, terminatorIndex);
+        ValidateFileName();
 
         FileNamePadding = new byte[FileNameBufferSize - terminatorIndex];
         Buffer.BlockCopy(buffer, terminatorIndex, FileNamePadding, 0, FileNamePadding.Length);
@@ -46,6 +47,8 @@ public sealed class PcMeshReference : ISerializable
 
     public void Write(SBinaryWriter binaryWriter)
     {
+        ValidateFileName();
+
         if (FileName.IndexOf('\0') >= 0)
         {
             throw new InvalidDataException("A .PC mesh filename cannot contain a null character.");
@@ -73,6 +76,14 @@ public sealed class PcMeshReference : ISerializable
         else
         {
             binaryWriter.Write(new byte[remainingByteCount]);
+        }
+    }
+
+    private void ValidateFileName()
+    {
+        if (string.IsNullOrEmpty(FileName))
+        {
+            throw new InvalidDataException("A .PC mesh reference must have a filename.");
         }
     }
 }

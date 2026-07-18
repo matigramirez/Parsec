@@ -55,14 +55,12 @@ public sealed class PcClothLink : ISerializable
         SampleRadiusRow = binaryReader.ReadInt32();
         Padding = binaryReader.ReadUInt32();
         Anchors = binaryReader.ReadList<PcAnchor>(AnchorCount);
+        Validate();
     }
 
     public void Write(SBinaryWriter binaryWriter)
     {
-        if (Anchors.Count != AnchorCount)
-        {
-            throw new InvalidDataException($"A .PC cloth link must contain exactly {AnchorCount} anchor slots.");
-        }
+        Validate();
 
         binaryWriter.Write(ClothMeshIndex);
         binaryWriter.Write(TextureIndex);
@@ -76,5 +74,18 @@ public sealed class PcClothLink : ISerializable
         binaryWriter.Write(SampleRadiusRow);
         binaryWriter.Write(Padding);
         binaryWriter.Write(Anchors, lengthPrefixed: false);
+    }
+
+    private void Validate()
+    {
+        if (Anchors.Count != AnchorCount)
+        {
+            throw new InvalidDataException($"A .PC cloth link must contain exactly {AnchorCount} anchor slots.");
+        }
+
+        if (ColumnSegments < 1 || RowSegments < 1)
+        {
+            throw new InvalidDataException("A .PC cloth link must have at least one row and column segment.");
+        }
     }
 }
