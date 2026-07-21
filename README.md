@@ -26,6 +26,7 @@ Unity and Godot.
 - `NpcSkill.SData`
 - `svmap`
 - `WLD`
+- `ENV` (Environment timelines)
 - `dg`
 - `ANI`
 - `3DC`
