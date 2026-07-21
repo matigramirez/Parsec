@@ -32,6 +32,7 @@ Unity and Godot.
 - `3DO`
 - `3DE`
 - `MLT`
+- `PC` (Cloak physics)
 - `ITM`
 - `SMOD`
 - `EFT`
