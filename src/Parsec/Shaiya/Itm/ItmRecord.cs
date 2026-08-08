@@ -48,10 +48,11 @@ public sealed class ItmRecord : ISerializable
     public int Unknown3 { get; set; }
 
     /// <summary>
-    /// Present if <see cref="ItmFormat"/> is "IT2".
-    /// 1024 unknown bytes. 32 blocks of 8 uint32.
+    /// Present if <see cref="ItmFormat"/> is "IT2". IT2 stores two bone,
+    /// position, and quaternion transforms for each of its sixteen character
+    /// archetypes.
     /// </summary>
-    public byte[] Unknown4 { get; set; } = new byte[1024];
+    public List<ItmCharacterTransforms> CharacterTransforms { get; set; } = new();
 
     public void Read(SBinaryReader binaryReader)
     {
@@ -72,7 +73,13 @@ public sealed class ItmRecord : ISerializable
 
         if (binaryReader.SerializationOptions.ExtraOption is ItmFormat.IT2)
         {
-            Unknown4 = binaryReader.ReadBytes(1024);
+            CharacterTransforms = new List<ItmCharacterTransforms>(16);
+            for (var characterIndex = 0; characterIndex < 16; characterIndex++)
+            {
+                var transforms = binaryReader.Read<ItmCharacterTransforms>();
+                transforms.CharacterCode = (ItmCharacterCode)characterIndex;
+                CharacterTransforms.Add(transforms);
+            }
         }
     }
 
@@ -95,7 +102,21 @@ public sealed class ItmRecord : ISerializable
 
         if (binaryWriter.SerializationOptions.ExtraOption is ItmFormat.IT2)
         {
-            binaryWriter.Write(Unknown4);
+            for (var characterIndex = 0; characterIndex < 16; characterIndex++)
+            {
+                var characterCode = (ItmCharacterCode)characterIndex;
+                var matches = CharacterTransforms
+                    .Where(transforms => transforms.CharacterCode == characterCode)
+                    .ToList();
+
+                if (matches.Count != 1)
+                {
+                    throw new InvalidDataException(
+                        $"IT2 records require exactly one transform pair for {characterCode}.");
+                }
+
+                binaryWriter.Write(matches[0]);
+            }
         }
     }
 }
