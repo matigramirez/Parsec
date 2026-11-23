@@ -10,19 +10,46 @@ namespace Parsec.Shaiya.Alt;
 /// </summary>
 public sealed class AltAnimation : ISerializable
 {
+    /// <summary>
+    /// Animation (ANI) file name for this slot. The slot index is the action id the client uses.
+    /// </summary>
     public string Name { get; set; } = string.Empty;
 
-    /// TODO: In shStudio, Mode is split into 4 separate bytes, investigate if that's correct, since the game client actually reads a single value 4-byte
+    /// <summary>
+    /// Playback mode. The game client only reads the lowest byte (game.exe: <c>movzx eax, byte ptr [anim+0x10]</c>),
+    /// the upper three bytes are leftover memory written by the original tooling and are ignored,
+    /// so they are kept as-is to preserve byte-exact round trips.
+    /// When the clock passes the last frame: <c>1</c> = loop (restart), <c>2</c> = play once and then blend into
+    /// the slot given by <see cref="Unknown"/>, <c>0</c> = hold the last frame (used by the death animation).
+    /// </summary>
     public int Mode { get; set; }
 
+    /// <summary>
+    /// Slot to switch to after a <see cref="Mode"/> <c>2</c> animation ends (<c>0</c> = slot 0, the idle animation).
+    /// For example an attack points to the weapon's "ready" slot.
+    /// </summary>
     public int Unknown { get; set; }
 
+    /// <summary>
+    /// Not read by the client (checked in the EP4.5 and EP5 game.exe), probably a leftover from an older engine version.
+    /// </summary>
     public float Float1 { get; set; }
 
+    /// <summary>
+    /// Not read by the client, see <see cref="Float1"/>.
+    /// </summary>
     public float Float2 { get; set; }
 
+    /// <summary>
+    /// Frame (30 frames per second) of the first hit. When the animation clock crosses it, the client spawns the
+    /// hit effect and sound and applies the pending damage. <c>0</c> = no hit event.
+    /// </summary>
     public float Float3 { get; set; }
 
+    /// <summary>
+    /// Frame of the second hit for double-hit attacks (<c>0</c> = none). When set, the first hit only applies
+    /// half of the pending damage and this one applies the rest.
+    /// </summary>
     public float Float4 { get; set; }
 
     public void Read(SBinaryReader binaryReader)
